@@ -2,7 +2,7 @@
   background-image: url("./assets/pncbg.png");
   background-size: cover;
   height: 100%;
-  width: 1730px;
+  width: 1920px;
   background-repeat: no-repeat;
   display: flex;
   justify-content: center;
@@ -13,10 +13,10 @@
 }
 
 .card {
-  padding: 3em;
+  padding: 2em;
   border-radius: 20px;
 }
 
-#button{
- width: 500px;
+.logo{
+  width: 2em;
 }

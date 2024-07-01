@@ -1,25 +1,22 @@
-
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-} 
-
 .bg{
   background-image: url("./assets/pncbg.png");
   background-size: cover;
   height: 100%;
-  width: 100%;
-  margin-top: -70px;
-  font-size: 50px;
+  width: 1730px;
   background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+}
+
+.input{
+  width: 500px;
 }
 
 .card {
-  padding: 2em;
+  padding: 3em;
+  border-radius: 20px;
 }
 
-.read-the-docs {
-  color: #888;
+#button{
+ width: 500px;
 }

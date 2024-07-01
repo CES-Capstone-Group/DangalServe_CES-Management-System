@@ -10,10 +10,11 @@
 
 .input{
   width: 500px;
+  height: 63px;
 }
 
 .card {
-  padding: 2em;
+  padding: 4em;
   border-radius: 20px;
 }
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCircleUser} from '@fortawesome/free-solid-svg-icons'
 
 const TopNav = () => {
   return (
@@ -7,9 +9,8 @@ const TopNav = () => {
       <Container>
         <Navbar.Brand href="#">Barangay Name</Navbar.Brand>
         <Nav className="ms-auto">
-          <Navbar.Text className="me-3">BRGY. SAN ISIDRO</Navbar.Text>
           <Nav.Link href="#">
-            <i className="bi bi-person-circle"></i>
+            <FontAwesomeIcon style={{fontSize: '35px', color: 'white'}} icon={faCircleUser} />
           </Nav.Link>
         </Nav>
       </Container>

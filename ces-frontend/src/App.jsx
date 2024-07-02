@@ -7,11 +7,14 @@ import { Container, Row, Col, } from 'react-bootstrap';
 const App = () => {
   return (
     <div>
-      <TopNav />
+      
       <Container fluid>
         <Row>
-          <Col md={3} lg={2} className="d-md-block bg-light sidebar">
+        <Col md={3} lg={2} className="d-md-block bg-light sidebar">
             <Sidebar />
+          </Col>
+          <Col>
+            <TopNav/>
           </Col>
           <Col md={9} lg={10} className="ms-sm-auto px-md-4">
             <MainContent />

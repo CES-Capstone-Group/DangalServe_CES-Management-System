@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import CardImg from 'react-bootstrap/CardImg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
 import Logo from '../assets/pnclogo.png'
 import './Login.css'
 
@@ -25,7 +26,7 @@ function LoginPage(){
                         <Form.Label className='h5'>Password</Form.Label>
                         <InputGroup>
                             <Form.Control className='input ' type='password' placeholder='Insert your Password here'/>
-                            <Button><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
+                            <Button variant='success'><FontAwesomeIcon icon={faEye} /></Button>
                         </InputGroup>
                     </Form.Group>
 

@@ -5,6 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import CardImg from 'react-bootstrap/CardImg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Logo from '../assets/pnclogo.png'
+import './Login.css'
 
 function LoginPage(){
     return(

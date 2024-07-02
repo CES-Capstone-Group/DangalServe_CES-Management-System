@@ -1,13 +1,25 @@
-import './App.css'
-import LoginPage from "./components/LoginPage"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react';
+import TopNav from './components/TopNav';
+import Sidebar from './components/Sidebar';
+import MainContent from './components/MainContent';
+import { Container, Row, Col, } from 'react-bootstrap';
 
-function App() {
+const App = () => {
   return (
     <div>
-      <LoginPage/>
+      <TopNav />
+      <Container fluid>
+        <Row>
+          <Col md={3} lg={2} className="d-md-block bg-light sidebar">
+            <Sidebar />
+          </Col>
+          <Col md={9} lg={10} className="ms-sm-auto px-md-4">
+            <MainContent />
+          </Col>
+        </Row>
+      </Container>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

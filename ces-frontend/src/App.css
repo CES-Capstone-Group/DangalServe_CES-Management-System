@@ -16,7 +16,12 @@
   }
 }
 
+.sidebar-menu{
+  height: 100%;
+}
 
+.navbar{
+}
 .sidebar-menu-header{
   background-color: #71A872;
   color: #71A872;

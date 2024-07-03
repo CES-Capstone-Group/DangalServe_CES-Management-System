@@ -10,7 +10,7 @@ const App = () => {
       
       <Container fluid>
         <Row>
-          <Col md={3} lg={2} className="d-md-block bg-light sidebar">
+          <Col md={0} lg={2} className="d-md-block bg-light sidebar">
             <Sidebar />
           </Col>
           <Col>

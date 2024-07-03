@@ -8,6 +8,31 @@
   justify-content: center;
 }
 
+.sidebar-menu{
+  margin-left: 0px;
+}
+
+.sidebar-menu-header{
+  background-color: #71A872;
+  color: #71A872;
+}
+
+.sidebar-menu-header .sidebar-menu-brand{
+  color: white;
+}
+
+.sidebar-menu-nav-title{
+  color: black;
+}
+
+.sidebar-menu-nav-link{
+  text-decoration: none;
+}
+
+.sidebar-menu-toggle{
+  border: none;
+}
+
 .input{
   width: 500px;
   height: 63px;

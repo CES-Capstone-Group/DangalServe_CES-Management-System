@@ -1,10 +1,11 @@
 import React from 'react';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faHouse} from '@fortawesome/free-solid-svg-icons'
+import {faTableColumns, faFileLines,faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
+import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 // const Sidebar = () => {
   //   return (
@@ -47,7 +48,7 @@ const Sidebar = () => {
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>
-          <img className='logo' src={Logo} alt="pnclogo" />
+          <img className='logo img-fluid' src={Logo} alt="pnclogo" />
         </SidebarMenu.Brand>
       </SidebarMenu.Toggle>
 
@@ -61,45 +62,39 @@ const Sidebar = () => {
         <SidebarMenu.Nav>
           <SidebarMenu.Nav.Link>
             <SidebarMenu.Nav.Icon>
-              <FontAwesomeIcon icon={faHouse}/>
+              <FontAwesomeIcon icon={faTableColumns} style={{color: 'black'}} />
             </SidebarMenu.Nav.Icon>
-            <SidebarMenu.Nav.Title>
-              Dashboard
-            </SidebarMenu.Nav.Title>
+            <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
           </SidebarMenu.Nav.Link>
         </SidebarMenu.Nav>
 
-        <SidebarMenu.Sub>
-          <SidebarMenu.Sub.Toggle>
-          <SidebarMenu.Nav.Icon />
-            <SidebarMenu.Nav.Title>
-              Main Title
-            </SidebarMenu.Nav.Title>
-          </SidebarMenu.Sub.Toggle>
-          
-          <SidebarMenu.Sub.Collapse>
-          <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
-          <SidebarMenu.Nav.Icon>
-          {/* Submenu item icon */}
-          </SidebarMenu.Nav.Icon>
-          <SidebarMenu.Nav.Title>
-          Sub Item
-          </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
-          </SidebarMenu.Nav>
-          <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
-          <SidebarMenu.Nav.Icon>
-          {/* Submenu item icon */}
-          </SidebarMenu.Nav.Icon>
-          <SidebarMenu.Nav.Title>
-          Sub Item
-          </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
-          </SidebarMenu.Nav>
-          </SidebarMenu.Sub.Collapse>
-        </SidebarMenu.Sub>
+        <SidebarMenu.Nav>
+          <SidebarMenu.Sub>
+            <SidebarMenu.Sub.Toggle>
+              <SidebarMenu.Nav.Icon>
+                <FontAwesomeIcon icon={faFileLines}></FontAwesomeIcon>
+              </SidebarMenu.Nav.Icon>
+              <SidebarMenu.Nav.Title> Proposals </SidebarMenu.Nav.Title>
+              <SidebarMenu.Nav.Icon>
+                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+              </SidebarMenu.Nav.Icon>
+            </SidebarMenu.Sub.Toggle>
+              
+              <SidebarMenu.Sub.Collapse>
+              <SidebarMenu.Nav>
+                <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Title> Pending Proposals </SidebarMenu.Nav.Title>
+                </SidebarMenu.Nav.Link>
+              </SidebarMenu.Nav>
+
+              <SidebarMenu.Nav>
+                <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Title> Approved Proposals </SidebarMenu.Nav.Title>
+                </SidebarMenu.Nav.Link>
+              </SidebarMenu.Nav>
+            </SidebarMenu.Sub.Collapse>
+          </SidebarMenu.Sub>
+        </SidebarMenu.Nav>
       </SidebarMenu.Body>
     </SidebarMenu>
   );

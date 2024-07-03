@@ -44,11 +44,7 @@ import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 const Sidebar = () => {
   return(
-<<<<<<< Updated upstream
-    <SidebarMenu className='flex-column'>
-=======
     <SidebarMenu expand="lg" className="flex-column">
->>>>>>> Stashed changes
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>

@@ -10,13 +10,11 @@ const App = () => {
       
       <Container fluid>
         <Row>
-          <Col md={10} lg={2} className="d-md-block bg-light sidebar" style={{padding: '0px'}}>
+          <Col md={1} lg={2} style={{padding: '0px'}}>
             <Sidebar />
           </Col>
-          <Col>
-            <TopNav/>
-          </Col>
-          <Col md={9} lg={10} className="ms-sm-auto px-md-4">
+          <Col md={9} lg={10} className="maincon ms-sm-auto px-md-0">
+            <TopNav/><br /><br />
             <MainContent />
           </Col>
         </Row>

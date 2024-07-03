@@ -44,7 +44,7 @@ import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 const Sidebar = () => {
   return(
-    <SidebarMenu expand="lg" className="flex-column">
+    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em'}}>
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>

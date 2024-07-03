@@ -1,8 +1,8 @@
 import React from 'react';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faTableColumns, faFileLines,faChevronDown} from '@fortawesome/free-solid-svg-icons'
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
+import {faTableColumns, faFileLines,faChevronDown, faCodePullRequest, faInbox, faCalendar} from '@fortawesome/free-solid-svg-icons'
+import SidebarMenu, { SidebarMenuNav } from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
 import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
@@ -44,7 +44,7 @@ import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 const Sidebar = () => {
   return(
-    <SidebarMenu>
+    <SidebarMenu className='flex-column'>
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>
@@ -94,6 +94,39 @@ const Sidebar = () => {
               </SidebarMenu.Nav>
             </SidebarMenu.Sub.Collapse>
           </SidebarMenu.Sub>
+        </SidebarMenu.Nav>
+
+        <SidebarMenu.Nav>
+          <SidebarMenu.Sub>
+            <SidebarMenu.Sub.Toggle>
+              <SidebarMenu.Nav.Icon>
+                <FontAwesomeIcon icon={faInbox}></FontAwesomeIcon>
+              </SidebarMenu.Nav.Icon>
+              <SidebarMenu.Nav.Title> Requests </SidebarMenu.Nav.Title>
+              <SidebarMenu.Nav.Icon>
+                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+              </SidebarMenu.Nav.Icon>
+            </SidebarMenu.Sub.Toggle>
+            
+            <SidebarMenu.Sub.Collapse>
+
+              <SidebarMenu.Nav>
+              <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Title> Event Reschedule </SidebarMenu.Nav.Title>
+                </SidebarMenu.Nav.Link>
+              </SidebarMenu.Nav>
+
+            </SidebarMenu.Sub.Collapse>
+          </SidebarMenu.Sub>
+        </SidebarMenu.Nav>
+
+        <SidebarMenu.Nav>
+          <SidebarMenu.Nav.Link>
+            <SidebarMenu.Nav.Icon>
+              <FontAwesomeIcon icon={faCalendar} style={{color: 'black'}}></FontAwesomeIcon>
+            </SidebarMenu.Nav.Icon>
+            <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>
+          </SidebarMenu.Nav.Link>
         </SidebarMenu.Nav>
       </SidebarMenu.Body>
     </SidebarMenu>

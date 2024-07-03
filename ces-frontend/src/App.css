@@ -12,9 +12,12 @@ div .col{
   justify-content: center;
 }
 
+.sidebar{
+  display: flex;
+  
+}
+
 .sidebar-menu{
-  display: fixed;
-  height: 20em;
   margin: 0px;
   padding: 0px;
 }
@@ -36,6 +39,7 @@ div .col{
 
 .sidebar-menu-nav-title{
   color: black;
+  padding: 10px;
 }
 
 .sidebar-menu-nav-link{

@@ -10,8 +10,8 @@ const App = () => {
     <div>
       <Container fluid>
         <Row>
-          <Col md={1} lg={2} style={{padding: '0px'}}>
-            <CoorSidebar />
+          <Col md={1} lg={2} style={{padding: '0px', boxShadow: '20px'}}>
+            <BrgySidebar />
           </Col>
           <Col md={9} lg={10} className="maincon ms-sm-auto px-md-0">
             <TopNav/><br /><br />

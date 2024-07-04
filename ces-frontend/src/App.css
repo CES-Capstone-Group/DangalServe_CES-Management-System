@@ -8,20 +8,14 @@
   justify-content: center;
 }
 
-@media {
-  .sidebar-menu{
-    margin: 0px;
-    padding: 0px;
-    position: fixed;
-  }
-}
 
 .sidebar-menu{
-  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
 }
 
-.navbar{
-}
+
 .sidebar-menu-header{
   background-color: #71A872;
   color: #71A872;

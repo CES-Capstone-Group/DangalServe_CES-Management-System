@@ -1,42 +1,73 @@
 import React from "react";
-import { Button, Container, Table } from "react-bootstrap";
-import BtnViewApprove from "./BtnViewApprove";
+import { useState } from "react";
+import { Container, Table } from "react-bootstrap";
+import BtnEditDeac from "./BtnEditDeac";
 
 
-const UserManagementCon = () => {
+const array = [{accID:1903213, type:'Proponent', actDate:'April 20, 2023', deacDate:'April 20, 2024', status:'Active'},
+               {accID:1903213, type:'Proponent', actDate:'April 20, 2023', deacDate:'April 20, 2024', status:'Active'}];
+
+const Row = (props) => {
+    const {accID, type, actDate, deacDate, status} = props
+    return (
+        <tr>
+            <td>{accID}</td>
+            <td>{type}</td>
+            <td>{actDate}</td>
+            <td>{deacDate}</td>
+            <td>{status}</td>
+            <BtnEditDeac/>
+        </tr>
+    );
+};
+
+// const Theader = (props) => {
+//     const{header} = props
+// }
+
+const NewTable = (props) => {
+    const{data} = props
+    return (
+        <Table responsive striped hover>
+            <thead>
+                <tr>
+                    <th>Account ID</th>
+                    <th>Type of Account</th>
+                    <th>Activation Date</th>
+                    <th>Deactivation Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            {data.map((row, index) =>
+                <Row key = {'key-${index}'} 
+                accID = {row.accID}
+                type = {row.type}
+                actDate = {row.actDate}
+                deacDate = {row.deacDate}
+                status = {row.status}/>)}
+        </Table>
+    );
+}
+
+const BrgyProposalPage = () => {
+
+    const [rows, setRows] = useState(array)
+
     return(
         <Container className="container-fluid">
             <div className="container">
-            <h1> PENDING PROPOSALS </h1>
+            <h1> ACCOUNT MANAGEMENT </h1>
             </div>
-        
+
             <Table>
-                <thead>
-                    <tr>
-                        <th>Proposal Title</th>
-                        <th>Location</th>
-                        <th>Target Date</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>CCLIP: PC Awareness</td>
-                        <td>San Isidro Elementary School</td>
-                        <td>April 21, 2023</td>
-                        <td>Pending</td>
-                        <td><BtnViewApprove/></td>
-                    </tr>
-                    <tr>
-                        <td>Proposal Title</td>
-                        <td>Location</td>
-                        <td>Target Date</td>
-                        <td>Status</td>
-                        <td><BtnViewApprove/></td>
-                    </tr>
-                </thead>
+                <NewTable data = {rows}/>
             </Table>
+            
+            
         </Container>
     );
 };
 
-export default UserManagementCon;
+export default BrgyProposalPage;
+

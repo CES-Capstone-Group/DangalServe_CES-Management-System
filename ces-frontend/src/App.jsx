@@ -4,6 +4,7 @@ import BrgySidebar from './components/BrgySidebar';
 import MainContent from './components/MainContent';
 import { Container, Row, Col, } from 'react-bootstrap';
 import CoorSidebar from './components/CoorSidebar';
+import UserManagementCon from './components/UserManagementCon';
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
           </Col>
           <Col md={9} lg={10} className="maincon ms-sm-auto px-md-0">
             <TopNav/><br /><br />
-            <MainContent />
+            <UserManagementCon />
           </Col>
         </Row>
       </Container>

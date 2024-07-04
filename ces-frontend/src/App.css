@@ -1,4 +1,4 @@
-.bg{
+.bg {
   background-image: url("./assets/pncbg.png");
   background-size: cover;
   height: 100%;
@@ -9,58 +9,59 @@
 }
 
 
-.sidebar-menu{
+.sidebar-menu {
   margin: 0px;
   padding: 0px;
   position: fixed;
+  height: 100%;
 }
 
 
-.sidebar-menu-header{
+.sidebar-menu-header {
   background-color: #71A872;
   color: #71A872;
   padding: 1em;
 }
 
-.sidebar-menu-header .sidebar-menu-brand{
+.sidebar-menu-header .sidebar-menu-brand {
   color: white;
 }
 
-.sidebar-menu-nav{
+.sidebar-menu-nav {
   margin-left: 2em;
   margin-top: 1em;
 }
 
-.sidebar-menu-nav-title{
+.sidebar-menu-nav-title {
   color: black;
   padding: 10px;
 }
 
-.sidebar-menu-nav-link{
+.sidebar-menu-nav-link {
   text-decoration: none;
 }
 
-.sidebar-menu-toggle{
+.sidebar-menu-toggle {
   border: none;
 }
 
-.sidebar-menu-sub-toggle{
+.sidebar-menu-sub-toggle {
   border: 0px;
   background-color: rgba(255, 255, 255, 0);
   margin: 10px 0px 10px 0px;
   padding: 0px;
 }
 
-.input{
+.input {
   width: 500px;
   height: 63px;
 }
 
 .card {
-  padding: 4em;
-  border-radius: 20px;
+  padding: 1em;
+  border: none !important;
 }
 
-.logo{
+.logo {
   width: 19rem;
 }

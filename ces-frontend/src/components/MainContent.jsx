@@ -1,4 +1,5 @@
 import React from 'react';
+import '../App.css'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
 const MainContent = () => {
@@ -10,7 +11,7 @@ const MainContent = () => {
           <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <img src="placeholder.png" className="d-block w-100" alt="..."/>
+                <img src="placeholder.png" className="d-block w-100" alt="..." />
               </div>
               {/* Add more carousel items here */}
             </div>
@@ -23,10 +24,63 @@ const MainContent = () => {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-          <h3>Achievements</h3>
+
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Achievements</h3>
+              <Button variant="success">+ Add Achievement</Button>
+            </Col>
+          </Row>
+
+          <br />
+
           <Row>
             <Col md={4}>
               <Card>
+                <Card.Img variant="top" src="placeholder.png" />
+                <Card.Body>
+                  <Card.Title>Title</Card.Title>
+                  <Card.Text>Details Details Details Details Details</Card.Text>
+                  <Button variant="success">See more</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card>
+                <Card.Img variant="top" src="placeholder.png" />
+                <Card.Body>
+                  <Card.Title>Title</Card.Title>
+                  <Card.Text>Details Details Details Details Details</Card.Text>
+                  <Button variant="success">See more</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card>
+                <Card.Img variant="top" src="placeholder.png" />
+                <Card.Body>
+                  <Card.Title>Title</Card.Title>
+                  <Card.Text>Details Details Details Details Details</Card.Text>
+                  <Button variant="success">See more</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <br />
+
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Anouncements</h3>
+              <Button variant="success">+ Add Announcements</Button>
+            </Col>
+          </Row>
+
+          <br />
+
+          <Row>
+            <Col md={4}>
+              <Card className='border-0'>
                 <Card.Img variant="top" src="placeholder.png" />
                 <Card.Body>
                   <Card.Title>Title</Card.Title>

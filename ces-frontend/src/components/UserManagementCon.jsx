@@ -29,15 +29,13 @@ const NewTable = (props) => {
     const{data} = props
     return (
         <Table responsive striped hover>
-            <thead>
-                <tr>
-                    <th>Account ID</th>
-                    <th>Type of Account</th>
-                    <th>Activation Date</th>
-                    <th>Deactivation Date</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
+            <thead style={{backgroundColor: '#F0F1F0'}}>                
+                <th>Account ID</th>
+                <th>Type of Account</th>
+                <th>Activation Date</th>
+                <th>Deactivation Date</th>
+                <th>Status</th>
+                <th></th>
             </thead>
             {data.map((row, index) =>
                 <Row key = {'key-${index}'} 
@@ -59,12 +57,9 @@ const BrgyProposalPage = () => {
             <div className="container">
             <h1> ACCOUNT MANAGEMENT </h1>
             </div>
-
             <Table>
                 <NewTable data = {rows}/>
             </Table>
-            
-            
         </Container>
     );
 };

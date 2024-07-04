@@ -18,7 +18,6 @@ const App = () => {
           <Col md={9} lg={10} className="maincon ms-sm-auto px-md-0">
             <TopNav/><br /><br />
             <UserManagementCon />
-            <BrgyProposalPage/>
           </Col>
         </Row>
       </Container>

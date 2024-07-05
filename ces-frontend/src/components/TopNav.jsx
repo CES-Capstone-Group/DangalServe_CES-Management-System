@@ -7,7 +7,7 @@ const TopNav = () => {
   return (
     <Navbar  expand="lg" style={{backgroundColor: '#71A872'}}>
       <Container>
-        <Navbar.Brand href="#" style={{color: 'white'}}>Barangay Name</Navbar.Brand>
+        <Navbar.Brand href="#" style={{color: 'white'}}>USER</Navbar.Brand>
         <Nav className="ms-auto">
           <Nav.Link href="#">
             <FontAwesomeIcon style={{fontSize: '35px', color: 'white'}} icon={faCircleUser} />

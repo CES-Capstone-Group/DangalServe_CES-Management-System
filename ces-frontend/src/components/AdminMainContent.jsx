@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
-const MainContent = () => {
+const AdminMainContent = () => {
   return (
     <Container fluid>
       <Row>
@@ -24,6 +24,13 @@ const MainContent = () => {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
+
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Achievements</h3>
+              <Button variant="success">+ Add Achievement</Button>
+            </Col>
+          </Row>
 
           <br />
 
@@ -57,6 +64,15 @@ const MainContent = () => {
                   <Button variant="success">See more</Button>
                 </Card.Body>
               </Card>
+            </Col>
+          </Row>
+
+          <br />
+
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Anouncements</h3>
+              <Button variant="success">+ Add Announcements</Button>
             </Col>
           </Row>
 
@@ -100,4 +116,4 @@ const MainContent = () => {
   );
 };
 
-export default MainContent;
+export default AdminMainContent;

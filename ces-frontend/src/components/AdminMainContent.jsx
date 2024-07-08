@@ -1,6 +1,8 @@
 import React from 'react';
 import '../App.css'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import BtnAddAchievement from './BtnAddAnnouncement';
+import BtnAddAchievement from './BtnAddAchievement';
 
 const AdminMainContent = () => {
   return (
@@ -28,7 +30,7 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Achievements</h3>
-              <Button variant="success">+ Add Achievement</Button>
+              <BtnAddAchievement/>
             </Col>
           </Row>
 
@@ -72,7 +74,7 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Anouncements</h3>
-              <Button variant="success">+ Add Announcements</Button>
+              <BtnAddAnnouncement/>
             </Col>
           </Row>
 

@@ -35,11 +35,14 @@ const BtnAddAnnouncement = () => {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Department</Form.Label>
+                            <Form.Label column sm={4}>Program</Form.Label>
                             <Col column sm={8}>
                                 <Form.Select>
-                                    <option value="1">Active</option>
-                                    <option value="2">Inactive</option>
+                                    <option value="1">Bachelor of Science in Computer Science</option>
+                                    <option value="2">Bachelor of Science in Information Technology</option>
+                                    <option value="3">Bachelor of Science in Accounting</option>
+                                    <option value="4">Bachelor of Science in Nursing</option>
+                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
                                 </Form.Select>
                             </Col>
                         </Form.Group>

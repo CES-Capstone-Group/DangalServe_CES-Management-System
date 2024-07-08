@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Button, Container, Modal, Row, Col, Form, InputGroup} from "react-bootstrap";
+import { Button, Container, Modal, Row, Col, Form, InputGroup } from "react-bootstrap";
 
 const BtnAddAchievement = () => {
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    return(
+    return (
         <div className="d-flex justify-content-end m-3">
             <div>
-                <Button style={{backgroundColor:"#71A872", border: '0px'}} onClick={handleShowModal}>    
+                <Button style={{ backgroundColor: "#71A872", border: '0px' }} onClick={handleShowModal}>
                     + Add Achievement
                 </Button>
             </div>
@@ -35,17 +35,20 @@ const BtnAddAchievement = () => {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Department</Form.Label>
+                            <Form.Label column sm={4}>Program</Form.Label>
                             <Col column sm={8}>
                                 <Form.Select>
-                                    <option value="1">Active</option>
-                                    <option value="2">Inactive</option>
+                                    <option value="1">Bachelor of Science in Computer Science</option>
+                                    <option value="2">Bachelor of Science in Information Technology</option>
+                                    <option value="3">Bachelor of Science in Accounting</option>
+                                    <option value="4">Bachelor of Science in Nursing</option>
+                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
                                 </Form.Select>
                             </Col>
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='Achievment'>
-                            <Form.Label column sm={4}>Achiement</Form.Label>
+                            <Form.Label column sm={4}>Achievement</Form.Label>
                             <InputGroup>
                                 <Form.Control className='input' type='text' placeholder='' />
                             </InputGroup>
@@ -62,7 +65,7 @@ const BtnAddAchievement = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-       </div>
+        </div>
     );
 };
 

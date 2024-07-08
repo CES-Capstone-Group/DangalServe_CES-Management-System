@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Modal, Table} from "react-bootstrap";
+import { Button, Form, Modal, Col, Row} from "react-bootstrap";
 
 const BtnEditDeac = () => {
     const [show, setShow] = useState(false);
@@ -20,34 +20,63 @@ const BtnEditDeac = () => {
                 <Button style={{backgroundColor:'#71A872', border: '0px'}}>Deactivate</Button>
             </td>
             
-            <Modal show={show} onHide={handleClose} className="p-6">
+            <Modal centered size="lg" show={show} onHide={handleClose} className="p-6">
                 <Modal.Header closeButton>
                     <Button onClick={handleClose} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
                     <Modal.Title> [Account ID] </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form >
-                        <Form.Label>Type of Account</Form.Label>
-                        <Form.Select>
-                            <option value="1">Admin</option>
-                            <option value="2">Coordinator</option>
-                            <option value="3">Brgy. Official</option>
-                        </Form.Select>
-                        <Form.Label>Department</Form.Label>
-                        <Form.Select>
-                            <option value="1">BSCS</option>
-                            <option value="2">BSIT</option>
-                            <option value="3">BSA</option>
-                            <option value="4">BSN</option>
-                            <option value="5">BSIE</option>
-                        </Form.Select>
-                        <Form.Label>Status</Form.Label>
-                        <Form.Select>
-                            <option value="1">Active</option>
-                            <option value="2">Inactive</option>
-                        </Form.Select>
+                    <Form>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4} >Type of Account</Form.Label>
+                            <Col sm={8}>
+                                <Form.Select>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Coordinator</option>
+                                    <option value="3">Brgy. Official</option>
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Department</Form.Label>
+                            <Col column sm={8}>
+                                <Form.Select>
+                                    <option value="1">Bachelor of Science in Computer Science</option>
+                                    <option value="2">Bachelor of Science in Information Technology</option>
+                                    <option value="3">Bachelor of Science in Accounting</option>
+                                    <option value="4">Bachelor of Science in Nursing</option>
+                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
+                                </Form.Select> 
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Activation Date</Form.Label>
+                            <Col column sm={8}>
+                               <Form.Control type="date"/> 
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Deactivation Date</Form.Label>
+                            <Col column sm={8}>
+                               <Form.Control type="date"/> 
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Department</Form.Label>
+                            <Col column sm={8}>
+                                <Form.Select>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>   
+                                </Form.Select> 
+                            </Col>
+                        </Form.Group>
                     </Form>
                 </Modal.Body>
+                
                 <Modal.Footer>
                     <Button variant="success" onClick={editMode ? handleCancel : handleEditMode}>
                          {editMode ? 'Cancel' : 'Edit'} 

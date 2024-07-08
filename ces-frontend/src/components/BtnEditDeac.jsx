@@ -20,7 +20,7 @@ const BtnEditDeac = () => {
                 <Button style={{backgroundColor:'#71A872', border: '0px'}}>Deactivate</Button>
             </td>
             
-            <Modal centered size="lg" show={show} onHide={handleClose} className="p-6">
+            <Modal backdrop='static' centered size="lg" show={show} onHide={handleClose} className="p-6">
                 <Modal.Header closeButton>
                     <Button onClick={handleClose} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
                     <Modal.Title> [Account ID] </Modal.Title>

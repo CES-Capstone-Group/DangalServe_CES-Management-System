@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Modal, Row, Col, Form} from "react-bootstrap";
 
-const BtnAddAcc = () => {
+const BtnAddAnnouncement = () => {
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);

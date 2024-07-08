@@ -30,7 +30,7 @@ const BtnEditDeac = () => {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4} >Type of Account</Form.Label>
                             <Col sm={8}>
-                                <Form.Select>
+                                <Form.Select disabled={!editMode}>
                                     <option value="1">Admin</option>
                                     <option value="2">Coordinator</option>
                                     <option value="3">Brgy. Official</option>
@@ -41,7 +41,7 @@ const BtnEditDeac = () => {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Department</Form.Label>
                             <Col column sm={8}>
-                                <Form.Select>
+                                <Form.Select disabled={!editMode}>
                                     <option value="1">Bachelor of Science in Computer Science</option>
                                     <option value="2">Bachelor of Science in Information Technology</option>
                                     <option value="3">Bachelor of Science in Accounting</option>
@@ -54,21 +54,21 @@ const BtnEditDeac = () => {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Activation Date</Form.Label>
                             <Col column sm={8}>
-                               <Form.Control type="date"/> 
+                               <Form.Control disabled={!editMode} type="date"/> 
                             </Col>
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Deactivation Date</Form.Label>
                             <Col column sm={8}>
-                               <Form.Control type="date"/> 
+                               <Form.Control disabled={!editMode} type="date"/> 
                             </Col>
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Department</Form.Label>
                             <Col column sm={8}>
-                                <Form.Select>
+                                <Form.Select disabled={!editMode}>
                                     <option value="1">Active</option>
                                     <option value="2">Inactive</option>   
                                 </Form.Select> 
@@ -76,7 +76,7 @@ const BtnEditDeac = () => {
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                
+
                 <Modal.Footer>
                     <Button variant="success" onClick={editMode ? handleCancel : handleEditMode}>
                          {editMode ? 'Cancel' : 'Edit'} 

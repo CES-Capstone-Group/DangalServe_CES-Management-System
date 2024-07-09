@@ -17,50 +17,53 @@ const BtnAddAchievement = () => {
             <Modal backdrop='static' centered size="lg" show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Button onClick={handleCloseModal} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
-                    <Modal.Title> Add New Announcement </Modal.Title>
+                    <Modal.Title> Add New Achievement </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Department</Form.Label>
-                            <Col column sm={8}>
-                                <Form.Select>
-                                    <option value="1">Bachelor of Science in Computer Science</option>
-                                    <option value="2">Bachelor of Science in Information Technology</option>
-                                    <option value="3">Bachelor of Science in Accounting</option>
-                                    <option value="4">Bachelor of Science in Nursing</option>
-                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
-                                </Form.Select>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Program</Form.Label>
-                            <Col column sm={8}>
-                                <Form.Select>
-                                    <option value="1">Bachelor of Science in Computer Science</option>
-                                    <option value="2">Bachelor of Science in Information Technology</option>
-                                    <option value="3">Bachelor of Science in Accounting</option>
-                                    <option value="4">Bachelor of Science in Nursing</option>
-                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
-                                </Form.Select>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group className='mb-3' controlId='Achievment'>
-                            <Form.Label column sm={4}>Achievement</Form.Label>
+                        <Form.Group className='mb-3' controlId='AwardTitle'>
+                            <Form.Label className='h5'>Award Title</Form.Label>
                             <InputGroup>
                                 <Form.Control className='input' type='text' placeholder='' />
                             </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='Awardee'>
+                            <Form.Label className='h5'>Awardee</Form.Label>
+                            <InputGroup>
+                                <Form.Control className='input' type='text' placeholder='' />
+                            </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='AwardedBy'>
+                            <Form.Label className='h5'>Awarded By</Form.Label>
+                            <InputGroup>
+                                <Form.Control className='input' type='text' placeholder='' />
+                            </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='DateAwarded'>
+                            <Form.Label className='h5'>Date Awarded</Form.Label>
+                            <InputGroup>
+                                <Form.Control className='input' type='date' placeholder='' />
+                            </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='AchvImage'>
+                            <Form.Label className='h5'>Upload your Image</Form.Label>
+                            <InputGroup>
+                                <Form.Control className="inputFile" type="file" />
+                            </InputGroup>
+                            <p className="text-sm">Max Size: 25MB</p>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
 
                 <Modal.Footer className="d-flex justify-content-center">
-                    <Button variant='success'>
-                        Save Changes
+                    <Button size="lg" variant='success'>
+                        Add
                     </Button>
-                    <Button variant="danger">
+                    <Button size="lg" variant="danger">
                         Cancel
                     </Button>
                 </Modal.Footer>

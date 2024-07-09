@@ -25,6 +25,12 @@ const MainContent = () => {
             </button>
           </div>
 
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Achievements</h3>
+            </Col>
+          </Row>
+
           <br />
 
           <Row>
@@ -57,6 +63,14 @@ const MainContent = () => {
                   <Button variant="success">See more</Button>
                 </Card.Body>
               </Card>
+            </Col>
+          </Row>
+
+          <br />
+
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Announcements</h3>
             </Col>
           </Row>
 

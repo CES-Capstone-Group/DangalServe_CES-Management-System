@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Modal, Row, Col, Form, InputGroup } from "react-bootstrap";
 
+
 const BtnAddAnnouncement = () => {
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => setShowModal(true);
@@ -21,46 +22,35 @@ const BtnAddAnnouncement = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Department</Form.Label>
-                            <Col column sm={8}>
-                                <Form.Select>
-                                    <option value="1">Bachelor of Science in Computer Science</option>
-                                    <option value="2">Bachelor of Science in Information Technology</option>
-                                    <option value="3">Bachelor of Science in Accounting</option>
-                                    <option value="4">Bachelor of Science in Nursing</option>
-                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
-                                </Form.Select>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Program</Form.Label>
-                            <Col column sm={8}>
-                                <Form.Select>
-                                    <option value="1">Bachelor of Science in Computer Science</option>
-                                    <option value="2">Bachelor of Science in Information Technology</option>
-                                    <option value="3">Bachelor of Science in Accounting</option>
-                                    <option value="4">Bachelor of Science in Nursing</option>
-                                    <option value="5"> Bachelor of Science in Industrial Engineering</option>
-                                </Form.Select>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group className='mb-3' controlId='Announcement'>
-                            <Form.Label column sm={4}>Announcement</Form.Label>
+                        <Form.Group className='mb-3' controlId='AnnouncementTitle'>
+                            <Form.Label className='h5'>Announcement Title</Form.Label>
                             <InputGroup>
-                                <Form.Control className='input' type='text' placeholder='Announcement Content' />
+                                <Form.Control className='input' type='text' placeholder='' />
                             </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='Details'>
+                            <Form.Label className='h5'>Announcement Details</Form.Label>
+                            <InputGroup>
+                                <Form.Control className='input' type='text' placeholder='' />
+                            </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='AnnImage'>
+                            <Form.Label className='h5'>Upload your Image</Form.Label>
+                            <InputGroup>
+                                <Form.Control className="inputFile" type="file" />
+                            </InputGroup>
+                            <p className="text-sm">Max Size: 25MB</p>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
 
                 <Modal.Footer className="d-flex justify-content-center">
-                    <Button variant='success'>
-                        Save Changes
+                    <Button size="lg" variant='success'>
+                        Add
                     </Button>
-                    <Button variant="danger">
+                    <Button size="lg" variant="danger">
                         Cancel
                     </Button>
                 </Modal.Footer>

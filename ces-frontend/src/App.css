@@ -68,3 +68,11 @@
 .logo{
   width: 19rem;
 }
+
+.text-sm{
+  font-size: small;
+}
+
+.mainBtn{
+  padding: 5em;
+}

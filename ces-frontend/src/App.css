@@ -1,4 +1,8 @@
-.bg {
+#root{
+  max-height: 1080px;
+}
+
+.bg{
   background-image: url("./assets/pncbg.png");
   background-size: cover;
   height: 100%;

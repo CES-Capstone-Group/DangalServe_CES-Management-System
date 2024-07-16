@@ -7,7 +7,7 @@ import Logo from '../assets/pnclogo.png'
 import '../App.css'
 import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
-const Sidebar = () => {
+const AdminSidebar = () => {
   return(
     <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em', boxShadow: '5px 5px 10px'}}>
       {/*SidebarMenu Header*/}
@@ -98,4 +98,4 @@ const Sidebar = () => {
   );
 }
 
-export default Sidebar;
+export default AdminSidebar;

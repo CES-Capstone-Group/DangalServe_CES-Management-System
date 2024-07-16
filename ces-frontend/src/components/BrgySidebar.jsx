@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faTableColumns, faFileLines,faChevronDown, faCodePullRequest, faInbox, faCalendar} from '@fortawesome/free-solid-svg-icons'
+import {faTableColumns, faFileLines,faChevronDown, faInbox, faCalendar} from '@fortawesome/free-solid-svg-icons'
 import SidebarMenu, { SidebarMenuNav } from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
@@ -9,7 +9,7 @@ import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 const BrgySidebar = () => {
   return(
-    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em'}}>
+    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column container-fluid" style={{maxWidth:'19.9em'}}>
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>

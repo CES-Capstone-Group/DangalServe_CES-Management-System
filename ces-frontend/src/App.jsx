@@ -15,11 +15,11 @@ const App = () => {
       <Container fluid>
         <Row>
           <Col md={1} lg={2} style={{padding: '0px'}}>
-            <AdminSidebar/>
+            <BrgySidebar/>
           </Col>
           <Col md={9} lg={10} className="p-0 m-0">
             <TopNav/><br /><br />
-            <UserManagementCon />
+            <BrgyProposalPage />
           </Col>
         </Row>
       </Container>

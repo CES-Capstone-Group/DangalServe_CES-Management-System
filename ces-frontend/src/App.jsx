@@ -5,9 +5,10 @@ import MainContent from './components/MainContent';
 import { Container, Row, Col, } from 'react-bootstrap';
 import CoorSidebar from './components/CoorSidebar';
 import UserManagementCon from './components/UserManagementCon';
-import BrgyProposalPage from './components/BrgyProposalPage';
 import AdminSidebar from './components/AdminSidebar';
 import '../node_modules/font-awesome/css/font-awesome.min.css'; 
+import BrgyPenProposalPage from './components/BrgyPenProposalPage';
+import ApprovedProposalPage from './components/ApprovedProposalPage';
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
           </Col>
           <Col md={9} lg={10} className="p-0 m-0">
             <TopNav/><br /><br />
-            <BrgyProposalPage />
+            <ApprovedProposalPage />
           </Col>
         </Row>
       </Container>

@@ -3,7 +3,7 @@ import { Button, Container, Table } from "react-bootstrap";
 import BtnViewApprove from "./BtnViewApprove";
 
 
-const BrgyProposalPage = () => {
+const BrgyPenProposalPage = () => {
     return(
         <Container className="container-fluid">
             <div className="container">
@@ -39,4 +39,4 @@ const BrgyProposalPage = () => {
     );
 };
 
-export default BrgyProposalPage;
+export default BrgyPenProposalPage;

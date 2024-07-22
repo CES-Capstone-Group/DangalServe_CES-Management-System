@@ -9,19 +9,13 @@ import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 const AdminSidebar = () => {
   return(
-    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em', boxShadow: '5px 5px 10px'}}>
+    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em', boxShadow: '0px 3px 30px'}}>
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>
           <img className='logo img-fluid' src={Logo} alt="pnclogo" />
         </SidebarMenu.Brand>
       </SidebarMenu.Toggle>
-
-      <SidebarMenu.Header>
-        <SidebarMenu.Brand>
-          <h5>Community Extension Service Management System</h5>
-        </SidebarMenu.Brand>
-      </SidebarMenu.Header>
 
       <SidebarMenu.Header>
         <SidebarMenu.Brand>

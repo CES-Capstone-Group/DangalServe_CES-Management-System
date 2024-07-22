@@ -10,6 +10,7 @@ import '../node_modules/font-awesome/css/font-awesome.min.css';
 import BrgyPenProposalPage from './components/BrgyPenProposalPage';
 import ApprovedProposalPage from './components/ApprovedProposalPage';
 import CoorPenProposal from './components/CoorPenProposal';
+import BrgyCalendar from './components/BrgyCalendar';
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
           </Col>
           <Col md={9} lg={10} className="p-0 m-0">
             <TopNav/><br /><br />
-            <CoorPenProposal />
+            <BrgyCalendar />
           </Col>
         </Row>
       </Container>

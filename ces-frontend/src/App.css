@@ -19,6 +19,18 @@
   height: 100%;
 }
 
+.fc .fc-daygrid-day-number , .fc .fc-col-header-cell-cushion{
+  color: #71A872;
+}
+
+.fc .fc-button-primary,.fc  .fc-button-primary:disabled{
+  background-color: #71A872;
+  border: 0px;
+}
+
+.fc .fc-button-primary:hover{
+  background-color: #446445;
+}
 
 .sidebar-menu-header {
   background-color: #71A872;

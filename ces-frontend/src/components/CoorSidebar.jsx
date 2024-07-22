@@ -9,7 +9,7 @@ import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
 
 const CoorSidebar = () => {
   return(
-    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em'}}>
+    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{maxWidth:'19.9em', boxShadow: '0px 3px 30px'}}>
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>

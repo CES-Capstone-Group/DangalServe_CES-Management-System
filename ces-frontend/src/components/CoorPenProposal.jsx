@@ -1,13 +1,14 @@
 import React from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import BtnView from "./BtnView";
+import BtnViewApprove from "./BtnViewApprove";
+import BtnAddProposal from "./BtnAddProposal";
 
 
-const ApprovedProposalPage = () => {
+const CoorPenProposal = () => {
     return (
         <Container className="container-fluid">
             <div className="container">
-                <h1> PROPOSALS </h1>
+                <h1> PENDING PROPOSALS </h1>
             </div>
 
             <Table>
@@ -24,23 +25,23 @@ const ApprovedProposalPage = () => {
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
                         <td>Pending</td>
-                        <td><BtnView /></td>
+                        <td><BtnViewApprove /></td>
                     </tr>
                     <tr>
                         <td>Proposal Title</td>
                         <td>Location</td>
                         <td>Target Date</td>
                         <td>Status</td>
-                        <td><BtnView /></td>
+                        <td><BtnViewApprove /></td>
                     </tr>
                 </thead>
             </Table>
 
-            <div>
-
+            <div className="mb-3 d-flex justify-content-end">
+                <BtnAddProposal style={{ backgroundColor: '#71A872', border: '0px' }} />
             </div>
         </Container>
     );
 };
 
-export default ApprovedProposalPage;
+export default CoorPenProposal;

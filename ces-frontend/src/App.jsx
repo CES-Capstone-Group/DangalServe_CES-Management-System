@@ -11,10 +11,13 @@ import BrgyPenProposalPage from './components/BrgyPenProposalPage';
 import ApprovedProposalPage from './components/ApprovedProposalPage';
 import CoorPenProposal from './components/CoorPenProposal';
 import BrgyCalendar from './components/BrgyCalendar';
+import ProposalForm from './components/ProposalForm';
 
 const App = () => {
   return (
+    
     <div>
+      {/*   
       <Container fluid>
         <Row>
           <Col md={1} lg={2} style={{padding: '0px'}}>
@@ -26,6 +29,9 @@ const App = () => {
           </Col>
         </Row>
       </Container>
+      */}
+      <Container fluid> <ProposalForm/>  </Container>
+      
     </div>
   );
 };

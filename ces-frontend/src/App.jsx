@@ -17,7 +17,7 @@ const App = () => {
   return (
     
     <div>
-      {/*   
+        
       <Container fluid>
         <Row>
           <Col md={1} lg={2} style={{padding: '0px'}}>
@@ -29,8 +29,8 @@ const App = () => {
           </Col>
         </Row>
       </Container>
-      */}
-      <Container fluid> <ProposalForm/>  </Container>
+     
+      {/* <Container fluid> <ProposalForm/>  </Container> */}
       
     </div>
   );

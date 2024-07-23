@@ -19,6 +19,24 @@
   height: 100%;
 }
 
+/* Full Calendar Styles [START]*/
+button.fc-Legend-button.fc-button.fc-button-primary {
+  color: black;
+  background-color: rgba(255, 255, 255, 0);
+  font-weight: bold;
+}
+
+button.fc-Extension-button.fc-button.fc-button-primary {
+  background-color: #D2CC3F;
+  font-weight: bold;
+  border-radius: 10%;
+}
+
+button.fc-Service-button.fc-button.fc-button-primary {
+  font-weight: bold;
+}
+
+
 .fc .fc-daygrid-day-number , .fc .fc-col-header-cell-cushion{
   color: #71A872;
 }
@@ -31,6 +49,7 @@
 .fc .fc-button-primary:hover{
   background-color: #446445;
 }
+/* Full Calendar Styles [END]*/
 
 .sidebar-menu-header {
   background-color: #71A872;

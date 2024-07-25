@@ -1,0 +1,24 @@
+.bg{
+    background-image: url("../assets/pncbg.png");
+    background-size: cover;
+    height: 100%;
+    width: 1920px;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .input{
+    width: 500px;
+    height: 63px;
+  }
+  
+  .card {
+    padding: 4em;
+    border-radius: 20px;
+  }
+  
+  .logo{
+    width: 2em;
+  }
+  

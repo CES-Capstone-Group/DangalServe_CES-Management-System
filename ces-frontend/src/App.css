@@ -102,6 +102,9 @@ button.fc-Service-button.fc-button.fc-button-primary {
 
 .text-sm{
   font-size: small;
+  font-style: italic;
+  font-weight: bold;
+  color: gray;
 }
 
 .mainBtn{

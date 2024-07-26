@@ -19,6 +19,7 @@ const App = () => {
     <div>
         
       <Container fluid>
+        {/*
         <Row>
           <Col md={1} lg={2} style={{padding: '0px'}}>
             <CoorSidebar/>
@@ -28,6 +29,8 @@ const App = () => {
             <BrgyCalendar />
           </Col>
         </Row>
+        */}
+        <ProposalForm/>
       </Container>
      
       {/* <Container fluid> <ProposalForm/>  </Container> */}

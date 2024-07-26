@@ -110,3 +110,23 @@ button.fc-Service-button.fc-button.fc-button-primary {
 .mainBtn{
   padding: 5em;
 }
+
+.proposalForm{
+ border-style: solid;
+ border-width: 2px;
+ padding: 1rem;
+ border-radius: 5px;
+ box-shadow: 7px 7px 4px #888888;
+ background-color: rgb(243, 243, 243);
+}
+
+#propHeader{
+  background-color:#71A872;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px ;
+}
+
+#formbtn{
+  box-shadow: 4px 4px 4px rgb(88, 88, 88);
+}

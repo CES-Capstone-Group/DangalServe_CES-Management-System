@@ -8,9 +8,9 @@ const ProposalForm = () => {
 
 
   return (
-    <Container>
-      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }}>Community and Extension Service Project and Activity Proposal</h2>
-      <Form>
+    <Container className='Formproposal'>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader'>Community and Extension Service Project and Activity Proposal</h2>
+      <Form className='proposalForm'>
         <h4 className="mb-3">A. Basic Details</h4>
         <Form.Group as={Row} controlId="formTitle" className="mb-3">
           <Form.Label column sm={2}>Title of the Project/Activity</Form.Label>
@@ -211,16 +211,17 @@ const ProposalForm = () => {
         </Form.Group>
 
         <div className="d-flex justify-content-end">
-          <Button variant="success" type="submit" className="mt-4" style={{ margin: '.5rem' }}>
+          <Button variant="success" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem'}}>
             Submit
           </Button>
 
-          <Button variant="danger" type="submit" className="mt-4" style={{ margin: '.5rem' }}>
+          <Button variant="danger" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem'}}>
             Cancel
           </Button>
         </div>
 
       </Form>
+      <div style={{padding: '10px'}}></div>
     </Container>
   );
 };

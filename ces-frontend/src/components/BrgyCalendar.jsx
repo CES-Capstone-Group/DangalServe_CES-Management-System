@@ -4,10 +4,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"
 import { Container } from "react-bootstrap";
+import BtnResched from "./BtnResched";
 
 function BrgyCalendar() {
     return(
         <Container>
+            <h1>Calendar</h1>
+            <BtnResched/>
             <div>
                 <Fullcalendar
                     plugins={[dayGridPlugin,timeGridPlugin,interactionPlugin]} 
@@ -16,14 +19,14 @@ function BrgyCalendar() {
 
                     customButtons={{
                         Legend: {
-                            text: 'Legend:'
+                            text: 'Legend:',
                         },
                         Extension: {
                             text: 'Extension'
                         },
                         Service: {
                             text: 'Service'
-                        }
+                        },
                     }}
 
                     headerToolbar={{

@@ -30,7 +30,7 @@ const BrgyPenProposalPage = () => {
                         <td>Proposal Title</td>
                         <td>Location</td>
                         <td>Target Date</td>
-                        <td>Status</td>
+                        <td>Pending</td>
                         <td><BtnViewApprove/></td>
                     </tr>
                 </thead>

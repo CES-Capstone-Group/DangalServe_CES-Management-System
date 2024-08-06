@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import BtnViewApprove from "./BtnViewApprove";
+import BtnViewApproveAPA from "./BtnViewApproveAPA";
 
 
 const BrgyPenProposalPage = () => {
@@ -24,14 +24,14 @@ const BrgyPenProposalPage = () => {
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
                         <td>Pending</td>
-                        <td><BtnViewApprove/></td>
+                        <td><BtnViewApproveAPA/></td>
                     </tr>
                     <tr>
                         <td>Proposal Title</td>
                         <td>Location</td>
                         <td>Target Date</td>
                         <td>Pending</td>
-                        <td><BtnViewApprove/></td>
+                        <td><BtnViewApproveAPA/></td>
                     </tr>
                 </thead>
             </Table>

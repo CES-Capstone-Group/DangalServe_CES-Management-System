@@ -26,13 +26,6 @@ const ApprovedProposalPage = () => {
                         <td>Pending</td>
                         <td><BtnView /></td>
                     </tr>
-                    <tr>
-                        <td>Proposal Title</td>
-                        <td>Location</td>
-                        <td>Target Date</td>
-                        <td>Status</td>
-                        <td><BtnView /></td>
-                    </tr>
                 </thead>
             </Table>
 

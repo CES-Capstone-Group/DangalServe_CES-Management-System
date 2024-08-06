@@ -12,6 +12,7 @@ import ApprovedProposalPage from './components/ApprovedProposalPage';
 import CoorPenProposal from './components/CoorPenProposal';
 import BrgyCalendar from './components/BrgyCalendar';
 import ProposalForm from './components/ProposalForm';
+import DocumentPage from './components/DocumentPage';
 
 const App = () => {
   return (
@@ -22,13 +23,12 @@ const App = () => {
         
         <Row>
           <Col md={1} lg={2} style={{padding: '0px'}}>
-            <CoorSidebar/>
+            <AdminSidebar/>
           </Col>
           <Col md={3} lg={10} className="ps-0 m-0">
             <TopNav/><br /><br />
             
-            <BrgyCalendar/>
-            {/* <ProposalForm/> */}
+            <DocumentPage/>
           </Col>
         </Row>
         

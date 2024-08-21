@@ -12,11 +12,9 @@ import ApprovedProposalPage from './components/ApprovedProposalPage';
 import CoorPenProposal from './components/CoorPenProposal';
 import BrgyCalendar from './components/BrgyCalendar';
 import ProposalForm from './components/ProposalForm';
-<<<<<<< Updated upstream
 import DocumentPage from './components/DocumentPage';
-=======
 import AdminPenAchievements from './components/AdminPenAchievements';
->>>>>>> Stashed changes
+import KpiPage from './components/KpiPage';
 
 const App = () => {
   return (
@@ -32,12 +30,8 @@ const App = () => {
           <Col md={3} lg={10} className="ps-0 m-0">
             <TopNav/><br /><br />
             
-<<<<<<< Updated upstream
-            <DocumentPage/>
-=======
-            <AdminPenAchievements/>
+            <KpiPage/>
             {/* <ProposalForm/> */}
->>>>>>> Stashed changes
           </Col>
         </Row>
         

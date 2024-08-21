@@ -60,9 +60,11 @@ const KpiPage = () => {
                 </Col>
                 
             </Row>
-            
             </Container>
-        <BtnEditKpi/>
+            
+            <Container className="mt-5 offset-11">
+                <BtnEditKpi className='mt-5'/>
+            </Container>
         </Container>
         
     );

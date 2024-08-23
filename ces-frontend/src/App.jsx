@@ -15,6 +15,7 @@ import ProposalForm from './components/ProposalForm';
 import DocumentPage from './components/DocumentPage';
 import AdminPenAchievements from './components/AdminPenAchievements';
 import KpiPage from './components/KpiPage';
+import InvolvementPage from './components/InvolvementPage';
 
 const App = () => {
   return (
@@ -30,7 +31,7 @@ const App = () => {
           <Col md={3} lg={10} className="ps-0 m-0">
             <TopNav/><br /><br />
             
-            <KpiPage/>
+            <InvolvementPage/>
             {/* <ProposalForm/> */}
           </Col>
         </Row>

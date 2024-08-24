@@ -45,6 +45,8 @@ function LoginPage(){
                 <Card.Img style={{width: '35rem', marginLeft: '6rem'}} variant='top' src={Logo}/>
                 <Card.Title style={{textAlign: 'center'}}>Community Extension Service Management System</Card.Title><br/>
                 <Form onSubmit={handleLogin}>
+                    
+                    {/* Username Input */}
                     <Form.Group className='mb-3' controlId='LogUsername'>
                         <Form.Label className='h5'>Username</Form.Label>
                         <InputGroup>
@@ -57,6 +59,7 @@ function LoginPage(){
                         </InputGroup>
                     </Form.Group>
 
+                    {/* Password Input */}
                     <Form.Group className='mb-3' controlId='LogPass'>
                         <Form.Label className='h5'>Password</Form.Label>
                         <InputGroup>

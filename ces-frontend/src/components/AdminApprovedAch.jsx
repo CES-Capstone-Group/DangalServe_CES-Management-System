@@ -1,12 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
-import BtnEditDeac from "./BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "./BtnAddAcc";
-import BtnViewApproveAPA from "./BtnViewApproveAPA";
-
 
 const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'},
     {awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'}];
@@ -20,7 +16,6 @@ const Rows = (props) => {
             <td>{awardedBy}</td>
             <td>{awardDate}</td>
             <td>{status}</td>
-            <BtnViewApproveAPA/>
         </tr>
     );
 };
@@ -35,7 +30,6 @@ const NewTable = (props) => {
                 <th>Awarded By</th>
                 <th>Date Awarded</th>
                 <th>Status</th>
-                <th></th>
             </thead>
             {data.map((row, index) =>
                 <Rows key = {'key-${index}'} 
@@ -48,7 +42,7 @@ const NewTable = (props) => {
     );
 }
 
-const AdminPenAchievements = () => {
+const AdminApprovedAch = () => {
 
     const [rows, setRows] = useState(array)
 
@@ -79,5 +73,5 @@ const AdminPenAchievements = () => {
     );
 };
 
-export default AdminPenAchievements;
+export default AdminApprovedAch;
 

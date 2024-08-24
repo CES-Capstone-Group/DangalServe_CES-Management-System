@@ -5,9 +5,12 @@ import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, 
 import SidebarMenu, { SidebarMenuNav } from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
-import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
+import { BrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 
 const AdminSidebar = () => {
+  
+  const navigate = useNavigate();
+
   return (
     <div className='sideBar'>
       <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{ width: '300px', boxShadow: '0px 3px 30px' }}>
@@ -25,8 +28,8 @@ const AdminSidebar = () => {
         </SidebarMenu.Header>
 
         <SidebarMenu.Body>
-          <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link>
+          <SidebarMenu.Nav >
+            <SidebarMenu.Nav.Link onClick={navigate('/admin-dashboard')}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faTableColumns} style={{ color: 'black' }} />
               </SidebarMenu.Nav.Icon>
@@ -35,7 +38,7 @@ const AdminSidebar = () => {
           </SidebarMenu.Nav>
 
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link>
+            <SidebarMenu.Nav.Link onClick={navigate('/admin-accmngmnt')}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faUserPen} style={{ color: 'black' }} />
               </SidebarMenu.Nav.Icon>
@@ -58,13 +61,13 @@ const AdminSidebar = () => {
 
               <SidebarMenu.Sub.Collapse>
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Link onClick={navigate('/admin-pending-proposal')}>
                     <SidebarMenu.Nav.Title> Pending Proposals </SidebarMenu.Nav.Title>
                   </SidebarMenu.Nav.Link>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Link onClick={navigate('/admin-approved-proposal')}>
                     <SidebarMenu.Nav.Title> Approved Proposals </SidebarMenu.Nav.Title>
                   </SidebarMenu.Nav.Link>
                 </SidebarMenu.Nav>
@@ -87,13 +90,13 @@ const AdminSidebar = () => {
 
               <SidebarMenu.Sub.Collapse>
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Link onClick={navigate('/admin-pending-achievements')}>
                     <SidebarMenu.Nav.Title> Pending Achievements </SidebarMenu.Nav.Title>
                   </SidebarMenu.Nav.Link>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Link onClick={navigate('/admin-approved-achievements')}>
                     <SidebarMenu.Nav.Title> Approved Achievements </SidebarMenu.Nav.Title>
                   </SidebarMenu.Nav.Link>
                 </SidebarMenu.Nav>
@@ -128,7 +131,7 @@ const AdminSidebar = () => {
 
           {/* DOCUMENTS */}
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link>
+            <SidebarMenu.Nav.Link onClick={navigate('/admin-docs')}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faFile} style={{ color: 'black' }} />
               </SidebarMenu.Nav.Icon>
@@ -138,7 +141,7 @@ const AdminSidebar = () => {
 
           {/* CALENDAR */}
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link>
+            <SidebarMenu.Nav.Link onClick={navigate('/admin-calendar')}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faCalendar} style={{ color: 'black' }}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
@@ -161,13 +164,13 @@ const AdminSidebar = () => {
 
               <SidebarMenu.Sub.Collapse>
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Link onClick={navigate('/admin-involvement')}>
                     <SidebarMenu.Nav.Title> Involvement </SidebarMenu.Nav.Title>
                   </SidebarMenu.Nav.Link>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <SidebarMenu.Nav.Link onClick={navigate('/admin-kpi')}>
                     <SidebarMenu.Nav.Title> KPI </SidebarMenu.Nav.Title>
                   </SidebarMenu.Nav.Link>
                 </SidebarMenu.Nav>

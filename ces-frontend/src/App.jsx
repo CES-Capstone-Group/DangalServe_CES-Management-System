@@ -13,12 +13,14 @@ import '../node_modules/font-awesome/css/font-awesome.min.css';
 import AdminPenProposal from './components/AdminPenProposal';
 import AdminApprovedPro from './components/AdminApprovedPro'; 
 import AdminPenAchievements from './components/AdminPenAchievements';
+import AdminEventRequest from './components/AdminEventRequest';
 import AdminApprovedAch from './components/AdminApprovedAch';
 import AdminCalendar from './components/AdminCalendar';
 import KpiPage from './components/KpiPage';
 import InvolvementPage from './components/InvolvementPage';
 import BrgyPenProposalPage from './components/BrgyPenProposalPage';
 import BrgyApprovedPro from './components/BrgyApprovedPro';
+import BrgyEventRequest from './components/BrgyEventRequest';
 import CoorPenProposal from './components/CoorPenProposal';
 import CoorCalendar from './components/CoorCalendar';
 import CoorApprovedPro from './components/CoorApprovedPro';
@@ -49,6 +51,7 @@ const App = () => {
             <Route path='approved-proposal' element={<AdminApprovedPro/>}/>
             <Route path='pending-achievements' element={<AdminPenAchievements/>}/>
             <Route path='approved-achievements' element={<AdminApprovedAch/>}/>
+            <Route path='resched' element={<AdminEventRequest/>}/>
             <Route path='docs' element={<DocumentPage/>}/>
             <Route path='calendar' element={<AdminCalendar/>}/>
             <Route path='involvement' element={<InvolvementPage/>}/>
@@ -59,6 +62,7 @@ const App = () => {
             <Route path='dashboard' element={<MainContent/>}/>
             <Route path='pending-proposal' element={<BrgyPenProposalPage/>}/>
             <Route path='approved-proposal' element={<BrgyApprovedPro/>}/>
+            <Route path='resched' element={<BrgyEventRequest/>}/>
             <Route path='calendar' element={<BrgyCalendar/>}/>
           </Route>
 

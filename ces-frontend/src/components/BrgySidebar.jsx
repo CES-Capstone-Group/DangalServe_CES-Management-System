@@ -75,9 +75,9 @@ const BrgySidebar = () => {
             <SidebarMenu.Sub.Collapse>
 
               <SidebarMenu.Nav>
-              <SidebarMenu.Nav.Link>
+                <NavLink to={'/barangay/resched'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Event Reschedule </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
 
             </SidebarMenu.Sub.Collapse>

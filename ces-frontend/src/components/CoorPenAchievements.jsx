@@ -20,7 +20,7 @@ const Rows = (props) => {
             <td>{awardedBy}</td>
             <td>{awardDate}</td>
             <td>{status}</td>
-            <BtnViewApproveAPA/>
+            <td><BtnViewApproveAPA/></td>
         </tr>
     );
 };

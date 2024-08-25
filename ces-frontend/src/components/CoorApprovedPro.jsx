@@ -16,14 +16,12 @@ const CoorApprovedPro = () => {
                         <th>Proposal Title</th>
                         <th>Location</th>
                         <th>Target Date</th>
-                        <th>Status</th>
                         <th></th>
                     </tr>
                     <tr>
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
-                        <td>Pending</td>
                         <td><BtnView /></td>
                     </tr>
                 </thead>

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTableColumns, faFileLines,faChevronDown, faInbox, faCalendar} from '@fortawesome/free-solid-svg-icons'
-import SidebarMenu, { SidebarMenuNav } from 'react-bootstrap-sidebar-menu';
+import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
-import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
+import { NavLink } from 'react-router-dom';
 
 const BrgySidebar = () => {
   return(
@@ -25,12 +24,12 @@ const BrgySidebar = () => {
 
       <SidebarMenu.Body>
         <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
+          <NavLink to={'/barangay/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
               <FontAwesomeIcon icon={faTableColumns} style={{color: 'black'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
+          </NavLink>
         </SidebarMenu.Nav>
 
         <SidebarMenu.Nav>
@@ -47,15 +46,15 @@ const BrgySidebar = () => {
               
               <SidebarMenu.Sub.Collapse>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link>
+                <NavLink to={'/barangay/pending-proposals'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Pending Proposals </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
 
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link>
+                <NavLink to={'/barangay/approved-proposals'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Approved Proposals </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
             </SidebarMenu.Sub.Collapse>
           </SidebarMenu.Sub>
@@ -86,12 +85,12 @@ const BrgySidebar = () => {
         </SidebarMenu.Nav>
 
         <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
+          <NavLink to={'/barangay/calendar'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
               <FontAwesomeIcon icon={faCalendar} style={{color: 'black'}}></FontAwesomeIcon>
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
+          </NavLink>
         </SidebarMenu.Nav>
       </SidebarMenu.Body>
     </SidebarMenu>

@@ -1,15 +1,12 @@
 import React from 'react';
-import { Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faCodePullRequest, faInbox, faCalendar } from '@fortawesome/free-solid-svg-icons'
-import SidebarMenu, { SidebarMenuNav } from 'react-bootstrap-sidebar-menu';
+import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar } from '@fortawesome/free-solid-svg-icons'
+import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
-import { BrowserRouter, Navigate, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const AdminSidebar = () => {
-  
-  const navigate = useNavigate();
 
   return (
     <div className='sideBar'>
@@ -29,21 +26,21 @@ const AdminSidebar = () => {
 
         <SidebarMenu.Body>
           <SidebarMenu.Nav >
-            <SidebarMenu.Nav.Link onClick={navigate('/admin-dashboard')}>
+            <NavLink to={'/admin/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faTableColumns} style={{ color: 'black' }} />
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
+            </NavLink>
           </SidebarMenu.Nav>
 
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link onClick={navigate('/admin-accmngmnt')}>
+            <NavLink to={'/admin/accmngmnt'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faUserPen} style={{ color: 'black' }} />
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Account Management </SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
+            </NavLink>
           </SidebarMenu.Nav>
 
           {/* PROPOSALS */}
@@ -61,15 +58,15 @@ const AdminSidebar = () => {
 
               <SidebarMenu.Sub.Collapse>
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link onClick={navigate('/admin-pending-proposal')}>
+                  <NavLink to={'/admin/pending-proposal'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                     <SidebarMenu.Nav.Title> Pending Proposals </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link onClick={navigate('/admin-approved-proposal')}>
+                  <NavLink to={'/admin/approved-proposal'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                     <SidebarMenu.Nav.Title> Approved Proposals </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
               </SidebarMenu.Sub.Collapse>
             </SidebarMenu.Sub>
@@ -90,15 +87,15 @@ const AdminSidebar = () => {
 
               <SidebarMenu.Sub.Collapse>
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link onClick={navigate('/admin-pending-achievements')}>
+                  <NavLink to={'/admin/pending-achievements'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                     <SidebarMenu.Nav.Title> Pending Achievements </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link onClick={navigate('/admin-approved-achievements')}>
+                  <NavLink to={'/admin/approved-achievements'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                     <SidebarMenu.Nav.Title> Approved Achievements </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
               </SidebarMenu.Sub.Collapse>
             </SidebarMenu.Sub>
@@ -131,22 +128,22 @@ const AdminSidebar = () => {
 
           {/* DOCUMENTS */}
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link onClick={navigate('/admin-docs')}>
+            <NavLink to={'/admin/docs'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faFile} style={{ color: 'black' }} />
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Documents </SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
+            </NavLink>
           </SidebarMenu.Nav>
 
           {/* CALENDAR */}
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link onClick={navigate('/admin-calendar')}>
+            <NavLink to={'/admin/calendar'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faCalendar} style={{ color: 'black' }}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
+            </NavLink>
           </SidebarMenu.Nav>
 
           {/* Reports */}
@@ -164,15 +161,15 @@ const AdminSidebar = () => {
 
               <SidebarMenu.Sub.Collapse>
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link onClick={navigate('/admin-involvement')}>
+                  <NavLink to={'/admin/involvement'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                     <SidebarMenu.Nav.Title> Involvement </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link onClick={navigate('/admin-kpi')}>
+                  <NavLink to={'/admin/kpi'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}> 
                     <SidebarMenu.Nav.Title> KPI </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>

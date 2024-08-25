@@ -37,37 +37,43 @@ import CoorApprovedAch from './components/CoorApprovedAch';
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
         <Routes>
           <Route index element={<LoginPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
-          <Route path='/admin' element={<UserAdminPage/>}/>
-          <Route path='/barangay' element={<UserBarangayPage/>}/>
-          <Route path='/coor' element={<UserCoorPage/>}/>
-          <Route path='/dashboard' element={<MainContent/>}/>
-          <Route path='/proposal-form' element={<ProposalForm/>}/>
-          <Route path='/admin-dashboard' element={<AdminMainContent/>}/>
-          <Route path='/admin-accmngmnt' element={<UserManagementCon/>}/>
-          <Route path='/admin-pending-proposal' element={<AdminPenProposal/>}/>
-          <Route path='/admin-approved-proposal' element={<AdminApprovedPro/>}/>
-          <Route path='/admin-pending-achievements' element={<AdminPenAchievements/>}/>
-          <Route path='/admin-approved-achievements' element={<AdminApprovedAch/>}/>
-          <Route path='/admin-docs' element={<DocumentPage/>}/>
-          <Route path='/admin-calendar' element={<AdminCalendar/>}/>
-          <Route path='/admin-involvement' element={<InvolvementPage/>}/>
-          <Route path='/admin-kpi' element={<KpiPage/>}/>
-          <Route path='/barangay-pending-proposal' element={<BrgyPenProposalPage/>}/>
-          <Route path='/barangay-approved-proposal' element={<BrgyApprovedPro/>}/>
-          <Route path='/barangay-calendar' element={<BrgyCalendar/>}/>
-          <Route path='/coor-pending-proposal' element={<CoorPenProposal/>}/>
-          <Route path='/coor-approved-proposal' element={<CoorApprovedPro/>}/>
-          <Route path='/coor-pending-achievements' element={<CoorPenAchievements/>}/>
-          <Route path='/coor-approved-achievements' element={<CoorApprovedAch/>}/>
-          <Route path='/coor-docs' element={<DocumentPage/>}/>
-          <Route path='/coor-calendar' element={<CoorCalendar/>}/>
+          
+          <Route path='/admin' element={<UserAdminPage/>}>
+            <Route path='proposal-form' element={<ProposalForm/>}/>
+            <Route path='dashboard' element={<AdminMainContent/>}/>
+            <Route path='accmngmnt' element={<UserManagementCon/>}/>
+            <Route path='pending-proposal' element={<AdminPenProposal/>}/>
+            <Route path='approved-proposal' element={<AdminApprovedPro/>}/>
+            <Route path='pending-achievements' element={<AdminPenAchievements/>}/>
+            <Route path='approved-achievements' element={<AdminApprovedAch/>}/>
+            <Route path='docs' element={<DocumentPage/>}/>
+            <Route path='calendar' element={<AdminCalendar/>}/>
+            <Route path='involvement' element={<InvolvementPage/>}/>
+            <Route path='kpi' element={<KpiPage/>}/>
+          </Route>
+
+          <Route path='/barangay' element={<UserBarangayPage/>}>
+            <Route path='dashboard' element={<MainContent/>}/>
+            <Route path='pending-proposal' element={<BrgyPenProposalPage/>}/>
+            <Route path='approved-proposal' element={<BrgyApprovedPro/>}/>
+            <Route path='calendar' element={<BrgyCalendar/>}/>
+          </Route>
+
+          <Route path='/coor' element={<UserCoorPage/>}>
+            <Route path='dashboard' element={<MainContent/>}/>
+            <Route path='pending-proposal' element={<CoorPenProposal/>}/>
+            <Route path='approved-proposal' element={<CoorApprovedPro/>}/>
+            <Route path='pending-achievements' element={<CoorPenAchievements/>}/>
+            <Route path='approved-achievements' element={<CoorApprovedAch/>}/>
+            <Route path='docs' element={<DocumentPage/>}/>
+            <Route path='calendar' element={<CoorCalendar/>}/>
+            <Route path='kpi' element={<KpiPage/>}/>
+          </Route>
 
         </Routes>
-      </BrowserRouter>
     </div>
   );
 };

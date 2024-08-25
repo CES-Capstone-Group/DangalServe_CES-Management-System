@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faFilter} from "@fortawesome/free-solid-svg-icons";
 
 const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'},
     {awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'}];
@@ -15,7 +15,6 @@ const Rows = (props) => {
             <td>{awardee}</td>
             <td>{awardedBy}</td>
             <td>{awardDate}</td>
-            <td>{status}</td>
         </tr>
     );
 };
@@ -29,7 +28,6 @@ const NewTable = (props) => {
                 <th>Awardee</th>
                 <th>Awarded By</th>
                 <th>Date Awarded</th>
-                <th>Status</th>
             </thead>
             {data.map((row, index) =>
                 <Rows key = {'key-${index}'} 
@@ -37,7 +35,7 @@ const NewTable = (props) => {
                 awardee = {row.awardee}
                 awardedBy = {row.awardedBy}
                 awardDate = {row.awardDate}
-                status = {row.status}/>)}
+            />)}
         </Table>
     );
 }
@@ -57,7 +55,7 @@ const AdminApprovedAch = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Admin Pending Achivement</h1></Col>
+                <Col><h1> Admin Approved Achivement</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

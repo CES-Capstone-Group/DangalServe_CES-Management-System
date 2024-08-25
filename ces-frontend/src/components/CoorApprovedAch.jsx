@@ -42,7 +42,7 @@ const NewTable = (props) => {
     );
 }
 
-const AdminApprovedAch = () => {
+const CoorApprovedAch = () => {
 
     const [rows, setRows] = useState(array)
 
@@ -57,7 +57,7 @@ const AdminApprovedAch = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Admin Pending Achivement</h1></Col>
+                <Col><h1> Coordinator Approved Achivement</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
@@ -73,5 +73,5 @@ const AdminApprovedAch = () => {
     );
 };
 
-export default AdminApprovedAch;
+export default CoorApprovedAch;
 

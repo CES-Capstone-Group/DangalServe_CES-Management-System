@@ -1,11 +1,10 @@
 import React from 'react';
-import { Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTableColumns, faTrophy, faFileLines,faChevronDown, faCodePullRequest, faInbox, faCalendar, faChartLine, faFile} from '@fortawesome/free-solid-svg-icons'
-import SidebarMenu, { SidebarMenuNav } from 'react-bootstrap-sidebar-menu';
+import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'
-import { faArrowAltCircleDown } from '@fortawesome/free-regular-svg-icons';
+import { NavLink } from 'react-router-dom';
 
 const CoorSidebar = () => {
   return(
@@ -26,22 +25,22 @@ const CoorSidebar = () => {
         {/* DASHBOARD */}
       <SidebarMenu.Body>
         <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
+          <NavLink to={'/coor/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
               <FontAwesomeIcon icon={faTableColumns} style={{color: 'black'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
+          </NavLink>
         </SidebarMenu.Nav>
 
         {/* KPI */}
         <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
+          <NavLink to={'/coor/kpi'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
             <FontAwesomeIcon icon={faChartLine} style={{color: 'black'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> KPI </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
+          </NavLink>
         </SidebarMenu.Nav>
 
         {/* PROPOSALS */}
@@ -59,15 +58,15 @@ const CoorSidebar = () => {
               
               <SidebarMenu.Sub.Collapse>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link>
+                <NavLink to={'/coor/pending-proposal'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Pending Proposals </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
 
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link>
+                <NavLink to={'/coor/approved-proposal'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Approved Proposals </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
             </SidebarMenu.Sub.Collapse>
           </SidebarMenu.Sub>
@@ -88,15 +87,15 @@ const CoorSidebar = () => {
               
               <SidebarMenu.Sub.Collapse>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link>
+                <NavLink to={'/coor/pending-achievements'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Pending Achievements </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
 
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link>
+                <NavLink to={'/coor/approved-achievements'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Approved Achievements </SidebarMenu.Nav.Title>
-                </SidebarMenu.Nav.Link>
+                </NavLink>
               </SidebarMenu.Nav>
             </SidebarMenu.Sub.Collapse>
           </SidebarMenu.Sub>
@@ -129,22 +128,22 @@ const CoorSidebar = () => {
 
         {/* DOCUMENTS */}
         <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
+          <NavLink to={'/coor/docs'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
             <FontAwesomeIcon icon={faFile} style={{color: 'black'}}/>
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Documents </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
+          </NavLink>
         </SidebarMenu.Nav>
 
         {/* CALENDAR */}
         <SidebarMenu.Nav>
-          <SidebarMenu.Nav.Link>
+          <NavLink to={'/coor/calendar'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
               <FontAwesomeIcon icon={faCalendar} style={{color: 'black'}}></FontAwesomeIcon>
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>
-          </SidebarMenu.Nav.Link>
+          </NavLink>
         </SidebarMenu.Nav>
       </SidebarMenu.Body>
     </SidebarMenu>

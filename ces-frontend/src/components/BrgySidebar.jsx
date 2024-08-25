@@ -46,13 +46,13 @@ const BrgySidebar = () => {
               
               <SidebarMenu.Sub.Collapse>
               <SidebarMenu.Nav>
-                <NavLink to={'/barangay/pending-proposals'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+                <NavLink to={'/barangay/pending-proposal'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Pending Proposals </SidebarMenu.Nav.Title>
                 </NavLink>
               </SidebarMenu.Nav>
 
               <SidebarMenu.Nav>
-                <NavLink to={'/barangay/approved-proposals'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+                <NavLink to={'/barangay/approved-proposal'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                   <SidebarMenu.Nav.Title> Approved Proposals </SidebarMenu.Nav.Title>
                 </NavLink>
               </SidebarMenu.Nav>

@@ -6,7 +6,7 @@ const BrgyApprovedPro = () => {
     return(
         <Container className="container-fluid">
             <div className="container">
-            <h1> PENDING PROPOSALS </h1>
+            <h1> APPROVED PROPOSALS </h1>
             </div>
         
             <Table>

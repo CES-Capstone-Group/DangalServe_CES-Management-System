@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Container, Table } from "react-bootstrap";
 import BtnViewApproveCPP from "./BtnViewApproveCPP";
 import BtnAddProposal from "./BtnAddProposal";
+import ProposalForm from "./ProposalForm";
 
 
 const CoorPenProposal = () => {

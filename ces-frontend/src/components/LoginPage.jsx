@@ -34,6 +34,9 @@ function LoginPage(){
         } else if (username === 'coordinator' && password === 'coordinator') {
             setRole('coordinator');
             navigate('/coor');
+        } else if (username === 'evaluator' && password === 'evaluator') {
+            setRole('evaluator');
+            navigate('/eval');
         } else {
             alert('Invalid username or password');
         }

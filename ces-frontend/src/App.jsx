@@ -33,6 +33,8 @@ import UserCoorPage from './components/UserCoorPage';
 import CoorPenAchievements from './components/CoorPenAchievements';
 import CoorApprovedAch from './components/CoorApprovedAch';
 import CoorEventRequest from './components/CoorEventRequest';
+import UserEvalPage from './components/UserEvalPage';
+import EvalPage from './components/EvalPage';
 
 
 
@@ -77,6 +79,12 @@ const App = () => {
             <Route path='docs' element={<DocumentPage/>}/>
             <Route path='calendar' element={<CoorCalendar/>}/>
             <Route path='kpi' element={<KpiPage/>}/>
+            <Route path='proposal-form' element={<ProposalForm/>}/>
+          </Route>
+
+          <Route path='/eval' element={<UserEvalPage/>}>
+            <Route path='dashboard' element={<MainContent/>}/>
+            <Route path='eval-page' element={<EvalPage/>}/>
           </Route>
 
         </Routes>

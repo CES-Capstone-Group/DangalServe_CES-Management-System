@@ -123,7 +123,7 @@ button.fc-Service-button.fc-button.fc-button-primary {
   padding: 5em;
 }
 
-.proposalForm{
+.form{
  border-style: solid;
  border-width: 2px;
  padding: 3rem;
@@ -147,4 +147,9 @@ button.fc-Service-button.fc-button.fc-button-primary {
 
 #formlabel{
   font-size: 1rem;
+}
+
+#scale {
+  text-align: center;
+  font-weight: bold;
 }

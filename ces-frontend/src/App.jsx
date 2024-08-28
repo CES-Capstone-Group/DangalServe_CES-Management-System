@@ -35,6 +35,7 @@ import CoorApprovedAch from './components/CoorApprovedAch';
 import CoorEventRequest from './components/CoorEventRequest';
 import UserEvalPage from './components/UserEvalPage';
 import EvalPage from './components/EvalPage';
+import ActEvalForm from './components/ActEvalForm';
 
 
 
@@ -86,6 +87,9 @@ const App = () => {
             <Route path='dashboard' element={<MainContent/>}/>
             <Route path='eval-page' element={<EvalPage/>}/>
           </Route>
+
+          <Route path='/propForm' element={<ProposalForm/>}/>
+          <Route path='/actEvalForm' element={<ActEvalForm/>}/>
 
         </Routes>
     </div>

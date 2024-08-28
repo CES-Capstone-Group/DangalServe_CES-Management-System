@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import '../App.css'
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 
 const ProposalForm = () => {
   const [govOrg, setGovOrg] = useState(false);
   const [nonGovOrg, setNonGovOrg] = useState(false);
 
+  const navigate = useNavigate();
+
 
   return (
     <Container className='Formproposal'>
       <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader'>Community and Extension Service Project and Activity Proposal</h2>
 
-      <Form className='proposalForm'>
+      <Form className='form'>
         <h4 className="mb-4">A. Basic Details</h4>
 
         <Form.Group as={Row} controlId="formTitle" className="mb-4">
@@ -218,7 +221,7 @@ const ProposalForm = () => {
             Submit
           </Button>
 
-          <Button variant="danger" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>
+          <Button onClick={()=> navigate("/coor/pending-proposal")} variant="danger" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>
             Cancel
           </Button>
         </div>

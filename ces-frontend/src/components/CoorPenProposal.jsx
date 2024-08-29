@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import BtnViewApproveCPP from "./BtnViewApproveCPP";
-import BtnAddProposal from "./BtnAddProposal";
+import BtnViewApproveCPP from "./Buttons/BtnViewApproveCPP";
+import BtnAddProposal from "./Buttons/BtnAddProposal";
 import ProposalForm from "./ProposalForm";
 
 

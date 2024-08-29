@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Modal, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import ProposalForm from "./ProposalForm";
+import ProposalForm from "../ProposalForm";
 import { NavLink } from "react-router-dom";
 
 const BtnAddProposal = () => {

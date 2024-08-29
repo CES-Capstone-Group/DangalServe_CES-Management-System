@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"
 import { Container } from "react-bootstrap";
-import BtnResched from "./BtnResched";
+import BtnResched from "./Buttons/BtnResched";
 
 function AdminCalendar() {
     return(

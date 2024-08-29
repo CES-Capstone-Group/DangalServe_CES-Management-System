@@ -1,8 +1,8 @@
 import React from 'react';
 import '../App.css'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import BtnAddAnnouncement from './BtnAddAnnouncement';
-import BtnAddAchievement from './BtnAddAchievement';
+import BtnAddAnnouncement from './Buttons/BtnAddAnnouncement';
+import BtnAddAchievement from './Buttons/BtnAddAchievement';
 
 const AdminMainContent = () => {
   return (

@@ -5,15 +5,10 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import CardImg from 'react-bootstrap/CardImg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import Logo from '../assets/pnclogo.png'
 import './Login.css'
-import UserAdminPage from './UserAdminPage'
-import UserBarangayPage from './UserBarangayPage'
-import UserCoorPage from './UserCoorPage'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function LoginPage(){
 

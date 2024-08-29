@@ -1,6 +1,6 @@
 import React from "react";
-import CoorSidebar from "./CoorSidebar";
-import TopNav from "./TopNav";
+import CoorSidebar from "../CoorSidebar";
+import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 

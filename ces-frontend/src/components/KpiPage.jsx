@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Container, Row, Table } from "react-bootstrap";
-import BtnEditKpi from "./BtnEditKpi";
+import BtnEditKpi from "./Buttons/BtnEditKpi";
 
 const KpiPage = () => {
     return(

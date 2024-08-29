@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Table } from "react-bootstrap";
-import BtnViewAP from "./BtnView";
+import BtnViewAP from "./Buttons/BtnView";
 
 
 const AdminApprovedPro = () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Table } from "react-bootstrap";
-import BtnViewApproveAPA from "./BtnViewApproveAPA";
+import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
 
 
 const BrgyPenProposalPage = () => {

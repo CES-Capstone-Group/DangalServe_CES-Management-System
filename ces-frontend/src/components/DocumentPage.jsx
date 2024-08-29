@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Container, Table, Col } from "react-bootstrap";
-import BtnRecieve from "./BtnRecieve";
+import BtnRecieve from "./Buttons/BtnRecieve";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import BtnReturn from "./BtnReturn";
+import BtnReturn from "./Buttons/BtnReturn";
 
 
 const DocumentPage = () => {

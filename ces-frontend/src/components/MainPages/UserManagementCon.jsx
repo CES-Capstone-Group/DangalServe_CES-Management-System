@@ -1,10 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
-import BtnEditDeac from "./BtnEditDeac";
+import BtnEditDeac from "../Buttons/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "./BtnAddAcc";
+import BtnAddAcc from "../Buttons/BtnAddAcc";
 
 
 const array = [{accID:1903213, type:'Proponent', department:'Bachelor of Science in Information Technology' , actDate:'April 20, 2023', deacDate:'April 20, 2024', status:'Active'},

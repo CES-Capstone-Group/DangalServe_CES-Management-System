@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import BtnView from "./BtnView";
+import BtnView from "./Buttons/BtnView";
 
 
 const CoorApprovedPro = () => {

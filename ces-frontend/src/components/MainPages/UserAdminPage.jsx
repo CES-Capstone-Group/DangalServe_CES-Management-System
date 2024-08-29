@@ -1,10 +1,11 @@
 import React from "react";
-import TopNav from "./TopNav";
+import AdminSidebar from "../AdminSidebar";
+import CoorSidebar from "../CoorSidebar";
+import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
-import EvalSidebar from "./EvalSidebar";
 
-const UserEvalPage = () => {
+const UserAdminPage = () => {
     return (
         <div>
       <header><TopNav /></header>
@@ -12,7 +13,7 @@ const UserEvalPage = () => {
 
       <Row>
         <Col md={1} lg={2}>
-          <EvalSidebar />
+          <AdminSidebar />
         </Col>
         <Col md={3} lg={10}>
           <Outlet/>
@@ -22,4 +23,4 @@ const UserEvalPage = () => {
     );
 }
 
-export default UserEvalPage;
+export default UserAdminPage;

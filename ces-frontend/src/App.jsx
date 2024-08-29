@@ -6,7 +6,7 @@ import BrgySidebar from './components/BrgySidebar';
 import MainContent from './components/MainContent';
 import { Container, Row, Col, } from 'react-bootstrap';
 import CoorSidebar from './components/CoorSidebar';
-import UserManagementCon from './components/UserManagementCon';
+import UserManagementCon from './components/MainPages/UserManagementCon';
 import AdminSidebar from './components/AdminSidebar';
 import AdminMainContent from './components/AdminMainContent';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
@@ -27,13 +27,13 @@ import CoorApprovedPro from './components/CoorApprovedPro';
 import BrgyCalendar from './components/BrgyCalendar';
 import ProposalForm from './components/ProposalForm';
 import DocumentPage from './components/DocumentPage';
-import UserAdminPage from './components/UserAdminPage';
-import UserBarangayPage from './components/UserBarangayPage';
-import UserCoorPage from './components/UserCoorPage';
+import UserAdminPage from './components/MainPages/UserAdminPage';
+import UserBarangayPage from './components/MainPages/UserBarangayPage';
+import UserCoorPage from './components/MainPages/UserCoorPage';
 import CoorPenAchievements from './components/CoorPenAchievements';
 import CoorApprovedAch from './components/CoorApprovedAch';
 import CoorEventRequest from './components/CoorEventRequest';
-import UserEvalPage from './components/UserEvalPage';
+import UserEvalPage from './components/MainPages/UserEvalPage';
 import EvalPage from './components/EvalPage';
 import ActEvalForm from './components/ActEvalForm';
 
@@ -49,6 +49,7 @@ const App = () => {
           
           <Route path='/admin' element={<UserAdminPage/>}>
             <Route path='proposal-form' element={<ProposalForm/>}/>
+            <Route index element={<AdminMainContent/>}/>
             <Route path='dashboard' element={<AdminMainContent/>}/>
             <Route path='accmngmnt' element={<UserManagementCon/>}/>
             <Route path='pending-proposal' element={<AdminPenProposal/>}/>
@@ -63,6 +64,7 @@ const App = () => {
           </Route>
 
           <Route path='/barangay' element={<UserBarangayPage/>}>
+            <Route index element={<MainContent/>}/>
             <Route path='dashboard' element={<MainContent/>}/>
             <Route path='pending-proposal' element={<BrgyPenProposalPage/>}/>
             <Route path='approved-proposal' element={<BrgyApprovedPro/>}/>
@@ -71,6 +73,7 @@ const App = () => {
           </Route>
 
           <Route path='/coor' element={<UserCoorPage/>}>
+            <Route index element={<MainContent/>}/>
             <Route path='dashboard' element={<MainContent/>}/>
             <Route path='pending-proposal' element={<CoorPenProposal/>}/>
             <Route path='approved-proposal' element={<CoorApprovedPro/>}/>
@@ -84,6 +87,7 @@ const App = () => {
           </Route>
 
           <Route path='/eval' element={<UserEvalPage/>}>
+            <Route index element={<MainContent/>}/>
             <Route path='dashboard' element={<MainContent/>}/>
             <Route path='eval-page' element={<EvalPage/>}/>
           </Route>

@@ -1,11 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
-import BtnEditDeac from "./BtnEditDeac";
+import BtnEditDeac from "./Buttons/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "./BtnAddAcc";
-import BtnViewApproveAPA from "./BtnViewApproveAPA";
+import BtnAddAcc from "./Buttons/BtnAddAcc";
+import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
 
 
 const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'},

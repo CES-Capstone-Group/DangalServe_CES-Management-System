@@ -123,11 +123,11 @@ const FundingProposalForm = () => {
                     </Form.Group>
                 </Form.Group>
                 <div className="d-flex justify-content-end">
-                    <Button variant="success" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>
+                    <Button variant="success" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em'}}>
                         Submit
                     </Button>
 
-                    <Button onClick={() => navigate("/")} variant="danger" type="submit" className="mt-4 " id='formbtn' style={{ margin: '.5rem' }}>
+                    <Button onClick={() => navigate("/")} variant="danger" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em'}}>
                         Cancel
                     </Button>
                 </div>             

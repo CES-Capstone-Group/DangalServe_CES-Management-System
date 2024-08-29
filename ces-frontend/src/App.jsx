@@ -36,6 +36,8 @@ import CoorEventRequest from './components/CoorEventRequest';
 import UserEvalPage from './components/MainPages/UserEvalPage';
 import EvalPage from './components/EvalPage';
 import ActEvalForm from './components/ActEvalForm';
+import PassengerForm from './components/FundingProposalForm.jsx';
+import FundingProposalForm from './components/FundingProposalForm.jsx';
 
 
 
@@ -94,6 +96,7 @@ const App = () => {
 
           <Route path='/propForm' element={<ProposalForm/>}/>
           <Route path='/actEvalForm' element={<ActEvalForm/>}/>
+          <Route path='/funding' element={<FundingProposalForm/>}/>
 
         </Routes>
     </div>

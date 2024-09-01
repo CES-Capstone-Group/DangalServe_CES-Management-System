@@ -38,6 +38,7 @@ import EvalPage from './components/EvalPage';
 import ActEvalForm from './components/ActEvalForm';
 import PassengerForm from './components/FundingProposalForm.jsx';
 import FundingProposalForm from './components/FundingProposalForm.jsx';
+import CesEvalForm from './components/CesEvalForm.jsx';
 
 
 
@@ -97,6 +98,7 @@ const App = () => {
           <Route path='/propForm' element={<ProposalForm/>}/>
           <Route path='/actEvalForm' element={<ActEvalForm/>}/>
           <Route path='/funding' element={<FundingProposalForm/>}/>
+          <Route path='/cesEvalForm' element={<CesEvalForm/>}/>
 
         </Routes>
     </div>

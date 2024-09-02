@@ -5,21 +5,27 @@ import { Outlet } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 const UserBarangayPage = () => {
-    return (
-        <div>
-      <header><TopNav /></header>
-      <br /> <br /><br /> <br />
+  const [sidebarOpen, setSidebar] = useState(false);
+  const showSidebar = () => {
+    setSidebar(!sidebarOpen);
+    console.log(sidebarOpen);
+  };
 
+  return (
+    <div>
+      <header>
+        <TopNav sidebarToggle={showSidebar}/>
+      </header>
       <Row>
-        <Col md={1} lg={2}>
-          <BrgySidebar />
+        <Col sm={12} md={3} lg={2}>
+          <BrgySidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col md={3} lg={10}>
+        <Col sm={12} md={9} lg={10}>
           <Outlet/>
         </Col>
       </Row>
     </div>
-    );
+  );
 }
 
 export default UserBarangayPage;

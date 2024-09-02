@@ -1,26 +1,32 @@
-import React from "react";
+import React, {useState} from "react";
 import AdminSidebar from "../AdminSidebar";
-import CoorSidebar from "../CoorSidebar";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 const UserAdminPage = () => {
-    return (
-        <div>
-      <header><TopNav /></header>
-      <br /> <br /><br /> <br />
-
-      <Row>
-        <Col md={1} lg={2}>
-          <AdminSidebar />
+  const [sidebarOpen, setSidebar] = useState(false);
+  const showSidebar = () => {
+    setSidebar(!sidebarOpen);
+    console.log(sidebarOpen);
+  };
+  return (
+    <div>
+      <header>
+        <TopNav sidebarToggle={showSidebar}/>
+      </header>
+      <Row >
+        <Col md={3} lg={2} >
+          <div >
+            <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
+          </div>       
         </Col>
-        <Col md={3} lg={10}>
+        <Col md={9} lg={10}>
           <Outlet/>
         </Col>
       </Row>
     </div>
-    );
+  );
 }
 
 export default UserAdminPage;

@@ -1,22 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar } from '@fortawesome/free-solid-svg-icons'
+import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar, faHamburger, faBars } from '@fortawesome/free-solid-svg-icons'
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import Logo from '../assets/pnclogo.png'
 import '../App.css'
 import { NavLink } from 'react-router-dom';
 
-const AdminSidebar = () => {
-
+const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
   return (
-    <div className='sideBar'>
-      <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{ width: '300px', boxShadow: '0px 3px 30px' }}>
+    <div>
+      <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side'}`} style={{ width: '300px', boxShadow: '0px 3px 30px' }}>
         {/*SidebarMenu Header*/}
-        <SidebarMenu.Toggle>
-          <SidebarMenu.Brand>
-            <img className='logo img-fluid' src={Logo} alt="pnclogo" />
-          </SidebarMenu.Brand>
-        </SidebarMenu.Toggle>
 
         <SidebarMenu.Header>
           <SidebarMenu.Brand>

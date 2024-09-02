@@ -14,21 +14,32 @@ body{
   justify-content: center;
 }
 
-.sidebar-menu{
+.side{
+  display: flex;
   margin: 0px;
   padding: 0px;
   position: fixed;
-  top: 0;
-  height: 100%;
-  z-index: 1050;
+  width: 250px;
+  height: 100vh;
+  left: -100%;
+  z-index: 1030;
+  margin-top: 99.4px;
+  transition: 0.3s;
 }
+
+.sidebar-menu.active{
+  left: 0%;
+  transition: 0.3s;
+}
+
+
 
 .topNav{
   width: 100%;
   position: fixed;
   left: 0;
-  padding-left: 300px;
-  z-index: 1030;
+  padding-left: 0px;
+  z-index: 1050;
 }
 
 /* Full Calendar Styles [START]*/

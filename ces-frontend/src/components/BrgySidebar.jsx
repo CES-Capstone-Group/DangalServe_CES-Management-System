@@ -6,9 +6,9 @@ import Logo from '../assets/pnclogo.png'
 import '../App.css'
 import { NavLink } from 'react-router-dom';
 
-const BrgySidebar = () => {
+const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
   return(
-    <SidebarMenu expand="lg" className="d-md-block bg-light flex-column" style={{width:'300px', boxShadow: '0px 3px 30px'}}>
+    <SidebarMenu expand="lg" className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side'}`} style={{width:'300px', boxShadow: '0px 3px 30px'}}>
       {/*SidebarMenu Header*/}
       <SidebarMenu.Toggle>
         <SidebarMenu.Brand>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
@@ -16,10 +16,10 @@ const UserEvalPage = () => {
         <TopNav sidebarToggle={showSidebar}/>
       </header>
       <Row>
-        <Col sm={12} md={3} lg={2}>
+        <Col sm={12} md={3} lg={12}>
           <EvalSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col sm={12} md={9} lg={10}>
+        <Col sm={12} md={9} lg={12}>
           <Outlet/>
         </Col>
       </Row>

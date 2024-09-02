@@ -16,12 +16,12 @@ const UserAdminPage = () => {
         <TopNav sidebarToggle={showSidebar}/>
       </header>
       <Row >
-        <Col md={3} lg={2} >
+        <Col md={3} lg={12} >
           <div >
             <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
           </div>       
         </Col>
-        <Col md={9} lg={10}>
+        <Col md={9} lg={12}>
           <Outlet/>
         </Col>
       </Row>

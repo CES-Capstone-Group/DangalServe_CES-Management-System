@@ -4,24 +4,24 @@ import { Form, Button, Row, Col, Container, Table } from 'react-bootstrap';
 const CesEvalForm = () => {
     return (
         <Container>
-            <h1 className="mt-4 mb-4">Community and Extension Periodic Evaluation Form</h1>
-            <Form>
+            <h1 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader'>Community and Extension Periodic Evaluation Form</h1>
+            <Form className='form'>
                 <Form.Group as={Row} controlId="formCoveredPeriod" className="mb-3">
-                    <Form.Label column sm={3}>Covered Period</Form.Label>
+                    <Form.Label column sm={3}><strong>Covred Period</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control type="text" placeholder="Enter Covered Period" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-3">
-                    <Form.Label column sm={3}>Partner Community/Organization</Form.Label>
+                    <Form.Label column sm={3}><strong>Partner Community/Organization</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control type="text" placeholder="Enter Partner Community/Organization" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formActivitiesImplemented" className="mb-3">
-                    <Form.Label column sm={3}>Activities Implemented</Form.Label>
+                    <Form.Label column sm={3}><strong>Activities Implemented</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control as="textarea" rows={2} placeholder="Enter Activities Implemented" />
                     </Col>
@@ -29,7 +29,7 @@ const CesEvalForm = () => {
 
                 {/* Implementers Section */}
                 <Form.Group as={Row} controlId="formImplementers" className="mb-3">
-                    <Form.Label column sm={3}>Number of Implementers</Form.Label>
+                    <Form.Label column sm={3}><strong>Number of Implementers</strong></Form.Label>
                     <Col sm={9}>
                         <Row>
                             <Col>
@@ -84,7 +84,7 @@ const CesEvalForm = () => {
 
 
                 <Form.Group as={Row} controlId="formVolunteers" className="mb-3">
-                    <Form.Label column sm={3}>Number of Volunteers</Form.Label>
+                    <Form.Label column sm={3}><strong>Number of Volunteers</strong></Form.Label>
                     <Col sm={9}>
                         <Row>
                             <Col>
@@ -138,35 +138,35 @@ const CesEvalForm = () => {
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formExpectedOutcomes" className="mb-3">
-                    <Form.Label column sm={3}>Expected Program/Activity Outcomes / Success Indicators</Form.Label>
+                    <Form.Label column sm={3}><strong>Expected Program/Activity Outcomes / Success Indicators</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control as="textarea" rows={2} placeholder="Enter Expected Outcomes/Success Indicators" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formAchievedOutcomes" className="mb-3">
-                    <Form.Label column sm={3}>Achieved Program/Activity Outcomes / Success Indicators</Form.Label>
+                    <Form.Label column sm={3}><strong>Achieved Program/Activity Outcomes / Success Indicators</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control as="textarea" rows={2} placeholder="Enter Achieved Outcomes/Success Indicators" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formQuantitativeEvaluation" className="mb-3">
-                    <Form.Label column sm={3}>Quantitative Evaluation</Form.Label>
+                    <Form.Label column sm={3}><strong>Quantitative Evaluation</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control as="textarea" rows={2} placeholder="Enter Quantitative Evaluation" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formAreasForImprovement" className="mb-3">
-                    <Form.Label column sm={3}>Areas for Improvement</Form.Label>
+                    <Form.Label column sm={3}><strong>Areas for Improvement</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control as="textarea" rows={2} placeholder="Enter Areas for Improvement" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formRecommendations" className="mb-3">
-                    <Form.Label column sm={3}>Recommendations</Form.Label>
+                    <Form.Label column sm={3}><strong>Recommendations</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control as="textarea" rows={2} placeholder="Enter Recommendations" />
                     </Col>
@@ -182,7 +182,7 @@ const CesEvalForm = () => {
                             <th>2<br />Some Impact</th>
                             <th>3<br />Good Impact</th>
                             <th>4<br />Strong Impact</th>
-                            <th>SCORE</th>
+                            <th> SCORE </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -225,32 +225,119 @@ const CesEvalForm = () => {
                         <tr>
                             <td><strong>Goals and Objectives Delivery</strong></td>
                             <td>
-                                <Form.Check type="radio" name="goalsDelivery" value="1" label="Objectives and goals were not delivered according to plan. Changes, outputs, or results are mainly decorative, but there is limited benefit for the community." />
+                                <Form.Check type="radio" name="goalsDelivery" value="1" label="Objectives and goals were not delivered according to plan. Changes, outputs, or results are mainly decorative, but there is limited benefit for the community. Benefits were not new or unique." />
                             </td>
                             <td>
-                                <Form.Check type="radio" name="goalsDelivery" value="2" label="Objectives and goals were somewhat delivered according to plan. Changes, outputs, or results are mainly decorative, but new and unique benefits were achieved." />
+                                <Form.Check type="radio" name="goalsDelivery" value="2" label=" Objectives and goals were somewhat delivered according to plan. Changes, outputs, or results are mainly decorative, but new and unique benefits were realized in the community." />
                             </td>
                             <td>
-                                <Form.Check type="radio" name="goalsDelivery" value="3" label="Objectives and goals were delivered according to plan. Changes, outputs, or results enhanced an already good community situation." />
+                                <Form.Check type="radio" name="goalsDelivery" value="3" label="Objectives and goals were delivered according to plan. Changes, outputs, or results enhanced an already good community situation as result of the project or initiative. The project or initiative brought light to a particular need or issue that needs to be addressed within the community." />
                             </td>
                             <td>
-                                <Form.Check type="radio" name="goalsDelivery" value="4" label="Objectives and goals were delivered according to plan. Changes, outputs, or results facilitated change or insight. The project or initiative helped the community achieve its intended outcomes." />
+                                <Form.Check type="radio" name="goalsDelivery" value="4" label="Objectives and goals were delivered according to plan. Changes, outputs, or results facilitated change or insight. The project or initiative helped solve a particular need or issue that needs to be addressed within the community." />
                             </td>
                             <td>
                                 <Form.Control type="number" min="1" max="4" />
                             </td>
                         </tr>
-
-                        {/* Add more rows as necessary based on the criteria you have */}
-
+                        <tr>
+                            <td><strong>Facilitation and mobilization of resources</strong></td>
+                            <td>
+                                <Form.Check type="radio" name="facilitation" value="1" label="Available resources were not used during the development and implementation of the project or initiative" />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="facilitation" value="2" label=" Available internal resources were used during the development and implementation of the project or initiative. " />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="facilitation" value="3" label="Available resources (both internal and external) were used sometime during the development and implementation of the project or initiative. " />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="facilitation" value="4" label="Available resources (both internal and external) were used throughout the development and implementation of the project or initiative. " />
+                            </td>
+                            <td>
+                                <Form.Control type="number" min="1" max="4" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Relevance to college/ program/ academic curriculum </strong></td>
+                            <td>
+                                <Form.Check type="radio" name="relevance" value="1" label="Service-learning strategies are only supplemental to the college / program / curriculum.In essence, just an ordinary community or service project or good deed. " />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="relevance" value="2" label=" Service-learning strategies are part of the college / program / curriculum requirements but there is a sketchy connection between the project or initiative and such requirements." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="relevance" value="3" label="Service-learning strategies are used concurrent with the project or initiative that was developed and implemented. " />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="relevance" value="4" label="Service-learning strategies are used and integrated within the project or initiative that was developed and implemented." />
+                            </td>
+                            <td>
+                                <Form.Control type="number" min="1" max="4" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Active proponents' participation </strong></td>
+                            <td>
+                                <Form.Check type="radio" name="activeParticip" value="1" label="Proponents ran out of time for a true reflection; just provided a summary of events." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="activeParticip" value="2" label=" Proponents share with no individual reflection." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="activeParticip" value="3" label="Proponents think, share, and produce reflective outputs individually." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="activeParticip" value="4" label="Proponents think, share, and produce reflective outputs individually and collectively." />
+                            </td>
+                            <td>
+                                <Form.Control type="number" min="1" max="4" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Assessment Requirements </strong></td>
+                            <td>
+                                <Form.Check type="radio" name="assessReq" value="1" label="No assessment tools, reports, and other documentation requirements were completed and submitted: Proposal, Progress, and Accomplishment Reports; Pre-activity, post-activity, standard assessment, and community feedback forms." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="assessReq" value="2" label=" Some assessment tools, reports, and other documentation requirements were completed and submitted: Proposal, Progress, and Accomplishment Reports; Pre-activity, post-activity, standard assessment, and community feedback forms." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="assessReq" value="3" label="All assessment tools, reports, and other documentation requirements were completed and submitted: Proposal, Progress, and Accomplishment Reports; Pre-activity, post-activity, standard assessment, and community feedback forms." />
+                            </td>
+                            <td>
+                                <Form.Check type="radio" name="assessReq" value="4" label="All assessment tools, reports, and other documentation requirements were completed and submitted on time: Proposal, Progress, and Accomplishment Reports; Pre-activity, post-activity, standard assessment, and community feedback forms." />
+                            </td>
+                            <td>
+                                <Form.Control type="number" min="1" max="4" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Score</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <Form.Control type="number" min="1" max="28" />
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
+                <b>Scoring Interpretation:
+                    (3.50-4=Strong Impact, 2.50-3.49=Good Impact, 1.50-2.49=Some Impact, 1-1.49=Minimal Impact)
+                </b>
                 <div className="d-flex justify-content-end">
-                    <Button variant="primary" type="submit" className="mt-4">
+                    <Button variant="success" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em' }}>
                         Submit
+                    </Button>
+
+                    <Button onClick={() => navigate("/")} variant="danger" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em' }}>
+                        Cancel
                     </Button>
                 </div>
             </Form>
+            <div style={{ padding: '10px' }}></div>
         </Container>
     );
 };

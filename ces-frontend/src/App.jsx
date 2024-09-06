@@ -39,6 +39,7 @@ import ActEvalForm from './components/ActEvalForm';
 import PassengerForm from './components/FundingProposalForm.jsx';
 import FundingProposalForm from './components/FundingProposalForm.jsx';
 import CesEvalForm from './components/CesEvalForm.jsx';
+import AARForm from './components/AARForm.jsx';
 
 
 
@@ -99,6 +100,7 @@ const App = () => {
           <Route path='/actEvalForm' element={<ActEvalForm/>}/>
           <Route path='/funding' element={<FundingProposalForm/>}/>
           <Route path='/cesEvalForm' element={<CesEvalForm/>}/>
+          <Route path='aarForm' element={<AARForm/>}/>
 
         </Routes>
     </div>

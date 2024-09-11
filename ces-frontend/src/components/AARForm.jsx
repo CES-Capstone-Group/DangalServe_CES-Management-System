@@ -1,7 +1,23 @@
 import React from 'react';
+import { useState } from "react";
 import { Form, Button, Container, Row, Col, Table } from 'react-bootstrap';
 
 function AfterActivityReport() {
+    const [selectedAttachments, setSelectedAttachments] = useState([]);
+    const [files, setFiles] = useState({});
+
+    const handleCheckboxChange = (isChecked, attachment) => {
+        if (isChecked) {
+            setSelectedAttachments([...selectedAttachments, attachment]);
+        } else {
+            setSelectedAttachments(selectedAttachments.filter(item => item !== attachment));
+        }
+    };
+
+    const handleFileUpload = (attachment, files) => {
+        setFiles({ ...files, [attachment]: files });
+    };
+
     return (
         <Container>
             <h1 className="my-4" style={{ textAlign: 'center' }} id='propHeader'>After-Activity Report</h1>
@@ -9,13 +25,13 @@ function AfterActivityReport() {
                 <Row className="mb-3">
                     <Col>
                         <Form.Group controlId="divisionDepartment">
-                            <Form.Label>Division/Department/Office</Form.Label>
+                            <Form.Label className='h4'>Division/Department/Office</Form.Label>
                             <Form.Control type="text" placeholder="Enter department" />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="activityTitle">
-                            <Form.Label>Title of the Activity</Form.Label>
+                            <Form.Label  className='h4'>Title of the Activity</Form.Label>
                             <Form.Control type="text" placeholder="Enter activity title" />
                         </Form.Group>
                     </Col>
@@ -24,25 +40,25 @@ function AfterActivityReport() {
                 <Row className="mb-3">
                     <Col>
                         <Form.Group controlId="date">
-                            <Form.Label>Date</Form.Label>
+                            <Form.Label  className='h4'>Date</Form.Label>
                             <Form.Control type="date" />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="venue">
-                            <Form.Label>Venue</Form.Label>
+                            <Form.Label  className='h4'>Venue</Form.Label>
                             <Form.Control type="text" placeholder="Enter venue" />
                         </Form.Group>
                     </Col>
                 </Row>
 
                 <Form.Group className="mb-3" controlId="activityObjectives">
-                    <Form.Label>Activity Objectives</Form.Label>
+                    <Form.Label  className='h4'>Activity Objectives</Form.Label>
                     <Form.Control as="textarea" rows={3} placeholder="Enter activity objectives" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Were the objectives achieved?</Form.Label>
+                    <Form.Label  className='h4'>Were the objectives achieved?</Form.Label>
                     <div>
                         <Form.Check type="radio" id="fully" label="Fully" name="objectivesAchieved" />
                         <Form.Check type="radio" id="partially" label="Partially" name="objectivesAchieved" />
@@ -51,8 +67,18 @@ function AfterActivityReport() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="activityHighlight">
-                    <Form.Label>Activity Highlight</Form.Label>
+                    <Form.Label  className='h4'>Activity Highlight</Form.Label>
                     <Form.Control as="textarea" rows={3} placeholder="Enter activity highlights" />
+                </Form.Group>
+
+                <Form.Group controlId="activityHighlightPhotos">
+                    <Form.Label className='h6'>Activity Highlight (Please attach at least 5 photos)</Form.Label>
+                    <Form.Control
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={(e) => handleFileUpload(e.target.files)}
+                    />
                 </Form.Group>
 
                 <h3 className="mt-5">Quantitative Evaluation Parameters</h3>
@@ -151,29 +177,50 @@ function AfterActivityReport() {
                 </Table>
 
                 <Form.Group className="mb-3" controlId="qualiEval">
-                    <Form.Label>Qualitative Evaluation</Form.Label>
+                    <Form.Label  className='h4'>Qualitative Evaluation</Form.Label>
                     <Form.Control as="textarea" rows={3} placeholder="This can be culled from comments and suggestions of the Activity Evaluation Form." />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="budget">
-                    <Form.Label>Budget</Form.Label>
+                    <Form.Label  className='h4'>Budget</Form.Label>
                     <Form.Control type='text' placeholder="enter budget" />
                 </Form.Group>
 
                 <Row className="mb-3">
                     <Col>
                         <Form.Group controlId="totalExpenses">
-                            <Form.Label>Total Expenses</Form.Label>
+                            <Form.Label  className='h4'>Total Expenses</Form.Label>
                             <Form.Control type="text" placeholder="Enter total expenses" />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="revenueSavings">
-                            <Form.Label>Revenue/Savings</Form.Label>
+                            <Form.Label  className='h4'>Revenue/Savings</Form.Label>
                             <Form.Control type="text" placeholder="Enter revenue/savings" />
                         </Form.Group>
                     </Col>
                 </Row>
+
+                <Form.Group controlId="attachments">
+                    <Form.Label  className='h4'>Attachments</Form.Label>
+
+                    {['Program Invitation', 'Actual Program of Activities', 'Relevant Photographs', 'Attendance', 'Financial Report', 'Souvenir Magazine', 'Others'].map((attachment, index) => (
+                        <div key={index} className="mb-3">
+                            <Form.Check
+                                type="checkbox"
+                                label={attachment}
+                                onChange={(e) => handleCheckboxChange(e.target.checked, attachment)}
+                            />
+                            {selectedAttachments.includes(attachment) && (
+                                <Form.Control
+                                    type="file"
+                                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                    onChange={(e) => handleFileUpload(attachment, e.target.files)}
+                                />
+                            )}
+                        </div>
+                    ))}
+                </Form.Group>
 
                 <div className="d-flex justify-content-end">
                     <Button variant="success" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em' }}>

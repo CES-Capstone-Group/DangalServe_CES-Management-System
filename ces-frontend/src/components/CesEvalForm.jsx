@@ -147,7 +147,7 @@ const CesEvalForm = () => {
                 <Form.Group as={Row} controlId="formAchievedOutcomes" className="mb-3">
                     <Form.Label column sm={3}><strong>Achieved Program/Activity Outcomes / Success Indicators</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="Enter Achieved Outcomes/Success Indicators" />
+                        <Form.Control as="textarea" rows={2} placeholder="State the observable development in the behavior/attitude of partner community members" />
                     </Col>
                 </Form.Group>
 
@@ -157,6 +157,8 @@ const CesEvalForm = () => {
                         <Form.Control as="textarea" rows={2} placeholder="Enter Quantitative Evaluation" />
                     </Col>
                 </Form.Group>
+
+                <p className='text-sm'>State the observable development in the behavior/attitude of partner community members</p>
 
                 <Form.Group as={Row} controlId="formAreasForImprovement" className="mb-3">
                     <Form.Label column sm={3}><strong>Areas for Improvement</strong></Form.Label>

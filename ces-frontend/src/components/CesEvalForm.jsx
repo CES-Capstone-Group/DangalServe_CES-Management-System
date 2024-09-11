@@ -158,7 +158,7 @@ const CesEvalForm = () => {
                     </Col>
                 </Form.Group>
 
-                <p className='text-sm'>State the observable development in the behavior/attitude of partner community members</p>
+                <p className='text-sm'>Please accomplish the Evaluation Criteria</p>
 
                 <Form.Group as={Row} controlId="formAreasForImprovement" className="mb-3">
                     <Form.Label column sm={3}><strong>Areas for Improvement</strong></Form.Label>

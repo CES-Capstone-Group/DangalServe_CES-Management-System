@@ -2,6 +2,20 @@ from django.db import models
 
 # Create your models here.
 
+class Account(models.Model):
+    accountID = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    accountType = models.CharField(max_length=255)
+    department = models.CharField(null=True, blank=True, max_length=255)
+    position = models.CharField(null=True, max_length=255)
+    activationDate = models.DateField()
+    deactivationDate = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.accountID} - {self.accountType}"
+
 class Achievement(models.Model):
     award_title = models.CharField(max_length=255)  # The title of the award
     awardee = models.CharField(max_length=255)  # The person receiving the award

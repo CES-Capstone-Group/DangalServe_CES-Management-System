@@ -12,16 +12,16 @@ const UserAdminPage = () => {
   };
   return (
     <div>
-      <header>
-        <TopNav sidebarToggle={showSidebar}/>
+      <header >
+        <TopNav  sidebarToggle={showSidebar}/>
       </header>
       <Row >
-        <Col md={3} lg={3} >
+        <Col style={{padding: '0px'}} md={4} lg={3} >
           <div >
             <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
           </div>       
         </Col>
-        <Col  className={sidebarOpen ? "md={12} lg={12}" : 'md={9} lg={9}'}>
+        <Col style={{marginTop: '10rem', padding: '0px'}} sm={12} md={sidebarOpen ? '8' : '12'} lg={sidebarOpen ? '8' : '12'}>
           <Outlet/>
         </Col>
       </Row>

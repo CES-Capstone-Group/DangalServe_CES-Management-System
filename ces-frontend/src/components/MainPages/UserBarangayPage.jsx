@@ -17,10 +17,10 @@ const UserBarangayPage = () => {
         <TopNav sidebarToggle={showSidebar}/>
       </header>
       <Row>
-        <Col sm={12} md={3} lg={12}>
+        <Col style={{padding: '0px'}} md={4} lg={3} >
           <BrgySidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col sm={12} md={9} lg={12}>
+        <Col style={{marginTop: '10rem', padding: '0px'}} sm={12} md={sidebarOpen ? '8' : '12'} lg={sidebarOpen ? '8' : '12'}>
           <Outlet/>
         </Col>
       </Row>

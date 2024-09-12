@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { useState } from 'react'
 import {useNavigate} from 'react-router-dom';
@@ -39,6 +40,7 @@ function LoginPage(){
     }
 
     return(
+    <body className='loginBg'>
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
             <Card>
                 <Card.Img className='fluid ps-5 pe-5' variant='top' src={Logo}/>
@@ -92,6 +94,7 @@ function LoginPage(){
                 </Row>  
             </Card>
         </Container>
+    </body>
     );
 }
 

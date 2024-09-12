@@ -58,13 +58,16 @@ const KpiPage = () => {
                         </tbody>
                     </Table>
                 </Col>
-                
             </Row>
             </Container>
             
-            <Container className="mt-5 offset-11">
-                <BtnEditKpi className='mt-5'/>
-            </Container>
+            <Row>
+                <Col lg={12}>
+                    <Container className="d-flex mt-5 justify-content-end">
+                        <BtnEditKpi className='mt-5'/>
+                    </Container>
+                </Col>
+            </Row>
         </Container>
         
     );

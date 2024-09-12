@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../App.css'
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
+import { Form, Button, Row, Col, Container} from 'react-bootstrap';
 
 const ProposalForm = () => {
   const [govOrg, setGovOrg] = useState(false);

@@ -1,21 +1,162 @@
-import React from 'react';
-import '../App.css'
+import React, { useState, useEffect } from 'react';
+import '../App.css';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import BtnAddAnnouncement from './Buttons/BtnAddAnnouncement';
-import BtnAddAchievement from './Buttons/BtnAddAchievement';
+import BtnAddAnnouncement from './Buttons/BtnAddAnnouncement'; // Add Announcement Button
+import BtnAddAchievement from './Buttons/BtnAddAchievement'; // Add Achievement Button
+import BtnEditAchievement from './Buttons/BtnEditAchievement'; // Edit Achievement Modal
+import BtnEditAnnouncement from './Buttons/BtnEditAnnouncement'; // Edit Announcement Modal
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const AdminMainContent = () => {
+  const [achievements, setAchievements] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const [error, setError] = useState(null);
+  const [loadingAchievements, setLoadingAchievements] = useState(true);
+  const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
+  
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+  
+  const [showEditModalAnn, setShowEditModalAnn] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+
+  // Fetch achievements data
+  const fetchAchievements = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/achievements/");
+      if (!response.ok) {
+        throw new Error('Failed to fetch achievements');
+      }
+      const data = await response.json();
+      setAchievements(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingAchievements(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAchievements();
+  }, []);
+
+  // Handle when a new achievement is added
+  const handleAchievementAdded = () => {
+    fetchAchievements();
+  };
+
+  // Handle when the Edit icon is clicked for Achievement
+  const editAchievement = (achievement) => {
+    setSelectedAchievement(achievement);  // Set the achievement to be edited
+    setShowEditModal(true);               // Show the edit modal
+  };
+
+  // Handle Achievement update and close the modal
+  const handleAchievementUpdated = () => {
+    fetchAchievements();                  // Reload achievements
+    setShowEditModal(false);              // Close the modal
+  };
+
+  // Delete Achievement
+  const deleteAchievement = async (achievementId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this achievement?");
+    if (!confirmDelete) return; // Exit if the user does not confirm the deletion
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievementId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Achievement deleted successfully!");
+        fetchAchievements();  // Reload the achievements list after successful deletion
+      } else {
+        alert("There was an error deleting the achievement.");
+      }
+    } catch (error) {
+      alert("There was an error deleting the achievement.");
+    }
+  };
+
+  // Fetch announcements data
+  const fetchAnnouncements = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/announcements/");
+      if (!response.ok) {
+        throw new Error('Failed to fetch announcements');
+      }
+      const data = await response.json();
+      setAnnouncements(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingAnnouncements(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnnouncements();
+  }, []);
+
+  // Handle when a new announcement is added
+  const handleAnnouncementAdded = () => {
+    fetchAnnouncements();
+  };
+
+  // Handle when the Edit icon is clicked for Announcement
+  const editAnnouncement = (announcement) => {
+    setSelectedAnnouncement(announcement);  // Set the announcement to be edited
+    setShowEditModalAnn(true);              // Show the edit modal for announcement
+  };
+
+  // Handle Announcement update and close the modal
+  const handleAnnouncementUpdated = () => {
+    fetchAnnouncements();                  // Reload announcements
+    setShowEditModalAnn(false);             // Close the modal
+  };
+
+  // Delete Announcement
+  const deleteAnnouncement = async (announcementId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this announcement?");
+    if (!confirmDelete) return; // Exit if the user does not confirm the deletion
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcementId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Announcement deleted successfully!");
+        fetchAnnouncements();  // Reload the announcements list after successful deletion
+      } else {
+        alert("There was an error deleting the announcement.");
+      }
+    } catch (error) {
+      alert("There was an error deleting the announcement.");
+    }
+  };
+
+  // Loading and Error Handling
+  if (loadingAchievements || loadingAnnouncements) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p style={{ color: 'red' }}>Error: {error}</p>;
+  }
+
   return (
     <Container fluid>
       <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
+          {/* Carousel Section */}
           <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <img src="placeholder.png" className="d-block w-100" alt="..." />
+                <img src="/placeholder.png" className="d-block w-100" alt="..." />
               </div>
-              {/* Add more carousel items here */}
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -26,91 +167,131 @@ const AdminMainContent = () => {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-
+      
+          {/* Achievements Section */}
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Achievements</h3>
-              <BtnAddAchievement/>
+              <BtnAddAchievement onAchievementAdded={handleAchievementAdded} />
             </Col>
           </Row>
 
           <br />
 
+          {/* List of Achievements */}
           <Row>
-            <Col md={4}>
-              <Card>
-                <Card.Img variant="top" src="placeholder.png" />
-                <Card.Body>
-                  <Card.Title>Title</Card.Title>
-                  <Card.Text>Details Details Details Details Details</Card.Text>
-                  <Button variant="success">See more</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={4}>
-              <Card>
-                <Card.Img variant="top" src="placeholder.png" />
-                <Card.Body>
-                  <Card.Title>Title</Card.Title>
-                  <Card.Text>Details Details Details Details Details</Card.Text>
-                  <Button variant="success">See more</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={4}>
-              <Card>
-                <Card.Img variant="top" src="placeholder.png" />
-                <Card.Body>
-                  <Card.Title>Title</Card.Title>
-                  <Card.Text>Details Details Details Details Details</Card.Text>
-                  <Button variant="success">See more</Button>
-                </Card.Body>
-              </Card>
-            </Col>
+            {achievements.length > 0 ? (
+              achievements.map((achievement) => (
+                <Col md={4} key={achievement.id}>
+                  <Card className="position-relative">
+                    <Card.Img variant="top" src={achievement.image || "/placeholder.png"} />
+
+                    {/* Edit and Delete Icons */}
+                    <div className="d-flex position-absolute top-0 end-0 m-2">
+                      <Button
+                        variant="link"
+                        className="p-0 me-3"
+                        onClick={() => editAchievement(achievement)}  // Open modal when clicked
+                      >
+                        <FontAwesomeIcon icon={faEdit} size="lg" color="#A7C7E7" />
+                      </Button>
+
+                      <Button
+                        variant="link"
+                        className="p-0"
+                        onClick={() => deleteAchievement(achievement.id)}  // Trigger delete action
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
+                      </Button>
+                    </div>
+
+                    <Card.Body>
+                      <Card.Title>{achievement.award_title}</Card.Title>
+                      <Card.Text>
+                        Awardee: {achievement.awardee}<br />
+                        Date: {achievement.date_awarded}<br />
+                        Awarded by: {achievement.awarded_by}
+                      </Card.Text>
+                      <Button variant="success">See more</Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <p>No achievements found.</p>
+              </Col>
+            )}
+
+            {/* Achievement Edit Modal */}
+            {selectedAchievement && (
+              <BtnEditAchievement
+                show={showEditModal}
+                onHide={() => setShowEditModal(false)}
+                achievement={selectedAchievement}
+                onAchievementUpdated={handleAchievementUpdated}
+              />
+            )}
           </Row>
 
           <br />
 
+          {/* Announcements Section */}
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
-              <h3>Anouncements</h3>
-              <BtnAddAnnouncement/>
+              <h3>Announcements</h3>
+              <BtnAddAnnouncement onAnnouncementAdded={handleAnnouncementAdded} />
             </Col>
           </Row>
 
           <br />
 
+          {/* List of Announcements */}
           <Row>
-            <Col md={4}>
-              <Card className='border-0'>
-                <Card.Img variant="top" src="placeholder.png" />
-                <Card.Body>
-                  <Card.Title>Title</Card.Title>
-                  <Card.Text>Details Details Details Details Details</Card.Text>
-                  <Button variant="success">See more</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={4}>
-              <Card>
-                <Card.Img variant="top" src="placeholder.png" />
-                <Card.Body>
-                  <Card.Title>Title</Card.Title>
-                  <Card.Text>Details Details Details Details Details</Card.Text>
-                  <Button variant="success">See more</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={4}>
-              <Card>
-                <Card.Img variant="top" src="placeholder.png" />
-                <Card.Body>
-                  <Card.Title>Title</Card.Title>
-                  <Card.Text>Details Details Details Details Details</Card.Text>
-                  <Button variant="success">See more</Button>
-                </Card.Body>
-              </Card>
-            </Col>
+            {announcements.length > 0 ? (
+              announcements.map((announcement) => (
+                <Col md={4} key={announcement.id}>
+                  <Card className="border-0">
+                    <Card.Img variant="top" src={announcement.image || "placeholder.png"} />
+                    <div className="d-flex position-absolute top-0 end-0 m-2">
+                      <Button
+                        variant="link"
+                        className="p-0 me-3"
+                        onClick={() => editAnnouncement(announcement)}  // Open modal for editing
+                      >
+                        <FontAwesomeIcon icon={faEdit} size="lg" color="#A7C7E7" />
+                      </Button>
+                      <Button
+                        variant="link"
+                        className="p-0"
+                        onClick={() => deleteAnnouncement(announcement.id)}  // Trigger delete action
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
+                      </Button>
+                    </div>
+                    <Card.Body>
+                      <Card.Title>{announcement.title}</Card.Title>
+                      <Card.Text>{announcement.details}</Card.Text>
+                      <Button variant="success">See more</Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <p>No announcements found.</p>
+              </Col>
+            )}
+
+            {/* Announcement Edit Modal */}
+            {selectedAnnouncement && (
+              <BtnEditAnnouncement
+                show={showEditModalAnn}
+                onHide={() => setShowEditModalAnn(false)}
+                announcement={selectedAnnouncement}
+                onAnnouncementUpdated={handleAnnouncementUpdated}
+              />
+            )}
           </Row>
         </Col>
       </Row>

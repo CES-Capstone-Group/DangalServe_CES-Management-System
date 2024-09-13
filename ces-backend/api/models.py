@@ -16,6 +16,15 @@ class Account(models.Model):
     def __str__(self):
         return f"{self.accountID} - {self.accountType}"
 
+from django.db import models
+
+class ResearchAgenda(models.Model):
+    label = models.CharField(max_length=255, null=True, blank=True)  
+    image = models.ImageField(upload_to='research_agenda_images/', null=True, blank=True)  
+
+    def __str__(self):
+        return self.label if self.label else 'No Label'
+
 class Achievement(models.Model):
     award_title = models.CharField(max_length=255)  # The title of the award
     awardee = models.CharField(max_length=255)  # The person receiving the award

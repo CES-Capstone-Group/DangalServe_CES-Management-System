@@ -153,3 +153,18 @@ button.fc-Service-button.fc-button.fc-button-primary {
   text-align: center;
   font-weight: bold;
 }
+
+.carousel-item {
+  position: relative;
+}
+
+.carousel .carousel-item .carousel-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10; /* Ensures that the buttons appear on top of the carousel images */
+}
+
+.carousel .carousel-item .carousel-buttons button {
+  margin-right: 10px;
+}

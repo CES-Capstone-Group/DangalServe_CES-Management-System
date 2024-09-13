@@ -8,11 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-<<<<<<< HEAD
-set VIRTUAL_ENV=D:\Capstone\ces-management-system\ces-backend\venv
-=======
 set VIRTUAL_ENV=C:\Users\Catherine\Downloads\ces-management-system\ces-backend\venv
->>>>>>> 5c93c02b3c783c64409cc779a010e4dab6e455ca
 
 if not defined PROMPT set PROMPT=$P$G
 

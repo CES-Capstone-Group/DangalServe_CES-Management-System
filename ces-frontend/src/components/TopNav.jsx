@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import Logo from '../assets/pnclogo.png';
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
-/* eslint-disable react/prop-types */
-import React from 'react';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -29,24 +26,24 @@ const TopNav = ({ sidebarToggle }) => {
     // Navigate to the login page
     navigate('/login');
   };
-const TopNav = ({sidebarOpen ,sidebarToggle}) => {
 
   return (
     <div className='topNav'>
-      <Navbar expand="lg" style={{ 
-        backgroundColor: '#71A872', 
-        paddingLeft: sidebarOpen ? '300px' : '0px', 
-        transition: 'padding-left 0.3s ease' 
-        }}>
-
-        <Container fluid className='d-flex '>
+      <Navbar expand="lg" style={{ backgroundColor: '#71A872' }}>
+        <Container fluid>
           <Navbar.Brand style={{ color: 'white' }}>
-            <Button variant="" className="ms-2" onClick={sidebarToggle}>
-              <FontAwesomeIcon icon={faBars} />
-            </Button> 
-            <Navbar.Text className='ps-4 h3' style={{color: 'white'}}  >
-            USER
+            <img
+              className='logo img-fluid'
+              src={Logo}
+              alt="pnclogo"
+              style={{ backgroundColor: 'white', borderRadius: '20px' }}
+            />
+            <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
+              USER
             </Navbar.Text>
+            <Button variant="outline-light" className="ms-2" onClick={sidebarToggle}>
+              <FontAwesomeIcon icon={faBars} />
+            </Button>
           </Navbar.Brand>
           <Nav className="ms-auto">
             <Nav.Link onClick={handleShowLogoutModal} style={{ display: 'flex', alignItems: 'center' }}>

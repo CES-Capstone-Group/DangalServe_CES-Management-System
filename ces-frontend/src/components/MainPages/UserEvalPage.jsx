@@ -13,16 +13,13 @@ const UserEvalPage = () => {
   return (
     <div>
       <header>
-        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
+        <TopNav sidebarToggle={showSidebar}/>
       </header>
       <Row>
         <Col style={{padding: '0px'}} md={4} lg={3} >
           <EvalSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col className="d-flex justify-content-center" 
-             style={{marginTop: '10rem', padding: '0px'}} 
-             sm={12} md={sidebarOpen ? '8' : '12'}
-             lg={sidebarOpen ? '8' : '12'}>
+        <Col style={{marginTop: '10rem', padding: '0px'}} sm={12} md={sidebarOpen ? '8' : '12'} lg={sidebarOpen ? '8' : '12'}>
           <Outlet/>
         </Col>
       </Row>

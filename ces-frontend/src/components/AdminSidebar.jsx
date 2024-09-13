@@ -4,12 +4,18 @@ import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, 
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import '../App.css'
 import { NavLink } from 'react-router-dom';
+import Logo from '../assets/pnclogo.png'
 
 const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
   return (
     <div>
       <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side'}`} style={{ width: '300px', boxShadow: '0px 3px 30px' }}>
         {/*SidebarMenu Header*/}
+        <SidebarMenu.Toggle>
+        <SidebarMenu.Brand>
+          <img className='logo img-fluid' src={Logo} alt="pnclogo" />
+        </SidebarMenu.Brand>
+        </SidebarMenu.Toggle>
 
         <SidebarMenu.Header>
           <SidebarMenu.Brand>

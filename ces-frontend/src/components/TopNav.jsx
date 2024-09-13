@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-const TopNav = ({ sidebarToggle }) => {
+const TopNav = ({ sidebarOpen, sidebarToggle }) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false); // State to show/hide modal
   const navigate = useNavigate(); // Hook to programmatically navigate
 
@@ -29,21 +29,19 @@ const TopNav = ({ sidebarToggle }) => {
 
   return (
     <div className='topNav'>
-      <Navbar expand="lg" style={{ backgroundColor: '#71A872' }}>
-        <Container fluid>
+      <Navbar expand="lg" style={{ 
+        backgroundColor: '#71A872', 
+        paddingLeft: sidebarOpen ? '300px' : '0px', 
+        transition: 'padding-left 0.3s ease' 
+        }}>
+        <Container fluid className='d-flex '>
           <Navbar.Brand style={{ color: 'white' }}>
-            <img
-              className='logo img-fluid'
-              src={Logo}
-              alt="pnclogo"
-              style={{ backgroundColor: 'white', borderRadius: '20px' }}
-            />
+            <Button variant="outline-light" className="ms-2" onClick={sidebarToggle}>
+              <FontAwesomeIcon icon={faBars} />
+            </Button> 
             <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
               USER
             </Navbar.Text>
-            <Button variant="outline-light" className="ms-2" onClick={sidebarToggle}>
-              <FontAwesomeIcon icon={faBars} />
-            </Button>
           </Navbar.Brand>
           <Nav className="ms-auto">
             <Nav.Link onClick={handleShowLogoutModal} style={{ display: 'flex', alignItems: 'center' }}>

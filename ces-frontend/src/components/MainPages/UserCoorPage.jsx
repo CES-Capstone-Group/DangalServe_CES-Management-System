@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CoorSidebar from "../CoorSidebar";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 
 const UserCoorPage = () => {
   const [sidebarOpen, setSidebar] = useState(false);
@@ -13,14 +13,19 @@ const UserCoorPage = () => {
   return (
     <div>
       <header>
-        <TopNav sidebarToggle={showSidebar}/>
+        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
       <Row>
-        <Col style={{padding: '0px'}} md={4} lg={3} >
+        <Col style={{ padding: '0px' }} md={sidebarOpen ? 3 : 0} lg={sidebarOpen ? 3 : 0} >
           <CoorSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col style={{marginTop: '10rem', padding: '0px'}} sm={12} md={sidebarOpen ? '8' : '12'} lg={sidebarOpen ? '8' : '12'}>
-          <Outlet/>
+        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start`}
+             style={{marginTop: '10rem', padding: '0px',maxWidth: sidebarOpen ? '75%' : '100%', }}
+             sm={12} md={sidebarOpen ? '8' : '12'} 
+             lg={sidebarOpen ? '8' : '12'}>
+          <Container>
+            <Outlet/>
+          </Container>
         </Col>
       </Row>
     </div>

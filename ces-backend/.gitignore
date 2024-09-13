@@ -1,0 +1,16 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore SQLite database (if you are using SQLite)
+db.sqlite3
+
+# Ignore logs
+*.log
+
+# Ignore migrations (optional)
+migrations/

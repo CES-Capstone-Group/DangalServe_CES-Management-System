@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ces_db',
         'USER': 'root',
-        'PASSWORD': '09392660241xolos',
+        'PASSWORD': 'Bellosql27!',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
         'PORT': '3306',      # or the port on which your MySQL server is listening
     }

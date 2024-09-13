@@ -3,23 +3,30 @@ import '../App.css';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import BtnAddAnnouncement from './Buttons/BtnAddAnnouncement'; // Add Announcement Button
 import BtnAddAchievement from './Buttons/BtnAddAchievement'; // Add Achievement Button
+import BtnAddResearchAgenda from './Buttons/BtnAddResearchAgenda'; // Add Research Agenda Button
 import BtnEditAchievement from './Buttons/BtnEditAchievement'; // Edit Achievement Modal
 import BtnEditAnnouncement from './Buttons/BtnEditAnnouncement'; // Edit Announcement Modal
+import BtnEditResearchAgenda from './Buttons/BtnEditResearchAgenda'; // Edit Research Agenda Modal
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+  const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
   const [error, setError] = useState(null);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
-  
+  const [loadingResearchAgendas, setLoadingResearchAgendas] = useState(true); // Loading state for research agendas
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedAchievement, setSelectedAchievement] = useState(null);
-  
+
   const [showEditModalAnn, setShowEditModalAnn] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+
+  const [showEditModalAgenda, setShowEditModalAgenda] = useState(false); // Modal state for research agenda
+  const [selectedResearchAgenda, setSelectedResearchAgenda] = useState(null); // State for selected research agenda
 
   // Fetch achievements data
   const fetchAchievements = async () => {
@@ -40,6 +47,31 @@ const AdminMainContent = () => {
   useEffect(() => {
     fetchAchievements();
   }, []);
+
+  // Fetch research agendas data
+  const fetchResearchAgendas = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/research-agendas/");
+      if (!response.ok) {
+        throw new Error('Failed to fetch research agendas');
+      }
+      const data = await response.json();
+      setResearchAgendas(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingResearchAgendas(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResearchAgendas();
+  }, []);
+
+  // Handle when a new research agenda is added
+  const handleResearchAgendaAdded = () => {
+    fetchResearchAgendas();
+  };
 
   // Handle when a new achievement is added
   const handleAchievementAdded = () => {
@@ -137,8 +169,41 @@ const AdminMainContent = () => {
     }
   };
 
+  // Edit Research Agenda
+  const editResearchAgenda = (agenda) => {
+    setSelectedResearchAgenda(agenda);
+    setShowEditModalAgenda(true);
+  };
+
+  // Handle Research Agenda update and close the modal
+  const handleResearchAgendaUpdated = () => {
+    fetchResearchAgendas();                  // Reload research agendas
+    setShowEditModalAgenda(false);           // Close the modal
+  };
+
+  // Delete Research Agenda
+  const deleteResearchAgenda = async (agendaId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this research agenda?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/research-agendas/${agendaId}/`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Research agenda deleted successfully!");
+        fetchResearchAgendas(); // Reload the research agendas list after deletion
+      } else {
+        alert("There was an error deleting the research agenda.");
+      }
+    } catch (error) {
+      alert("There was an error deleting the research agenda.");
+    }
+  };
+
   // Loading and Error Handling
-  if (loadingAchievements || loadingAnnouncements) {
+  if (loadingAchievements || loadingAnnouncements || loadingResearchAgendas) {
     return <p>Loading...</p>;
   }
 
@@ -151,12 +216,58 @@ const AdminMainContent = () => {
       <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
+
+          {/* Add Research Agenda Button */}
+          <Row>
+            <Col className="d-flex justify-content-between align-items-center">
+              <h3>Research Agendas</h3>
+              <BtnAddResearchAgenda onResearchAgendaAdded={handleResearchAgendaAdded} />
+            </Col>
+          </Row>
+
+          <br />
+
           {/* Carousel Section */}
           <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
             <div className="carousel-inner">
-              <div className="carousel-item active">
-                <img src="/placeholder.png" className="d-block w-100" alt="..." />
-              </div>
+              {researchAgendas.length > 0 ? (
+                researchAgendas.map((agenda, index) => (
+                  <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                    <img src={agenda.image ? agenda.image : '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
+
+                    {/* Button Container */}
+                    <div className="carousel-buttons">
+                      <Button
+                        variant="link"
+                        className="p-0 me-3"
+                        onClick={() => editResearchAgenda(agenda)}
+                      >
+                        <FontAwesomeIcon icon={faEdit} size="lg" color="#A7C7E7" />
+                      </Button>
+                      <Button
+                        variant="link"
+                        className="p-0"
+                        onClick={() => deleteResearchAgenda(agenda.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
+                      </Button>
+                    </div>
+
+                  </div>
+                ))
+              ) : (
+                <p>No research agendas found.</p>
+              )}
+
+              {/* Research Agenda Edit Modal */}
+              {selectedResearchAgenda && (
+                <BtnEditResearchAgenda
+                  show={showEditModalAgenda}
+                  onHide={() => setShowEditModalAgenda(false)}
+                  researchAgenda={selectedResearchAgenda}
+                  onResearchAgendaUpdated={handleResearchAgendaUpdated}
+                />
+              )}
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -167,7 +278,7 @@ const AdminMainContent = () => {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-      
+
           {/* Achievements Section */}
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
@@ -252,7 +363,7 @@ const AdminMainContent = () => {
               announcements.map((announcement) => (
                 <Col md={4} key={announcement.id}>
                   <Card className="border-0">
-                    <Card.Img variant="top" src={announcement.image || "placeholder.png"} />
+                    <Card.Img variant="top" src={announcement.image || "/placeholder.png"} />
                     <div className="d-flex position-absolute top-0 end-0 m-2">
                       <Button
                         variant="link"

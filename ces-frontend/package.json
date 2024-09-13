@@ -21,6 +21,7 @@
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
     "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
     "font-awesome": "^4.7.0",
@@ -40,6 +41,6 @@
     "eslint-plugin-react": "^7.35.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
-    "vite": "^5.3.1"
+    "vite": "^5.4.4"
   }
 }

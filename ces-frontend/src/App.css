@@ -4,26 +4,16 @@ body{
   padding: 0;
 }
 
-.bg{
-  background-image: url("./assets/pncbg.png");
-  background-size: cover;
-  height: 100%;
-  width: 1920px;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-}
-
 .side{
   display: flex;
   margin: 0px;
   padding: 0px;
   position: fixed;
   width: 250px;
-  height: 100vh;
+  height: 100%;
   left: -100%;
-  z-index: 1030;
-  margin-top: 99.4px;
+  top: 0;
+  z-index: 1050;
   transition: 0.3s;
 }
 
@@ -32,14 +22,13 @@ body{
   transition: 0.3s;
 }
 
-
-
 .topNav{
   width: 100%;
   position: fixed;
   left: 0;
-  padding-left: 0px;
-  z-index: 1050;
+  margin-left: 0px;
+  z-index: 1030;
+  transition: 0.3s;
 }
 
 /* Full Calendar Styles [START]*/

@@ -14,7 +14,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
     };
 
     const [formData, setFormData] = useState({
-        name: '',
+        username: '',
         password: '',
         accountType: 'Admin', // Default value
         department: '',
@@ -53,7 +53,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
         setUserChangedDepartment(false);
 
         setFormData({
-            name: '',
+            username: '',
             password: '',
             accountType: 'Admin',
             department: '',
@@ -77,21 +77,13 @@ const BtnAddAcc = ({ onAccountAdded }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Hash the password before sending the form data
-        // const salt = bcrypt.genSaltSync(10);  // You can adjust the salt rounds if needed
-        // const hashedPassword = bcrypt.hashSync(formData.password, salt);
-
-        // Ensure date values are set to null if they are empty
         const dataToSend = {
             ...formData,
-            // password: hashedPassword,  // Use the hashed password
+            
             deactivationDate: formData.deactivationDate || null,
         };
-
-        console.log('Form data being sent:', dataToSend);
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/users/create_user', {
+            const response = await fetch('http://127.0.0.1:8000/api/users/create_user/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -139,8 +131,8 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                             <Col sm={8}>
                                 <Form.Control 
                                     type="text"
-                                    name="name"
-                                    value={formData.name}
+                                    name="username"
+                                    value={formData.username}
                                     onChange={handleChange}
                                     placeholder="Enter Name"
                                 />

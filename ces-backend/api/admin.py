@@ -3,19 +3,19 @@ from django.contrib.auth.hashers import make_password
 from .models import Account
 
 class TblAccountsAdmin(admin.ModelAdmin):
-    list_display = ('accountID', 'name', 'hashed_password', 'accountType', 'department', 'position', 'activationDate', 'deactivationDate', 'status')
+    list_display = ('user_id', 'username', 'hashed_password', 'accountType', 'department', 'position', 'activationDate', 'deactivationDate', 'status')
 
-    search_fields = ('accountID', 'accountType', 'status')
+    search_fields = ('user_id', 'accountType', 'status')
 
     list_filter = ('accountType', 'status', 'activationDate')
 
     fieldsets = (
         (None, {
-            'fields': ('accountID', 'name', 'password', 'accountType', 'department', 'position', 'activationDate', 'deactivationDate', 'status')
+            'fields': ('user_id', 'username', 'password', 'accountType', 'department', 'position', 'activationDate', 'deactivationDate', 'status')
         }),
     )
 
-    readonly_fields = ('accountID',)
+    readonly_fields = ('user_id',)
 
     def save_model(self, request, obj, form, change):
         if form.cleaned_data.get('password') and form.cleaned_data['password'] != obj.password:

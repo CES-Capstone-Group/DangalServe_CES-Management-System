@@ -48,7 +48,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     const handleSave = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${account.accountID}/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${account.user_id}/`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
 
     const handleDeactivate = () => {
         const newStatus = formData.status === "Active" ? "Inactive" : "Active";
-        onDeactivate(account.accountID, newStatus);
+        onDeactivate(account.user_id, newStatus);
         setFormData((prev) => ({ ...prev, status: newStatus }));
     };
 
@@ -98,7 +98,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Account ID:</Form.Label>
                             <Col sm={8}>
-                                <Form.Control value={formData.accountID} disabled />
+                                <Form.Control value={formData.user_id} disabled />
                             </Col>
                         </Form.Group>
 
@@ -107,10 +107,9 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                             <Col sm={8}>
                                 <Form.Control
                                     type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    placeholder="Enter Name"
+                                    name="username"
+                                    value= {formData.username}
+                                    disabled
                                 />
                             </Col>
                         </Form.Group>

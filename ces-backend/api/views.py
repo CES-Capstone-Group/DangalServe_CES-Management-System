@@ -1,26 +1,50 @@
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Achievement
-from .serializer import AchievementSerializer
-from .models import Announcement
-from .serializer import AnnouncementSerializer
-from .models import Account
-from .serializer import TblAccountsSerializer
-from .models import ResearchAgenda
-from .serializer import ResearchAgendaSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
+from .models import Achievement, Announcement, Account, ResearchAgenda
+from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer, LoginSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
+from .models import CustomAuthToken
+# View for login using custom authentication with Account model
+class LoginApiView(APIView):
+    permission_classes = [AllowAny]
 
-# Acccount Views
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if not user.is_active:
+                return Response({'error': 'Account is inactive.'}, status=status.HTTP_403_FORBIDDEN)
+
+            # Use CustomAuthToken
+            token, created = CustomAuthToken.objects.get_or_create(user=user)
+            return Response({
+                'token': token.key,
+                'user_id': user.user_id,
+                'username': user.username,
+                'accountType': user.accountType,
+            }, status=status.HTTP_200_OK)
+        return Response({'error': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# Account Views
 @api_view(['GET'])
 def get_all_user(request):
     try:
         users = Account.objects.all()
-        serializer = TblAccountsSerializer(users, many=True) 
+        serializer = TblAccountsSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+
 @api_view(['POST'])
 def create_user(request):
     data = request.data
@@ -30,19 +54,21 @@ def create_user(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['PUT'])
 def user_info_action(request, accountID):
-    try:   
-        account = Account.objects.get(accountID=accountID)
+    try:
+        account = Account.objects.get(user_id=accountID)  # Ensure 'user_id' matches your model's PK field
     except Account.DoesNotExist:
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
-    
+
     serializer = TblAccountsSerializer(account, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 # RESEARCH AGENDA VIEWS
 @api_view(['GET'])
 def get_research_agendas(request):
@@ -95,7 +121,6 @@ def create_achievement(request):
 
 @api_view([ 'PUT', 'DELETE'])
 def achievement_detail(request, pk):
-   
     try:
         achievement = Achievement.objects.get(pk=pk)
     except Achievement.DoesNotExist:
@@ -116,7 +141,6 @@ def achievement_detail(request, pk):
 # ANNOUNCEMENT VIEWS
 @api_view(['GET'])
 def get_announcement(request):
-   
         announcements = Announcement.objects.all()
         serializedData = AnnouncementSerializer(announcements, many=True).data
         return Response(serializedData)
@@ -131,7 +155,6 @@ def create_announcement(request):
 
 @api_view([ 'PUT', 'DELETE'])
 def announcement_detail(request, pk):
-   
     try:
         announcement = Announcement.objects.get(pk=pk)
     except Announcement.DoesNotExist:

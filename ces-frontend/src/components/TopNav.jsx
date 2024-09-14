@@ -17,8 +17,10 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
 
   // Logout function
   const handleLogout = () => {
-    // Clear authentication token (or any other method of logging out)
-    localStorage.removeItem('authToken'); // Example: removing the token from local storage
+    // Clear authentication tokens and other session-related data
+    localStorage.removeItem('access_token'); // Remove access token
+    localStorage.removeItem('refresh_token'); // Remove refresh token
+    localStorage.removeItem('authToken'); // Example: removing any other tokens from local storage
 
     // Close the modal
     setShowLogoutModal(false);

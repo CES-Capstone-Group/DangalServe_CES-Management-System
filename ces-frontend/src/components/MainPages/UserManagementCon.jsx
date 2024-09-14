@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import BtnAddAcc from "../Buttons/BtnAddAcc";
 
-const Rows = ({ accID, name, type, department, position, actDate, deacDate, status, fetchUsers }) => {
+const Rows = ({ user_id, username, type, department, position, actDate, deacDate, status, fetchUsers }) => {
     const account = {
-        accountID: accID,
-        name: name,
+        user_id: user_id,
+        username: username,
         accountType: type,
         department: department,
         position: position,
@@ -25,7 +25,7 @@ const Rows = ({ accID, name, type, department, position, actDate, deacDate, stat
         return `${yyyy}-${mm}-${dd}`;
     };
 
-    const handleDeactivateAccount = async (accountID, newStatus) => {
+    const handleDeactivateAccount = async (user_id, newStatus) => {
         // Construct the updated account data with all required fields
         const updatedAccount = {
             ...account, // Include existing account fields
@@ -35,7 +35,7 @@ const Rows = ({ accID, name, type, department, position, actDate, deacDate, stat
         };
     
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${accountID}/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${user_id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,8 +63,8 @@ const Rows = ({ accID, name, type, department, position, actDate, deacDate, stat
 
     return (
         <tr>
-            <td>{accID}</td>
-            <td>{name}</td>
+            <td>{user_id}</td>
+            <td>{username}</td>
             <td>{type}</td>
             <td>{department}</td>
             <td>{position}</td>
@@ -101,9 +101,9 @@ const NewTable = ({ data, fetchUsers }) => {
             <tbody>
                 {data.map((row) => (
                     <Rows 
-                        key={row.accountID}  // Use a unique ID, like accountID
-                        accID={row.accountID}
-                        name={row.name}
+                        key={row.user_id}  // Use a unique ID, like accountID
+                        user_id={row.user_id}
+                        username={row.username}
                         type={row.accountType}
                         department={row.department}
                         position={row.position}

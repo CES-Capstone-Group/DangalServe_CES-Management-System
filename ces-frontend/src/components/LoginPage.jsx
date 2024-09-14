@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -17,34 +17,28 @@ function LoginPage() {
     const [role, setRole] = useState('');
     const navigate = useNavigate();
 
+    // Function to handle login
     const handleLogin = async (e) => {
         e.preventDefault();
-    
-        // Create the request body
-        const loginData = {
-            username,
-            password
-        };
-    
+
+        const loginData = { username, password };
+
         try {
-            // Send a POST request to the backend login endpoint
             const response = await fetch('http://127.0.0.1:8000/api/login/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(loginData),
             });
-    
-            // Check if the response is okay (status 200)
+
             if (response.ok) {
                 const data = await response.json();
                 
                 // Save the JWT access and refresh tokens to localStorage
-                localStorage.setItem('access_token', data.access); // Access token for API requests
-                localStorage.setItem('refresh_token', data.refresh); // Refresh token for refreshing the access token
-    
-                // Based on the role, navigate to the appropriate page
+                localStorage.setItem('access_token', data.access_token); // Access token
+                localStorage.setItem('refresh_token', data.refresh_token); // Refresh token
+                localStorage.setItem('accountType', data.accountType); // Refresh token
+
+                // Navigate to the appropriate page based on account type
                 if (data.accountType === 'Admin') {
                     setRole('admin');
                     navigate('/admin');
@@ -59,17 +53,47 @@ function LoginPage() {
                     navigate('/eval');
                 }
             } else {
-                // If login fails, show an error message
                 const errorData = await response.json();
-                const errorMessage = errorData.error || 'Invalid credentials';
-                alert('Login failed: ' + errorMessage);
+                alert('Login failed: ' + (errorData.error || 'Invalid credentials'));
             }
         } catch (error) {
             console.error('Error during login:', error);
             alert('An error occurred. Please try again later.');
         }
     };
+
+    // Function to refresh the access token
+    const handleRefreshToken = async () => {
+        const refreshToken = localStorage.getItem('refresh_token');
     
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/refresh-token/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ refresh_token: refreshToken }),
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('refresh_token', data.refresh_token);
+            } else {
+                console.error('Failed to refresh token');
+            }
+        } catch (error) {
+            console.error('Error refreshing token:', error);
+        }
+    };
+    // Automatically refresh token periodically (e.g., every 5 minutes)
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            refreshAccessToken();
+        }, 5 * 60 * 1000); // 5 minutes
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <body className='loginBg'>
@@ -80,7 +104,6 @@ function LoginPage() {
                     <Row>
                         <Col sm={12} md={12} lg={12}>
                             <Form onSubmit={handleLogin}>
-                                {/* Username Input */}
                                 <Row>
                                     <Form.Group as={Col} className='mb-3 ps-5 pe-5' controlId='LogUsername'>
                                         <Form.Label className='h5'>Username</Form.Label>
@@ -97,7 +120,6 @@ function LoginPage() {
                                 </Row>
                                 
                                 <Row>
-                                    {/* Password Input */}
                                     <Form.Group as={Col} className='mb-3 ps-5 pe-5' controlId='LogPass'>
                                         <Form.Label className='h5'>Password</Form.Label>
                                         <InputGroup>

@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
 )
+from datetime import timedelta
 import binascii
 import os
 
@@ -51,17 +52,35 @@ class Account(AbstractBaseUser):
 # Custom token model for authentication
 class CustomAuthToken(models.Model):
     key = models.CharField(max_length=40, primary_key=True)
+    refresh_key = models.CharField(max_length=40, unique=True, blank=True, null=True)  # Refresh Token
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='auth_tokens', on_delete=models.CASCADE)
     created = models.DateTimeField(default=timezone.now)
+    refresh_expiration = models.DateTimeField(null=True, blank=True)  # Expiration date for refresh token
 
     def save(self, *args, **kwargs):
+        # Generate a new access token key if it's not provided
         if not self.key:
             self.key = self.generate_key()
+
+        # Generate a refresh token and set expiration date if it's not already present
+        if not self.refresh_key:
+            self.refresh_key = self.generate_key()
+            self.refresh_expiration = timezone.now() + timedelta(days=7)  # Refresh token valid for 7 days
+
         return super().save(*args, **kwargs)
 
     @staticmethod
     def generate_key():
         return binascii.hexlify(os.urandom(20)).decode()
+
+    def is_refresh_token_valid(self):
+        # Check if refresh token is still valid
+        return timezone.now() <= self.refresh_expiration
+
+    def refresh_access_token(self):
+        # Generate a new access token
+        self.key = self.generate_key()
+        self.save()
 
     def __str__(self):
         return self.key

@@ -10,6 +10,36 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from .models import CustomAuthToken
+
+from .models import CustomAuthToken
+from django.utils import timezone
+
+class RefreshTokenView(APIView):
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.data.get('refresh_token')
+
+        try:
+            # Find the token using the refresh token
+            token = CustomAuthToken.objects.get(refresh_key=refresh_token)
+
+            # Check if the refresh token is still valid
+            if not token.is_refresh_token_valid():
+                return Response({'error': 'Refresh token has expired.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+            # Generate a new access token
+            token.refresh_access_token()
+
+            return Response({
+                'access_token': token.key,
+                'refresh_token': token.refresh_key,
+                'user_id': token.user.user_id,
+                'username': token.user.username,
+                'accountType': token.user.accountType,
+            }, status=status.HTTP_200_OK)
+
+        except CustomAuthToken.DoesNotExist:
+            return Response({'error': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
+
 # View for login using custom authentication with Account model
 class LoginApiView(APIView):
     permission_classes = [AllowAny]
@@ -18,15 +48,18 @@ class LoginApiView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
 
+        # Authenticate the user
         user = authenticate(username=username, password=password)
         if user is not None:
             if not user.is_active:
                 return Response({'error': 'Account is inactive.'}, status=status.HTTP_403_FORBIDDEN)
 
-            # Use CustomAuthToken
+            # Create or retrieve an authentication token
             token, created = CustomAuthToken.objects.get_or_create(user=user)
+
             return Response({
-                'token': token.key,
+                'access_token': token.key,
+                'refresh_token': token.refresh_key,
                 'user_id': user.user_id,
                 'username': user.username,
                 'accountType': user.accountType,
@@ -56,9 +89,9 @@ def create_user(request):
 
 
 @api_view(['PUT'])
-def user_info_action(request, accountID):
+def user_info_action(request, user_id):
     try:
-        account = Account.objects.get(user_id=accountID)  # Ensure 'user_id' matches your model's PK field
+        account = Account.objects.get(user_id=user_id)  # Ensure 'user_id' matches your model's PK field
     except Account.DoesNotExist:
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
 

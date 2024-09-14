@@ -2,11 +2,13 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 from . import views  # Ensure you import your views
 from .views import LoginApiView  # Import your custom LoginApiView
+from .views import RefreshTokenView
 
 urlpatterns = [
     # Login Path
     path('login/', LoginApiView.as_view(), name='login'),  # Use custom login view for JWT
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('token/refresh/', RefreshTokenView.as_view(), name='token_refresh'),
+    path('refresh-token/', RefreshTokenView.as_view(), name='refresh-token'),
 
     # Accounts Path
     path('users/', views.get_all_user, name="get_user"),

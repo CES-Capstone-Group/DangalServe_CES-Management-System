@@ -21,6 +21,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
     localStorage.removeItem('access_token'); // Remove access token
     localStorage.removeItem('refresh_token'); // Remove refresh token
     localStorage.removeItem('authToken'); // Example: removing any other tokens from local storage
+    localStorage.removeItem('accountType'); // Example: removing any other tokens from local storage
 
     // Close the modal
     setShowLogoutModal(false);

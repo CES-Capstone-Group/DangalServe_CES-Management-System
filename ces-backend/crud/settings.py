@@ -151,11 +151,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-from datetime import timedelta
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
-    "SLIDING_TOKEN_LIFETIME": timedelta(days=30),
-    "SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER": timedelta(days=1),
-    "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
-}
+# from datetime import timedelta
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+#     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+#     "SLIDING_TOKEN_LIFETIME": timedelta(days=30),
+#     "SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER": timedelta(days=1),
+#     "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
+#     "USER_ID_FIELD": "user_id",  # Use 'user_id' as the primary key for the Account model
+#     "USER_ID_CLAIM": "user_id",  # Ensure the correct claim is used in the JWT
+# }

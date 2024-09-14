@@ -6,8 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Achievement, Announcement, Account, ResearchAgenda
 from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer, LoginSerializer
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
 from .models import CustomAuthToken
 
@@ -51,8 +50,8 @@ class LoginApiView(APIView):
         # Authenticate the user
         user = authenticate(username=username, password=password)
         if user is not None:
-            if not user.is_active:
-                return Response({'error': 'Account is inactive.'}, status=status.HTTP_403_FORBIDDEN)
+            if user.status.lower() != 'active':
+                return Response({'error': 'Account is inactive.'}, status=rest_status.HTTP_403_FORBIDDEN)
 
             # Create or retrieve an authentication token
             token, created = CustomAuthToken.objects.get_or_create(user=user)
@@ -94,7 +93,7 @@ def user_info_action(request, user_id):
         account = Account.objects.get(user_id=user_id)  # Ensure 'user_id' matches your model's PK field
     except Account.DoesNotExist:
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
-
+    
     serializer = TblAccountsSerializer(account, data=request.data)
     if serializer.is_valid():
         serializer.save()

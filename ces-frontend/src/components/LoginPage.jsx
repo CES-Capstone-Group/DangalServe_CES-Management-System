@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Updated: Importing both icons
 import Logo from '../assets/pnclogo.png';
 import './Login.css';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -14,8 +14,19 @@ import { Col, Container, Row } from 'react-bootstrap';
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
+    const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me" functionality
     const [role, setRole] = useState('');
     const navigate = useNavigate();
+
+    // Check if "Remember Me" was previously selected and populate username
+    useEffect(() => {
+        const rememberedUsername = localStorage.getItem('rememberedUsername');
+        if (rememberedUsername) {
+            setUsername(rememberedUsername);
+            setRememberMe(true);
+        }
+    }, []);
 
     // Function to handle login
     const handleLogin = async (e) => {
@@ -36,7 +47,14 @@ function LoginPage() {
                 // Save the JWT access and refresh tokens to localStorage
                 localStorage.setItem('access_token', data.access_token); // Access token
                 localStorage.setItem('refresh_token', data.refresh_token); // Refresh token
-                localStorage.setItem('accountType', data.accountType); // Refresh token
+                localStorage.setItem('accountType', data.accountType); // Account type
+
+                // Handle "Remember Me" functionality
+                if (rememberMe) {
+                    localStorage.setItem('rememberedUsername', username);
+                } else {
+                    localStorage.removeItem('rememberedUsername');
+                }
 
                 // Navigate to the appropriate page based on account type
                 if (data.accountType === 'Admin') {
@@ -62,38 +80,10 @@ function LoginPage() {
         }
     };
 
-    // Function to refresh the access token
-    const handleRefreshToken = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');
-    
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/refresh-token/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ refresh_token: refreshToken }),
-            });
-    
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('access_token', data.access_token);
-                localStorage.setItem('refresh_token', data.refresh_token);
-            } else {
-                console.error('Failed to refresh token');
-            }
-        } catch (error) {
-            console.error('Error refreshing token:', error);
-        }
+    // Toggle password visibility
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
-    // Automatically refresh token periodically (e.g., every 5 minutes)
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            refreshAccessToken();
-        }, 5 * 60 * 1000); // 5 minutes
-
-        return () => clearInterval(intervalId);
-    }, []);
 
     return (
         <body className='loginBg'>
@@ -126,18 +116,25 @@ function LoginPage() {
                                             <Form.Control 
                                                 controlId="txtPassword" 
                                                 className='input ' 
-                                                type='password' 
+                                                type={showPassword ? 'text' : 'password'} // Show or hide password
                                                 placeholder='Insert your Password here' 
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)} />
-                                            <Button variant='success'><FontAwesomeIcon icon={faEye} /></Button>
+                                            <Button variant='success' onClick={togglePasswordVisibility}>
+                                                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                                            </Button>
                                         </InputGroup>
                                     </Form.Group>
                                 </Row>
                                 
                                 <Row>
                                     <Form.Group as={Col} className="mb-3 ps-5" controlId="CheckBox">
-                                        <Form.Check type="checkbox" label="Remember Me" />
+                                        <Form.Check 
+                                            type="checkbox" 
+                                            label="Remember Me"
+                                            checked={rememberMe}
+                                            onChange={(e) => setRememberMe(e.target.checked)} 
+                                        />
                                     </Form.Group>
                                 </Row>
                                 <Row>

@@ -34,10 +34,6 @@ class TblAccountsSerializer(serializers.ModelSerializer):
             'password': {'required': False}  # Make password field optional
         }
 
-    # def create(self, validated_data): 
-    #     validated_data["password"] = make_password(validated_data["password"])
-    #     return super().create(validated_data)
-
 # Serializer for ResearchAgenda model
 class ResearchAgendaSerializer(serializers.ModelSerializer):
     class Meta:

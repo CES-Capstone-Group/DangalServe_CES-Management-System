@@ -54,6 +54,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formData),
+
             });
 
             if (!response.ok) {

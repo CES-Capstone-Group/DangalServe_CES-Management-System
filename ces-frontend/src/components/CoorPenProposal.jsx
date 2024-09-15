@@ -26,14 +26,14 @@ const CoorPenProposal = () => {
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
                         <td>Pending</td>
-                        <td><BtnViewApproveCPP/></td>
+                        <BtnViewApproveCPP/>
                     </tr>
                     <tr>
                         <td>Proposal Title</td>
                         <td>Location</td>
                         <td>Target Date</td>
                         <td>Status</td>
-                        <td><BtnViewApproveCPP/></td>
+                        <BtnViewApproveCPP/>
                     </tr>
                 
             </Table>

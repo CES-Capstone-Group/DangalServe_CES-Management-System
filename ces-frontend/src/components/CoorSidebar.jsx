@@ -39,7 +39,7 @@ const CoorSidebar = ({ sidebarOpen, toggleSidebar }) => {
         <SidebarMenu.Nav>
           <NavLink to={'/coor/kpi'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
-            <FontAwesomeIcon icon={faChartLine} style={{color: 'black'}} />
+            <FontAwesomeIcon icon={faChartLine} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> KPI </SidebarMenu.Nav.Title>
           </NavLink>

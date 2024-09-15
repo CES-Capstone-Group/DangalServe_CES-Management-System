@@ -31,7 +31,7 @@ const Rows = (props) => {
             <td>{Requester}</td>
             <td>{RequestDate}</td>
             <td>{status}</td>
-            <td><BtnViewApproveRE/></td>
+            <BtnViewApproveRE/>
         </tr>
     );
 };

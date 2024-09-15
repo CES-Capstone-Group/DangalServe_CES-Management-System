@@ -5,7 +5,7 @@ import "./table.css"
 
 const KpiPage = () => {
     return(
-        <Container style={{paddingTop: '10em'}}>
+        <Container>
             <Container fluid style={{
                 border:'1px', 
                 borderStyle: "groove", 

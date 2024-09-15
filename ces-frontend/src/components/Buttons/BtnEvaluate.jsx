@@ -12,7 +12,7 @@ const BtnEvaluate = () => {
 
     return(
         <td>
-            <Button onClick={routeChange} className='me-3' style={{backgroundColor:"#71A872", border: '0px'}}>Evaluate</Button>             
+            <Button onClick={routeChange} className='me-3' style={{backgroundColor:"#71A872", border: '0px', color: 'white'}}>Evaluate</Button>             
         </td>
     );
     

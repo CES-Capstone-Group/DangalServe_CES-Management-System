@@ -1,10 +1,11 @@
 import React from "react";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import BtnEditKpi from "./Buttons/BtnEditKpi";
+import "./table.css"
 
 const KpiPage = () => {
     return(
-        <Container style={{paddingTop: '10em'}}>
+        <Container>
             <Container fluid style={{
                 border:'1px', 
                 borderStyle: "groove", 
@@ -21,7 +22,7 @@ const KpiPage = () => {
                         </Col>
                     </Row>
                     <h4>‎ </h4>
-                    <Table>
+                    <Table responsive bordered striped hover className="tableStyle">
                         <thead>
                             <th>Key Performance Indicator</th>
                             <th>1st Quarter</th>
@@ -30,7 +31,6 @@ const KpiPage = () => {
                             <th>4th Quarter</th>
                             <th>Total Quarter</th>
                         </thead>
-                        <tbody>
                             <tr>
                                 <td>Average score of individuals' knowledge assessment</td>
                                 <td>0%</td>
@@ -55,7 +55,6 @@ const KpiPage = () => {
                                 <td>0</td>
                                 <td>0</td>
                             </tr>
-                        </tbody>
                     </Table>
                 </Col>
             </Row>

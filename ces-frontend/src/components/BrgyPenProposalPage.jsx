@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Table } from "react-bootstrap";
 import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
-
+import "./table.css"
 
 const BrgyPenProposalPage = () => {
     return(
@@ -10,15 +10,15 @@ const BrgyPenProposalPage = () => {
             <h1> PENDING PROPOSALS </h1>
             </div>
         
-            <Table>
+            <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <tr>
-                        <th>Proposal Title</th>
-                        <th>Location</th>
-                        <th>Target Date</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
+                    
+                    <th>Proposal Title</th>
+                    <th>Location</th>
+                    <th>Target Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </thead>  
                     <tr>
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
@@ -33,7 +33,7 @@ const BrgyPenProposalPage = () => {
                         <td>Pending</td>
                         <td><BtnViewApproveAPA/></td>
                     </tr>
-                </thead>
+                
             </Table>
         </Container>
     );

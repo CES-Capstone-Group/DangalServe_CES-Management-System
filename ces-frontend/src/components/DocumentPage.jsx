@@ -1,10 +1,9 @@
 import React from "react";
 import { Button, Container, Table, Col } from "react-bootstrap";
-import BtnRecieve from "./Buttons/BtnRecieve";
+import BtnRecieve from "./Buttons/BtnRecieveReturn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import BtnReturn from "./Buttons/BtnReturn";
-
+import "./table.css";
 
 const DocumentPage = () => {
     return (
@@ -26,25 +25,22 @@ const DocumentPage = () => {
             </Col>
 
 
-            <Table>
+            <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <tr>
                         <th>Document Type</th>
                         <th>Submitted by</th>
                         <th>Submission Date</th>
                         <th>Remarks</th>
                         <th>Status</th>
                         <th></th>
-                        <th></th>
-                    </tr>
+                </thead>
                     <tr>
                         <td>Donation Form</td>
                         <td>CCS Coordinator</td>
                         <td>April 20, 2023</td>
                         <td></td>
                         <td>Pending</td>
-                        <td><BtnRecieve /></td>
-                        <td><BtnReturn /></td>
+                        <BtnRecieve />
                     </tr>
                     <tr>
                         <td>Donation Form</td>
@@ -52,10 +48,8 @@ const DocumentPage = () => {
                         <td>April 20, 2023</td>
                         <td></td>
                         <td>Pending</td>
-                        <td><BtnRecieve /></td>
-                        <td><BtnReturn /></td>
+                        <BtnRecieve />
                     </tr>
-                </thead>
             </Table>
 
             <div>

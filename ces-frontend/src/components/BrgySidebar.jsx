@@ -8,25 +8,27 @@ import { NavLink } from 'react-router-dom';
 
 const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
   return(
-    <SidebarMenu expand="lg" className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side'}`} style={{width:'300px', boxShadow: '0px 3px 30px'}}>
-      {/*SidebarMenu Header*/}
-      <SidebarMenu.Toggle>
-        <SidebarMenu.Brand>
-          <img className='logo img-fluid' src={Logo} alt="pnclogo" />
-        </SidebarMenu.Brand>
-      </SidebarMenu.Toggle>
+    <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side collapsed'}`} style={{  width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 30px', marginTop: sidebarOpen ? '0' : '50px' }}>
+    {/*SidebarMenu Header*/}
+    <SidebarMenu.Toggle oncClick={toggleSidebar}>
+      <SidebarMenu.Brand>
+        <img className='logo img-fluid' src={Logo} alt="pnclogo"  style={{ display: sidebarOpen ? 'block' : 'none' }} />
+      </SidebarMenu.Brand>
+    </SidebarMenu.Toggle>
 
-      <SidebarMenu.Header>
-        <SidebarMenu.Brand>
-          <h5>Community Extension Service Management System</h5>
-        </SidebarMenu.Brand>
-      </SidebarMenu.Header>
+    {sidebarOpen && (
+    <SidebarMenu.Header>
+      <SidebarMenu.Brand>
+        <h5>Community Extension Service Management System</h5>
+      </SidebarMenu.Brand>
+    </SidebarMenu.Header>
+    )}
 
       <SidebarMenu.Body>
         <SidebarMenu.Nav>
           <NavLink to={'/barangay/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
-              <FontAwesomeIcon icon={faTableColumns} style={{color: 'black'}} />
+              <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px', marginTop: sidebarOpen ? '0px' : '100px'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
           </NavLink>
@@ -36,11 +38,11 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Sub>
             <SidebarMenu.Sub.Toggle>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faFileLines}></FontAwesomeIcon>
+                <FontAwesomeIcon onClick={toggleSidebar} icon={faFileLines} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title> Proposals </SidebarMenu.Nav.Title>
-              <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                {sidebarOpen && (<SidebarMenu.Nav.Title> Proposals </SidebarMenu.Nav.Title>)}
+                <SidebarMenu.Nav.Icon>
+                {sidebarOpen && ( <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>)}
               </SidebarMenu.Nav.Icon>
             </SidebarMenu.Sub.Toggle>
               
@@ -64,11 +66,11 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Sub>
             <SidebarMenu.Sub.Toggle>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faInbox}></FontAwesomeIcon>
+                <FontAwesomeIcon onClick={toggleSidebar} icon={faInbox} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title> Requests </SidebarMenu.Nav.Title>
-              <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+               {sidebarOpen && ( <SidebarMenu.Nav.Title> Requests </SidebarMenu.Nav.Title>)}
+                <SidebarMenu.Nav.Icon>
+                {sidebarOpen && ( <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>)}
               </SidebarMenu.Nav.Icon>
             </SidebarMenu.Sub.Toggle>
             
@@ -87,9 +89,9 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
         <SidebarMenu.Nav>
           <NavLink to={'/barangay/calendar'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
-              <FontAwesomeIcon icon={faCalendar} style={{color: 'black'}}></FontAwesomeIcon>
+              <FontAwesomeIcon icon={faCalendar} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
             </SidebarMenu.Nav.Icon>
-            <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>
+              {sidebarOpen && ( <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>)}
           </NavLink>
         </SidebarMenu.Nav>
       </SidebarMenu.Body>

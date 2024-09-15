@@ -12,10 +12,10 @@ const BtnViewApproveAPA = () => {
         
 
     return(
-        <div>
+        <>
             <td>
-            <Button className='me-3' onClick={handleShow} style={{backgroundColor:"#71A872", border: '0px'}}>View</Button>             
-            <Button style={{backgroundColor:'#71A872', border: '0px'}}>Approve</Button>
+            <Button className='me-3' onClick={handleShow} style={{backgroundColor:"#71A872", border: '0px', color: 'white'}}>View</Button>             
+            <Button style={{backgroundColor:'#71A872', border: '0px', color: 'white'}}>Approve</Button>
             </td>
 
             <Modal backdrop='static' centered size="lg" show={show} onHide={handleClose} className="p-6">
@@ -54,7 +54,7 @@ const BtnViewApproveAPA = () => {
                         Close</Button>
                 </Modal.Footer>
             </Modal>
-        </div> 
+        </> 
     );
 };
 

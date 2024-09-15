@@ -1,12 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
-import BtnEditDeac from "./Buttons/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "./Buttons/BtnAddAcc";
 import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
-
+import "./table.css";
 
 const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'},
     {awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'}];
@@ -28,8 +26,8 @@ const Rows = (props) => {
 const NewTable = (props) => {
     const{data} = props
     return (
-        <Table responsive striped hover>
-            <thead style={{backgroundColor: '#F0F1F0'}}>                
+        <Table responsive striped hover className="tableStyle">
+            <thead>                
                 <th>Award Title</th>
                 <th>Awardee</th>
                 <th>Awarded By</th>

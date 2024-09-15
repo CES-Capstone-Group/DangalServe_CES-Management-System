@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Table } from "react-bootstrap";
-
+import "./table.css"
 
 const BrgyApprovedPro = () => {
     return(
@@ -9,14 +9,15 @@ const BrgyApprovedPro = () => {
             <h1> APPROVED PROPOSALS </h1>
             </div>
         
-            <Table>
+            <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <tr>
+                    
                         <th>Proposal Title</th>
                         <th>Location</th>
                         <th>Target Date</th>
                         <th>Status</th>
-                    </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
@@ -29,7 +30,7 @@ const BrgyApprovedPro = () => {
                         <td>Target Date</td>
                         <td>Pending</td>
                     </tr>
-                </thead>
+                </tbody>
             </Table>
         </Container>
     );

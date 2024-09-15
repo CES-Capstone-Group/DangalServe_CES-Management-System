@@ -10,25 +10,27 @@ import Logo from '../assets/pnclogo.png'
 const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
   return (
     <div>
-      <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side'}`} style={{ width: '300px', boxShadow: '0px 3px 30px' }}>
+      <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side collapsed'}`} style={{  width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 30px', marginTop: sidebarOpen ? '0' : '50px' }}>
         {/*SidebarMenu Header*/}
-        <SidebarMenu.Toggle>
-        <SidebarMenu.Brand>
-          <img className='logo img-fluid' src={Logo} alt="pnclogo" />
-        </SidebarMenu.Brand>
+        <SidebarMenu.Toggle oncClick={toggleSidebar}>
+          <SidebarMenu.Brand>
+            <img className='logo img-fluid' src={Logo} alt="pnclogo"  style={{ display: sidebarOpen ? 'block' : 'none' }} />
+          </SidebarMenu.Brand>
         </SidebarMenu.Toggle>
 
+        {sidebarOpen && (
         <SidebarMenu.Header>
           <SidebarMenu.Brand>
             <h5>Community Extension Service Management System</h5>
           </SidebarMenu.Brand>
         </SidebarMenu.Header>
+        )}
 
         <SidebarMenu.Body>
           <SidebarMenu.Nav >
             <NavLink to={'/admin/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faTableColumns} style={{ color: 'black' }} />
+                <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px', marginTop: sidebarOpen ? '0px' : '100px'}} />
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
             </NavLink>
@@ -37,9 +39,9 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Nav>
             <NavLink to={'/admin/accmngmnt'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faUserPen} style={{ color: 'black' }} />
+                <FontAwesomeIcon icon={faUserPen} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}} />
               </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title> Account Management </SidebarMenu.Nav.Title>
+              {sidebarOpen && (<SidebarMenu.Nav.Title> Account Management </SidebarMenu.Nav.Title>)}
             </NavLink>
           </SidebarMenu.Nav>
 
@@ -48,11 +50,11 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
             <SidebarMenu.Sub>
               <SidebarMenu.Sub.Toggle>
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faFileLines}></FontAwesomeIcon>
+                  <FontAwesomeIcon onClick={toggleSidebar} icon={faFileLines} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
                 </SidebarMenu.Nav.Icon>
-                <SidebarMenu.Nav.Title> Proposals </SidebarMenu.Nav.Title>
+                {sidebarOpen && (<SidebarMenu.Nav.Title> Proposals </SidebarMenu.Nav.Title>)}
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                {sidebarOpen && ( <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>)}
                 </SidebarMenu.Nav.Icon>
               </SidebarMenu.Sub.Toggle>
 
@@ -77,11 +79,11 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
             <SidebarMenu.Sub>
               <SidebarMenu.Sub.Toggle>
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faTrophy} />
+                  <FontAwesomeIcon onClick={toggleSidebar} icon={faTrophy} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}/>
                 </SidebarMenu.Nav.Icon>
                 <SidebarMenu.Nav.Title> Achievements </SidebarMenu.Nav.Title>
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                {sidebarOpen && ( <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>)}
                 </SidebarMenu.Nav.Icon>
               </SidebarMenu.Sub.Toggle>
 
@@ -106,11 +108,11 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
             <SidebarMenu.Sub>
               <SidebarMenu.Sub.Toggle>
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faInbox}></FontAwesomeIcon>
+                  <FontAwesomeIcon onClick={toggleSidebar} icon={faInbox} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
                 </SidebarMenu.Nav.Icon>
-                <SidebarMenu.Nav.Title> Requests </SidebarMenu.Nav.Title>
+                {sidebarOpen && ( <SidebarMenu.Nav.Title> Requests </SidebarMenu.Nav.Title>)}
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                {sidebarOpen && ( <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>)}
                 </SidebarMenu.Nav.Icon>
               </SidebarMenu.Sub.Toggle>
 
@@ -130,9 +132,9 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Nav>
             <NavLink to={'/admin/docs'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faFile} style={{ color: 'black' }} />
+                <FontAwesomeIcon icon={faFile} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}} />
               </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title> Documents </SidebarMenu.Nav.Title>
+              {sidebarOpen && ( <SidebarMenu.Nav.Title> Documents </SidebarMenu.Nav.Title>)}
             </NavLink>
           </SidebarMenu.Nav>
 
@@ -140,9 +142,9 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Nav>
             <NavLink to={'/admin/calendar'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faCalendar} style={{ color: 'black' }}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faCalendar} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>
+              {sidebarOpen && ( <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>)}
             </NavLink>
           </SidebarMenu.Nav>
 
@@ -151,11 +153,11 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
             <SidebarMenu.Sub>
               <SidebarMenu.Sub.Toggle>
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChartLine} />
+                  <FontAwesomeIcon onClick={toggleSidebar} icon={faChartLine} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}/>
                 </SidebarMenu.Nav.Icon>
-                <SidebarMenu.Nav.Title> Reports </SidebarMenu.Nav.Title>
+                {sidebarOpen && ( <SidebarMenu.Nav.Title> Reports </SidebarMenu.Nav.Title>)}
                 <SidebarMenu.Nav.Icon>
-                  <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                {sidebarOpen && ( <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>)}
                 </SidebarMenu.Nav.Icon>
               </SidebarMenu.Sub.Toggle>
 

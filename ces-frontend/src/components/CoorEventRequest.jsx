@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import BtnAddAcc from "./Buttons/BtnAddAcc";
 import BtnViewApproveRE from "./Buttons/BtnViewApproveRE";
+import "./table.css"
 
 
 const array = [{
@@ -30,7 +31,7 @@ const Rows = (props) => {
             <td>{Requester}</td>
             <td>{RequestDate}</td>
             <td>{status}</td>
-            <td><BtnViewApproveRE/></td>
+            <BtnViewApproveRE/>
         </tr>
     );
 };
@@ -38,7 +39,7 @@ const Rows = (props) => {
 const NewTable = (props) => {
     const{data} = props
     return (
-        <Table responsive striped hover>
+        <Table responsive bordered striped hover className="tableStyle">
             <thead style={{backgroundColor: '#F0F1F0'}}>                
                 <th>Activity Title</th>
                 <th>Requester</th>

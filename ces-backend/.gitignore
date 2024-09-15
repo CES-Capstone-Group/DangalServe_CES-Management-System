@@ -1,12 +1,12 @@
 # Ignore Python bytecode
-# *.pyc
-# __pycache__/
+*.pyc
+__pycache__/
 
 # Ignore virtual environments
-# venv/
-# env/
+venv/
+env/
 
 # Ignore logs
-# *.log
+*.log
 
 # ces-backend/crud/settings.py

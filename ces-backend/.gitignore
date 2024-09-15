@@ -9,4 +9,4 @@ env/
 # Ignore logs
 *.log
 
-
+ces-backend/crud/settings.py

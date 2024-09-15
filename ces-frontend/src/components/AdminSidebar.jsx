@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar, faHamburger, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faTableColumns, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar } from '@fortawesome/free-solid-svg-icons'
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import '../App.css'
 import { NavLink } from 'react-router-dom';
 import Logo from '../assets/pnclogo.png'
 
+// eslint-disable-next-line no-unused-vars, react/prop-types
 const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
   return (
     <div>

@@ -36,18 +36,42 @@ class TblAccountsSerializer(serializers.ModelSerializer):
 
 # Serializer for ResearchAgenda model
 class ResearchAgendaSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = ResearchAgenda
-        fields = '__all__' 
+        fields = '__all__'
 
-# Serializer for Achievement model
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url)
+        return None
+
 class AchievementSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Achievement
         fields = '__all__'
 
-# Serializer for Announcement model
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url)
+        return None
+
+
 class AnnouncementSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Announcement
         fields = '__all__'
+
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url)
+        return None
+

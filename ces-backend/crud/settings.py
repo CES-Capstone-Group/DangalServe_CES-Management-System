@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,7 +103,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ces_db',
         'USER': 'root',
-        'PASSWORD': 'karly@2700',
+        'PASSWORD': 'Bellosql27!',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
         'PORT': '3306'      # or the port on which your MySQL server is listening
     }
@@ -161,3 +163,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     "USER_ID_FIELD": "user_id",  # Use 'user_id' as the primary key for the Account model
 #     "USER_ID_CLAIM": "user_id",  # Ensure the correct claim is used in the JWT
 # }
+
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

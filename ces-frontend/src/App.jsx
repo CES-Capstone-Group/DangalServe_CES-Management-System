@@ -41,6 +41,9 @@ import CesEvalForm from './components/CesEvalForm.jsx';
 import AARForm from './components/AARForm.jsx';
 import PrivateRoute from './components/PrivateRoute';
 import UnauthorizedPage from './components/MainPages/UnauthorizedPage.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 const App = () => {
   return (

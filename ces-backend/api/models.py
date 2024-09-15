@@ -85,7 +85,7 @@ class CustomAuthToken(models.Model):
     def __str__(self):
         return self.key
 
-# ResearchAgenda, Achievement, and Announcement models (unchanged)
+
 class ResearchAgenda(models.Model):
     label = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='research_agenda_images/', null=True, blank=True)

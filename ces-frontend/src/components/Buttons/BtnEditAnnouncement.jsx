@@ -26,7 +26,7 @@ const BtnEditAnnouncement = ({ show, onHide, announcement, onAnnouncementUpdated
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcement.id}`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcement.id}/`, {
                 method: "PUT", // for updating
                 body: announcementData,
             });

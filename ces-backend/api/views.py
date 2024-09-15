@@ -9,6 +9,7 @@ from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccoun
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
 from .models import CustomAuthToken
+from rest_framework import viewsets
 
 from .models import CustomAuthToken
 from django.utils import timezone
@@ -100,17 +101,18 @@ def user_info_action(request, user_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 # RESEARCH AGENDA VIEWS
 @api_view(['GET'])
 def get_research_agendas(request):
-    research_agendas = ResearchAgenda.objects.all()  
-    serializedData = ResearchAgendaSerializer(research_agendas, many=True).data  
-    return Response(serializedData)  
+    research_agendas = ResearchAgenda.objects.all()
+    # Include the request context to correctly serialize image URLs
+    serializedData = ResearchAgendaSerializer(research_agendas, many=True, context={'request': request})
+    return Response(serializedData.data)  # Access .data to get the serialized content
+
 
 @api_view(['POST'])
 def create_research_agenda(request):
-    serializedData = ResearchAgendaSerializer(data=request.data)  
+    serializedData = ResearchAgendaSerializer(data=request.data, context={'request': request})
     if serializedData.is_valid():  # Validate the data
         serializedData.save()  # Save the valid data
         return Response(serializedData.data, status=status.HTTP_201_CREATED)  # Return the newly created data
@@ -135,23 +137,33 @@ def research_agenda_detail(request, pk):
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ResearchAgendaViewSet(viewsets.ModelViewSet):
+    queryset = ResearchAgenda.objects.all()
+    serializer_class = ResearchAgendaSerializer
+
+    def get_serializer_context(self):
+        # Adding the request object to the serializer context
+        context = super(ResearchAgendaViewSet, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
 
 # ACHIEVEMENT VIEWS
 @api_view(['GET'])
 def get_achievement(request):
-        achievements = Achievement.objects.all()
-        serializedData = AchievementSerializer(achievements, many=True).data
-        return Response(serializedData)
+    achievements = Achievement.objects.all()
+    serializedData = AchievementSerializer(achievements, many=True, context={'request': request})
+    return Response(serializedData.data)
 
 @api_view(['POST'])
 def create_achievement(request):
-    serializedData = AchievementSerializer(data=request.data)
+    serializedData = AchievementSerializer(data=request.data, context={'request': request})
     if serializedData.is_valid():
-            serializedData.save()
-            return Response(serializedData.data, status=status.HTTP_201_CREATED)
+        serializedData.save()
+        return Response(serializedData.data, status=status.HTTP_201_CREATED)
     return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view([ 'PUT', 'DELETE'])
+@api_view(['PUT', 'DELETE'])
 def achievement_detail(request, pk):
     try:
         achievement = Achievement.objects.get(pk=pk)
@@ -159,33 +171,38 @@ def achievement_detail(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'DELETE':
+        achievement.image.delete(save=False)  # Delete the image file from storage
         achievement.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
     elif request.method == 'PUT':
-        serializedData = AchievementSerializer(achievement, data=request.data)
+        serializedData = AchievementSerializer(achievement, data=request.data, context={'request': request})
         if serializedData.is_valid():
+            # Delete the old image if a new one is uploaded
+            if 'image' in request.data and achievement.image:
+                achievement.image.delete(save=False)
             serializedData.save()
             return Response(serializedData.data)
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 # ANNOUNCEMENT VIEWS
 @api_view(['GET'])
 def get_announcement(request):
-        announcements = Announcement.objects.all()
-        serializedData = AnnouncementSerializer(announcements, many=True).data
-        return Response(serializedData)
+    announcements = Announcement.objects.all()
+    serializedData = AnnouncementSerializer(announcements, many=True, context={'request': request})
+    return Response(serializedData.data)
 
 @api_view(['POST'])
 def create_announcement(request):
-    serializedData = AnnouncementSerializer(data=request.data)
+    serializedData = AnnouncementSerializer(data=request.data, context={'request': request})
     if serializedData.is_valid():
-            serializedData.save()
-            return Response(serializedData.data, status=status.HTTP_201_CREATED)
+        serializedData.save()
+        return Response(serializedData.data, status=status.HTTP_201_CREATED)
     return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view([ 'PUT', 'DELETE'])
+@api_view(['PUT', 'DELETE'])
 def announcement_detail(request, pk):
     try:
         announcement = Announcement.objects.get(pk=pk)
@@ -193,12 +210,16 @@ def announcement_detail(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'DELETE':
+        announcement.image.delete(save=False)  # Delete the image file from storage
         announcement.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
     elif request.method == 'PUT':
-        serializedData = AnnouncementSerializer(announcement, data=request.data)
+        serializedData = AnnouncementSerializer(announcement, data=request.data, context={'request': request})
         if serializedData.is_valid():
+            # Delete the old image if a new one is uploaded
+            if 'image' in request.data and announcement.image:
+                announcement.image.delete(save=False)
             serializedData.save()
             return Response(serializedData.data)
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)

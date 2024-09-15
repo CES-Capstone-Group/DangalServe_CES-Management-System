@@ -96,7 +96,7 @@ const AdminMainContent = () => {
     if (!confirmDelete) return; // Exit if the user does not confirm the deletion
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievementId}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievementId}/`, {
         method: "DELETE",
       });
 
@@ -154,7 +154,7 @@ const AdminMainContent = () => {
     if (!confirmDelete) return; // Exit if the user does not confirm the deletion
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcementId}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcementId}/`, {
         method: "DELETE",
       });
 
@@ -233,7 +233,7 @@ const AdminMainContent = () => {
               {researchAgendas.length > 0 ? (
                 researchAgendas.map((agenda, index) => (
                   <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                    <img src={agenda.image ? agenda.image : '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
+                    <img src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
 
                     {/* Button Container */}
                     <div className="carousel-buttons">
@@ -295,7 +295,7 @@ const AdminMainContent = () => {
               achievements.map((achievement) => (
                 <Col md={4} key={achievement.id}>
                   <Card className="position-relative">
-                    <Card.Img variant="top" src={achievement.image || "/placeholder.png"} />
+                    <Card.Img variant="top" src={achievement.image_url || "/placeholder.png"} />
 
                     {/* Edit and Delete Icons */}
                     <div className="d-flex position-absolute top-0 end-0 m-2">
@@ -323,7 +323,7 @@ const AdminMainContent = () => {
                         Date: {achievement.date_awarded}<br />
                         Awarded by: {achievement.awarded_by}
                       </Card.Text>
-                      <Button variant="success">See more</Button>
+                      {/* <Button variant="success">See more</Button> */}
                     </Card.Body>
                   </Card>
                 </Col>
@@ -383,7 +383,7 @@ const AdminMainContent = () => {
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
                       <Card.Text>{announcement.details}</Card.Text>
-                      <Button variant="success">See more</Button>
+                      {/* <Button variant="success">See more</Button> */}
                     </Card.Body>
                   </Card>
                 </Col>

@@ -79,7 +79,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     return (
         <>
 
-            <Button style={{ backgroundColor: "#71A872", color: "white", border: '0px', color: 'white' }} className="mb-2" onClick={handleShow}>
+            <Button style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} className="mb-2" onClick={handleShow}>
                 View/Edit
             </Button>
 

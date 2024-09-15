@@ -32,7 +32,7 @@ const BtnEditAchievement = ({ show, onHide, achievement, onAchievementUpdated })
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievement.id}`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievement.id}/`, {
                 method: "PUT", // for updating
                 body: achievementData,
             });

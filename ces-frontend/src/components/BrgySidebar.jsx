@@ -28,7 +28,7 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
         <SidebarMenu.Nav>
           <NavLink to={'/barangay/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
-              <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px', marginTop: sidebarOpen ? '0px' : '100px'}} />
+              <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px', marginTop: sidebarOpen ? '0px' : '100px'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
           </NavLink>
@@ -38,7 +38,7 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Sub>
             <SidebarMenu.Sub.Toggle>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon onClick={toggleSidebar} icon={faFileLines} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
+                <FontAwesomeIcon onClick={toggleSidebar} icon={faFileLines} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px'}}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
                 {sidebarOpen && (<SidebarMenu.Nav.Title> Proposals </SidebarMenu.Nav.Title>)}
                 <SidebarMenu.Nav.Icon>
@@ -66,7 +66,7 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
           <SidebarMenu.Sub>
             <SidebarMenu.Sub.Toggle>
               <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon onClick={toggleSidebar} icon={faInbox} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
+                <FontAwesomeIcon onClick={toggleSidebar} icon={faInbox} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px'}}></FontAwesomeIcon>
               </SidebarMenu.Nav.Icon>
                {sidebarOpen && ( <SidebarMenu.Nav.Title> Requests </SidebarMenu.Nav.Title>)}
                 <SidebarMenu.Nav.Icon>
@@ -89,7 +89,7 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
         <SidebarMenu.Nav>
           <NavLink to={'/barangay/calendar'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
-              <FontAwesomeIcon icon={faCalendar} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px'}}></FontAwesomeIcon>
+              <FontAwesomeIcon icon={faCalendar} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px'}}></FontAwesomeIcon>
             </SidebarMenu.Nav.Icon>
               {sidebarOpen && ( <SidebarMenu.Nav.Title> Calendar </SidebarMenu.Nav.Title>)}
           </NavLink>

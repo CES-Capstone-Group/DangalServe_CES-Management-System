@@ -322,7 +322,7 @@ const ActEvalForm = () => {
                         Submit
                     </Button>
 
-                    <Button onClick={() => navigate("/eval/eval-page")} variant="danger" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>
+                    <Button onClick={() => navigate(-1)} variant="danger" type='button' className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>
                         Cancel
                     </Button>
                 </div>

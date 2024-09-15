@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 
 const UserCoorPage = () => {
-  const [sidebarOpen, setSidebar] = useState(false);
+  const [sidebarOpen, setSidebar] = useState(true);
   const showSidebar = () => {
     setSidebar(!sidebarOpen);
     console.log(sidebarOpen);

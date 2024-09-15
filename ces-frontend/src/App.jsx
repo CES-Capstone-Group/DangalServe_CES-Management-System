@@ -65,6 +65,7 @@ const App = () => {
             <Route path='docs' element={<DocumentPage />} />
             <Route path='calendar' element={<AdminCalendar />} />
             <Route path='involvement' element={<InvolvementPage />} />
+            <Route path='eval-page' element={<EvalPage />} />
             <Route path='kpi' element={<KpiPage />} />
           </Route>
         </Route>
@@ -94,6 +95,7 @@ const App = () => {
             <Route path='docs' element={<DocumentPage />} />
             <Route path='calendar' element={<CoorCalendar />} />
             <Route path='kpi' element={<KpiPage />} />
+            <Route path='eval-page' element={<EvalPage />} />
             <Route path='proposal-form' element={<ProposalForm />} />
           </Route>
         </Route>

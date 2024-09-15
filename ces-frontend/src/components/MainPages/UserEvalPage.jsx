@@ -5,7 +5,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import EvalSidebar from "../EvalSidebar";
 
 const UserEvalPage = () => {
-  const [sidebarOpen, setSidebar] = useState(false);
+  const [sidebarOpen, setSidebar] = useState(true);
   const showSidebar = () => {
     setSidebar(!sidebarOpen);
     console.log(sidebarOpen);

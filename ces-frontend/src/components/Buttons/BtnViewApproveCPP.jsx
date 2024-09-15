@@ -12,9 +12,9 @@ const BtnViewApproveAPA = () => {
         
 
     return(
-        <div>
+        <>
             <td>
-            <Button className='me-3' onClick={handleShow} style={{backgroundColor:"#71A872", border: '0px'}}>View</Button>             
+            <Button className='me-3' onClick={handleShow} style={{backgroundColor:"#71A872", border: '0px', color: 'white'}}>View</Button>             
             <Button style={{backgroundColor:'#71A872', border: '0px'}}>Approve</Button>
             </td>
 
@@ -54,7 +54,7 @@ const BtnViewApproveAPA = () => {
                         Close</Button>
                 </Modal.Footer>
             </Modal>
-        </div> 
+        </> 
     );
 };
 

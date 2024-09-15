@@ -77,13 +77,13 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     };
 
     return (
-        <div>
+        <>
 
-            <Button style={{ backgroundColor: "#71A872", color: "white" }} className="me-3" onClick={handleShow}>
+            <Button style={{ backgroundColor: "#71A872", color: "white", border: '0px', color: 'white' }} className="mb-2" onClick={handleShow}>
                 View/Edit
             </Button>
 
-            <Button style={{ backgroundColor: formData.status === "Active" ? "red" : "#71A872", color: "white" }}  onClick={handleDeactivate}>
+            <Button style={{ backgroundColor: formData.status === "Active" ? "red" : "#71A872", color: "white" , border: '0px' }}  onClick={handleDeactivate}>
                 {formData.status === "Active" ? "Deactivate" : "Activate"}
             </Button>
 
@@ -189,7 +189,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </>
     );
 };
 

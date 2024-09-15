@@ -6,15 +6,34 @@ body{
 
 .side{
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
   margin: 0px;
   padding: 0px;
   position: fixed;
-  width: 250px;
+  width: 300px; /* Full width when sidebar is open */
   height: 100%;
-  left: -100%;
+  left: 0;
   top: 0;
   z-index: 1050;
-  transition: 0.3s;
+  transition: 0.3s ease;
+}
+
+.side.collapsed {
+  width: 70px; /* Narrow width when sidebar is collapsed */
+  z-index: 1020;
+}
+
+.sidebar-menu.collapsed .sidebar-menu-nav-title {
+  display: none; /* Hide text labels when sidebar is collapsed */
+}
+
+.sidebar-menu-sub-toggle {
+  border: 0px;
+  background-color: rgba(255, 255, 255, 0);
+  
+  padding: 0px;
 }
 
 .sidebar-menu.active{

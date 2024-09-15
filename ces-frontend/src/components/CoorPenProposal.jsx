@@ -3,7 +3,7 @@ import { Button, Container, Table } from "react-bootstrap";
 import BtnViewApproveCPP from "./Buttons/BtnViewApproveCPP";
 import BtnAddProposal from "./Buttons/BtnAddProposal";
 import ProposalForm from "./ProposalForm";
-
+import "./table.css"
 
 const CoorPenProposal = () => {
     return (
@@ -12,15 +12,15 @@ const CoorPenProposal = () => {
                 <h1> PENDING PROPOSALS </h1>
             </div>
 
-            <Table>
+            <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <tr>
-                        <th>Proposal Title</th>
-                        <th>Location</th>
-                        <th>Target Date</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
+                    
+                    <th>Proposal Title</th>
+                    <th>Location</th>
+                    <th>Target Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </thead>    
                     <tr>
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
@@ -35,7 +35,7 @@ const CoorPenProposal = () => {
                         <td>Status</td>
                         <td><BtnViewApproveCPP/></td>
                     </tr>
-                </thead>
+                
             </Table>
 
             <div className="mb-3 d-flex justify-content-end">

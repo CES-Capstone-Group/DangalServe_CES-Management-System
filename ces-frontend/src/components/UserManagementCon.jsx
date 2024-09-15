@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table, Button, Row, Col } from "react-bootstrap";
-import BtnEditDeac from "../Buttons/BtnEditDeac";
+import BtnEditDeac from "./Buttons/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "../Buttons/BtnAddAcc";
+import BtnAddAcc from "./Buttons/BtnAddAcc";
+import "./table.css"
 
 const Rows = ({ user_id, username, type, department, position, actDate, deacDate, status, fetchUsers }) => {
     const account = {
@@ -57,10 +58,6 @@ const Rows = ({ user_id, username, type, department, position, actDate, deacDate
         }
     };
     
-    
-    
-    
-
     return (
         <tr>
             <td>{user_id}</td>
@@ -84,21 +81,19 @@ const Rows = ({ user_id, username, type, department, position, actDate, deacDate
 
 const NewTable = ({ data, fetchUsers }) => {
     return (
-        <Table responsive striped hover>
-            <thead style={{backgroundColor: '#F0F1F0'}}>                
-                <tr>
-                    <th>Account ID</th>
-                    <th>Name</th>
-                    <th>Type of Account</th>
-                    <th>Department</th>
-                    <th>Position</th>
-                    <th>Activation Date</th>
-                    <th>Deactivation Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
+        <Table responsive striped bordered hover className="tableStyle">
+            <thead>                
+                <th>Account ID</th>
+                <th>Name</th>
+                <th>Type of Account</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Activation Date</th>
+                <th>Deactivation Date</th>
+                <th>Status</th>
+                <th>Actions</th>
             </thead>
-            <tbody>
+            
                 {data.map((row) => (
                     <Rows 
                         key={row.user_id}  // Use a unique ID, like accountID
@@ -113,12 +108,12 @@ const NewTable = ({ data, fetchUsers }) => {
                         fetchUsers={fetchUsers}
                     />
                 ))}
-            </tbody>
+            
         </Table>
     );
 };
 
-const BrgyProposalPage = () => {
+const UserManagementCon = () => {
     const [users, setUsers] = useState([]);
 
     const fetchUsers = async () => {
@@ -173,4 +168,4 @@ const BrgyProposalPage = () => {
     );
 };
 
-export default BrgyProposalPage;
+export default UserManagementCon;

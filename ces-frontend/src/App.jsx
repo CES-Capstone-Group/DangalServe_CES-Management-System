@@ -6,7 +6,7 @@ import BrgySidebar from './components/BrgySidebar';
 import MainContent from './components/MainContent';
 import { Container, Row, Col } from 'react-bootstrap';
 import CoorSidebar from './components/CoorSidebar';
-import UserManagementCon from './components/MainPages/UserManagementCon';
+import UserManagementCon from './components/UserManagementCon.jsx';
 import AdminSidebar from './components/AdminSidebar';
 import AdminMainContent from './components/AdminMainContent';
 import '../node_modules/font-awesome/css/font-awesome.min.css';

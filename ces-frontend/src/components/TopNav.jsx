@@ -40,7 +40,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
         <Container fluid className='d-flex '>
           <Navbar.Brand style={{ color: 'white' }}>
             <Button variant="outline-light" className="ms-2" onClick={sidebarToggle}>
-              <FontAwesomeIcon icon={faBars} />
+              <FontAwesomeIcon icon={faBars}  />
             </Button> 
             <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
               USER

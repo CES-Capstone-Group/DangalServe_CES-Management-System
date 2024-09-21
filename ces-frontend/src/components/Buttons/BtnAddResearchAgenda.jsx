@@ -52,7 +52,7 @@ const BtnAddResearchAgenda = ({ onResearchAgendaAdded }) => {
     return (
         <div className="d-flex justify-content-end m-3">
             <div>
-                <Button style={{ backgroundColor: "#71A872", border: '0px' }} onClick={handleShowModal}>
+                <Button className="shadow" style={{ backgroundColor: "#71A872", border: '0px' }} onClick={handleShowModal}>
                     + Add Research Agenda
                 </Button>
             </div>

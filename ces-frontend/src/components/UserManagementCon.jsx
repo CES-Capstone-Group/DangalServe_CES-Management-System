@@ -138,7 +138,7 @@ const UserManagementCon = () => {
     };
 
     return (
-        <Container fluid>
+        <Container fluid className="fs-5">
             <Row>
                 <Col className="d-flex justify-content-end">
                     <Button style={{backgroundColor:'#71A872', border: '0px'}}>

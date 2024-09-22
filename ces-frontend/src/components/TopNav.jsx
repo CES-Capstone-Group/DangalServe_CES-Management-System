@@ -29,7 +29,8 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
     // Navigate to the login page
     navigate('/login');
   };
-
+  
+  const accountType = localStorage.getItem('accountType');
   return (
     <div className='topNav'>
       <Navbar expand="lg" style={{ 
@@ -43,7 +44,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
               <FontAwesomeIcon icon={faBars}  />
             </Button> 
             <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
-              USER
+              {accountType}
             </Navbar.Text>
           </Navbar.Brand>
           <Nav className="ms-auto">

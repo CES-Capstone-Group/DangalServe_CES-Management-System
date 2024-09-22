@@ -138,6 +138,10 @@ button.fc-Service-button.fc-button.fc-button-primary {
   color: gray;
 }
 
+.involvement{
+  width: 15vw !important;
+}
+
 .mainBtn{
   padding: 5em;
 }

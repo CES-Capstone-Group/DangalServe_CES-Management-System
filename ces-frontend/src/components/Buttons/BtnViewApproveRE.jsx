@@ -21,7 +21,7 @@ const BtnViewApproveRE = () => {
             <Modal backdrop='static' centered size="lg" show={show} onHide={handleClose} className="p-6">
                 <Modal.Header closeButton>
                     <Button onClick={handleClose} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
-                    <Modal.Title> [Request ID] </Modal.Title>
+                    <Modal.Title></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

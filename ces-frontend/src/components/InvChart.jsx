@@ -15,7 +15,7 @@ const InvChart = () => {
                         borderTop: '0px',
                         boxShadow: '1px 7px 7px 4px #888888',
                         padding: '2em'}}>
-                        <Card.Title>No. of Non-Teaching Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
+                        <Card.Title>Non-Teaching Personnel Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
                         <Card.Body>
                             <Bar data={data1}/>
                         </Card.Body>
@@ -29,7 +29,7 @@ const InvChart = () => {
                         borderTop: '0px',
                         boxShadow: '1px 7px 7px 4px #888888',
                         padding: '2em'}}>
-                        <Card.Title>No. of Teaching Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
+                        <Card.Title>Teaching Personnel Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
                         <Card.Body>
                             <Bar data={data2}/>
                         </Card.Body>
@@ -44,7 +44,7 @@ const InvChart = () => {
                         borderTop: '0px',
                         boxShadow: '1px 7px 7px 4px #888888',
                         padding: '2em'}}>
-                        <Card.Title>No. of Participants Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
+                        <Card.Title>Participants Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
                         <Card.Body>
                             <Bar data={data3}/>
                         </Card.Body>
@@ -58,7 +58,7 @@ const InvChart = () => {
                         borderTop: '0px',
                         boxShadow: '1px 7px 7px 4px #888888',
                         padding: '2em'}}>
-                        <Card.Title>No. of Students Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
+                        <Card.Title>Students Involved <span className="h5 ms-4 text-secondary">YEAR 2023</span></Card.Title>
                         <Card.Body>
                             <Bar data={data4}/>
                         </Card.Body>

@@ -190,10 +190,11 @@ const AdminMainContent = () => {
       const response = await fetch(`http://127.0.0.1:8000/api/research-agendas/${agendaId}/`, {
         method: "DELETE",
       });
-
+      console.log(agendaId)
       if (response.ok) {
         alert("Research agenda deleted successfully!");
         fetchResearchAgendas(); // Reload the research agendas list after deletion
+        window.location.reload();
       } else {
         alert("There was an error deleting the research agenda.");
       }

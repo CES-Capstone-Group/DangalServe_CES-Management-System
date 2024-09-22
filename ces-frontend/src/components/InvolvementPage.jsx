@@ -10,7 +10,7 @@ const InvolvementPage = () => {
         <div>
             <Container className="d-flex">
                 <Row>
-                    <Col><h1> ACCOUNT MANAGEMENT</h1></Col>
+                    <Col className="involvement"><h1>INVOLVEMENT REPORTS</h1></Col>
                 </Row>
                 <Row style={{marginLeft: '45em'}}>
                     <Col className="justify-content-end">

@@ -16,13 +16,13 @@ const UserAdminPage = () => {
         <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
       <Row >
-        <Col style={{ padding: '0px' }} md={sidebarOpen ? 3 : 0} lg={sidebarOpen ? 3 : 0}>
+        <Col style={{ padding: '0px' }} md={sidebarOpen ? '2' : '0'} lg={sidebarOpen ? '2' : '0'}>
           <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />    
         </Col>
         <Col className={`d-flex justify-content-${sidebarOpen ? 'end' : 'center'} align-items-end`}
-             style={{marginTop: '10rem', padding: '0px',maxWidth: sidebarOpen ? '75%' : '100%', }} 
-             sm={12} md={sidebarOpen ? '8' : '12'} 
-             lg={sidebarOpen ? '8' : '12'}>
+             style={{marginTop: '10rem', padding: '0px',maxWidth: sidebarOpen ? '100%' : '100%'}} 
+             sm={12} md={sidebarOpen ? '10' : '12'} 
+             lg={sidebarOpen ? '10' : '12'}>
             <Container>
               <Outlet/>
             </Container>

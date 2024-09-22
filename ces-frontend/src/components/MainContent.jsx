@@ -8,6 +8,27 @@ const MainContent = () => {
   const [error, setError] = useState(null);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
+  const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
+
+  const fetchResearchAgendas = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/research-agendas/");
+      if (!response.ok) {
+        throw new Error('Failed to fetch research agendas');
+      }
+      const data = await response.json();
+      setResearchAgendas(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingResearchAgendas(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResearchAgendas();
+  }, []);
+
 
   // Fetch achievements data from the server
   const fetchAchievements = async () => {
@@ -54,15 +75,22 @@ const MainContent = () => {
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
           
-          {/* Carousel Section */}
-          <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
+           {/* Carousel Section */}
+           <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
             <div className="carousel-inner">
-              <div className="carousel-item active">
-                <img src="placeholder.png" className="d-block w-100" alt="..." />
+              {researchAgendas.length > 0 ? (
+                researchAgendas.map((agenda, index) => (
+                  <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                    <img src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
+                  </div>
+                ))
+              ) : (
+                <p>No research agendas found.</p>
+              )}
+
               </div>
-              {/* Add more carousel items if necessary */}
-            </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+
+              <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
               <span className="visually-hidden">Previous</span>
             </button>

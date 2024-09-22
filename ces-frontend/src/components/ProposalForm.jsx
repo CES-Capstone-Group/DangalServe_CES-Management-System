@@ -63,24 +63,38 @@ const ProposalForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const submitData = new FormData();
-
+  
     // Append each field to the FormData
     for (let key in formData) {
       submitData.append(key, formData[key]);
     }
-
+  
     try {
+      // Retrieve the JWT token from localStorage
+      const token = localStorage.getItem('access_token'); // Use 'access_token' key as shown in the screenshot
+  
+      if (!token) {
+        console.error('No token found. Please log in.');
+        return;
+      }
+  
       const response = await fetch('http://127.0.0.1:8000/api/proposals/', {
         method: 'POST',
+        body: submitData, // Send FormData
         headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('token')}` // Include authorization token if required
-        }
+          Authorization: `Bearer ${token}`, // Send the JWT token with Bearer prefix
+          // No need to set 'Content-Type' for FormData requests
+        },
       });
-
+  
       if (response.status === 201) {
         // Redirect to pending proposals page on success
         navigate('/coor/pending-proposal');
+      } else if (response.status === 401) {
+        console.error('Unauthorized: Check if your token is valid.');
+      } else {
+        const errorData = await response.json();
+        console.error('Error:', errorData);
       }
     } catch (error) {
       console.error('Error submitting proposal:', error);

@@ -5,14 +5,17 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Achievement, Announcement, Account, ResearchAgenda
-from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer, LoginSerializer
+from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
-from .models import CustomAuthToken
+# from .models import CustomAuthToken
 from rest_framework import viewsets
-
-from .models import CustomAuthToken
 from django.utils import timezone
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializer import CustomTokenObtainPairSerializer
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 class RefreshTokenView(APIView):
     def post(self, request, *args, **kwargs):
@@ -41,30 +44,30 @@ class RefreshTokenView(APIView):
             return Response({'error': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
 
 # View for login using custom authentication with Account model
-class LoginApiView(APIView):
-    permission_classes = [AllowAny]
+# class LoginApiView(APIView):
+#     permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
-        password = request.data.get('password')
+#     def post(self, request, *args, **kwargs):
+#         username = request.data.get('username')
+#         password = request.data.get('password')
 
-        # Authenticate the user
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.status.lower() != 'active':
-                return Response({'error': 'Account is inactive.'}, status=rest_status.HTTP_403_FORBIDDEN)
+#         # Authenticate the user
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.status.lower() != 'active':
+#                 return Response({'error': 'Account is inactive.'}, status=rest_status.HTTP_403_FORBIDDEN)
 
-            # Create or retrieve an authentication token
-            token, created = CustomAuthToken.objects.get_or_create(user=user)
+#             # Create or retrieve an authentication token
+#             token, created = CustomAuthToken.objects.get_or_create(user=user)
 
-            return Response({
-                'access_token': token.key,
-                'refresh_token': token.refresh_key,
-                'user_id': user.user_id,
-                'username': user.username,
-                'accountType': user.accountType,
-            }, status=status.HTTP_200_OK)
-        return Response({'error': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+#             return Response({
+#                 'access_token': token.key,
+#                 'refresh_token': token.refresh_key,
+#                 'user_id': user.user_id,
+#                 'username': user.username,
+#                 'accountType': user.accountType,
+#             }, status=status.HTTP_200_OK)
+#         return Response({'error': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 # Account Views

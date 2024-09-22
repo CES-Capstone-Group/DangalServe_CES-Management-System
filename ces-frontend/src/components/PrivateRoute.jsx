@@ -1,23 +1,26 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
-// A private route component to protect routes based on roles
 const PrivateRoute = ({ allowedRoles }) => {
-const accessToken = localStorage.getItem('access_token');
-const accountType = localStorage.getItem('accountType'); // Assume accountType is stored on login
+    const accessToken = localStorage.getItem('access_token');
 
-// Check if the user is logged in and has the correct role
-if (!accessToken) {
-// If no access token, redirect to login
-    return <Navigate to="/unauthorized" />;
-}
+    if (!accessToken) {
+        return <Navigate to="/unauthorized" />;
+    }
 
-if (!allowedRoles.includes(accountType)) {
-// If the account type doesn't match allowed roles, redirect to unauthorized page or login
-    return <Navigate to="/unauthorized" />;
-}
+    try {
+        const decodedToken = jwtDecode(accessToken);
+        const accountType = decodedToken.accountType;
 
-// If the user is authenticated and has the correct role, allow access
+        if (!allowedRoles.includes(accountType)) {
+            return <Navigate to="/unauthorized" />;
+        }
+    } catch (error) {
+        console.error("Error decoding token:", error);
+        return <Navigate to="/unauthorized" />;
+    }
+
     return <Outlet />;
 };
 

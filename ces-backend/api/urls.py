@@ -1,15 +1,17 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenRefreshView
 from . import views  # Import your views
-from .views import LoginApiView, RefreshTokenView, ResearchAgendaViewSet
+from .views import RefreshTokenView, ResearchAgendaViewSet
 from .views import ProposalListCreateView, ProposalDetailView
-
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .serializer import CustomTokenObtainPairSerializer
 # Define URL patterns
 urlpatterns = [
     # Login Path
-    path('login/', LoginApiView.as_view(), name='login'),  # Use custom login view for JWT
-    # path('token/refresh/', RefreshTokenView.as_view(), name='token_refresh'),
+    # path('login/', LoginApiView.as_view(), name='login'),  # Use custom login view for JWT
     path('refresh-token/', RefreshTokenView.as_view(), name='refresh-token'),
+    
+    path('token/', TokenObtainPairView.as_view(serializer_class=CustomTokenObtainPairSerializer), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     path('proposals/', ProposalListCreateView.as_view(), name='proposal-list-create'),
     path('proposals/<int:pk>/', ProposalDetailView.as_view(), name='proposal-detail'),

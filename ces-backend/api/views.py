@@ -223,3 +223,26 @@ def announcement_detail(request, pk):
             serializedData.save()
             return Response(serializedData.data)
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+from rest_framework import generics
+from .models import Proposal
+from .serializer import ProposalSerializer
+from rest_framework.permissions import IsAuthenticated
+
+class ProposalListCreateView(generics.ListCreateAPIView):
+    queryset = Proposal.objects.all()
+    serializer_class = ProposalSerializer
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def get_queryset(self):
+        # Return only the proposals for the authenticated user
+        return Proposal.objects.filter(user=self.request.user)
+
+class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Proposal.objects.all()
+    serializer_class = ProposalSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Ensure the user can only access their own proposals
+        return Proposal.objects.filter(user=self.request.user)

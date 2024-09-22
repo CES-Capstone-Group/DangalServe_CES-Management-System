@@ -110,3 +110,37 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Proposal(models.Model):
+    proposal_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    engagement_date = models.DateField()
+    disengagement_date = models.DateField()
+    department = models.CharField(max_length=255)
+    lead_proponent = models.CharField(max_length=255)
+    contact_details = models.CharField(max_length=255)
+    project_description = models.TextField()
+    target_date = models.DateField()
+    location = models.CharField(max_length=255)
+    partner_community = models.CharField(max_length=255)
+    school = models.BooleanField(default=False)
+    barangay = models.BooleanField(default=False)
+    government_org = models.CharField(max_length=255, blank=True, null=True)
+    non_government_org = models.CharField(max_length=255, blank=True, null=True)
+    identified_needs = models.FileField(upload_to='identified_needs/', blank=True, null=True)
+    general_objectives = models.TextField()
+    specific_objectives = models.TextField()
+    success_indicators = models.TextField()
+    cooperating_agencies = models.TextField()
+    monitoring_mechanics = models.TextField()
+    evaluation_mechanics = models.TextField()
+    timetable = models.TextField()
+    risk_assessment = models.TextField()
+    action_plans = models.TextField()
+    sustainability_approaches = models.TextField()
+    budget_requirement = models.FileField(upload_to='budget_requirements/', blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+

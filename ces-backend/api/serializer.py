@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, Announcement, ResearchAgenda
+from .models import Account, Achievement, Announcement, ResearchAgenda, Proposal
 
 # Serializer for login and authentication
 class LoginSerializer(serializers.Serializer):
@@ -75,3 +75,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.image.url)
         return None
 
+class ProposalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Proposal
+        fields = '__all__'
+
+    def create(self, validated_data):
+        user = self.context['request'].user  # Automatically assign the user
+        proposal = Proposal.objects.create(user=user, **validated_data)
+        return proposal

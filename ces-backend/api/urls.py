@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 from . import views  # Import your views
 from .views import LoginApiView, RefreshTokenView, ResearchAgendaViewSet
+from .views import ProposalListCreateView, ProposalDetailView
 
 # Define URL patterns
 urlpatterns = [
@@ -9,6 +10,9 @@ urlpatterns = [
     path('login/', LoginApiView.as_view(), name='login'),  # Use custom login view for JWT
     # path('token/refresh/', RefreshTokenView.as_view(), name='token_refresh'),
     path('refresh-token/', RefreshTokenView.as_view(), name='refresh-token'),
+    
+    path('proposals/', ProposalListCreateView.as_view(), name='proposal-list-create'),
+    path('proposals/<int:pk>/', ProposalDetailView.as_view(), name='proposal-detail'),
 
     # Accounts Paths
     path('users/', views.get_all_user, name="get_user"),

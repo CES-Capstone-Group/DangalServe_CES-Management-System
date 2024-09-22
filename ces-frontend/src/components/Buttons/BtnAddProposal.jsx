@@ -15,7 +15,7 @@ const BtnAddProposal = () => {
     return (
         <div className="d-flex justify-content-end m-3">
             <div>
-                <Button style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} onClick={routeChange}>
+                <Button className="shadow" style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} onClick={routeChange}>
                     + Add Proposal
                 </Button>
             </div>

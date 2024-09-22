@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import BtnAddAnnouncement from './Buttons/BtnAddAnnouncement'; // Add Announcement Button
 import BtnAddAchievement from './Buttons/BtnAddAchievement'; // Add Achievement Button
 import BtnAddResearchAgenda from './Buttons/BtnAddResearchAgenda'; // Add Research Agenda Button
@@ -13,6 +13,8 @@ import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
   const [error, setError] = useState(null);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
@@ -47,6 +49,17 @@ const AdminMainContent = () => {
   useEffect(() => {
     fetchAchievements();
   }, []);
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowImageModal(false);
+    setSelectedImage(null);
+  };
+
 
   // Fetch research agendas data
   const fetchResearchAgendas = async () => {
@@ -213,7 +226,7 @@ const AdminMainContent = () => {
   }
 
   return (
-    <Container fluid>
+    <Container fluid className='custom-container'>
       <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
@@ -257,7 +270,7 @@ const AdminMainContent = () => {
                   </div>
                 ))
               ) : (
-                <p>No research agendas found.</p>
+                <p className='text-muted'>No research agendas found.</p>
               )}
 
               {/* Research Agenda Edit Modal */}
@@ -295,11 +308,12 @@ const AdminMainContent = () => {
             {achievements.length > 0 ? (
               achievements.map((achievement) => (
                 <Col md={4} key={achievement.id}>
-                  <Card className="position-relative">
-                    <Card.Img variant="top" src={achievement.image_url || "/placeholder.png"} />
+                  <Card className="position-relative mb-3" id='conCard'>
+                    <Card.Img fluid variant="top" className='conImg' src={achievement.image_url || "/placeholder.png"} onClick={() => handleImageClick(achievement.image_url || "/placeholder.png")}
+                      style={{ cursor: 'pointer' }} />
 
                     {/* Edit and Delete Icons */}
-                    <div className="d-flex position-absolute top-0 end-0 m-2">
+                    <div className="d-flex position-absolute top-0 end-0 m-1">
                       <Button
                         variant="link"
                         className="p-0 me-3"
@@ -318,11 +332,11 @@ const AdminMainContent = () => {
                     </div>
 
                     <Card.Body>
-                      <Card.Title>{achievement.award_title}</Card.Title>
-                      <Card.Text>
-                        Awardee: {achievement.awardee}<br />
-                        Date: {achievement.date_awarded}<br />
-                        Awarded by: {achievement.awarded_by}
+                      <Card.Title style={{ fontStyle: 'bold' }}>{achievement.award_title}</Card.Title>
+                      <Card.Text fluid>
+                        <strong>Awardee:</strong> {achievement.awardee}<br />
+                        <strong>Date:</strong> {achievement.date_awarded}<br />
+                        <strong>Awarded by:</strong> {achievement.awarded_by}
                       </Card.Text>
                       {/* <Button variant="success">See more</Button> */}
                     </Card.Body>
@@ -331,9 +345,20 @@ const AdminMainContent = () => {
               ))
             ) : (
               <Col>
-                <p>No achievements found.</p>
+                <p className='text-muted'>No achievements found.</p>
               </Col>
             )}
+
+            {/* Modal for viewing full image */}
+            <Modal show={showImageModal} onHide={handleCloseModal} centered>
+              <Modal.Header closeButton>
+              </Modal.Header>
+              <Modal.Body className="text-center">
+                {selectedImage && (
+                  <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />
+                )}
+              </Modal.Body>
+            </Modal>
 
             {/* Achievement Edit Modal */}
             {selectedAchievement && (
@@ -363,9 +388,10 @@ const AdminMainContent = () => {
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
                 <Col md={4} key={announcement.id}>
-                  <Card className="border-0">
-                    <Card.Img variant="top" src={announcement.image || "/placeholder.png"} />
-                    <div className="d-flex position-absolute top-0 end-0 m-2">
+                  <Card className="position-relative mb-3" id='conCard'>
+                    <Card.Img className='conImg' variant="top" src={announcement.image || "/placeholder.png"} onClick={() => handleImageClick(announcement.image_url || "/placeholder.png")}
+                      style={{ cursor: 'pointer' }} />
+                    <div className="d-flex position-absolute top-0 end-0 m-1">
                       <Button
                         variant="link"
                         className="p-0 me-3"
@@ -391,9 +417,20 @@ const AdminMainContent = () => {
               ))
             ) : (
               <Col>
-                <p>No announcements found.</p>
+                <p className='text-muted'>No announcements found.</p>
               </Col>
             )}
+
+            {/* Modal for viewing full image */}
+            <Modal show={showImageModal} onHide={handleCloseModal} centered>
+              <Modal.Header closeButton>
+              </Modal.Header>
+              <Modal.Body className="text-center">
+                {selectedImage && (
+                  <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />
+                )}
+              </Modal.Body>
+            </Modal>
 
             {/* Announcement Edit Modal */}
             {selectedAnnouncement && (

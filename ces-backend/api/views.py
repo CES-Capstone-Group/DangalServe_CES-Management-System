@@ -235,17 +235,52 @@ from rest_framework.permissions import IsAuthenticated
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
-    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Return only the proposals for the authenticated user
-        return Proposal.objects.filter(user=self.request.user)
+        status = self.request.query_params.get('status')
+        user = self.request.user
 
+        # Check if the user is an admin
+        if user.accountType == 'Admin':
+            # Admins can see all proposals, optionally filter by status
+            if status:
+                return Proposal.objects.filter(status=status)
+            return Proposal.objects.all()
+        else:
+            # Non-admin users can only see their own proposals, optionally filter by status
+            if status:
+                return Proposal.objects.filter(user_id=user, status=status)
+            return Proposal.objects.filter(user_id=user.id)
+        
 class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Ensure the user can only access their own proposals
-        return Proposal.objects.filter(user=self.request.user)
+        # Check if the user is an admin
+        if self.request.user.accountType == 'Admin':  # Or 'is_staff' if you're using the Django built-in staff status
+            # Admin can access all proposals
+            return Proposal.objects.all()
+        else:
+            # Non-admin users can only access their own proposals
+            return Proposal.objects.filter(user_id=self.request.user)
+    
+    def patch(self, request, *args, **kwargs):
+        proposal = self.get_object()
+        # Check if the user is an admin
+        if request.user.accountType == 'Admin':
+            # Admins can approve any proposal
+            proposal.status = request.data.get('status', proposal.status)
+            proposal.save()
+        elif request.user == proposal.user:
+            # Allow the owner of the proposal to make updates (if needed)
+            proposal.status = request.data.get('status', proposal.status)
+            proposal.save()
+        else:
+            # If the user is neither admin nor the owner, deny access
+            return Response({"detail": "You do not have permission to perform this action."}, status=403)
+        
+        serializer = self.get_serializer(proposal)
+        return Response(serializer.data)

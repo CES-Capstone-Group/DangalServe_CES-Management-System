@@ -45,9 +45,6 @@ function LoginPage() {
                 // Decode the access token to get the accountType and other user info
                 const decodedToken = jwtDecode(data.access);  // Using jwt_decode
                 const accountType = decodedToken.accountType;
-
-                console.log('Decoded Token:', decodedToken);
-                console.log(accountType);
                 if (rememberMe) {
                     localStorage.setItem('rememberedUsername', username);
                 } else {

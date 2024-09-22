@@ -106,9 +106,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 class ProposalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proposal
-        fields = '__all__'
+        exclude = ['user_id']  # Exclude user_id from validation
+        extra_kwargs = {
+            'status': {'required': True}  
+        }
 
     def create(self, validated_data):
-        user = self.context['request'].user  # Automatically assign the user
-        proposal = Proposal.objects.create(user=user, **validated_data)
+        user = self.context['request'].user  # Get the user object
+        proposal = Proposal.objects.create(user_id=user.id, **validated_data)  # Use user.id to get the user ID
         return proposal

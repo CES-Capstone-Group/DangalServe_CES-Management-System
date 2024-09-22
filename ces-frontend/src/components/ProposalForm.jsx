@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import '../App.css'
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container} from 'react-bootstrap';
-
+import { jwtDecode } from 'jwt-decode';
+import { Navigate } from 'react-router-dom';
 // import axios from 'axios';
 
 const ProposalForm = () => {
@@ -36,7 +37,8 @@ const ProposalForm = () => {
     risk_assessment: '',
     action_plans: '',
     sustainability_approaches: '',
-    budget_requirement: null // for file upload
+    budget_requirement: null, // for file upload
+    status: 'Pending'
   });
 
   const navigate = useNavigate();
@@ -59,47 +61,51 @@ const ProposalForm = () => {
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const submitData = new FormData();
-  
-    // Append each field to the FormData
+// Handle form submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const submitData = new FormData();
+
+  try {
+    // Retrieve the JWT token from localStorage
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      console.error('No token found. Please log in.');
+      return;
+    }
+
+    // Log the token for debugging
+    console.log("Token being sent:", token);
+    
+    // Append other form data (but not user_id)
     for (let key in formData) {
-      submitData.append(key, formData[key]);
-    }
-  
-    try {
-      // Retrieve the JWT token from localStorage
-      const token = localStorage.getItem('access_token'); // Use 'access_token' key as shown in the screenshot
-  
-      if (!token) {
-        console.error('No token found. Please log in.');
-        return;
+      if (formData[key]) {
+        submitData.append(key, formData[key]);
       }
-  
-      const response = await fetch('http://127.0.0.1:8000/api/proposals/', {
-        method: 'POST',
-        body: submitData, // Send FormData
-        headers: {
-          Authorization: `Bearer ${token}`, // Send the JWT token with Bearer prefix
-          // No need to set 'Content-Type' for FormData requests
-        },
-      });
-  
-      if (response.status === 201) {
-        // Redirect to pending proposals page on success
-        navigate('/coor/pending-proposal');
-      } else if (response.status === 401) {
-        console.error('Unauthorized: Check if your token is valid.');
-      } else {
-        const errorData = await response.json();
-        console.error('Error:', errorData);
-      }
-    } catch (error) {
-      console.error('Error submitting proposal:', error);
     }
-  };
+
+    // Send form data to the server
+    const response = await fetch('http://127.0.0.1:8000/api/proposals/', {
+      method: 'POST',
+      body: submitData,
+      headers: {
+        Authorization: `Bearer ${token}`,  // Token added to Authorization header
+      },
+    });
+
+    if (response.status === 201) {
+      // Redirect to pending proposals page on success
+      navigate('/coor/pending-proposal');
+    } else if (response.status === 401) {
+      console.error('Unauthorized: Check if your token is valid.');
+    } else {
+      const errorData = await response.json();
+      console.error('Error:', errorData);
+    }
+  } catch (error) {
+    console.error('Error submitting proposal:', error);
+  }
+};
 
 
   return (

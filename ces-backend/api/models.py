@@ -112,6 +112,13 @@ class Announcement(models.Model):
         return self.title
     
 class Proposal(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+        # Add other statuses if needed
+    ]
+
     proposal_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -141,6 +148,10 @@ class Proposal(models.Model):
     sustainability_approaches = models.TextField()
     budget_requirement = models.FileField(upload_to='budget_requirements/', blank=True, null=True)
 
+    # Add the status field with choices
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+
     def __str__(self):
         return self.title
+
 

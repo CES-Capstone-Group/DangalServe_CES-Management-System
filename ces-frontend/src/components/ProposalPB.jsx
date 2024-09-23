@@ -4,6 +4,7 @@ import { Col, Container, ProgressBar, Row } from "react-bootstrap";
 import { faCheckCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 const ProposalPB = ({dirApprove, vpreApproved, preApproved, brgyApproved}) => {
+    
     return(
         <Container fluid className=" justify-content-center align-items-center">
             <Row>
@@ -22,36 +23,36 @@ const ProposalPB = ({dirApprove, vpreApproved, preApproved, brgyApproved}) => {
             </Row>
             <Row className="mb-3">
                 <Col>
-                    <ProgressBar variant="success" now={100} style={{height: '1px'}}/>
+                    <ProgressBar variant={(dirApprove == 0) ? "danger" : "success"} now={dirApprove} style={{height: '1px'}}/>
                 </Col>
 
                 {/* Adding the FontAwesome Icon between the Progress Bars */}
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={faCheckCircle} className="text-success" size="1x" />
+                    <FontAwesomeIcon icon={(dirApprove == 0) ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
 
                 <Col>
-                    <ProgressBar variant="success" now={100} style={{height: '1px'}} />
+                    <ProgressBar variant={(vpreApproved == 0) ? "danger" : "success"} now={vpreApproved} style={{height: '1px'}} />
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={faCheckCircle} className="text-success" size="1x" />
+                    <FontAwesomeIcon icon={(vpreApproved == 0) ? faCheckCircle : faXmarkCircle}  size="3x" />
                 </Col>
 
                 <Col>
-                    <ProgressBar variant="danger" now={100} style={{height: '1px'}}/>
+                    <ProgressBar variant={(preApproved == 0) ? "danger" : "success"} now={preApproved} style={{height: '1px'}}/>
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={faXmarkCircle} className="text-danger" size="1x" />
+                    <FontAwesomeIcon icon={(preApproved == 0) ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
 
                 <Col >
-                    <ProgressBar variant="danger" now={100} style={{height: '1px'}}/>
+                    <ProgressBar variant={(brgyApproved == 0) ? "danger" : "success"} now={brgyApproved} style={{height: '1px'}}/>
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={faXmarkCircle} className="text-danger" size="1x" />
+                    <FontAwesomeIcon icon={(brgyApproved == 0) ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
             </Row>
             

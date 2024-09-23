@@ -11,6 +11,20 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
     const handleRejectShow = () => setRejectShow(true);
     const handleRejectClose = () => setRejectShow(false);
 
+    const [dirProgress, setDirProgress] = useState(0);
+    const [vpreProgress, setVpreProgress] = useState(0);
+    const [preProgress, setPreProgress] = useState(0);
+    const [brgyProgress, setBrgyProgress] = useState(0);
+
+    const [dirApproved, setDirApprove] = useState(false);
+    const [vpreApproved, setVpreApprove] = useState(false);
+    const [preApproved, setPreApprove] = useState(false);
+    const [brgyApproved, setBrgyApprove] = useState(false);
+    const [buttonText, setButtonText] = useState("Approve");
+
+    
+
+
     // Check if the user is an admin by decoding the JWT token
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -28,23 +42,45 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
     // Function to handle approval of the proposal
     const handleApprove = async () => {
         const token = localStorage.getItem("access_token"); // Get access token
-    
+        
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ status: "Approved" }), // Update status to "Approved"
-            });
-    
-            if (response.ok) {
-                console.log("Proposal approved successfully");
-                if (onApprove) onApprove(); // Trigger parent update on approve
-                handleClose(); // Close modal after approval
-            } else {
-                console.error("Failed to approve the proposal");
+            if (!dirApproved) {
+                setDirApprove(true);
+                setDirProgress(100);
+                setButtonText("VPRE Approve");
+            } else if (dirApproved && !vpreApproved) {
+                setVpreApprove(true);
+                setVpreProgress(100);
+                setButtonText("PRE Approve");
+            } else if (dirApproved && vpreApproved && !preApproved) {
+                setPreApprove(true);
+                setPreProgress(100);
+                setButtonText("BRGY Approve");
+            } else if (dirApproved && vpreApproved && preApproved && !brgyApproved) {
+                setBrgyApprove(true);
+                setBrgyProgress(100);
+                setButtonText("All Approvals Complete");
+            }
+            if (dirApproved && vpreApproved && preApproved && brgyApproved) {
+                const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ status: "Approved" }), // Update status to "Approved"
+                });
+
+                
+                if (response.ok) {
+                    console.log("Proposal approved successfully");
+                    // Logic to update the approval states and button text
+
+                    if (onApprove) onApprove(); // Trigger parent update on approve
+                    handleClose(); // Close modal after approval
+                } else {
+                    console.error("Failed to approve the proposal");
+                }
             }
         } catch (error) {
             console.error("Error approving the proposal:", error);
@@ -66,7 +102,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
                     onClick={handleApprove}
                     style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
                 >
-                    Approve
+                    <span id="txtApprove">{buttonText}</span>
                 </Button>
             )}
             {isAdmin && (
@@ -122,7 +158,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
                 </Modal.Header>
                 <Modal.Body >
                     
-                    <ProposalPB/>
+                    <ProposalPB dirApprove={dirProgress} vpreApproved={vpreProgress} preApproved={preProgress} brgyApproved={brgyProgress}/>
                     
                     <Form>
                         <Form.Group as={Row} className="mb-3">

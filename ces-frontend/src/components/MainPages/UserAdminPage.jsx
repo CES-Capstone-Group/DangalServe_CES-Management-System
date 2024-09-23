@@ -15,15 +15,26 @@ const UserAdminPage = () => {
       <header >
         <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
-      <Row >
-        <Col style={{ padding: '0px' }} md={sidebarOpen ? '2' : '0'} lg={sidebarOpen ? '2' : '0'}>
+      <Row>
+        <Col
+          xs={'2'}
+          sm={sidebarOpen ? '4' : '2'}
+          md={sidebarOpen ? '4' : '1'} 
+          lg={sidebarOpen ? '3' : '1'} 
+          xl={sidebarOpen ? '2' : '1'}
+          xxl={sidebarOpen ? '2' : '1'} 
+          >
           <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />    
         </Col>
-        <Col className={`d-flex justify-content-${sidebarOpen ? 'end' : 'center'} align-items-end`}
-             style={{marginTop: '10rem', padding: '0px',maxWidth: sidebarOpen ? '100%' : '100%'}} 
-             sm={12} md={sidebarOpen ? '10' : '12'} 
-             lg={sidebarOpen ? '10' : '12'}>
-            <Container>
+        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start`}
+             style={{marginTop: '10rem', paddingLeft:'20px', paddingRight: '20px'}}
+             xs={'10'}
+             sm={sidebarOpen ? '8' : '10'} 
+             md={sidebarOpen ? '8' : '11'} 
+             lg={sidebarOpen ? '9' : '11'}
+             xl={sidebarOpen ? '10' : '11'}
+             xxl={sidebarOpen ? '10' : '11'} >
+            <Container className="p-0">
               <Outlet/>
             </Container>
         </Col>

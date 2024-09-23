@@ -66,9 +66,8 @@ const CoorApprovedAch = () => {
                 </Col>
             </Row>
 
-            <Table>
-                <NewTable data = {rows}/>
-            </Table>         
+            <NewTable data = {rows}/>
+                    
         </Container>
         
     );

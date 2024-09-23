@@ -1,23 +1,33 @@
-body{
+body, html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+.element {
+  width: 100%; /* Adjusts to the parent's width */
+}
+.container {
+  max-width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
 }
 
 .side{
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center; 
+  align-items: start; 
   margin: 0px;
   padding: 0px;
   position: fixed;
   width: 300px; /* Full width when sidebar is open */
-  height: 100%;
+  height: 100vh;
   left: 0;
   top: 0;
   z-index: 1050;
   transition: 0.3s ease;
+  overflow-y: auto;
 }
 
 .side.collapsed {

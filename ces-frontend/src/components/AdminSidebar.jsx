@@ -10,7 +10,7 @@ import Logo from '../assets/pnclogo.png'
 const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
   return (
     <div>
-      <SidebarMenu expand="lg" className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side collapsed'}`} style={{ width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 30px', marginTop: sidebarOpen ? '0' : '50px' }}>
+      <SidebarMenu expand="lg" className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side collapsed'}`} style={{ width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 10px', marginTop: sidebarOpen ? '0' : '50px' }}>
         {/*SidebarMenu Header*/}
         <SidebarMenu.Toggle oncClick={toggleSidebar}>
           <SidebarMenu.Brand>

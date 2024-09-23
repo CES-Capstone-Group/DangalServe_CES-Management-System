@@ -17,13 +17,21 @@ const UserBarangayPage = () => {
         <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
       <Row>
-        <Col style={{ padding: '0px' }} md={sidebarOpen ? 3 : 0} lg={sidebarOpen ? 3 : 0}>
+        <Col style={{ padding: '0px' }} 
+          xs={'2'}
+          sm={sidebarOpen ? '4' : '2'}
+          md={sidebarOpen ? '4' : '1'} 
+          lg={sidebarOpen ? '2' : '1'} >
           <BrgySidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
         <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start`}
-             style={{marginTop: '10rem', padding: '0px',maxWidth: sidebarOpen ? '75%' : '100%', }}
-             sm={12} md={sidebarOpen ? '8' : '12'} 
-             lg={sidebarOpen ? '8' : '12'}>
+             style={{marginTop: '10rem', padding: '0px'}}
+             xs={'10'}
+             sm={sidebarOpen ? '8' : '10'} 
+             md={sidebarOpen ? '8' : '11'} 
+             lg={sidebarOpen ? '10' : '11'}
+             xl={sidebarOpen ? '10' : '11'}
+             xxl={sidebarOpen ? '10' : '11'} >
           <Container>
             <Outlet/>
           </Container>

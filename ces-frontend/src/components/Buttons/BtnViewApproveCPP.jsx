@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Modal, Col, Row } from "react-bootstrap";
+import { Button, Form, Modal, Col, Row, Container } from "react-bootstrap";
 import {jwtDecode} from "jwt-decode";  // Import jwt-decode
+import ProposalPB from "../ProposalPB";
 
 const BtnViewApproveCPP = ({ proposal, onApprove }) => {
     const [show, setShow] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+
+    const [rejectShow , setRejectShow] = useState(false);
+    const handleRejectShow = () => setRejectShow(true);
+    const handleRejectClose = () => setRejectShow(false);
 
     // Check if the user is an admin by decoding the JWT token
     useEffect(() => {
@@ -49,7 +54,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
     return (
         <>
             <Button
-                className="me-3"
+                className="me-2"
                 onClick={handleShow}
                 style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
             >
@@ -57,19 +62,66 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
             </Button>
             {isAdmin && (
                 <Button
+                    className="me-2"
                     onClick={handleApprove}
                     style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
                 >
                     Approve
                 </Button>
             )}
+            {isAdmin && (
+                <Button
+                    onClick={handleRejectShow}
+                    style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
+                >
+                    Reject
+                </Button>
+            )}
+
+            {/* Modal for Reject and Remarks */}
+            <Modal backdrop="static" centered size="lg" show={rejectShow} onHide={handleRejectClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Proposal Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>
+                                Proposal Title
+                            </Form.Label>
+                            <Col sm={8}>
+                                <Form.Control readOnly type="text" value={proposal.title} />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>
+                                Remarks
+                            </Form.Label>
+                            <Col sm={8}>
+                                <Form.Control as="textarea"/>
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="success" onClick={handleRejectClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
             {/* Modal for viewing proposal details */}
             <Modal backdrop="static" centered size="lg" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Proposal Details</Modal.Title>
+                    
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body >
+                    <Container className="p-5">
+                        <ProposalPB/>
+                    </Container>
                     <Form>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>

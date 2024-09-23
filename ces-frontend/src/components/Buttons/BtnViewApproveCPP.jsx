@@ -107,6 +107,9 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
 
                 <Modal.Footer>
                     <Button variant="success" onClick={handleRejectClose}>
+                        Confirm
+                    </Button>
+                    <Button variant="success" onClick={handleRejectClose}>
                         Close
                     </Button>
                 </Modal.Footer>
@@ -115,8 +118,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
             {/* Modal for viewing proposal details */}
             <Modal backdrop="static" centered size="lg" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Proposal Details</Modal.Title>
-                    
+                    <Modal.Title>Reject Proposal Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     

@@ -1,4 +1,5 @@
 import React from "react";
+import '../App.css';
 import {Container, Table } from "react-bootstrap";
 import BtnEvaluate from "./Buttons/BtnEvaluate";
 

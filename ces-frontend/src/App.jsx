@@ -43,6 +43,9 @@ import PrivateRoute from './components/PrivateRoute';
 import UnauthorizedPage from './components/MainPages/UnauthorizedPage.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import ManageAgenda from './components/ManageAgenda.jsx';
+import ManageAchievements from './components/ManageAchievements.jsx';
+import ManageAnnouncement from './components/ManageAnnouncement.jsx';
 
 
 const App = () => {
@@ -70,6 +73,9 @@ const App = () => {
             <Route path='involvement' element={<InvolvementPage />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='kpi' element={<KpiPage />} />
+            <Route path='manage-agenda' element={<ManageAgenda />} />
+            <Route path='manage-ach' element={<ManageAchievements />} />
+            <Route path='manage-ann' element={<ManageAnnouncement />} />
           </Route>
         </Route>
 

@@ -7,6 +7,7 @@ import BtnAddResearchAgenda from './Buttons/BtnAddResearchAgenda'; // Add Resear
 import BtnEditAchievement from './Buttons/BtnEditAchievement'; // Edit Achievement Modal
 import BtnEditAnnouncement from './Buttons/BtnEditAnnouncement'; // Edit Announcement Modal
 import BtnEditResearchAgenda from './Buttons/BtnEditResearchAgenda'; // Edit Research Agenda Modal
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -29,6 +30,12 @@ const AdminMainContent = () => {
 
   const [showEditModalAgenda, setShowEditModalAgenda] = useState(false); // Modal state for research agenda
   const [selectedResearchAgenda, setSelectedResearchAgenda] = useState(null); // State for selected research agenda
+
+  // Navigation
+  let navigate = useNavigate();
+  const routeChange = (path) => {
+    navigate(path);
+  };
 
   // Fetch achievements data
   const fetchAchievements = async () => {
@@ -231,11 +238,16 @@ const AdminMainContent = () => {
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
 
-          {/* Add Research Agenda Button */}
+          {/* Add Research Agenda and Manage Button */}
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Research Agendas</h3>
-              <BtnAddResearchAgenda onResearchAgendaAdded={handleResearchAgendaAdded} />
+              <div className='d-flex'>
+                <BtnAddResearchAgenda onResearchAgendaAdded={handleResearchAgendaAdded} />
+                <Button onClick={() => routeChange('/admin/manage-agenda')} className=" shadow ms-1" style={{ backgroundColor: "#71A872", border: '0px', color: 'white', margin: '15px' }}>
+                  Manage
+                </Button>
+              </div>
             </Col>
           </Row>
 
@@ -297,7 +309,12 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Achievements</h3>
-              <BtnAddAchievement onAchievementAdded={handleAchievementAdded} />
+              <div className='d-flex'>
+                <BtnAddAchievement onAchievementAdded={handleAchievementAdded} />
+                <Button onClick={() => routeChange('/admin/manage-ach')} className="shadow ms-1" style={{ backgroundColor: "#71A872", border: '0px', color: 'white', margin: '15px' }}>
+                  Manage
+                </Button>
+              </div>
             </Col>
           </Row>
 
@@ -377,7 +394,12 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Announcements</h3>
-              <BtnAddAnnouncement onAnnouncementAdded={handleAnnouncementAdded} />
+              <div className='d-flex'>
+                <BtnAddAnnouncement onAnnouncementAdded={handleAnnouncementAdded} />
+                <Button onClick={() => routeChange('/admin/manage-ann')} className="shadow ms-1" style={{ backgroundColor: "#71A872", border: '0px', color: 'white', margin: '15px' }}>
+                  Manage
+                </Button>
+              </div>
             </Col>
           </Row>
 

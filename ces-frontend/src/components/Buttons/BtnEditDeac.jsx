@@ -83,7 +83,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                 View/Edit
             </Button>
 
-            <Button style={{ backgroundColor: formData.status === "Active" ? "red" : "#71A872", color: "white" , border: '0px' }}  onClick={handleDeactivate}>
+            <Button style={{ backgroundColor: formData.status === "Active" ? "#ff3232" : "#71A872", color: "white" , border: '0px' }}  onClick={handleDeactivate}>
                 {formData.status === "Active" ? "Deactivate" : "Activate"}
             </Button>
 

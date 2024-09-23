@@ -119,9 +119,9 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
                     
                 </Modal.Header>
                 <Modal.Body >
-                    <Container className="p-5">
-                        <ProposalPB/>
-                    </Container>
+                    
+                    <ProposalPB/>
+                    
                     <Form>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>

@@ -113,5 +113,5 @@ class ProposalSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user  # Get the user object
-        proposal = Proposal.objects.create(user_id=user.id, **validated_data)  # Use user.id to get the user ID
+        proposal = Proposal.objects.create(user_id=user, **validated_data)  # Use user.id to get the user ID
         return proposal

@@ -8,43 +8,43 @@ const AdminPenProposal = () => {
     const [loading, setLoading] = useState(true);
 
     // Fetch all pending proposals from the backend
-    useEffect(() => {
-        const fetchProposals = async () => {
-            const token = localStorage.getItem('access_token'); // Get the token from localStorage
-            if (!token) {
-                console.error("No token found.");
-                setLoading(false); // Stop loading if there's no token
-                return;
-            }
+    const fetchProposals = async () => {
+        const token = localStorage.getItem('access_token'); // Get the token from localStorage
+        if (!token) {
+            console.error("No token found.");
+            setLoading(false); // Stop loading if there's no token
+            return;
+        }
 
-            try {
-                // Fetch only the pending proposals by passing the `status=Pending` parameter
-                const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Pending', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,  // Add the Authorization header
-                    },
-                });
+        try {
+            // Fetch only the pending proposals by passing the `status=Pending` parameter
+            const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Pending', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,  // Add the Authorization header
+                },
+            });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    // Update the proposals state with the fetched data
-                    setProposals(data);
-                    setLoading(false); // Stop loading once data is fetched
-                } else if (response.status === 401) {
-                    console.error('Unauthorized: Check if the token is valid.');
-                    setLoading(false);
-                } else {
-                    console.error('Error fetching proposals:', response.statusText);
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.error('Error fetching proposals:', error);
+            if (response.ok) {
+                const data = await response.json();
+                // Update the proposals state with the fetched data
+                setProposals(data);
+                setLoading(false); // Stop loading once data is fetched
+            } else if (response.status === 401) {
+                console.error('Unauthorized: Check if the token is valid.');
+                setLoading(false);
+            } else {
+                console.error('Error fetching proposals:', response.statusText);
                 setLoading(false);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching proposals:', error);
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchProposals();
     }, []);
 

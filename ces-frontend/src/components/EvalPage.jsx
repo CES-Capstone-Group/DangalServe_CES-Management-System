@@ -2,6 +2,7 @@ import React from "react";
 import '../App.css';
 import {Container, Table } from "react-bootstrap";
 import BtnEvaluate from "./Buttons/BtnEvaluate";
+import "./table.css"
 
 
 const EvalPage = () => {
@@ -11,7 +12,7 @@ const EvalPage = () => {
                 <h1> ACTIVITY EVALUATION </h1>
             </div>
 
-            <Table>
+            <Table responsive bordered striped hover className="tableStyle">
                 <thead>
                     <tr>
                         <th>Proposal Title</th>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 
 const MainContent = () => {
   const [achievements, setAchievements] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [error, setError] = useState(null);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
@@ -28,6 +30,18 @@ const MainContent = () => {
   useEffect(() => {
     fetchResearchAgendas();
   }, []);
+
+  // Function to handle opening the modal with the clicked image
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowImageModal(false);
+    setSelectedImage(null);
+  };
+
 
 
   // Fetch achievements data from the server
@@ -70,27 +84,27 @@ const MainContent = () => {
   }
 
   return (
-    <Container fluid>
+    <Container fluid className='custom-container'>
       <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
-          
+
           {/* Carousel Section */}
           <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
             <div className="carousel-inner">
               {researchAgendas.length > 0 ? (
                 researchAgendas.map((agenda, index) => (
                   <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                    <img src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
+                    <img id='research-agenda-img' src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
                   </div>
                 ))
               ) : (
-                <p>No research agendas found.</p>
+                <p className='text-muted'>No research agendas found.</p>
               )}
 
-              </div>
+            </div>
 
-              <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
               <span className="visually-hidden">Previous</span>
             </button>
@@ -112,8 +126,9 @@ const MainContent = () => {
             {achievements.length > 0 ? (
               achievements.map((achievement) => (
                 <Col md={4} key={achievement.id}>
-                  <Card>
-                    <Card.Img variant="top" src={achievement.image || 'placeholder.png'} />
+                  <Card className="position-relative mb-3" id='conCard'>
+                    <Card.Img variant="top" className='conImg' src={achievement.image || 'placeholder.png'} onClick={() => handleImageClick(achievement.image_url || "/placeholder.png")}
+                      style={{ cursor: 'pointer' }} />
                     <Card.Body>
                       <Card.Title>{achievement.award_title}</Card.Title>
                       <Card.Text>
@@ -126,11 +141,20 @@ const MainContent = () => {
                 </Col>
               ))
             ) : (
-              <p>No achievements found</p>
+              <p className='text-muted'>No achievements found</p>
             )}
           </Row>
 
-          <br />
+          {/* Modal for viewing full image */}
+          <Modal show={showImageModal} onHide={handleCloseModal} centered>
+            <Modal.Header closeButton>
+            </Modal.Header>
+            <Modal.Body className="text-center">
+              {selectedImage && (
+                <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />
+              )}
+            </Modal.Body>
+          </Modal>
 
           {/* Announcements Section */}
           <Row>
@@ -144,8 +168,9 @@ const MainContent = () => {
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
                 <Col md={4} key={announcement.id}>
-                  <Card className="border-0">
-                    <Card.Img variant="top" src={announcement.image || 'placeholder.png'} />
+                  <Card className="position-relative mb-3" id='conCard'>
+                    <Card.Img className='conImg' variant="top" src={announcement.image || 'placeholder.png'} onClick={() => handleImageClick(announcement.image_url || "/placeholder.png")}
+                      style={{ cursor: 'pointer' }} />
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
                       <Card.Text>{announcement.details}</Card.Text>
@@ -155,8 +180,19 @@ const MainContent = () => {
                 </Col>
               ))
             ) : (
-              <p>No announcements found</p>
+              <p className='text-muted'>No announcements found</p>
             )}
+
+            {/* Modal for viewing full image */}
+            <Modal show={showImageModal} onHide={handleCloseModal} centered>
+              <Modal.Header closeButton>
+              </Modal.Header>
+              <Modal.Body className="text-center">
+                {selectedImage && (
+                  <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />
+                )}
+              </Modal.Body>
+            </Modal>
           </Row>
         </Col>
       </Row>

@@ -15,7 +15,7 @@ const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); //State for viewing images
   const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
   const [error, setError] = useState(null);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
@@ -57,6 +57,7 @@ const AdminMainContent = () => {
     fetchAchievements();
   }, []);
 
+  // Function to handle opening the modal with the clicked image
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
     setShowImageModal(true);
@@ -259,7 +260,7 @@ const AdminMainContent = () => {
               {researchAgendas.length > 0 ? (
                 researchAgendas.map((agenda, index) => (
                   <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                    <img src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
+                    <img id='research-agenda-img' src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
 
                     {/* Button Container */}
                     <div className="carousel-buttons">
@@ -284,6 +285,7 @@ const AdminMainContent = () => {
               ) : (
                 <p className='text-muted'>No research agendas found.</p>
               )}
+
 
               {/* Research Agenda Edit Modal */}
               {selectedResearchAgenda && (

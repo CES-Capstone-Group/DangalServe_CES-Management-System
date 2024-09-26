@@ -49,7 +49,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
               onClick={sidebarToggle}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              style={{backgroundColor: "transparent", transition: 'border 0.3s ease-in'}}
+              style={{backgroundColor: "transparent", transition: 'none'}}
             >
               <FontAwesomeIcon icon={faBars} color='white' />
             </Button> 

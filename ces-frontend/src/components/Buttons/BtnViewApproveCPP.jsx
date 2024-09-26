@@ -8,6 +8,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const [rejectShow, setRejectShow] = useState(false);
+  const [rejectReason, setRejectReason] = useState(""); // Store reject reason
   const handleRejectShow = () => setRejectShow(true);
   const handleRejectClose = () => setRejectShow(false);
 
@@ -115,6 +116,32 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
     }
   };
 
+  const handleReject = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: rejectReason }), // Update status to rejection reason
+        }
+      );
+      if (response.ok) {
+        console.log("Proposal rejected successfully");
+        handleRejectClose(); // Close the reject modal
+        if (onApprove) onApprove(); // Trigger parent update
+      } else {
+        console.error("Failed to reject the proposal");
+      }
+    } catch (error) {
+      console.error("Error rejecting the proposal:", error);
+    }
+  };
+
   return (
     <>
       <Button
@@ -154,7 +181,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
         onHide={handleRejectClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Proposal Details</Modal.Title>
+          <Modal.Title>Reject Proposal</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -164,6 +191,23 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
               </Form.Label>
               <Col sm={8}>
                 <Form.Control readOnly type="text" value={proposal.title} />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>
+                Reason for Rejection
+              </Form.Label>
+              <Col sm={8}>
+                <Form.Select
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                >
+                  <option value="">Select Reason</option>
+                  <option value="Rejected">Rejected by Director</option>
+                  <option value="Rejected by VPRE">Rejected by VPRE</option>
+                  <option value="Rejected by President">Rejected by President</option>
+                </Form.Select>
               </Col>
             </Form.Group>
 
@@ -179,10 +223,10 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="success" onClick={handleRejectClose}>
-            Confirm
+          <Button variant="danger" onClick={handleReject}>
+            Confirm Rejection
           </Button>
-          <Button variant="success" onClick={handleRejectClose}>
+          <Button variant="secondary" onClick={handleRejectClose}>
             Close
           </Button>
         </Modal.Footer>
@@ -204,7 +248,6 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
             dirApprove={dirProgress}
             vpreApproved={vpreProgress}
             preApproved={preProgress}
-            brgyApproved={0}
           />
 
           <Form>
@@ -234,7 +277,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
                 <Form.Control
                   readOnly
                   type="text"
-                  value={new Date(proposal.target_date).toLocaleDateString()} // Format the date
+                  value={new Date(proposal.target_date).toLocaleDateString()}
                 />
               </Col>
             </Form.Group>

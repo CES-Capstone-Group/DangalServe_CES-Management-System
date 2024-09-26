@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Logo from '../assets/pnclogo.png';
+import '../App.css'
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 const TopNav = ({ sidebarOpen, sidebarToggle }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   const [showLogoutModal, setShowLogoutModal] = useState(false); // State to show/hide modal
   const navigate = useNavigate(); // Hook to programmatically navigate
 
@@ -40,8 +43,15 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
         }}>
         <Container fluid className='d-flex '>
           <Navbar.Brand style={{ color: 'white' }}>
-            <Button variant="outline-light" className="ms-2" onClick={sidebarToggle}>
-              <FontAwesomeIcon icon={faBars}  />
+            <Button
+              variant='outline-light'
+              className={`ms-1 ${isHovered ? 'border-1' : 'border-0'}`}
+              onClick={sidebarToggle}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{backgroundColor: "transparent", transition: 'border 0.3s ease-in'}}
+            >
+              <FontAwesomeIcon icon={faBars} color='white' />
             </Button> 
             <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
               {accountType}

@@ -106,9 +106,13 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 class ProposalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proposal
+        # fields = '__all__' 
         exclude = ['user_id']  # Exclude user_id from validation
         extra_kwargs = {
-            'status': {'required': True}  
+            'status': {'required': True},
+            'directorSignDate': {'required': True, 'allow_null': True},
+            'VPRESignDate': {'required': True, 'allow_null': True},
+            'PRESignDate': {'required': True, 'allow_null': True},
         }
 
     def create(self, validated_data):

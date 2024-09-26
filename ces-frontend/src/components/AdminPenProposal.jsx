@@ -18,7 +18,7 @@ const AdminPenProposal = () => {
 
         try {
             // Fetch only the pending proposals by passing the `status=Pending` parameter
-            const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Pending', {
+            const response = await fetch('http://127.0.0.1:8000/api/proposals/?status__ne=Approved', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ const ProposalPB = ({dirApprove, vpreApproved, preApproved, brgyApproved}) => {
 
                 {/* Adding the FontAwesome Icon between the Progress Bars */}
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={(dirApprove == 0) ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon icon={(dirApprove == 0) ? faXmarkCircle : faCheckCircle} size="3x" />
                 </Col>
 
                 <Col>
@@ -36,7 +36,7 @@ const ProposalPB = ({dirApprove, vpreApproved, preApproved, brgyApproved}) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={(vpreApproved == 0) ? faCheckCircle : faXmarkCircle}  size="3x" />
+                    <FontAwesomeIcon icon={(vpreApproved == 0) ? faXmarkCircle : faCheckCircle}  size="3x" />
                 </Col>
 
                 <Col>
@@ -44,7 +44,7 @@ const ProposalPB = ({dirApprove, vpreApproved, preApproved, brgyApproved}) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={(preApproved == 0) ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon icon={(preApproved == 0) ? faXmarkCircle : faCheckCircle} size="3x" />
                 </Col>
 
                 <Col >
@@ -52,7 +52,7 @@ const ProposalPB = ({dirApprove, vpreApproved, preApproved, brgyApproved}) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-centter align-items-center">
-                    <FontAwesomeIcon icon={(brgyApproved == 0) ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon icon={(brgyApproved == 0) ? faXmarkCircle : faCheckCircle} size="3x" />
                 </Col>
             </Row>
             

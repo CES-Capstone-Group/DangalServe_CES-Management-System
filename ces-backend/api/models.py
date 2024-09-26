@@ -114,9 +114,11 @@ class Announcement(models.Model):
 class Proposal(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
+        ('Approved by Director', 'Approved by Director'),
+        ('Approved by VPRE', 'Approved by VPRE'),
+        ('Approved by Barangay', 'Approved by Barangay'),
+        ('Approved by President', 'Approved by President'),  # New status added
         ('Rejected', 'Rejected'),
-        # Add other statuses if needed
     ]
 
     proposal_id = models.AutoField(primary_key=True)
@@ -135,7 +137,7 @@ class Proposal(models.Model):
     barangay = models.BooleanField(default=False)
     government_org = models.CharField(max_length=255, blank=True, null=True)
     non_government_org = models.CharField(max_length=255, blank=True, null=True)
-    identified_needs = models.FileField(upload_to='identified_needs/', blank=True, null=True)
+    identified_needs = models.FileField(upload_to='Proposals/identified_needs/', blank=True, null=True)
     general_objectives = models.TextField()
     specific_objectives = models.TextField()
     success_indicators = models.TextField()
@@ -146,10 +148,14 @@ class Proposal(models.Model):
     risk_assessment = models.TextField()
     action_plans = models.TextField()
     sustainability_approaches = models.TextField()
-    budget_requirement = models.FileField(upload_to='budget_requirements/', blank=True, null=True)
+    budget_requirement = models.FileField(upload_to='Proposals/budget_requirements/', blank=True, null=True)
 
     # Add the status field with choices
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    directorSignDate = models.DateField(null=True, blank=True)
+    VPRESignDate = models.DateField(null=True, blank=True)
+    PRESignDate = models.DateField(null=True, blank=True)
+    BRGYSignDate = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Pending')
 
     def __str__(self):
         return self.title

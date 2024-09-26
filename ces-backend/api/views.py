@@ -266,21 +266,55 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             # Non-admin users can only access their own proposals
             return Proposal.objects.filter(user_id=self.request.user)
-    
+        
     def patch(self, request, *args, **kwargs):
         proposal = self.get_object()
-        # Check if the user is an admin
-        if request.user.accountType == 'Admin':
-            # Admins can approve any proposal
-            proposal.status = request.data.get('status', proposal.status)
-            proposal.save()
-        elif request.user == proposal.user:
-            # Allow the owner of the proposal to make updates (if needed)
-            proposal.status = request.data.get('status', proposal.status)
-            proposal.save()
-        else:
-            # If the user is neither admin nor the owner, deny access
-            return Response({"detail": "You do not have permission to perform this action."}, status=403)
         
+        # Check if the user has permission to approve the proposal
+        if request.user.accountType == 'Admin':
+            new_status = request.data.get('status', proposal.status)       
+            # Automatically set the sign date based on the status
+            if new_status == 'Approved by Director':
+                
+                proposal.directorSignDate = timezone.now().date()
+                proposal.status = new_status
+                proposal.save()
+            elif new_status == 'Approved by VPRE':
+                proposal.VPRESignDate = timezone.now().date()
+                proposal.status = new_status
+                proposal.save()
+            elif new_status == 'Approved by President':
+                proposal.PRESignDate = timezone.now().date()
+                proposal.status = new_status
+                proposal.save()
+            
+
+        elif request.user == proposal.user:
+            proposal.title = request.data.get('title', proposal.title)
+            proposal.project_description = request.data.get('project_description', proposal.project_description)
+            proposal.save()
+
+        else:
+            return Response({"detail": "You do not have permission to perform this action."}, status=403)
+
         serializer = self.get_serializer(proposal)
         return Response(serializer.data)
+
+    
+    # def patch(self, request, *args, **kwargs):
+    #     proposal = self.get_object()
+    #     # Check if the user is an admin
+    #     if request.user.accountType == 'Admin':
+    #         # Admins can approve any proposal
+    #         proposal.status = request.data.get('status', proposal.status)
+    #         proposal.save()
+    #     elif request.user == proposal.user:
+    #         # Allow the owner of the proposal to make updates (if needed)
+    #         proposal.status = request.data.get('status', proposal.status)
+    #         proposal.save()
+    #     else:
+    #         # If the user is neither admin nor the owner, deny access
+    #         return Response({"detail": "You do not have permission to perform this action."}, status=403)
+        
+    #     serializer = self.get_serializer(proposal)
+    #     return Response(serializer.data)

@@ -51,6 +51,39 @@ body, html {
   transition: 0.3s;
 }
 
+@media screen and (max-width: 430px){
+  .mobileMain{
+    margin: 1em;
+  }
+
+  .side{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: start; 
+    margin: 0px;
+    padding: 0px;
+    position: fixed;
+    width: 300px; /* Full width when sidebar is open */
+    height: 100vh;
+    left: -100%;
+    top: 0;
+    z-index: 1050;
+    transition: 0.3s ease;
+    overflow-y: auto;
+  }
+  
+  .side.collapsed {
+    width: 0px; /* Narrow width when sidebar is collapsed */
+    z-index: 1020;
+  }
+
+  .sidebar-menu.active{
+    left: 0%;
+    transition: 0.3s;
+  }
+}
+
 .topNav{
   width: 100%;
   position: fixed;

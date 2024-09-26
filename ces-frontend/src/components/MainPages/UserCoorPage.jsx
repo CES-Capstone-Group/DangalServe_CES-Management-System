@@ -23,7 +23,7 @@ const UserCoorPage = () => {
         lg={sidebarOpen ? '2' : '1'} >
           <CoorSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start`}
+        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start mobileMain`}
              style={{marginTop: '10rem', padding: '0px'}}
              xs={'10'}
              sm={sidebarOpen ? '8' : '10'} 

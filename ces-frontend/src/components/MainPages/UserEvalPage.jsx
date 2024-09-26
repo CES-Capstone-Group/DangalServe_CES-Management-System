@@ -17,21 +17,21 @@ const UserEvalPage = () => {
       </header>
       <Row>
         <Col style={{ padding: '0px' }} 
-            xs={'2'}
+            xs={'0'}
             sm={sidebarOpen ? '4' : '2'}
             md={sidebarOpen ? '4' : '1'} 
             lg={sidebarOpen ? '2' : '1'} >
           <EvalSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start`}
+        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start mobileMain`}
              style={{marginTop: '10rem', padding: '0px'}}
-             xs={'10'}
+             xs={'12'}
              sm={sidebarOpen ? '8' : '10'} 
              md={sidebarOpen ? '8' : '11'} 
              lg={sidebarOpen ? '10' : '11'}
              xl={sidebarOpen ? '10' : '11'}
              xxl={sidebarOpen ? '10' : '11'} >
-          <Container>
+          <Container className="mobileMain">
             <Outlet/>
           </Container>
         </Col>

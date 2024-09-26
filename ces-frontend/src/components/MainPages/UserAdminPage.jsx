@@ -17,7 +17,7 @@ const UserAdminPage = () => {
       </header>
       <Row>
         <Col
-          xs={'2'}
+          xs={'0'}
           sm={sidebarOpen ? '4' : '2'}
           md={sidebarOpen ? '4' : '1'} 
           lg={sidebarOpen ? '3' : '1'} 
@@ -26,7 +26,7 @@ const UserAdminPage = () => {
           >
           <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />    
         </Col>
-        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start`}
+        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start mobileMain`}
              style={{marginTop: '10rem', paddingLeft:'20px', paddingRight: '20px'}}
              xs={'10'}
              sm={sidebarOpen ? '8' : '10'} 

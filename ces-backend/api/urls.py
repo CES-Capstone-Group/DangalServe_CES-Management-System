@@ -18,6 +18,7 @@ urlpatterns = [
 
     # Accounts Paths
     path('users/', views.get_all_user, name="get_user"),
+    # path('users/<int:pk>/', UserDetailView.as_view(), name='user-detail'),
     path('users/create_user/', views.create_user, name="create_user"),
     path('users/user_info_action/<int:user_id>/', views.user_info_action, name="user_info_action"),
 

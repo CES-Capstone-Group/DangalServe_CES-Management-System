@@ -248,6 +248,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
             dirApprove={dirProgress}
             vpreApproved={vpreProgress}
             preApproved={preProgress}
+            brgyApproved={0}
           />
 
           <Form>

@@ -8,7 +8,7 @@ from .models import Achievement, Announcement, Account, ResearchAgenda
 from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
-# from .models import CustomAuthToken
+from .models import CustomAuthToken
 from rest_framework import viewsets
 from django.utils import timezone
 
@@ -38,6 +38,7 @@ class RefreshTokenView(APIView):
                 'user_id': token.user.user_id,
                 'username': token.user.username,
                 'accountType': token.user.accountType,
+                'department': token.user.department,
             }, status=status.HTTP_200_OK)
 
         except CustomAuthToken.DoesNotExist:
@@ -71,6 +72,11 @@ class RefreshTokenView(APIView):
 
 
 # Account Views
+
+# class UserDetailView(generics.RetrieveAPIView):
+#     queryset = Account.objects.all()
+#     serializer_class = TblAccountsSerializer
+    
 @api_view(['GET'])
 def get_all_user(request):
     try:
@@ -240,7 +246,8 @@ class ProposalListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         status = self.request.query_params.get('status')
         user = self.request.user
-
+        department = self.request.user.department
+        
         # Check if the user is an admin
         if user.accountType == 'Admin':
             # Admins can see all proposals, optionally filter by status
@@ -250,8 +257,15 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         else:
             # Non-admin users can only see their own proposals, optionally filter by status
             if status:
-                return Proposal.objects.filter(user_id=user, status=status)
-            return Proposal.objects.filter(user_id=user.id)
+                return Proposal.objects.extra(
+                    where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
+                    params=[department]
+                ).filter(status=status)
+        
+            return Proposal.objects.extra(
+                where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
+                params=[department]
+            )
         
 class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Proposal.objects.all()

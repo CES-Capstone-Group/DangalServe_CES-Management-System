@@ -110,14 +110,15 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 class Proposal(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('Approved by Director', 'Approved by Director'),
         ('Approved by VPRE', 'Approved by VPRE'),
         ('Approved by Barangay', 'Approved by Barangay'),
-        ('Approved by President', 'Approved by President'),  # New status added
+        ('Approved by President', 'Approved by President'),
+        ('Partly Approved by Barangay', 'Partly Approved by Barangay'),
         ('Rejected', 'Rejected'),
     ]
 
@@ -132,7 +133,7 @@ class Proposal(models.Model):
     project_description = models.TextField()
     target_date = models.DateField()
     location = models.CharField(max_length=255)
-    partner_community = models.CharField(max_length=255)
+    partner_community = models.CharField(max_length=255)  # Comma-separated list of barangays
     school = models.BooleanField(default=False)
     barangay = models.BooleanField(default=False)
     government_org = models.CharField(max_length=255, blank=True, null=True)
@@ -150,14 +151,43 @@ class Proposal(models.Model):
     sustainability_approaches = models.TextField()
     budget_requirement = models.FileField(upload_to='Proposals/budget_requirements/', blank=True, null=True)
 
-    # Add the status field with choices
     directorSignDate = models.DateField(null=True, blank=True)
     VPRESignDate = models.DateField(null=True, blank=True)
     PRESignDate = models.DateField(null=True, blank=True)
-    BRGYSignDate = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Pending')
 
+    def partner_community_list(self):
+        """Helper method to get the partner community as a list."""
+        return [barangay.strip() for barangay in self.partner_community.split(',')]
+
+    def update_overall_status(self):
+        """
+        Update the overall status based on barangay approvals.
+        """
+        total_barangays = len(self.partner_community_list())
+        approved_barangays = self.barangay_approvals.filter(status='Approved').count()
+
+        if self.barangay_approvals.filter(status='Rejected').exists():
+            self.status = 'Rejected'
+        elif approved_barangays == total_barangays:
+            self.status = 'Approved by Barangay'
+        elif approved_barangays > 0:
+            self.status = 'Partly Approved by Barangay'  # New status
+        else:
+            self.status = 'Approved by President'
+        
+        self.save()
+
+
+class BarangayApproval(models.Model):
+    proposal = models.ForeignKey(Proposal, related_name='barangay_approvals', on_delete=models.CASCADE)
+    barangay_name = models.CharField(max_length=255)
+    status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected')], default='Pending')
+    sign_date = models.DateField(null=True, blank=True)
+    remarks = models.TextField(blank=True, null=True)
+
+    class Meta:
+        unique_together = ('proposal', 'barangay_name')
+
     def __str__(self):
-        return self.title
-
-
+        return f"{self.barangay_name} - {self.status}"

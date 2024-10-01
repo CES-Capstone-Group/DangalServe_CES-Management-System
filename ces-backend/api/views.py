@@ -4,11 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Achievement, Announcement, Account, ResearchAgenda
+from .models import Achievement, Announcement, Account, ResearchAgenda, BarangayApproval
 from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
-from .models import CustomAuthToken
+# from .models import CustomAuthToken
 from rest_framework import viewsets
 from django.utils import timezone
 
@@ -23,7 +23,7 @@ class RefreshTokenView(APIView):
 
         try:
             # Find the token using the refresh token
-            token = CustomAuthToken.objects.get(refresh_key=refresh_token)
+            token = TokenObtainPairView.objects.get(refresh_key=refresh_token)
 
             # Check if the refresh token is still valid
             if not token.is_refresh_token_valid():
@@ -41,7 +41,7 @@ class RefreshTokenView(APIView):
                 'department': token.user.department,
             }, status=status.HTTP_200_OK)
 
-        except CustomAuthToken.DoesNotExist:
+        except TokenObtainPairView.DoesNotExist:
             return Response({'error': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
 
 # View for login using custom authentication with Account model
@@ -254,6 +254,10 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             if status:
                 return Proposal.objects.filter(status=status)
             return Proposal.objects.all()
+        elif user.accountType == 'Proponent':
+            if status:
+                return Proposal.objects.filter(user_id=user, status=status)
+            return Proposal.objects.filter(user_id=user)
         else:
             # Non-admin users can only see their own proposals, optionally filter by status
             if status:
@@ -261,6 +265,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                     where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
                     params=[department]
                 ).filter(status=status)
+                print('haha')
         
             return Proposal.objects.extra(
                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
@@ -280,6 +285,7 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             # Non-admin users can only access their own proposals
             return Proposal.objects.filter(user_id=self.request.user)
+        
         
     def patch(self, request, *args, **kwargs):
         proposal = self.get_object()
@@ -313,7 +319,37 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         serializer = self.get_serializer(proposal)
         return Response(serializer.data)
+class BarangayApprovalView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def patch(self, request, proposal_id):
+        user = request.user
+        barangay = user.department  # Assuming the barangay is stored in the department field
+
+        try:
+            proposal = Proposal.objects.get(proposal_id=proposal_id)
+        except Proposal.DoesNotExist:
+            return Response({"error": "Proposal not found"}, status=404)
+
+        partner_communities = proposal.partner_community_list()
+
+        if barangay not in partner_communities:
+            return Response({"error": "You are not authorized to approve this proposal."}, status=403)
+
+        barangay_approval, created = BarangayApproval.objects.get_or_create(proposal=proposal, barangay_name=barangay)
+
+        status = request.data.get('status')
+        if status in ['Approved', 'Rejected']:
+            barangay_approval.status = status
+            barangay_approval.approved_date = timezone.now()
+            barangay_approval.save()
+
+            # After saving the approval, update the overall proposal status
+            proposal.update_overall_status()
+
+            return Response({"message": "Approval status updated successfully"}, status=200)
+        
+        return Response({"error": "Invalid status"}, status=400)
     
     # def patch(self, request, *args, **kwargs):
     #     proposal = self.get_object()

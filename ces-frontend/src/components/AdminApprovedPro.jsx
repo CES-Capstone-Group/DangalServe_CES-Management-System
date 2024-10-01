@@ -19,7 +19,7 @@ const AdminApprovedPro = () => {
 
             try {
                 // Fetch only the approved proposals by passing the `status=Approved` parameter
-                const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Approved', {
+                const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

@@ -52,7 +52,7 @@ const BrgyPenProposalPage = () => {
 
             try {
                 const queryParams = new URLSearchParams({
-                    status: "Approved by President",
+                    status__in: "Approved by President,Partly Approved by Barangay",
                     partner_community: department, // Include department in query
                 });
 

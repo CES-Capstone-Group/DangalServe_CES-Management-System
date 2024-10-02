@@ -14,10 +14,13 @@ import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); //State for viewing images
+
   const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
   const [error, setError] = useState(null);
+  
   const [loadingAchievements, setLoadingAchievements] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
   const [loadingResearchAgendas, setLoadingResearchAgendas] = useState(true); // Loading state for research agendas

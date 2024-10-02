@@ -11,11 +11,13 @@
     font-weight: bold;
     padding: 12px;
     text-align: center;
+    vertical-align: middle;
   }
   
   .tableStyle td {
     padding: 12px;
     text-align: center;
+    vertical-align: middle;
   }
   
   .tableStyle  tr:nth-child(even) {

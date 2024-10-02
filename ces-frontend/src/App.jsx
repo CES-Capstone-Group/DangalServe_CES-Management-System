@@ -21,6 +21,7 @@ import InvolvementPage from './components/InvolvementPage';
 import BrgyPenProposalPage from './components/BrgyPenProposalPage';
 import BrgyApprovedPro from './components/BrgyApprovedPro';
 import BrgyEventRequest from './components/BrgyEventRequest';
+import BrgyManagement from './components/BrgyManagement.jsx';
 import CoorPenProposal from './components/CoorPenProposal';
 import CoorCalendar from './components/CoorCalendar';
 import CoorApprovedPro from './components/CoorApprovedPro';
@@ -46,7 +47,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ManageAgenda from './components/ManageAgenda.jsx';
 import ManageAchievements from './components/ManageAchievements.jsx';
 import ManageAnnouncement from './components/ManageAnnouncement.jsx';
-
+import CoorManagement from './components/CoorManagement.jsx';
 
 const App = () => {
   return (
@@ -56,6 +57,9 @@ const App = () => {
         <Route index element={<LoginPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
+        <Route path='/brgy-management' element={<BrgyManagement/>}/>
+        <Route path='/coor-management' element={<CoorManagement/>}/>
+        
         {/* Admin Routes - Only accessible to Admin */}
         <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
           <Route path='/admin' element={<UserAdminPage />}>

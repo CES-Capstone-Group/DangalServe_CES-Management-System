@@ -64,7 +64,7 @@ function LoginPage() {
 
     const redirectToRolePage = (accountType) => {
         if (accountType === 'Admin') {
-            navigate('/admin');
+            navigate('/landing');
         } else if (accountType === 'Brgy. Official') {
             navigate('/barangay');
         } else if (accountType === 'Proponent') {

@@ -64,7 +64,7 @@ const ManageAchievements = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Achievements </h1></Col>
+                <Col><h1> Achievement Management </h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

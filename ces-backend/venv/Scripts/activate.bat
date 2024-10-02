@@ -8,7 +8,11 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
+<<<<<<< HEAD
 set VIRTUAL_ENV=C:\Users\USER\OneDrive\Desktop\CES Project Temp\ces-management-system\ces-backend\venv
+=======
+set VIRTUAL_ENV=C:\Users\spongebob\OneDrive\Documents\GitHub\ces-management-system\ces-backend\venv
+>>>>>>> a7046f17360a7f2248d290cd1b88fab358b1c7b6
 
 if not defined PROMPT set PROMPT=$P$G
 

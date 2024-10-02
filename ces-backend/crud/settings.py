@@ -103,7 +103,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ces_db',
         'USER': 'root',
+<<<<<<< HEAD
         'PASSWORD': '09392660241xolos',
+=======
+        'PASSWORD': 'karly@2700',
+>>>>>>> a7046f17360a7f2248d290cd1b88fab358b1c7b6
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
         'PORT': '3306'      # or the port on which your MySQL server is listening
     }

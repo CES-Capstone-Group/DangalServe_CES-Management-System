@@ -247,13 +247,16 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         status = self.request.query_params.get('status')
         user = self.request.user
         department = self.request.user.department
-        
+
         # Check if the user is an admin
         if user.accountType == 'Admin':
-            # Admins can see all proposals, optionally filter by status
+            # Admins can see all proposals, but filter out fully approved ones
             if status:
+                if status == 'Pending':
+                    # Exclude fully approved proposals (e.g., Approved by Barangay)
+                    return Proposal.objects.exclude(status='Approved by Barangay').filter(status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay'])
                 return Proposal.objects.filter(status=status)
-            return Proposal.objects.all()
+            return Proposal.objects.exclude(status='Approved by Barangay')  # Exclude fully approved proposals
         elif user.accountType == 'Proponent':
             if status:
                 return Proposal.objects.filter(user_id=user, status=status)
@@ -265,12 +268,46 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                     where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
                     params=[department]
                 ).filter(status=status)
-                print('haha')
-        
+            
             return Proposal.objects.extra(
                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
                 params=[department]
             )
+
+
+# class ProposalListCreateView(generics.ListCreateAPIView):
+#     queryset = Proposal.objects.all()
+#     serializer_class = ProposalSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         status = self.request.query_params.get('status')
+#         user = self.request.user
+#         department = self.request.user.department
+        
+#         # Check if the user is an admin
+#         if user.accountType == 'Admin':
+#             # Admins can see all proposals, optionally filter by status
+#             if status:
+#                 return Proposal.objects.filter(status=status)
+#             return Proposal.objects.all()
+#         elif user.accountType == 'Proponent':
+#             if status:
+#                 return Proposal.objects.filter(user_id=user, status=status)
+#             return Proposal.objects.filter(user_id=user)
+#         else:
+#             # Non-admin users can only see their own proposals, optionally filter by status
+#             if status:
+#                 return Proposal.objects.extra(
+#                     where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
+#                     params=[department]
+#                 ).filter(status=status)
+#                 print('haha')
+        
+#             return Proposal.objects.extra(
+#                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
+#                 params=[department]
+#             )
         
 class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Proposal.objects.all()
@@ -351,20 +388,3 @@ class BarangayApprovalView(APIView):
         
         return Response({"error": "Invalid status"}, status=400)
     
-    # def patch(self, request, *args, **kwargs):
-    #     proposal = self.get_object()
-    #     # Check if the user is an admin
-    #     if request.user.accountType == 'Admin':
-    #         # Admins can approve any proposal
-    #         proposal.status = request.data.get('status', proposal.status)
-    #         proposal.save()
-    #     elif request.user == proposal.user:
-    #         # Allow the owner of the proposal to make updates (if needed)
-    #         proposal.status = request.data.get('status', proposal.status)
-    #         proposal.save()
-    #     else:
-    #         # If the user is neither admin nor the owner, deny access
-    #         return Response({"detail": "You do not have permission to perform this action."}, status=403)
-        
-    #     serializer = self.get_serializer(proposal)
-    #     return Response(serializer.data)

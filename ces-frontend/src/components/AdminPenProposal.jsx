@@ -17,17 +17,26 @@ const AdminPenProposal = () => {
             setLoading(false);
             return;
         }
-
+    
         try {
-
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status__en=Approved By Barangay`, {
+            let filter = '';
+    
+            if (filterStatus === 'Rejected') {
+                // Fetch rejected proposals
+                filter = 'status=Rejected';
+            } else if (filterStatus === 'Pending') {
+                // Fetch all proposals that are not fully approved (excluding Approved by Barangay)
+                filter = 'status__in=Pending,Approved by Director,Approved by VPRE,Approved by President,Partly Approved by Barangay';
+            }
+    
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${filter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`, 
                 },
             });
-
+    
             if (response.ok) {
                 const data = await response.json();
                 setProposals(data);

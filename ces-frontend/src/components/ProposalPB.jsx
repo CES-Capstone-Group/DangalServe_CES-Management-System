@@ -59,13 +59,13 @@ const ProposalPB = ({ status }) => {
                     {/* Barangay's Approval */}
                     <ProgressBar 
                         variant={isBarangayApproved ? "success" : isPartlyBrgyApproved ? "warning" : "danger"} 
-                        now={isBarangayApproved || isPartlyBrgyApproved ? 50 : 0} 
+                        now={isBarangayApproved ? 100 : isPartlyBrgyApproved ? 50 : 0} 
                         style={{ height: '1px' }} 
                     />
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-                    <FontAwesomeIcon icon={isBarangayApproved || isPartlyBrgyApproved ? faXmarkCircle : faCheckCircle} size="3x" />
+                    <FontAwesomeIcon icon={isBarangayApproved || isPartlyBrgyApproved ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
             </Row>
         </Container>

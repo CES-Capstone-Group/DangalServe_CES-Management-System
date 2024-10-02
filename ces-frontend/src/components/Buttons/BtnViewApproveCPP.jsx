@@ -145,32 +145,32 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
   return (
     <>
       <Button
-        className="me-2"
-        onClick={handleShow}
-        style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
-      >
-        View
-      </Button>
+  className="me-2"
+  onClick={handleShow}
+  style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
+>
+  View
+</Button>
 
-      {/* Hide approval and rejection buttons after President's approval */}
-      {isAdmin && !preApproved && proposal.status !== 'Partly Approved by Barangay' && (
-        <>
-          <Button
-            className="me-2"
-            onClick={handleApprove}
-            style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
-          >
-            {buttonText}
-          </Button>
-          <Button
-            className="btn btn-danger"
-            onClick={handleRejectShow}
-            style={{ border: "0px", color: "white" }}
-          >
-            Reject
-          </Button>
-        </>
-      )}
+{/* Hide approval and rejection buttons after President's approval or if status is Rejected */}
+{isAdmin && !preApproved && proposal.status !== 'Partly Approved by Barangay' && proposal.status !== 'Rejected' && (
+  <>
+    <Button
+      className="me-2"
+      onClick={handleApprove}
+      style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
+    >
+      {buttonText}
+    </Button>
+    <Button
+      className="btn btn-danger"
+      onClick={handleRejectShow}
+      style={{ border: "0px", color: "white" }}
+    >
+      Reject
+    </Button>
+  </>
+)}
 
       {/* Modal for Reject and Remarks */}
       <Modal

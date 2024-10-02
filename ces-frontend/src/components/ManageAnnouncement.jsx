@@ -56,7 +56,7 @@ const ManageAnnouncement = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Announcements</h1></Col>
+                <Col><h1> Announcement Management</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

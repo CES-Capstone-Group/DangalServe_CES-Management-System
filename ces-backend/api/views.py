@@ -44,33 +44,6 @@ class RefreshTokenView(APIView):
         except TokenObtainPairView.DoesNotExist:
             return Response({'error': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
 
-# View for login using custom authentication with Account model
-# class LoginApiView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request, *args, **kwargs):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-
-#         # Authenticate the user
-#         user = authenticate(username=username, password=password)
-#         if user is not None:
-#             if user.status.lower() != 'active':
-#                 return Response({'error': 'Account is inactive.'}, status=rest_status.HTTP_403_FORBIDDEN)
-
-#             # Create or retrieve an authentication token
-#             token, created = CustomAuthToken.objects.get_or_create(user=user)
-
-#             return Response({
-#                 'access_token': token.key,
-#                 'refresh_token': token.refresh_key,
-#                 'user_id': user.user_id,
-#                 'username': user.username,
-#                 'accountType': user.accountType,
-#             }, status=status.HTTP_200_OK)
-#         return Response({'error': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
 # Account Views
 
 # class UserDetailView(generics.RetrieveAPIView):
@@ -388,3 +361,40 @@ class BarangayApprovalView(APIView):
         
         return Response({"error": "Invalid status"}, status=400)
     
+    
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.http import HttpResponse
+from .models import Proposal
+from .utils import generate_proposal_doc  # Assuming the function is in a utils.py file
+import os
+
+class DownloadProposalDoc(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, proposal_id):
+        print('Request received')  # This should print when the view is triggered
+        try:
+            proposal = Proposal.objects.get(proposal_id=proposal_id)
+            print('Proposal found:', proposal.title)  # Check if the proposal is fetched correctly
+        except Proposal.DoesNotExist:
+            print('Proposal not found')
+            return Response({"error": "Proposal not found"}, status=404)
+        
+        # Document generation
+        doc_path = generate_proposal_doc(proposal)
+        print('Document path:', doc_path)  # Check if document generation is successful
+        
+        if os.path.exists(doc_path):
+            with open(doc_path, 'rb') as doc_file:
+                response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                response['Content-Disposition'] = f'attachment; filename=proposal_{proposal_id}.docx'
+                response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                response['Pragma'] = 'no-cache'
+                response['Expires'] = '0'
+                return response
+        else:
+            print('Document generation failed')
+            return Response({"error": "Document generation failed"}, status=500)

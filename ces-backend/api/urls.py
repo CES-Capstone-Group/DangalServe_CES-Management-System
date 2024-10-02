@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views  # Import your views
-from .views import RefreshTokenView, ResearchAgendaViewSet
+from .views import RefreshTokenView, ResearchAgendaViewSet, DownloadProposalDoc
 from .views import ProposalListCreateView, ProposalDetailView, BarangayApprovalView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializer import CustomTokenObtainPairSerializer
@@ -16,9 +16,10 @@ urlpatterns = [
     path('proposals/', ProposalListCreateView.as_view(), name='proposal-list-create'),
     path('proposals/<int:pk>/', ProposalDetailView.as_view(), name='proposal-detail'),
     path('proposals/<int:proposal_id>/approve/', BarangayApprovalView.as_view(), name='barangay_approval'),
+    
+    path('proposals/<int:proposal_id>/download/', DownloadProposalDoc.as_view(), name='download_proposal_doc'),
     # Accounts Paths
     path('users/', views.get_all_user, name="get_user"),
-    # path('users/<int:pk>/', UserDetailView.as_view(), name='user-detail'),
     path('users/create_user/', views.create_user, name="create_user"),
     path('users/user_info_action/<int:user_id>/', views.user_info_action, name="user_info_action"),
 

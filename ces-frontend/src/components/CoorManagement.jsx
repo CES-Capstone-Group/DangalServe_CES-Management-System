@@ -6,7 +6,7 @@ import BtnAddCoor from "./Buttons/BtnAddCoor";
 import "./table.css"
 import BtnEditDelete from "./Buttons/BtnEditDelete";
 
-const BrgyManagement = () => {
+const CoorManagement = () => {
     // const [showImageModal, setShowImageModal] = useState(false);
     // const [selectedImage, setSelectedImage] = useState(null); // State for viewing images
 
@@ -88,7 +88,7 @@ const BrgyManagement = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1>ACCOUNT MANAGEMENT</h1></Col>
+                <Col><h1>Department Management</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
@@ -108,4 +108,4 @@ const BrgyManagement = () => {
     );
 };
 
-export default BrgyManagement;
+export default CoorManagement;

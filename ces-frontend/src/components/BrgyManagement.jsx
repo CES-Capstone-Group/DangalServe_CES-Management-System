@@ -104,7 +104,7 @@ const BrgyManagement = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1>ACCOUNT MANAGEMENT</h1></Col>
+                <Col><h1>Barangay Management</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

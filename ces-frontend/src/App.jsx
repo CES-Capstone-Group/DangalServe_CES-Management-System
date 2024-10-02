@@ -48,6 +48,10 @@ import ManageAgenda from './components/ManageAgenda.jsx';
 import ManageAchievements from './components/ManageAchievements.jsx';
 import ManageAnnouncement from './components/ManageAnnouncement.jsx';
 import CoorManagement from './components/CoorManagement.jsx';
+import AdminLanding from './components/MainPages/AdminLanding.jsx';
+import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
+import AdminManage from './components/AdminManage.jsx';
+
 
 const App = () => {
   return (
@@ -57,16 +61,24 @@ const App = () => {
         <Route index element={<LoginPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
-        <Route path='/brgy-management' element={<BrgyManagement/>}/>
-        <Route path='/coor-management' element={<CoorManagement/>}/>
-        
+
         {/* Admin Routes - Only accessible to Admin */}
         <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
+          <Route path='/landing' element={<AdminLanding />} />
+          <Route path='/manage' element={<AdminManagePage />} >
+            <Route index element={<AdminManage />} />
+            <Route path='accmngmnt' element={<UserManagementCon />} />
+            <Route path='manage-agenda' element={<ManageAgenda />} />
+            <Route path='manage-ach' element={<ManageAchievements />} />
+            <Route path='manage-ann' element={<ManageAnnouncement />} />
+            <Route path='brgy-management' element={<BrgyManagement />} />
+            <Route path='coor-management' element={<CoorManagement />} />
+          </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />
             <Route index element={<AdminMainContent />} />
-            <Route path='dashboard' element={<AdminMainContent />} />
             <Route path='accmngmnt' element={<UserManagementCon />} />
+            <Route path='dashboard' element={<AdminMainContent />} />
             <Route path='pending-proposal' element={<AdminPenProposal />} />
             <Route path='approved-proposal' element={<AdminApprovedPro />} />
             <Route path='pending-achievements' element={<AdminPenAchievements />} />
@@ -77,9 +89,6 @@ const App = () => {
             <Route path='involvement' element={<InvolvementPage />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='kpi' element={<KpiPage />} />
-            <Route path='manage-agenda' element={<ManageAgenda />} />
-            <Route path='manage-ach' element={<ManageAchievements />} />
-            <Route path='manage-ann' element={<ManageAnnouncement />} />
           </Route>
         </Route>
 
@@ -115,11 +124,11 @@ const App = () => {
 
         {/* Evaluator Routes - Only accessible to Evaluators */}
         {/* <Route element={<PrivateRoute allowedRoles={['Evaluator']} />}> */}
-          <Route path='/eval' element={<UserEvalPage />}>
-            <Route index element={<MainContent />} />
-            <Route path='dashboard' element={<MainContent />} />
-            <Route path='eval-page' element={<EvalPage />} />
-          </Route>
+        <Route path='/eval' element={<UserEvalPage />}>
+          <Route index element={<MainContent />} />
+          <Route path='dashboard' element={<MainContent />} />
+          <Route path='eval-page' element={<EvalPage />} />
+        </Route>
         {/* </Route> */}
 
         {/* Other Routes */}

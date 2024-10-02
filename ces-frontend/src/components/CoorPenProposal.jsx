@@ -18,8 +18,16 @@ const CoorPenProposal = () => {
             return;
         }
 
+        let filter = '';
+    
+        if (filterStatus === 'Rejected') {
+            filter = 'status=Rejected';
+        } else if (filterStatus === 'Pending') {
+            filter = 'status=Pending';
+        }
+        
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=${status}`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=${filter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

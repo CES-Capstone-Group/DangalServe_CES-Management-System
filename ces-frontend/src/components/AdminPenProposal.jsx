@@ -22,11 +22,9 @@ const AdminPenProposal = () => {
             let filter = '';
     
             if (filterStatus === 'Rejected') {
-                // Fetch rejected proposals
                 filter = 'status=Rejected';
             } else if (filterStatus === 'Pending') {
-                // Fetch all proposals that are not fully approved (excluding Approved by Barangay)
-                filter = 'status__in=Pending,Approved by Director,Approved by VPRE,Approved by President,Partly Approved by Barangay';
+                filter = 'status=Pending';
             }
     
             const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${filter}`, {

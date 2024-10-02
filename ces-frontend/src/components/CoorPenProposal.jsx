@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import BtnViewApproveCPP from "./Buttons/BtnViewApproveCPP";  
 import BtnAddProposal from "./Buttons/BtnAddProposal";
+import BtnPendingRejectFilter from "./Buttons/BtnPendingRejectFilter";
 import "./table.css";
 
 const CoorPenProposal = () => {
     const [proposals, setProposals] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filterStatus, setFilterStatus] = useState("Pending");  // Filter state
 
-    const fetchProposals = async () => {
+    const fetchProposals = async (status) => {
         const token = localStorage.getItem('access_token');
         if (!token) {
             console.error("No token found.");
@@ -17,7 +19,7 @@ const CoorPenProposal = () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/proposals/?status__ne=Approved', {
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=${status}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,21 +43,32 @@ const CoorPenProposal = () => {
     };
 
     useEffect(() => {
-        fetchProposals();
-    }, []);
+        setLoading(true);
+        fetchProposals(filterStatus);
+    }, [filterStatus]);
 
     const handleProposalApproved = () => {
-        fetchProposals(); 
+        setLoading(true);
+        fetchProposals(filterStatus);
     };
 
     return (
         <Container className="container-fluid">
             <div className="container">
-                <h1>PENDING PROPOSALS</h1>
+                <h1>{filterStatus.toUpperCase()} PROPOSALS</h1>
             </div>
+
+            {/* Filter Buttons */}
+            <Row className="mb-3">
+                <Col className="d-flex justify-content-start">
+                    <BtnPendingRejectFilter setFilterStatus={setFilterStatus} />
+                </Col>
+            </Row>
 
             {loading ? (
                 <p>Loading...</p>
+            ) : proposals.length === 0 ? (
+                <p>No {filterStatus.toLowerCase()} proposals found.</p>
             ) : (
                 <Table responsive bordered striped hover className="tableStyle">
                     <thead>
@@ -68,26 +81,20 @@ const CoorPenProposal = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {proposals.length > 0 ? (
-                            proposals.map((proposal) => (
-                                <tr key={proposal.proposal_id}>
-                                    <td>{proposal.title}</td>
-                                    <td>{proposal.location}</td>
-                                    <td>{proposal.target_date}</td>
-                                    <td>{proposal.status}</td>
-                                    <td>
-                                        <BtnViewApproveCPP
-                                            proposal={proposal}
-                                            onApprove={handleProposalApproved} // Callback after approval
-                                        />
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="5">No pending proposals found.</td>
+                        {proposals.map((proposal) => (
+                            <tr key={proposal.proposal_id}>
+                                <td>{proposal.title}</td>
+                                <td>{proposal.location}</td>
+                                <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
+                                <td>{proposal.status}</td>
+                                <td>
+                                    <BtnViewApproveCPP 
+                                        proposal={proposal} 
+                                        onApprove={handleProposalApproved} 
+                                    />
+                                </td>
                             </tr>
-                        )}
+                        ))}
                     </tbody>
                 </Table>
             )}

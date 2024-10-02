@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Container, Table, Row, Col } from "react-bootstrap";
 import BtnViewApproveCPP from "./Buttons/BtnViewApproveCPP";
+import BtnPendingRejectFilter from "./Buttons/BtnPendingRejectFilter";
 import "./table.css";
 
 const AdminPenProposal = () => {
-    const [proposals, setProposals] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [proposals, setProposals] = useState([]);  
+    const [loading, setLoading] = useState(true);   
+    const [filterStatus, setFilterStatus] = useState("Pending");
 
-    // Fetch all pending proposals from the backend
-    const fetchProposals = async () => {
-        const token = localStorage.getItem('access_token'); // Get the token from localStorage
+
+    const fetchProposals = async (status) => {
+        const token = localStorage.getItem('access_token'); 
         if (!token) {
             console.error("No token found.");
-            setLoading(false); // Stop loading if there's no token
+            setLoading(false);
             return;
         }
 
         try {
-            // Fetch only the pending proposals by passing the `status=Pending` parameter
-            const response = await fetch('http://127.0.0.1:8000/api/proposals/?status__ne=Approved', {
+
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=${status}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,  // Add the Authorization header
+                    'Authorization': `Bearer ${token}`, 
                 },
             });
 
             if (response.ok) {
                 const data = await response.json();
-                // Update the proposals state with the fetched data
                 setProposals(data);
-                setLoading(false); // Stop loading once data is fetched
+                setLoading(false);
             } else if (response.status === 401) {
                 console.error('Unauthorized: Check if the token is valid.');
                 setLoading(false);
@@ -44,26 +45,35 @@ const AdminPenProposal = () => {
         }
     };
 
-    useEffect(() => {
-        fetchProposals();
-    }, []);
 
-    // Re-fetch proposals after approval
+    useEffect(() => {
+        setLoading(true);
+        fetchProposals(filterStatus);
+    }, [filterStatus]);
+
+
     const handleProposalApproved = () => {
         setLoading(true);
-        fetchProposals();  // Re-fetch proposals after an approval
+        fetchProposals(filterStatus);
     };
 
     return (
         <Container className="container-fluid">
             <div className="container">
-                <h1>PENDING PROPOSALS</h1>
+                <h1>{filterStatus.toUpperCase()} PROPOSALS</h1>
             </div>
+
+            {/* Filter Buttons */}
+            <Row className="mb-3">
+                <Col className="d-flex justify-content-start">
+                    <BtnPendingRejectFilter setFilterStatus={setFilterStatus} />
+                </Col>
+            </Row>
 
             {loading ? (
                 <p>Loading...</p>
             ) : proposals.length === 0 ? (
-                <p>No pending proposals found.</p>
+                <p>No {filterStatus.toLowerCase()} proposals found.</p>
             ) : (
                 <Table responsive bordered striped hover className="tableStyle">
                     <thead>
@@ -85,7 +95,7 @@ const AdminPenProposal = () => {
                                 <td>
                                     <BtnViewApproveCPP 
                                         proposal={proposal} 
-                                        onApprove={handleProposalApproved} // Pass the callback function
+                                        onApprove={handleProposalApproved} 
                                     />
                                 </td>
                             </tr>

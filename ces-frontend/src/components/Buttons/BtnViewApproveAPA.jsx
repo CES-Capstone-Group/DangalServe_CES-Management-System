@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Modal, Col, Row } from "react-bootstrap";
 import {jwtDecode} from "jwt-decode"; // Assuming jwtDecode is available
 
-const BtnViewApproveAPA = ({ proposal }) => {
+const  BtnViewApproveAPA = ({ proposal }) => {
     const [show, setShow] = useState(false);
     const [userBarangay, setUserBarangay] = useState("");  // To store user's barangay
     const [isApproved, setIsApproved] = useState(false);   // To track if barangay has already approved

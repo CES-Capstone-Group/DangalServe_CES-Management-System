@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Modal, Col, Row} from "react-bootstrap";
 
-const BtnViewApproveAPA = () => {
+const BtnViewAchievements = () => {
     const [show, setShow] = useState(false);
     const [editMode, setEditMode] = useState(false);   
 
@@ -71,4 +71,4 @@ const BtnViewApproveAPA = () => {
     );
 };
 
-export default BtnViewApproveAPA;
+export default BtnViewAchievements;

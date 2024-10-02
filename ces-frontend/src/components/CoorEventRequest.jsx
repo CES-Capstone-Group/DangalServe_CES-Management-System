@@ -1,11 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
-import BtnEditDeac from "./Buttons/BtnEditDeac";
+import { Container, Table, Button, Row, Col} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "./Buttons/BtnAddAcc";
-import BtnViewApproveRE from "./Buttons/BtnViewApproveRE";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import BtnViewApproveRequest from "./Buttons/BtnViewApproveRequest";
 import "./table.css"
 
 
@@ -31,7 +29,7 @@ const Rows = (props) => {
             <td>{Requester}</td>
             <td>{RequestDate}</td>
             <td>{status}</td>
-            <BtnViewApproveRE/>
+            <BtnViewApproveRequest/>
         </tr>
     );
 };

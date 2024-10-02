@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowLeft,
     faUser,
     faBuilding,
     faUniversity,

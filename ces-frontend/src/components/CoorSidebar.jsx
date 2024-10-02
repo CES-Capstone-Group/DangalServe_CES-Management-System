@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableColumns, faTrophy, faClipboardList, faFileLines, faChevronDown, faCodePullRequest, faInbox, faCalendar, faChartLine, faFile } from '@fortawesome/free-solid-svg-icons'
+import { faTableColumns, faTrophy, faClipboardList, faFileLines, faChevronDown, faInbox, faCalendar, faChartLine, faFile } from '@fortawesome/free-solid-svg-icons'
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import Logo from '../assets/pnclogo.png'
 import '../App.css'

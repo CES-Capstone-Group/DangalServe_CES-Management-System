@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table, Row, Col } from "react-bootstrap";
-import BtnViewApproveCPP from "./Buttons/BtnViewApproveCPP";
+import BtnViewApproveCoor from "./Buttons/BtnViewApproveCoor";
 import BtnPendingRejectFilter from "./Buttons/BtnPendingRejectFilter";
 import "./table.css";
 
@@ -100,7 +100,7 @@ const AdminPenProposal = () => {
                                 <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
                                 <td>{proposal.status}</td>
                                 <td>
-                                    <BtnViewApproveCPP 
+                                    <BtnViewApproveCoor 
                                         proposal={proposal} 
                                         onApprove={handleProposalApproved} 
                                     />

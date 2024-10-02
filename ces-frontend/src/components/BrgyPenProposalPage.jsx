@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
+import BtnViewApproveAdminAch from "./Buttons/BtnViewApproveAdminAch";
 import {jwtDecode} from "jwt-decode"; // To decode JWT and get user info
 import "./table.css";
 
@@ -111,7 +111,7 @@ const BrgyPenProposalPage = () => {
                                     <td>{proposal.location}</td>
                                     <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
                                     <td>{proposal.status}</td>
-                                    <td><BtnViewApproveAPA proposal={proposal} /></td>
+                                    <td><BtnViewApproveAdminAch proposal={proposal} /></td>
                                 </tr>
                             ))
                         ) : (

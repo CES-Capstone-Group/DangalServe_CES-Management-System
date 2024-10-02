@@ -3,7 +3,7 @@ import { Button, Form, Modal, Col, Row } from "react-bootstrap";
 import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import ProposalPB from "../ProposalPB";
 
-const BtnViewApproveCPP = ({ proposal, onApprove }) => {
+const BtnViewApproveCoor = ({ proposal, onApprove }) => {
   const [show, setShow] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -301,4 +301,4 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
   );
 };
 
-export default BtnViewApproveCPP;
+export default BtnViewApproveCoor;

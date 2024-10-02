@@ -5,7 +5,7 @@ import BtnEditDeac from "./Buttons/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import BtnAddAcc from "./Buttons/BtnAddAcc";
-import BtnViewApproveRE from "./Buttons/BtnViewApproveRE";
+import BtnViewApproveRequest from "./Buttons/BtnViewApproveRequest";
 import "./table.css"
 
 const array = [{
@@ -30,7 +30,7 @@ const Rows = (props) => {
             <td>{Requester}</td>
             <td>{RequestDate}</td>
             <td>{status}</td>
-            <td><BtnViewApproveRE/></td>
+            <td><BtnViewApproveRequest/></td>
         </tr>
     );
 };

@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import BtnViewApproveAdminAch from "./Buttons/BtnViewApproveAdminAch";
 import "./table.css";
 
 const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'},
@@ -18,7 +18,7 @@ const Rows = (props) => {
             <td>{awardedBy}</td>
             <td>{awardDate}</td>
             <td>{status}</td>
-            <td><BtnViewApproveAPA/></td>
+            <td><BtnViewApproveAdminAch/></td>
         </tr>
     );
 };

@@ -1,10 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
-import BtnEditDeac from "./Buttons/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import BtnAddAcc from "./Buttons/BtnAddAcc";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import BtnViewApproveAPA from "./Buttons/BtnViewApproveAPA";
 import "./table.css"
 

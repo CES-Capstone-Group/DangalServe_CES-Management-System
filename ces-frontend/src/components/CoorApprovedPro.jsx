@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import BtnView from "./Buttons/BtnView";
+import BtnCoorViewApprovedProposal from "./Buttons/BtnCoorViewApprovedProposal";
 import "./table.css";
+import ProposalPB from "./ProposalPB";
 
 const CoorApprovedPro = () => {
     const [proposals, setProposals] = useState([]);
@@ -19,7 +20,7 @@ const CoorApprovedPro = () => {
 
             try {
                 // Fetch only approved proposals for the current user
-                const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Approved', {
+                const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ const CoorApprovedPro = () => {
             <div className="container">
                 <h1>APPROVED PROPOSALS</h1>
             </div>
-
+           
             {loading ? (
                 <p>Loading...</p>
             ) : (
@@ -72,7 +73,7 @@ const CoorApprovedPro = () => {
                                     <td>{proposal.title}</td>
                                     <td>{proposal.location}</td>
                                     <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
-                                    <td><BtnView proposal={proposal} /></td>
+                                    <td><BtnCoorViewApprovedProposal proposal={proposal} /></td>
                                 </tr>
                             ))
                         ) : (

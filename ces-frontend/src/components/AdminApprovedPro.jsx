@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import BtnView from "./Buttons/BtnView";
+import BtnCoorViewApprovedProposal from "./Buttons/BtnCoorViewApprovedProposal";
 import "./table.css";
 
 const AdminApprovedPro = () => {
@@ -77,7 +77,7 @@ const AdminApprovedPro = () => {
                                 <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
                                 <td>{proposal.status}</td>
                                 <td>
-                                    <BtnView proposal={proposal} />
+                                    <BtnCoorViewApprovedProposal proposal={proposal} />
                                 </td>
                             </tr>
                         ))}

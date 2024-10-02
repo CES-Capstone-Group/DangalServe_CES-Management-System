@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, Announcement, ResearchAgenda, Proposal
+from .models import Account, Achievement, Announcement, ResearchAgenda, Proposal, BarangayApproval
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import Account
 
 
 # Custom Token Serializer to include extra fields in JWT
@@ -118,3 +117,7 @@ class ProposalSerializer(serializers.ModelSerializer):
         user = self.context['request'].user  # Get the user object
         proposal = Proposal.objects.create(user_id=user, **validated_data)  # Use user.id to get the user ID
         return proposal
+class BarangayApprovalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BarangayApproval
+        fields = ['barangay_name', 'status', 'sign_date', 'remarks']

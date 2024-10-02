@@ -153,7 +153,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
       </Button>
 
       {/* Hide approval and rejection buttons after President's approval */}
-      {isAdmin && !preApproved && (
+      {isAdmin && !preApproved && proposal.status !== 'Partly Approved by Barangay' && (
         <>
           <Button
             className="me-2"
@@ -245,10 +245,7 @@ const BtnViewApproveCPP = ({ proposal, onApprove }) => {
         </Modal.Header>
         <Modal.Body>
           <ProposalPB
-            dirApprove={dirProgress}
-            vpreApproved={vpreProgress}
-            preApproved={preProgress}
-            brgyApproved={0}
+            status={proposal.status}
           />
 
           <Form>

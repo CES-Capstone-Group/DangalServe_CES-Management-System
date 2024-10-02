@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, Modal, Col, Row } from "react-bootstrap";
+import ProposalPB from "../ProposalPB";
 
-const BtnView = ({ proposal }) => {
+const BtnCoorViewApprovedProposal = ({ proposal }) => {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
@@ -21,6 +22,9 @@ const BtnView = ({ proposal }) => {
                 <Modal.Header closeButton>
                     <Modal.Title>Proposal Details</Modal.Title>
                 </Modal.Header>
+                <ProposalPB
+                    status={proposal.status}
+                    />
                 <Modal.Body>
                     <Form>
                         {/* Proposal Title */}
@@ -223,4 +227,4 @@ const BtnView = ({ proposal }) => {
     );
 };
 
-export default BtnView;
+export default BtnCoorViewApprovedProposal;

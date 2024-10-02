@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Modal, Col, Row } from "react-bootstrap";
-import {jwtDecode} from "jwt-decode"; // Assuming jwtDecode is available
+import { jwtDecode } from "jwt-decode"; // Assuming jwtDecode is available
 
-const  BtnViewApproveAPA = ({ proposal }) => {
+const BtnViewApproveAPA = ({ proposal }) => {
     const [show, setShow] = useState(false);
     const [userBarangay, setUserBarangay] = useState("");  // To store user's barangay
     const [isApproved, setIsApproved] = useState(false);   // To track if barangay has already approved
@@ -19,8 +19,11 @@ const  BtnViewApproveAPA = ({ proposal }) => {
 
     // Check if the user's barangay has already approved the proposal
     useEffect(() => {
-        if (proposal.barangay_approvals && proposal.barangay_approvals.some(approval => approval.barangay_name === userBarangay && approval.status === 'Approved')) {
-            setIsApproved(true);
+        if (proposal && proposal.barangay_approvals) {
+            const userApproval = proposal.barangay_approvals.find(approval => approval.barangay_name === userBarangay);
+            if (userApproval && userApproval.status === 'Approved') {
+                setIsApproved(true);
+            }
         }
     }, [proposal, userBarangay]);
 
@@ -63,6 +66,11 @@ const  BtnViewApproveAPA = ({ proposal }) => {
             console.error("Error approving the proposal:", error);
         }
     };
+
+    // Check if proposal exists before rendering the component
+    if (!proposal) {
+        return null; // Return null or a loading indicator if proposal is undefined
+    }
 
     return (
         <>

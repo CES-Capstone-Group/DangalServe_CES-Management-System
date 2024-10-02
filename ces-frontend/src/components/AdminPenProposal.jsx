@@ -20,7 +20,7 @@ const AdminPenProposal = () => {
 
         try {
 
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=${status}`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status__en=Approved By Barangay`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

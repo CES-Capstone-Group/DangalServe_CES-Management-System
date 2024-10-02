@@ -180,7 +180,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                             <>
                                                 <option value="Baclaran">Baclaran</option>
                                                 <option value="Bigaa">Bigaa</option>
-                                                <option value="dizemo">Diezmo</option>
+                                                <option value="Diezmo">Diezmo</option>
                                                 <option value="Sala">Sala</option>
                                                 <option value="San Isidro">San Isidro</option>
                                             </>

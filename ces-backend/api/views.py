@@ -341,7 +341,7 @@ class BarangayApprovalView(APIView):
         status = request.data.get('status')
         if status in ['Approved', 'Rejected']:
             barangay_approval.status = status
-            barangay_approval.approved_date = timezone.now()
+            barangay_approval.sign_date = timezone.now().date()
             barangay_approval.save()
 
             # After saving the approval, update the overall proposal status

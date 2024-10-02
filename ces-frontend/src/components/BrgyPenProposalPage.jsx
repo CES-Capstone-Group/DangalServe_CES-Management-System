@@ -52,16 +52,16 @@ const BrgyPenProposalPage = () => {
 
             try {
                 const queryParams = new URLSearchParams({
-                    status__in: "Approved by President,Partly Approved by Barangay",
+                    status__in: ["Approved by President", "Partly Approved by Barangay"].join(','),  // Status inclusion filter
                     partner_community: department, // Include department in query
                 });
-
-                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${queryParams.toString()}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
+                // Adjusting the API URL to exclude "Approved by Barangay" explicitly
+                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${queryParams.toString()}&status__ne=Approved by Barangay`, {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                },
                 });
 
                 if (response.ok) {

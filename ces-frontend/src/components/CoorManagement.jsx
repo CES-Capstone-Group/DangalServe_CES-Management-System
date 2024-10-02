@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import BtnAddCoor from "./Buttons/BtnAddCoor";
 import "./table.css"
-import sampledocs from "../assets/sampledocs.png"; 
 import BtnEditDelete from "./Buttons/BtnEditDelete";
 
 const BrgyManagement = () => {

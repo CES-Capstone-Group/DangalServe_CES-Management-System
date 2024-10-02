@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFilter } from "@fortawesome/free-solid-svg-icons";
 import BtnAddBrgy from "./Buttons/BtnAddBrgy";
 import "./table.css"
-import sampledocs from "../assets/sampledocs.png"; 
+import sampleimg from "../assets/sampleimg.png"; 
+import samplepdf from "../assets/samplepdf.pdf"
 import BtnEditDelete from "./Buttons/BtnEditDelete";
 
 const BrgyManagement = () => {
-    const [showImageModal, setShowImageModal] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null); // State for viewing images
+    const [showModal, setShowModal] = useState(false);
+    const [selectedContent, setSelectedContent] = useState(null); // State for viewing images
+    const [contentType, setContentType] = useState("");
 
-    const handleImageClick = (imageUrl) => {
-        setSelectedImage(imageUrl);
-        setShowImageModal(true);
+    const handleContentClick = (contentUrl) => {
+        if (contentUrl.endsWith(".pdf")) {
+            setContentType("pdf"); // If the file is a PDF
+        } else {
+            setContentType("image"); // If it's an image
+        }
+        setSelectedContent(contentUrl);
+        setShowModal(true);
     };
 
     const handleCloseModal = () => {
-        setShowImageModal(false);
-        setSelectedImage(null);
+        setShowModal(false);
+        setSelectedContent(null);
+        setContentType("");
     };
     // const fetchUsers = async () => {
     //     try {
@@ -41,8 +49,8 @@ const BrgyManagement = () => {
     //     fetchUsers();  
     // };
     
-    const array = [{brgy_id:'1', brgyName:'Bigaa' , moa: sampledocs },
-                   {brgy_id:'2', brgyName:'Diezmo' , moa: sampledocs}];
+    const array = [{brgy_id:'1', brgyName:'Bigaa' , moa: sampleimg },
+                   {brgy_id:'2', brgyName:'Diezmo' , moa: samplepdf}];
     
     const Rows = (props) => {
         const {brgy_id, brgyName, moa} = props;
@@ -52,7 +60,9 @@ const BrgyManagement = () => {
                 <td>{brgy_id}</td>
                 <td>{brgyName}</td>
                 <td>
-                    {moa ? <img src={moa} alt="MOA Logo" onClick = {() => handleImageClick(moa)} style={{ width: '50px', height: '100px' }} /> : "No MOA"}
+                    <Button variant="success link" onClick={() => handleContentClick(moa)}>
+                        <FontAwesomeIcon icon={faEye} />
+                    </Button>
                 </td>
                 <td><BtnEditDelete/></td>
             </tr>
@@ -101,11 +111,14 @@ const BrgyManagement = () => {
                     <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
                 </Col>
                 {/* Modal for viewing full image */}
-                <Modal size="lg" show={showImageModal} onHide={handleCloseModal} centered>
+                <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
                     <Modal.Header closeButton></Modal.Header>
                     <Modal.Body className="text-center">
-                        {selectedImage && (
-                            <img src={selectedImage} alt="Full Size" style={{width:"100%"}} />
+                        {selectedContent && contentType === "image" && (
+                            <img src={selectedContent} alt="Content" style={{ width: '100%' }} />
+                        )}
+                        {selectedContent && contentType === "pdf" && (
+                            <embed src={selectedContent} type="application/pdf" width="100%" height="900px" />
                         )}
                     </Modal.Body>
                 </Modal>

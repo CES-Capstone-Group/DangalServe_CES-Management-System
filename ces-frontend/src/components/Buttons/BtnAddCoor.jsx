@@ -108,13 +108,13 @@ const BtnAddAcc = (/*{ onAccountAdded }*/) => {
     return (
         <div className="d-flex justify-content-end m-3">
             <Button className="shadow" style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} onClick={handleShowModal}>
-                Add Coordinator
+                Add Department
             </Button>
 
             <Modal backdrop='static' centered size="lg" show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Button onClick={handleCloseModal} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
-                    <Modal.Title> Add New Coordinator </Modal.Title>
+                    <Modal.Title> Add New Department </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -131,7 +131,7 @@ const BtnAddAcc = (/*{ onAccountAdded }*/) => {
                                 <Form.Control 
                                     type="text"
                                     name="brgyName"
-                                    placeholder="Enter Barangay Name"
+                                    placeholder="Enter Department Name"
                                 />
                             </Col>
                         </Form.Group>

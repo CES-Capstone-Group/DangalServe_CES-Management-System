@@ -236,6 +236,8 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                     return Proposal.objects.exclude(status='Approved by Barangay').filter(user_id=user.user_id, status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay'])
                 if status == 'Rejected':
                     return Proposal.objects.filter(user_id=user, status='Rejected')
+                if status == 'Approved by Barangay':
+                    return Proposal.objects.filter(user_id=user.user_id, status='Approved by Barangay')
             return Proposal.objects.filter(user_id=user)
         else:
             # Non-admin users can only see their own proposals, optionally filter by status

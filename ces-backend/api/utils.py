@@ -25,6 +25,18 @@ def generate_proposal_doc(proposal):
     # Convert partner_community to a displayable format as a list (not individual barangays)
     partner_communities_display = ', '.join([community.strip() for community in proposal.partner_community.split(',')]) if proposal.partner_community else 'N/A'
 
+    # Handle Identified Needs (Text or File)
+    if proposal.identified_needs_file:
+        identified_needs = f"See attached file: {os.path.basename(proposal.identified_needs_file.name)}"
+    else:
+        identified_needs = proposal.identified_needs_text or 'N/A'
+
+    # Handle Budget Requirement (Text or File)
+    if proposal.budget_requirement_file:
+        budget_requirement = f"See attached file: {os.path.basename(proposal.budget_requirement_file.name)}"
+    else:
+        budget_requirement = proposal.budget_requirement_text or 'N/A'
+
     # Prepare placeholders and their replacements
     placeholders = {
         '{{title}}': proposal.title,
@@ -42,7 +54,9 @@ def generate_proposal_doc(proposal):
         '{{non_gov_org}}': f"{proposal.non_government_org}" if proposal.non_government_org else '_____________',
         '{{gov_org_box}}': '☑' if proposal.government_org else '☐',
         '{{non_gov_box}}': '☑' if proposal.non_government_org else '☐',
-        '{{partner_community}}': proposal.partner_community,
+        '{{partner_community}}': partner_communities_display,
+        '{{identified_needs}}': identified_needs,  # Identified Needs (text or file reference)
+        '{{budget_requirement}}': budget_requirement,  # Budget Requirement (text or file reference)
         '{{gen_objs}}': proposal.general_objectives,
         '{{spec_objs}}': proposal.specific_objectives,
         '{{success_indicators}}': proposal.success_indicators,
@@ -80,6 +94,6 @@ def generate_proposal_doc(proposal):
     os.makedirs(output_dir, exist_ok=True)
 
     output_path = os.path.join(output_dir, f'proposal_{proposal.proposal_id}.docx')
-    # doc.save(output_path)
+    doc.save(output_path)
     
     return output_path

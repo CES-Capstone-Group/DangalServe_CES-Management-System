@@ -1,63 +1,15 @@
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-*.pid
-*.seed
-*.pid.lock
-
-# Python specific files
-__pycache__/
-*.py[cod]
-*.so
-*.egg
-*.egg-info/
-*.pyd
-
-# Virtual environments
-venv/
-.env/
-.venv/
-
-# Django specific files
-db.sqlite3
-/static/
-/media/
-/celerybeat-schedule
-*.pot
-*.pyc
-
-# Migrations (optional, generally tracked in most cases)
-*/migrations/*.pyc
-*/migrations/__pycache__/
-
-# Django secret keys or environment-specific files (if you're using .env)
-.env
-
-# Frontend (vite or any other tools)
-.vite/
-.eslintcache
-
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-
-# Build files
-build/
-cache/
-out/
-coverage/
 
 # Node.js specific
-node_modules
-dist
-dist-ssr
-*.local
+node_modules/
+dist/
+dist-ssr/
 
 # Build files
 build/
@@ -65,18 +17,25 @@ cache/
 out/
 coverage/
 
-# Package manager lockfiles (if necessary)
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+.vscode/
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Package manager lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Cache and tool-related files
+.vite/
+.eslintcache
+.stylelintcache
+
+# Coverage files (if using testing)
+coverage/

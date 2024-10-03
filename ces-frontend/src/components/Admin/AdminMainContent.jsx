@@ -15,8 +15,14 @@ const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
 
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null); //State for viewing images
+  const [showAgendaImageModal, setShowAgendaImageModal] = useState(false);
+  const [selectedAgendaImage, setSelectedAgendaImage] = useState(null); //State for viewing research agenda images
+
+  const [showAnnImageModal, setShowAnnImageModal] = useState(false);
+  const [selectedAnnImage, setSelectedAnnImage] = useState(null); //State for viewing announcement images
+
+  const [showAchImageModal, setShowAchImageModal] = useState(false);
+  const [selectedAchImage, setSelectedAchImage] = useState(null); //State for viewing achievement images
 
   const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
   const [error, setError] = useState(null);
@@ -25,7 +31,7 @@ const AdminMainContent = () => {
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
   const [loadingResearchAgendas, setLoadingResearchAgendas] = useState(true); // Loading state for research agendas
 
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditModalAch, setShowEditModalAch] = useState(false);
   const [selectedAchievement, setSelectedAchievement] = useState(null);
 
   const [showEditModalAnn, setShowEditModalAnn] = useState(false);
@@ -61,14 +67,36 @@ const AdminMainContent = () => {
   }, []);
 
   // Function to handle opening the modal with the clicked image
-  const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
-    setShowImageModal(true);
+  const handleAgendaImageClick = (imageUrl, agenda = null) => {
+    setSelectedAgendaImage(imageUrl);
+    setShowAgendaImageModal(true);
+    setSelectedResearchAgenda(agenda);
+  };
+
+  const handleAnnImageClick = (imageUrl, announcement = null) => {
+    setSelectedAnnImage(imageUrl);
+    setShowAnnImageModal(true);
+    setSelectedAnnouncement(announcement);
+  };
+
+  const handleAchImageClick = (imageUrl, achievement = null) => {
+    setSelectedAchImage(imageUrl);
+    setShowAchImageModal(true);
+    setSelectedAchievement(achievement); 
   };
 
   const handleCloseModal = () => {
-    setShowImageModal(false);
-    setSelectedImage(null);
+    setShowAgendaImageModal(false);
+    setShowAchImageModal(false);
+    setShowAnnImageModal(false);
+
+    setSelectedAgendaImage(null);
+    setSelectedAchImage(null);
+    setSelectedAnnImage(null);
+
+    setSelectedResearchAgenda(null);
+    setSelectedAnnouncement(null);
+    setSelectedAchievement(null); 
   };
 
 
@@ -105,13 +133,13 @@ const AdminMainContent = () => {
   // Handle when the Edit icon is clicked for Achievement
   const editAchievement = (achievement) => {
     setSelectedAchievement(achievement);  // Set the achievement to be edited
-    setShowEditModal(true);               // Show the edit modal
+    setShowEditModalAch(true);               // Show the edit modal
   };
 
   // Handle Achievement update and close the modal
   const handleAchievementUpdated = () => {
     fetchAchievements();                  // Reload achievements
-    setShowEditModal(false);              // Close the modal
+    setShowEditModalAch(false);              // Close the modal
   };
 
   // Delete Achievement
@@ -263,7 +291,12 @@ const AdminMainContent = () => {
               {researchAgendas.length > 0 ? (
                 researchAgendas.map((agenda, index) => (
                   <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                    <img id='research-agenda-img' src={agenda.image_url || '/placeholder.png'} className="d-block w-100" alt={agenda.label} />
+                    <img 
+                    onClick={() => handleAgendaImageClick(agenda.image_url || "/placeholder.png", agenda)} 
+                    id='research-agenda-img' 
+                    src={agenda.image_url || '/placeholder.png'} 
+                    className="d-block w-100" 
+                    alt={agenda.label} />
 
                     {/* Button Container */}
                     <div className="carousel-buttons">
@@ -289,6 +322,17 @@ const AdminMainContent = () => {
                 <p className='text-muted'>No research agendas found.</p>
               )}
 
+              {/* Modal for viewing full image */}
+              <Modal size='lg' show={showAgendaImageModal} onHide={handleCloseModal} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>{selectedResearchAgenda?.label}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {selectedAgendaImage && (
+                    <img src={selectedAgendaImage} alt="Full Size" style={{ width: '100%' }} />
+                  )}
+                </Modal.Body>
+              </Modal>
 
               {/* Research Agenda Edit Modal */}
               {selectedResearchAgenda && (
@@ -330,8 +374,8 @@ const AdminMainContent = () => {
             {achievements.length > 0 ? (
               achievements.map((achievement) => (
                 <Col md={4} key={achievement.id}>
-                  <Card className="position-relative mb-3" id='conCard'>
-                    <Card.Img fluid variant="top" className='conImg' src={achievement.image_url || "/placeholder.png"} onClick={() => handleImageClick(achievement.image_url || "/placeholder.png")}
+                  <Card className="position-relative mb-3" style={{height: "25rem", overflowY: "auto"}} id='conCard'>
+                    <Card.Img variant="top" className='conImg' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )}
                       style={{ cursor: 'pointer' }} />
 
                     {/* Edit and Delete Icons */}
@@ -360,7 +404,7 @@ const AdminMainContent = () => {
                         <strong>Date:</strong> {achievement.date_awarded}<br />
                         <strong>Awarded by:</strong> {achievement.awarded_by}
                       </Card.Text>
-                      {/* <Button variant="success">See more</Button> */}
+                      <Button onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )} variant="success">See more</Button>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -372,21 +416,26 @@ const AdminMainContent = () => {
             )}
 
             {/* Modal for viewing full image */}
-            <Modal show={showImageModal} onHide={handleCloseModal} centered>
+            <Modal size='lg' show={showAchImageModal} onHide={handleCloseModal} centered>
               <Modal.Header closeButton>
+
               </Modal.Header>
               <Modal.Body className="text-center">
-                {selectedImage && (
-                  <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />
+                {selectedAchImage && (
+                  <img src={selectedAchImage} alt="Full Size" style={{ width: '100%' }} />
                 )}
+                <h1>{selectedAchievement?. award_title}</h1>
+                <strong>Awardee:</strong> {selectedAchievement?.awardee}<br />
+                <strong>Date:</strong> {selectedAchievement?.date_awarded}<br />
+                <strong>Awarded by:</strong> {selectedAchievement?.awarded_by}
               </Modal.Body>
             </Modal>
 
             {/* Achievement Edit Modal */}
             {selectedAchievement && (
               <BtnEditAchievement
-                show={showEditModal}
-                onHide={() => setShowEditModal(false)}
+                show={showEditModalAch}
+                onHide={() => setShowEditModalAch(false)}
                 achievement={selectedAchievement}
                 onAchievementUpdated={handleAchievementUpdated}
               />
@@ -415,9 +464,14 @@ const AdminMainContent = () => {
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
                 <Col md={4} key={announcement.id}>
-                  <Card className="position-relative mb-3" id='conCard'>
-                    <Card.Img className='conImg' variant="top" src={announcement.image || "/placeholder.png"} onClick={() => handleImageClick(announcement.image_url || "/placeholder.png")}
-                      style={{ cursor: 'pointer' }} />
+                  <Card className="position-relative mb-3" style={{height: "25rem", overflowY: "auto"}} id='conCard'>
+                    <Card.Img 
+                    className='conImg' 
+                    variant="top" 
+                    src={announcement.image || "/placeholder.png"} 
+                    onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}                      
+                    style={{ cursor: 'pointer' }} />
+
                     <div className="d-flex position-absolute top-0 end-0 m-1">
                       <Button
                         variant="link"
@@ -436,7 +490,7 @@ const AdminMainContent = () => {
                     </div>
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
-                      <Card.Text>{announcement.details}</Card.Text>
+                      <Card.Text className='truncate-text'>{announcement.details}</Card.Text>
                       {/* <Button variant="success">See more</Button> */}
                     </Card.Body>
                   </Card>
@@ -449,13 +503,15 @@ const AdminMainContent = () => {
             )}
 
             {/* Modal for viewing full image */}
-            <Modal show={showImageModal} onHide={handleCloseModal} centered>
+            <Modal size='lg' show={showAnnImageModal} onHide={handleCloseModal} centered>
               <Modal.Header closeButton>
               </Modal.Header>
-              <Modal.Body className="text-center">
-                {selectedImage && (
-                  <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />
+              <Modal.Body>
+                {selectedAnnImage && (
+                  <img src={selectedAnnImage} alt="Full Size" style={{ width: '100%' }} />
                 )}
+                <h1>{selectedAnnouncement?.title}</h1>
+                <p className="mt-3 text-justify">{selectedAnnouncement?.details}</p>
               </Modal.Body>
             </Modal>
 

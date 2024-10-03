@@ -276,3 +276,15 @@ button.fc-Service-button.fc-button.fc-button-primary {
   transform: scale(1.05);
 }
 
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Prevent single-line truncation */
+}
+
+.text-justify {
+  text-align: justify;
+}

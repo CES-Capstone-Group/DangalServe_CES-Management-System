@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Container, Table, Button, Row, Col } from "react-bootstrap";
 import BtnEditDeac from "../Buttons/Admin/BtnEditDeac";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddAcc from "../Buttons/Admin/BtnAddAcc";
 import "../table.css"
 
@@ -34,7 +35,7 @@ const Rows = ({ user_id, username, type, department, position, actDate, deacDate
             activationDate: newStatus === 'Active' ? getCurrentDate() : account.activationDate,
             deactivationDate: newStatus === 'Inactive' ? getCurrentDate() : null
         };
-    
+
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${user_id}/`, {
                 method: 'PUT',
@@ -43,21 +44,22 @@ const Rows = ({ user_id, username, type, department, position, actDate, deacDate
                 },
                 body: JSON.stringify(updatedAccount),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Response error data:', errorData);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-    
+
             const data = await response.json();
             console.log("Account status updated:", data);
-            fetchUsers();  
+            fetchUsers();
         } catch (error) {
             console.error("Failed to update account status:", error);
         }
     };
-    
+
+
     return (
         <tr>
             <td>{user_id}</td>
@@ -82,7 +84,7 @@ const Rows = ({ user_id, username, type, department, position, actDate, deacDate
 const NewTable = ({ data, fetchUsers }) => {
     return (
         <Table responsive striped bordered hover className="tableStyle">
-            <thead>                
+            <thead>
                 <th>Account ID</th>
                 <th>Name</th>
                 <th>Type of Account</th>
@@ -93,22 +95,22 @@ const NewTable = ({ data, fetchUsers }) => {
                 <th>Status</th>
                 <th>Actions</th>
             </thead>
-            
-                {data.map((row) => (
-                    <Rows 
-                        key={row.user_id}  // Use a unique ID, like accountID
-                        user_id={row.user_id}
-                        username={row.username}
-                        type={row.accountType}
-                        department={row.department}
-                        position={row.position}
-                        actDate={row.activationDate}
-                        deacDate={row.deactivationDate}
-                        status={row.status}
-                        fetchUsers={fetchUsers}
-                    />
-                ))}
-            
+
+            {data.map((row) => (
+                <Rows
+                    key={row.user_id}  // Use a unique ID, like accountID
+                    user_id={row.user_id}
+                    username={row.username}
+                    type={row.accountType}
+                    department={row.department}
+                    position={row.position}
+                    actDate={row.activationDate}
+                    deacDate={row.deactivationDate}
+                    status={row.status}
+                    fetchUsers={fetchUsers}
+                />
+            ))}
+
         </Table>
     );
 };
@@ -130,18 +132,31 @@ const UserManagementCon = () => {
     };
 
     useEffect(() => {
-        fetchUsers(); 
+        fetchUsers();
     }, []);
 
     const handleAccountAdded = () => {
-        fetchUsers();  
+        fetchUsers();
+    };
+
+    const navigate = useNavigate();
+
+    // Go back to the previous page
+    const handleBack = () => {
+        navigate(-1); // This will navigate to the previous page in the history
     };
 
     return (
         <Container fluid className="fs-5">
             <Row>
+
+                <Button variant="link" onClick={handleBack} className="d-flex align-items-center text-success me-3">
+                    <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+
+                </Button>
+
                 <Col className="d-flex justify-content-end">
-                    <Button style={{backgroundColor:'#71A872', border: '0px'}}>
+                    <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
                         <FontAwesomeIcon className='me-2' icon={faFilter}></FontAwesomeIcon>
                         Filter
                     </Button>
@@ -152,7 +167,7 @@ const UserManagementCon = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{width: '300px'}} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
                 </Col>
             </Row>
 
@@ -161,7 +176,7 @@ const UserManagementCon = () => {
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <BtnAddAcc onAccountAdded={handleAccountAdded} style={{backgroundColor:'#71A872', border: '0px'}}/>
+                    <BtnAddAcc onAccountAdded={handleAccountAdded} style={{ backgroundColor: '#71A872', border: '0px' }} />
                 </Col>
             </Row>
         </Container>

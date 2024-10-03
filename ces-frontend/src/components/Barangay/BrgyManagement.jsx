@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddBrgy from "../Buttons/Manage/BtnAddBrgy";
 import "../table.css"
 import sampleimg from "../../assets/sampleimg.png";
@@ -28,6 +29,13 @@ const BrgyManagement = () => {
         setSelectedContent(null);
         setContentType("");
     };
+
+    const navigate = useNavigate();
+
+    // Go back to the previous page
+    const handleBack = () => {
+        navigate(-1); // This will navigate to the previous page in the history
+    };
     // const fetchUsers = async () => {
     //     try {
     //         const response = await fetch('http://127.0.0.1:8000/api/users/');
@@ -48,13 +56,13 @@ const BrgyManagement = () => {
     // const handleAccountAdded = () => {
     //     fetchUsers();  
     // };
-    
-    const array = [{brgy_id:'1', brgyName:'Bigaa' , moa: sampleimg },
-                   {brgy_id:'2', brgyName:'Diezmo' , moa: samplepdf}];
-    
+
+    const array = [{ brgy_id: '1', brgyName: 'Bigaa', moa: sampleimg },
+    { brgy_id: '2', brgyName: 'Diezmo', moa: samplepdf }];
+
     const Rows = (props) => {
-        const {brgy_id, brgyName, moa} = props;
-        
+        const { brgy_id, brgyName, moa } = props;
+
         return (
             <tr>
                 <td>{brgy_id}</td>
@@ -64,15 +72,15 @@ const BrgyManagement = () => {
                         <FontAwesomeIcon icon={faEye} />
                     </Button>
                 </td>
-                <td><BtnEditDelete/></td>
+                <td><BtnEditDelete /></td>
             </tr>
         );
     };
-    
+
     const NewTable = ({ data, /*fetchUsers*/ }) => {
         return (
             <Table responsive striped bordered hover className="tableStyle">
-                <thead>                
+                <thead>
                     <th>Barangay ID</th>
                     <th>Barangay Name</th>
                     <th>MOA</th>
@@ -80,12 +88,12 @@ const BrgyManagement = () => {
                 </thead>
                 <tbody>
                     {data.map((row) => (
-                        <Rows 
+                        <Rows
                             key={row.brgy_id}  // Use a unique ID, like accountID
                             brgy_id={row.brgy_id}
                             brgyName={row.brgyName}
                             moa={row.moa}
-                            //fetchUsers={fetchUsers}
+                        //fetchUsers={fetchUsers}
                         />
                     ))}
                 </tbody>
@@ -96,6 +104,11 @@ const BrgyManagement = () => {
     return (
         <Container fluid className="fs-5">
             <Row>
+
+                <Button variant="link" onClick={handleBack} className="d-flex align-items-center text-success me-3">
+                    <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+                </Button>
+
                 <Col className="d-flex justify-content-end">
                     <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
                         <FontAwesomeIcon className='me-2' icon={faFilter}></FontAwesomeIcon>

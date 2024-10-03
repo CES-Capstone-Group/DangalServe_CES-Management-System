@@ -51,7 +51,7 @@ const AdminManage = () => {
             </Row>
 
             {/* Management Cards */}
-            <Row className="g-4 w-100 d-flex justify-content-center">
+            <Row className="g-4 d-flex justify-content-center">
                 {managementSections.map((section, index) => (
                     <Col key={index} xs={12} sm={6} md={4} className="d-flex justify-content-center">
                         <Card
@@ -59,10 +59,10 @@ const AdminManage = () => {
                             className="landCard clickable-card text-center shadow p-4"
                             style={{
                                 cursor: 'pointer',
-                                width: '90%',  // Responsive width
-                                maxWidth: '300px',  // Limit max width
-                                height: 'auto',  // Auto-adjust height
-                                minHeight: '200px',  // Minimum height for each card
+                                width: '90%',
+                                maxWidth: '300px',
+                                height: 'auto',
+                                minHeight: '200px',
                             }}
                         >
                             <Card.Body className="d-flex flex-column justify-content-center align-items-center">

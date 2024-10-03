@@ -127,13 +127,13 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ status: rejectReason }), // Update status to rejection reason
+          body: JSON.stringify({ status: "Rejected" }), // Update status to rejection reason
         }
       );
       if (response.ok) {
         console.log("Proposal rejected successfully");
-        handleRejectClose(); // Close the reject modal
-        if (onApprove) onApprove(); // Trigger parent update
+        handleRejectClose(); 
+        if (onApprove) onApprove();
       } else {
         console.error("Failed to reject the proposal");
       }

@@ -322,6 +322,9 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
                 proposal.PRESignDate = timezone.now().date()
                 proposal.status = new_status
                 proposal.save()
+            elif new_status == 'Rejected':
+                proposal.status = new_status
+                proposal.save()
             
 
         elif request.user == proposal.user:

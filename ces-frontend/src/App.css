@@ -1,0 +1,278 @@
+body, html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+.element {
+  width: 100%; /* Adjusts to the parent's width */
+}
+.container {
+  max-width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.side{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: start; 
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
+  width: 300px; /* Full width when sidebar is open */
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1050;
+  transition: 0.3s ease;
+  overflow-y: auto;
+}
+
+.side.collapsed {
+  width: 70px; /* Narrow width when sidebar is collapsed */
+  z-index: 1020;
+}
+
+.sidebar-menu.collapsed .sidebar-menu-nav-title {
+  display: none; /* Hide text labels when sidebar is collapsed */
+}
+
+.sidebar-menu-sub-toggle {
+  border: 0px;
+  background-color: rgba(255, 255, 255, 0);
+  
+  padding: 0px;
+}
+
+.sidebar-menu.active{
+  left: 0%;
+  transition: 0.3s;
+}
+
+@media screen and (max-width: 430px){
+  .mobileMain{
+    margin: 1em;
+  }
+
+  .side{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: start; 
+    margin: 0px;
+    padding: 0px;
+    position: fixed;
+    width: 300px; /* Full width when sidebar is open */
+    height: 100vh;
+    left: -100%;
+    top: 0;
+    z-index: 1050;
+    transition: 0.3s ease;
+    overflow-y: auto;
+  }
+  
+  .side.collapsed {
+    width: 0px; /* Narrow width when sidebar is collapsed */
+    z-index: 1020;
+  }
+
+  .sidebar-menu.active{
+    left: 0%;
+    transition: 0.3s;
+  }
+}
+
+.topNav{
+  width: 100%;
+  position: fixed;
+  left: 0;
+  margin-left: 0px;
+  z-index: 1030;
+  transition: 0.3s;
+}
+
+/* Full Calendar Styles [START]*/
+button.fc-Legend-button.fc-button.fc-button-primary {
+  color: black;
+  background-color: rgba(255, 255, 255, 0);
+  font-weight: bold;
+}
+
+button.fc-Extension-button.fc-button.fc-button-primary {
+  background-color: #D2CC3F;
+  font-weight: bold;
+  border-radius: 10%;
+}
+
+button.fc-Service-button.fc-button.fc-button-primary {
+  font-weight: bold;
+}
+
+
+.fc .fc-daygrid-day-number , .fc .fc-col-header-cell-cushion{
+  color: #71A872;
+}
+
+.fc .fc-button-primary,.fc  .fc-button-primary:disabled{
+  background-color: #71A872;
+  border: 0px;
+}
+
+.fc .fc-button-primary:hover{
+  background-color: #446445;
+}
+/* Full Calendar Styles [END]*/
+
+.sidebar-menu-header {
+  background-color: #71A872;
+  color: #71A872;
+  padding: 1em;
+}
+
+.sidebar-menu-header .sidebar-menu-brand {
+  color: white;
+}
+
+.sidebar-menu-nav {
+  margin-left: 2em;
+  margin-top: 1em;
+}
+
+.sidebar-menu-nav-title {
+  color: black;
+  padding: 10px;
+}
+
+.sidebar-menu-nav-link {
+  text-decoration: none;
+}
+
+.sidebar-menu-toggle {
+  border: none;
+}
+
+.sidebar-menu-sub-toggle {
+  border: 0px;
+  background-color: rgba(255, 255, 255, 0);
+  margin: 10px 0px 10px 0px;
+  padding: 0px;
+}
+
+.input {
+  width: 500px;
+  height: 63px;
+}
+
+.card {
+  padding: 1em;
+  border: none !important;
+}
+
+.achCard {
+  font-size: clamp(1rem, .5vw, 1rem);
+}
+
+.logo {
+  width: 19rem;
+}
+
+.text-sm{
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+  color: gray;
+}
+
+.involvement{
+  width: 15vw !important;
+}
+
+.mainBtn{
+  padding: 5em;
+}
+
+.form{
+ border-style: solid;
+ border-width: 2px;
+ padding: 3rem;
+ border-radius: 5px;
+ box-shadow: 7px 7px 4px #888888;
+ background-color: rgb(243, 243, 243);
+}
+
+
+
+#propHeader{
+  background-color:#71A872;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px ;
+}
+
+#formbtn{
+  box-shadow: 4px 4px 4px rgb(88, 88, 88);
+}
+
+#formlabel{
+  font-size: 1rem;
+}
+
+#scale {
+  text-align: center;
+  font-weight: bold;
+}
+
+.carousel-item {
+  position: relative;
+}
+
+.carousel .carousel-item .carousel-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10; /* Ensures that the buttons appear on top of the carousel images */
+}
+
+.carousel .carousel-item .carousel-buttons button {
+  margin-right: 10px;
+}
+
+.custom-container {
+  max-width: 100% !important; 
+  padding: 0px !important;            
+}
+
+#conCard{
+  border: 1px solid lightgrey !important;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.conImg{
+  border: 1px solid lightgrey !important; 
+  width: 100%;       
+  height: 210px;  
+  object-fit: contain; 
+}
+
+#research-agenda-img {
+  width: 100%;        
+  height: 730px;      
+  object-fit: contain; 
+  background-color: #f8f9fa; 
+  border: 1px solid #ddd; 
+}
+
+.landCard{
+  border: 2px solid #71A872 !important;  
+}
+
+.clickable-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.clickable-card:hover {
+  transform: scale(1.05);
+}
+

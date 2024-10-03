@@ -112,6 +112,17 @@ class ProposalSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'status': {'required': True}
         }
+        
+    def validate(self, data):
+    # Ensure either text or file is provided for identified_needs
+        if not data.get('identified_needs_text') and not data.get('identified_needs_file'):
+            raise serializers.ValidationError("Either 'Identified Needs' text or file must be provided.")
+
+        # Ensure either text or file is provided for budget_requirement
+        if not data.get('budget_requirement_text') and not data.get('budget_requirement_file'):
+            raise serializers.ValidationError("Either 'Budget Requirement' text or file must be provided.")
+
+        return data
 
     def create(self, validated_data):
         user = self.context['request'].user  # Get the user object

@@ -80,6 +80,6 @@ def generate_proposal_doc(proposal):
     os.makedirs(output_dir, exist_ok=True)
 
     output_path = os.path.join(output_dir, f'proposal_{proposal.proposal_id}.docx')
-    doc.save(output_path)
+    # doc.save(output_path)
     
     return output_path

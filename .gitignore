@@ -1,0 +1,46 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Python bytecode (just in case)
+*.py[cod]
+
+# Ignore virtual environments in case they're created at the root level
+venv/
+env/
+.venv/
+
+# Node.js specific
+node_modules/
+
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Lockfiles from multiple package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build directories
+build/
+dist/
+out/
+cache/
+
+# Coverage reports
+coverage/
+coverage-final.json

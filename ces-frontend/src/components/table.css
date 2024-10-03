@@ -1,0 +1,45 @@
+/* Custom table styling with increased specificity */
+.tableStyle {
+    background-color: #eaf3e8 !important;
+    color: #333 !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  .tableStyle th {
+    background-color: #045c2a !important;
+    color: rgb(253, 253, 253) !important;
+    font-weight: bold;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .tableStyle td {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .tableStyle  tr:nth-child(even) {
+    background-color: #c0fcc0 !important; /* Alternating row background color */
+  }
+  
+  .tableStyle  tr:hover {
+    background-color: #99da7f !important; /* Highlight row on hover */
+  }
+  
+  /* Style for buttons in the Actions column */
+  .tableStyle .btn-success {
+    background-color: #71A872 !important;
+    border: none !important;
+  }
+  
+  .tableStylee .btn-danger {
+    background-color: #FF5252 !important;
+    border: none !important;
+  }
+  
+  .tableStyle .btn-success:hover, 
+  .tableStyle .btn-danger:hover {
+    opacity: 0.8 !important;
+  }

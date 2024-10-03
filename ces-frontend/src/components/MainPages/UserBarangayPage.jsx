@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BrgySidebar from "../BrgySidebar";
+import BrgySidebar from "../Barangay/BrgySidebar";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";

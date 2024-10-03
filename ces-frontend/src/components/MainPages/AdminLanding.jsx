@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TopNav from "../TopNav";
 import { Row, Col, Container } from "react-bootstrap";
-import AdminLandingPage from "../AdminLandingPage";
+import AdminLandingPage from "../Admin/AdminLandingPage";
 
 const AdminLanding = () => {
   

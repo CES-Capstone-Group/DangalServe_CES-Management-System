@@ -4,8 +4,8 @@ import { Container, Table, Button, Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
-import BtnEditDelete from "./Buttons/BtnEditDelete";
-import BtnAddAnnouncement from "./Buttons/BtnAddAnnouncement";
+import BtnEditDelete from "./Buttons/Manage/BtnEditDelete";
+import BtnAddAnnouncement from "./Buttons/Admin/BtnAddAnnouncement";
 
 const array = [{ announcementTitle: 'Outstanding Extension Personnel', announcementDeets: '', announcementImg: '' }];
 

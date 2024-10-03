@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
-import EvalSidebar from "../EvalSidebar";
+import EvalSidebar from "../Evaluator/EvalSidebar";
 
 const UserEvalPage = () => {
   const [sidebarOpen, setSidebar] = useState(true);

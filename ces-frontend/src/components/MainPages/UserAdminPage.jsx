@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import AdminSidebar from "../AdminSidebar";
+import AdminSidebar from "../Admin/AdminSidebar";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";

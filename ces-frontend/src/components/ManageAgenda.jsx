@@ -4,8 +4,8 @@ import { Container, Table, Button, Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
-import BtnAddResearchAgenda from "./Buttons/BtnAddResearchAgenda";
-import BtnEditDelete from "./Buttons/BtnEditDelete";
+import BtnAddResearchAgenda from "./Buttons/Admin/BtnAddResearchAgenda";
+import BtnEditDelete from "./Buttons/Manage/BtnEditDelete";
 
 const array = [{ agendaLabel: 'Outstanding Extension Personnel', agendaImg: ''}];
 

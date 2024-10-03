@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CoorSidebar from "../CoorSidebar";
+import CoorSidebar from "../Coordinator/CoorSidebar";
 import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";

@@ -1,25 +1,21 @@
 import React from "react";
 import { useState } from "react";
-import { Container, Table, Button, Row, Col, Form } from "react-bootstrap";
+import { Container, Table, Button, Row, Col, Form} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import "./table.css";
-import BtnEditDelete from "./Buttons/Manage/BtnEditDelete";
-import BtnAddAchievement from "./Buttons/Admin/BtnAddAchievement";
+import { faFilter} from "@fortawesome/free-solid-svg-icons";
+import "../table.css"
 
-const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', achImage: '' },
-    {awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', achImage: ''}];
+const array = [{awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'},
+    {awardTitle:'Outstanding Extension Personnel', awardee:'Mr. John Doe' , awardedBy:'Community Outreach Foundation', awardDate:'April 20, 2024', status:'Pending'}];
 
 const Rows = (props) => {
-    const {awardTitle , awardee, awardedBy, awardDate, achImage} = props
+    const {awardTitle , awardee, awardedBy, awardDate, status} = props
     return (
         <tr>
             <td>{awardTitle}</td>
             <td>{awardee}</td>
             <td>{awardedBy}</td>
             <td>{awardDate}</td>
-            <td>{achImage}</td>
-            <td><BtnEditDelete/></td>
         </tr>
     );
 };
@@ -33,8 +29,6 @@ const NewTable = (props) => {
                 <th>Awardee</th>
                 <th>Awarded By</th>
                 <th>Date Awarded</th>
-                <th>Image</th>
-                <th></th>
             </thead>
             {data.map((row, index) =>
                 <Rows key = {'key-${index}'} 
@@ -42,50 +36,41 @@ const NewTable = (props) => {
                 awardee = {row.awardee}
                 awardedBy = {row.awardedBy}
                 awardDate = {row.awardDate}
-                achImage = {row.achImage}
             />)}
         </Table>
     );
 }
 
-
-const ManageAchievements = () => {
+const AdminApprovedAch = () => {
 
     const [rows, setRows] = useState(array)
 
-    return (
+    return(
         <Container fluid>
             <Row>
                 <Col className="d-flex justify-content-end">
-                    <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
+                    <Button style={{backgroundColor:'#71A872', border: '0px'}}>
                         <FontAwesomeIcon className='me-2' icon={faFilter} ></FontAwesomeIcon>
                         Filter
                     </Button>
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Achievement Management </h1></Col>
+                <Col><h1> Admin Approved Achivement</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{width: '300px'}}/>
                 </Col>
             </Row>
 
             <Table>
-                <NewTable data={rows} />
-            </Table>
-
-            <Row>
-                <Col className="mb-3 d-flex justify-content-end">
-                    <BtnAddAchievement/>
-                </Col>
-            </Row>
-
+                <NewTable data = {rows}/>
+            </Table>         
         </Container>
-
+        
     );
 };
 
-export default ManageAchievements;
+export default AdminApprovedAch;
 

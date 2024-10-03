@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TopNav from "../TopNav";
 import { Row, Col, Container } from "react-bootstrap";
-import AdminManage from "../AdminManage";
+import AdminManage from "../Admin/AdminManage";
 import { Outlet } from "react-router-dom";
 
 const AdminManagePage = () => {

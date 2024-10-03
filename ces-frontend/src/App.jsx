@@ -1,56 +1,57 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
-import TopNav from './components/TopNav';
-import BrgySidebar from './components/BrgySidebar';
 import MainContent from './components/MainContent';
-import { Container, Row, Col } from 'react-bootstrap';
-import CoorSidebar from './components/CoorSidebar';
-import UserManagementCon from './components/UserManagementCon.jsx';
-import AdminSidebar from './components/AdminSidebar';
-import AdminMainContent from './components/AdminMainContent';
+import UserManagementCon from './components/Admin/UserManagementCon.jsx';
+import AdminMainContent from './components/Admin/AdminMainContent';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-import AdminPenProposal from './components/AdminPenProposal';
-import AdminApprovedPro from './components/AdminApprovedPro';
-import AdminPenAchievements from './components/AdminPenAchievements';
-import AdminEventRequest from './components/AdminEventRequest';
-import AdminApprovedAch from './components/AdminApprovedAch';
-import AdminCalendar from './components/AdminCalendar';
-import KpiPage from './components/KpiPage';
-import InvolvementPage from './components/InvolvementPage';
-import BrgyPenProposalPage from './components/BrgyPenProposalPage';
-import BrgyApprovedPro from './components/BrgyApprovedPro';
-import BrgyEventRequest from './components/BrgyEventRequest';
-import BrgyManagement from './components/BrgyManagement.jsx';
-import CoorPenProposal from './components/CoorPenProposal';
-import CoorCalendar from './components/CoorCalendar';
-import CoorApprovedPro from './components/CoorApprovedPro';
-import BrgyCalendar from './components/BrgyCalendar';
-import ProposalForm from './components/ProposalForm';
+import AdminPenProposal from './components/Admin/AdminPenProposal';
+import AdminApprovedPro from './components/Admin/AdminApprovedPro';
+import AdminPenAchievements from './components/Admin/AdminPenAchievements';
+import AdminEventRequest from './components/Admin/AdminEventRequest';
+import AdminApprovedAch from './components/Admin/AdminApprovedAch';
+import AdminManage from './components/Admin/AdminManage.jsx';
+import AdminCalendar from './components/Admin/AdminCalendar';
+import KpiPage from './components/Admin/KpiPage';
+import InvolvementPage from './components/Admin/InvolvementPage';
+
+import BrgyPenProposalPage from './components/Barangay/BrgyPenProposalPage';
+import BrgyApprovedPro from './components/Barangay/BrgyApprovedPro';
+import BrgyEventRequest from './components/Barangay/BrgyEventRequest';
+import BrgyManagement from './components/Barangay/BrgyManagement.jsx';
+import BrgyCalendar from './components/Barangay/BrgyCalendar';
+
+import CoorPenProposal from './components/Coordinator/CoorPenProposal';
+import CoorCalendar from './components/Coordinator/CoorCalendar';
+import CoorApprovedPro from './components/Coordinator/CoorApprovedPro';
+import CoorPenAchievements from './components/Coordinator/CoorPenAchievements';
+import CoorApprovedAch from './components/Coordinator/CoorApprovedAch';
+import CoorEventRequest from './components/Coordinator/CoorEventRequest';
+import CoorManagement from './components/Coordinator/CoorManagement.jsx';
+
+import EvalPage from './components/Evaluator/EvalPage';
+
+import ProposalForm from './components/Forms/ProposalForm.jsx';
 import DocumentPage from './components/DocumentPage';
 import UserAdminPage from './components/MainPages/UserAdminPage';
 import UserBarangayPage from './components/MainPages/UserBarangayPage';
 import UserCoorPage from './components/MainPages/UserCoorPage';
-import CoorPenAchievements from './components/CoorPenAchievements';
-import CoorApprovedAch from './components/CoorApprovedAch';
-import CoorEventRequest from './components/CoorEventRequest';
 import UserEvalPage from './components/MainPages/UserEvalPage';
-import EvalPage from './components/EvalPage';
-import ActEvalForm from './components/ActEvalForm';
-import FundingProposalForm from './components/FundingProposalForm.jsx';
-import CesEvalForm from './components/CesEvalForm.jsx';
-import AARForm from './components/AARForm.jsx';
-import PrivateRoute from './components/PrivateRoute';
 import UnauthorizedPage from './components/MainPages/UnauthorizedPage.jsx'
+
+import ActEvalForm from './components/Forms/ActEvalForm.jsx';
+import FundingProposalForm from './components/Forms/FundingProposalForm.jsx';
+import CesEvalForm from './components/Forms/CesEvalForm.jsx';
+import AARForm from './components/Forms/AARForm.jsx';
+
+import PrivateRoute from './components/PrivateRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ManageAgenda from './components/ManageAgenda.jsx';
 import ManageAchievements from './components/ManageAchievements.jsx';
 import ManageAnnouncement from './components/ManageAnnouncement.jsx';
-import CoorManagement from './components/CoorManagement.jsx';
 import AdminLanding from './components/MainPages/AdminLanding.jsx';
 import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
-import AdminManage from './components/AdminManage.jsx';
 
 
 const App = () => {

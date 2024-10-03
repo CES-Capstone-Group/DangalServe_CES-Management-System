@@ -233,7 +233,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         elif user.accountType == 'Proponent':
             if status:
                 if status == 'Pending':
-                    return Proposal.objects.exclude(status='Approved by Barangay').filter(user_id=user.id, status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay'])
+                    return Proposal.objects.exclude(status='Approved by Barangay').filter(user_id=user.user_id, status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay'])
                 if status == 'Rejected':
                     return Proposal.objects.filter(user_id=user, status='Rejected')
             return Proposal.objects.filter(user_id=user)

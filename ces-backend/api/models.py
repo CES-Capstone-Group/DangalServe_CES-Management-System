@@ -138,7 +138,9 @@ class Proposal(models.Model):
     barangay = models.BooleanField(default=False)
     government_org = models.CharField(max_length=255, blank=True, null=True)
     non_government_org = models.CharField(max_length=255, blank=True, null=True)
-    identified_needs = models.FileField(upload_to='Proposals/identified_needs/', blank=True, null=True)
+    # identified_needs = models.FileField(upload_to='Proposals/identified_needs/', blank=True, null=True)
+    identified_needs_text = models.TextField(null=True, blank=True)  # Text input for needs
+    identified_needs_file = models.FileField(upload_to='Proposals/identified_needs/', null=True, blank=True) 
     general_objectives = models.TextField()
     specific_objectives = models.TextField()
     success_indicators = models.TextField()
@@ -149,7 +151,9 @@ class Proposal(models.Model):
     risk_assessment = models.TextField()
     action_plans = models.TextField()
     sustainability_approaches = models.TextField()
-    budget_requirement = models.FileField(upload_to='Proposals/budget_requirements/', blank=True, null=True)
+    # budget_requirement = models.FileField(upload_to='Proposals/budget_requirements/', blank=True, null=True)
+    budget_requirement_text = models.TextField(null=True, blank=True)  # Text input for budget
+    budget_requirement_file = models.FileField(upload_to='Proposals/budget_requirements/', null=True, blank=True)
 
     directorSignDate = models.DateField(null=True, blank=True)
     VPRESignDate = models.DateField(null=True, blank=True)

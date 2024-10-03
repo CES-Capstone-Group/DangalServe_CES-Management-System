@@ -143,6 +143,7 @@ const ProposalForm = () => {
               placeholder="Enter title"
               name="title"
               value={formData.title}
+              required={true}
               onChange={handleChange}
             />
           </Col>
@@ -256,63 +257,105 @@ const ProposalForm = () => {
 
         <h4 className="mb-4">B. Project Details</h4>
 
-        <h6 className="mb-4">Partner Community/Organization</h6>
         <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
-          <Col sm={10}>
-            <Form.Check
-              type="checkbox"
-              label="Baclaran"
-              value="Baclaran"
-              onChange={handleCommunityChange}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Bigaa"
-              value="Bigaa"
-              onChange={handleCommunityChange}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Sala"
-              value="Sala"
-              onChange={handleCommunityChange}
-            />
-            <Form.Check
-              type="checkbox"
-              label="San Isidro"
-              value="San Isidro"
-              onChange={handleCommunityChange}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Diezmo"
-              value="Diezmo"
-              onChange={handleCommunityChange}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Others"
-              onChange={handleOtherCommunityChange}
-            />
-            {otherCommunity && (
-              <Form.Control
-                type="text"
-                placeholder="Please specify"
-                className="mt-2"
-                value={otherCommunityValue}
-                onChange={(e) => setOtherCommunityValue(e.target.value)}
+          <Col sm={5}>
+              <h6 className="mb-4">Partner Community/Organization</h6>
+              <Form.Check
+                type="checkbox"
+                label="Baclaran"
+                value="Baclaran"
+                onChange={(e) => handleCommunityChange(e, 'Baclaran', 'Barangay')}
               />
-            )}
-          </Col>
+              <Form.Check
+                type="checkbox"
+                label="Bigaa"
+                value="Bigaa"
+                onChange={(e) => handleCommunityChange(e, 'Bigaa', 'Barangay')}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Sala"
+                value="Sala"
+                onChange={(e) => handleCommunityChange(e, 'Sala', 'Barangay')}
+              />
+              <Form.Check
+                type="checkbox"
+                label="San Isidro"
+                value="San Isidro"
+                onChange={(e) => handleCommunityChange(e, 'San Isidro', 'Barangay')}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Diezmo"
+                value="Diezmo"
+                onChange={(e) => handleCommunityChange(e, 'Diezmo', 'Barangay')}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Others"
+                onChange={handleOtherCommunityChange}
+              />
+              {otherCommunity && (
+                <Form.Control
+                  type="text"
+                  placeholder="Please specify"
+                  className="mt-2"
+                  value={otherCommunityValue}
+                  onChange={(e) => setOtherCommunityValue(e.target.value)}
+                />
+              )}
+            </Col>
+            
+            <Col sm={5}>
+            <h6 className="mb-4">Typology</h6>
+              <Form.Check
+                type="checkbox"
+                label="School"
+                name="school"
+                onChange={handleChange}
+                checked={formData.school}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Barangay"
+                name="barangay"
+                onChange={handleChange}
+                checked={formData.barangay}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Government Organization"
+                name="government_org"
+                onChange={(e) => handleChange({ target: { name: 'government_org', value: e.target.checked ? 'Yes' : '' } })}
+                checked={formData.government_org === 'Yes'}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Non-Government Organization"
+                name="non_government_org"
+                onChange={(e) => handleChange({ target: { name: 'non_government_org', value: e.target.checked ? 'Yes' : '' } })}
+                checked={formData.non_government_org === 'Yes'}
+              />
+            </Col>
         </Form.Group>
 
+        {/* Identified Needs of the Partner Community */}
         <Form.Group as={Row} controlId="formNeeds" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Identified Needs of the Partner Community</Form.Label>
           <Col sm={10}>
             <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter identified needs"
+              name="identified_needs_text"
+              value={formData.identified_needs_text}
+              onChange={handleChange}
+            />
+            <div className="mt-3">or upload a file:</div>
+            <Form.Control
               className="inputFile"
               type="file"
-              name="identified_needs"
+              name="identified_needs_file"
               onChange={handleFileChange}
             />
             <p className='text-sm'>Max Size: 25MB</p>
@@ -459,13 +502,23 @@ const ProposalForm = () => {
           </Col>
         </Form.Group>
 
+        {/* Budget Requirement */}
         <Form.Group as={Row} controlId="formBudgetRequirement" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Budget Requirement</Form.Label>
           <Col sm={10}>
             <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter budget requirement"
+              name="budget_requirement_text"
+              value={formData.budget_requirement_text}
+              onChange={handleChange}
+            />
+            <div className="mt-3">or upload a file:</div>
+            <Form.Control
               className="inputFile"
               type="file"
-              name="budget_requirement"
+              name="budget_requirement_file"
               onChange={handleFileChange}
             />
             <p className='text-sm'>Max Size: 25MB</p>

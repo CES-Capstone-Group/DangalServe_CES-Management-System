@@ -26,7 +26,7 @@ const AdminMainContent = () => {
 
   const [researchAgendas, setResearchAgendas] = useState([]); // State for research agendas
   const [error, setError] = useState(null);
-  
+
   const [loadingAchievements, setLoadingAchievements] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
   const [loadingResearchAgendas, setLoadingResearchAgendas] = useState(true); // Loading state for research agendas
@@ -82,7 +82,7 @@ const AdminMainContent = () => {
   const handleAchImageClick = (imageUrl, achievement = null) => {
     setSelectedAchImage(imageUrl);
     setShowAchImageModal(true);
-    setSelectedAchievement(achievement); 
+    setSelectedAchievement(achievement);
   };
 
   const handleCloseModal = () => {
@@ -96,7 +96,7 @@ const AdminMainContent = () => {
 
     setSelectedResearchAgenda(null);
     setSelectedAnnouncement(null);
-    setSelectedAchievement(null); 
+    setSelectedAchievement(null);
   };
 
 
@@ -270,15 +270,12 @@ const AdminMainContent = () => {
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
 
-          {/* Add Research Agenda and Manage Button */}
+          {/* Add Research Agenda*/}
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Research Agendas</h3>
               <div className='d-flex'>
                 <BtnAddResearchAgenda onResearchAgendaAdded={handleResearchAgendaAdded} />
-                <Button onClick={() => routeChange('/admin/manage-agenda')} className=" shadow ms-1" style={{ backgroundColor: "#71A872", border: '0px', color: 'white', margin: '15px' }}>
-                  Manage
-                </Button>
               </div>
             </Col>
           </Row>
@@ -291,12 +288,12 @@ const AdminMainContent = () => {
               {researchAgendas.length > 0 ? (
                 researchAgendas.map((agenda, index) => (
                   <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                    <img 
-                    onClick={() => handleAgendaImageClick(agenda.image_url || "/placeholder.png", agenda)} 
-                    id='research-agenda-img' 
-                    src={agenda.image_url || '/placeholder.png'} 
-                    className="d-block w-100" 
-                    alt={agenda.label} />
+                    <img
+                      onClick={() => handleAgendaImageClick(agenda.image_url || "/placeholder.png", agenda)}
+                      id='research-agenda-img'
+                      src={agenda.image_url || '/placeholder.png'}
+                      className="d-block w-100"
+                      alt={agenda.label} />
 
                     {/* Button Container */}
                     <div className="carousel-buttons">
@@ -360,9 +357,6 @@ const AdminMainContent = () => {
               <h3>Achievements</h3>
               <div className='d-flex'>
                 <BtnAddAchievement onAchievementAdded={handleAchievementAdded} />
-                <Button onClick={() => routeChange('/admin/manage-ach')} className="shadow ms-1" style={{ backgroundColor: "#71A872", border: '0px', color: 'white', margin: '15px' }}>
-                  Manage
-                </Button>
               </div>
             </Col>
           </Row>
@@ -374,8 +368,8 @@ const AdminMainContent = () => {
             {achievements.length > 0 ? (
               achievements.map((achievement) => (
                 <Col md={4} key={achievement.id}>
-                  <Card className="position-relative mb-3" style={{height: "25rem", overflowY: "auto"}} id='conCard'>
-                    <Card.Img variant="top" className='conImg' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )}
+                  <Card className="position-relative mb-3" style={{ height: "27rem", msOverflowY: "auto"  }} id='conCard'>
+                    <Card.Img variant="top" className='conImg' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}
                       style={{ cursor: 'pointer' }} />
 
                     {/* Edit and Delete Icons */}
@@ -404,7 +398,7 @@ const AdminMainContent = () => {
                         <strong>Date:</strong> {achievement.date_awarded}<br />
                         <strong>Awarded by:</strong> {achievement.awarded_by}
                       </Card.Text>
-                      <Button onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )} variant="success">See more</Button>
+                      <Button onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)} variant="success">See more</Button>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -424,7 +418,7 @@ const AdminMainContent = () => {
                 {selectedAchImage && (
                   <img src={selectedAchImage} alt="Full Size" style={{ width: '100%' }} />
                 )}
-                <h1>{selectedAchievement?. award_title}</h1>
+                <h1>{selectedAchievement?.award_title}</h1>
                 <strong>Awardee:</strong> {selectedAchievement?.awardee}<br />
                 <strong>Date:</strong> {selectedAchievement?.date_awarded}<br />
                 <strong>Awarded by:</strong> {selectedAchievement?.awarded_by}
@@ -450,9 +444,6 @@ const AdminMainContent = () => {
               <h3>Announcements</h3>
               <div className='d-flex'>
                 <BtnAddAnnouncement onAnnouncementAdded={handleAnnouncementAdded} />
-                <Button onClick={() => routeChange('/admin/manage-ann')} className="shadow ms-1" style={{ backgroundColor: "#71A872", border: '0px', color: 'white', margin: '15px' }}>
-                  Manage
-                </Button>
               </div>
             </Col>
           </Row>
@@ -464,13 +455,13 @@ const AdminMainContent = () => {
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
                 <Col md={4} key={announcement.id}>
-                  <Card className="position-relative mb-3" style={{height: "25rem", overflowY: "auto"}} id='conCard'>
-                    <Card.Img 
-                    className='conImg' 
-                    variant="top" 
-                    src={announcement.image || "/placeholder.png"} 
-                    onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}                      
-                    style={{ cursor: 'pointer' }} />
+                  <Card className="position-relative mb-3" style={{ height: "27rem", msOverflowY: "auto"  }} id='conCard'>
+                    <Card.Img
+                      className='conImg'
+                      variant="top"
+                      src={announcement.image || "/placeholder.png"}
+                      onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}
+                      style={{ cursor: 'pointer' }} />
 
                     <div className="d-flex position-absolute top-0 end-0 m-1">
                       <Button

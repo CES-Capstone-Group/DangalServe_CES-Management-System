@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableColumns, faClipboardList, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar } from '@fortawesome/free-solid-svg-icons'
+import { faTableColumns, faClipboardList, faChartLine, faUserPen, faTrophy, faFileLines, faFile, faChevronDown, faInbox, faCalendar, faBackspace, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import { NavLink } from 'react-router-dom';
 import Logo from '/src/assets/pnclogo.png'
@@ -32,15 +32,6 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
                 <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px', marginTop: sidebarOpen ? '0px' : '100px' }} />
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
-            </NavLink>
-          </SidebarMenu.Nav>
-
-          <SidebarMenu.Nav>
-            <NavLink to={'/admin/accmngmnt'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
-              <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faUserPen} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px' }} />
-              </SidebarMenu.Nav.Icon>
-              {sidebarOpen && (<SidebarMenu.Nav.Title> Account Management </SidebarMenu.Nav.Title>)}
             </NavLink>
           </SidebarMenu.Nav>
 
@@ -188,6 +179,15 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
                 <FontAwesomeIcon icon={faClipboardList} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px' }} />
               </SidebarMenu.Nav.Icon>
               <SidebarMenu.Nav.Title> Activity Evaluation </SidebarMenu.Nav.Title>
+            </NavLink>
+          </SidebarMenu.Nav>
+
+          <SidebarMenu.Nav style={{marginTop: sidebarOpen ? '75px' : '40px'}}>
+            <NavLink to={'/manage'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "" )}>
+              <SidebarMenu.Nav.Icon>
+                <FontAwesomeIcon icon={faChevronLeft} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px' }} />
+              </SidebarMenu.Nav.Icon>
+              {sidebarOpen && (<SidebarMenu.Nav.Title> Back </SidebarMenu.Nav.Title>)}
             </NavLink>
           </SidebarMenu.Nav>
         </SidebarMenu.Body>

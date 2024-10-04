@@ -55,7 +55,7 @@ const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
     return (
         <div className="d-flex justify-content-end m-3">
             <div>
-                <Button className="shadow" style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} onClick={handleShowModal}>
+                <Button className="shadow" style={{ backgroundColor: "#71A872", border: '0px', color: 'white' , fontSize: '1rem' }} onClick={handleShowModal}>
                     + Add Announcement
                 </Button>
             </div>

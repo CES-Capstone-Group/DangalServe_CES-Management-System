@@ -1,7 +1,14 @@
 from django.urls import path
 from . import views  # Import your views
 from .views import RefreshTokenView, ResearchAgendaViewSet, DownloadProposalDoc
-from .views import ProposalListCreateView, ProposalDetailView, BarangayApprovalView
+from .views import (
+    ProposalListCreateView,
+    ProposalDetailView,
+    ProposalResubmissionView,
+    ProposalVersionListView,
+    ProposalVersionDetailView,
+    BarangayApprovalView,
+)
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializer import CustomTokenObtainPairSerializer
 # Define URL patterns
@@ -15,9 +22,17 @@ urlpatterns = [
     
     path('proposals/', ProposalListCreateView.as_view(), name='proposal-list-create'),
     path('proposals/<int:pk>/', ProposalDetailView.as_view(), name='proposal-detail'),
-    path('proposals/<int:proposal_id>/approve/', BarangayApprovalView.as_view(), name='barangay_approval'),
+    # Resubmit a rejected proposal (create a new version)
+    path('proposals/<int:proposal_id>/resubmit/', ProposalResubmissionView.as_view(), name='proposal-resubmission'),
     
+    # List all versions of a proposal
+    path('proposals/<int:proposal_id>/versions/', ProposalVersionListView.as_view(), name='proposal-versions-list'),
+    
+    # Get details of a specific version
+    path('proposals/<int:proposal_id>/versions/<int:version_number>/', ProposalVersionDetailView.as_view(), name='proposal-version-detail'),
+    path('proposals/<int:proposal_id>/approve/', BarangayApprovalView.as_view(), name='barangay_approval'),
     path('proposals/<int:proposal_id>/download/', DownloadProposalDoc.as_view(), name='download_proposal_doc'),
+    
     # Accounts Paths
     path('users/', views.get_all_user, name="get_user"),
     path('users/create_user/', views.create_user, name="create_user"),

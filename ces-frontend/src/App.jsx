@@ -120,6 +120,7 @@ const App = () => {
             <Route path='kpi' element={<KpiPage />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='proposal-form' element={<ProposalForm />} />
+            <Route path='proposal-form/:proposalId/resubmit' element={<ProposalForm />} /> {/* Resubmission */}
           </Route>
         </Route>
 

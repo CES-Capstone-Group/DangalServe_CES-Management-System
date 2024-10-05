@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -160,6 +161,20 @@ class Proposal(models.Model):
     PRESignDate = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Pending')
 
+    current_version = models.ForeignKey('ProposalVersion', null=True, blank=True, on_delete=models.SET_NULL, related_name='active_proposal')
+
+    def clean(self):
+        """Custom validation to ensure either text or file is provided for identified_needs and budget_requirement."""
+        # Ensure that at least one of identified_needs_text or identified_needs_file is provided
+        if not self.identified_needs_text and not self.identified_needs_file:
+            raise ValidationError('Either identified_needs_text or identified_needs_file must be provided.')
+
+        # Ensure that at least one of budget_requirement_text or budget_requirement_file is provided
+        if not self.budget_requirement_text and not self.budget_requirement_file:
+            raise ValidationError('Either budget_requirement_text or budget_requirement_file must be provided.')
+
+        super(Proposal, self).clean() 
+
     def partner_community_list(self):
         """Helper method to get the partner community as a list."""
         return [barangay.strip() for barangay in self.partner_community.split(',')]
@@ -181,6 +196,47 @@ class Proposal(models.Model):
             self.status = 'Approved by President'
         
         self.save()
+        
+    def __str__(self):
+        return self.title
+    
+class ProposalVersion(models.Model):
+    proposal = models.ForeignKey(Proposal, related_name='versions', on_delete=models.CASCADE)
+    version_number = models.PositiveIntegerField()
+    title = models.CharField(max_length=255)
+    engagement_date = models.DateField()
+    disengagement_date = models.DateField()
+    department = models.CharField(max_length=255)
+    lead_proponent = models.CharField(max_length=255)
+    contact_details = models.CharField(max_length=255)
+    project_description = models.TextField()
+    target_date = models.DateField()
+    location = models.CharField(max_length=255)
+    partner_community = models.CharField(max_length=255)  # Comma-separated list of barangays
+    school = models.BooleanField(default=False)
+    barangay = models.BooleanField(default=False)
+    government_org = models.CharField(max_length=255, blank=True, null=True)
+    non_government_org = models.CharField(max_length=255, blank=True, null=True)
+    identified_needs_text = models.TextField(null=True, blank=True)
+    identified_needs_file = models.FileField(upload_to='Proposals/identified_needs/', null=True, blank=True)
+    general_objectives = models.TextField()
+    specific_objectives = models.TextField()
+    success_indicators = models.TextField()
+    cooperating_agencies = models.TextField()
+    monitoring_mechanics = models.TextField()
+    evaluation_mechanics = models.TextField()
+    timetable = models.TextField()
+    risk_assessment = models.TextField()
+    action_plans = models.TextField()
+    sustainability_approaches = models.TextField()
+    budget_requirement_text = models.TextField(null=True, blank=True)
+    budget_requirement_file = models.FileField(upload_to='Proposals/budget_requirements/', null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version_status = models.CharField(max_length=30, choices=Proposal.STATUS_CHOICES, default='Pending')  # The status of this version when it was submitted
+
+    def __str__(self):
+        return f"{self.proposal.title} - Version {self.version_number}"
 
 
 class BarangayApproval(models.Model):

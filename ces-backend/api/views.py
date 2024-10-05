@@ -207,8 +207,8 @@ def announcement_detail(request, pk):
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
     
 from rest_framework import generics
-from .models import Proposal
-from .serializer import ProposalSerializer
+from .models import Proposal, ProposalVersion
+from .serializer import ProposalSerializer, ProposalVersionSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class ProposalListCreateView(generics.ListCreateAPIView):
@@ -313,18 +313,18 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
                 
                 proposal.directorSignDate = timezone.now().date()
                 proposal.status = new_status
-                proposal.save()
+                # proposal.save()
             elif new_status == 'Approved by VPRE':
                 proposal.VPRESignDate = timezone.now().date()
                 proposal.status = new_status
-                proposal.save()
+                # proposal.save()
             elif new_status == 'Approved by President':
                 proposal.PRESignDate = timezone.now().date()
                 proposal.status = new_status
-                proposal.save()
+                # proposal.save()
             elif new_status == 'Rejected':
                 proposal.status = new_status
-                proposal.save()
+            proposal.save()
             
 
         elif request.user == proposal.user:
@@ -337,6 +337,90 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         serializer = self.get_serializer(proposal)
         return Response(serializer.data)
+    
+class ProposalResubmissionView(generics.UpdateAPIView):
+    """
+    View to resubmit a rejected proposal and create a new version.
+    """
+    queryset = Proposal.objects.all()
+    serializer_class = ProposalSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        proposal_id = kwargs.get('proposal_id')
+        try:
+            proposal = Proposal.objects.get(proposal_id=proposal_id)
+
+            # Only allow resubmission if the proposal was rejected
+            if proposal.status != 'Rejected':
+                return Response({"error": "Only rejected proposals can be resubmitted."}, status=status.HTTP_400_BAD_REQUEST)
+        except Proposal.DoesNotExist:
+            return Response({"error": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Find the latest version number
+        latest_version = proposal.versions.order_by('-version_number').first()
+        new_version_number = latest_version.version_number + 1 if latest_version else 1
+
+        # Create the new version in the ProposalVersion table
+        ProposalVersion.objects.create(
+            proposal=proposal,
+            version_number=new_version_number,
+            title=request.data.get('title', proposal.title),
+            project_description=request.data.get('project_description', proposal.project_description),
+            engagement_date=request.data.get('engagement_date', proposal.engagement_date),
+            disengagement_date=request.data.get('disengagement_date', proposal.disengagement_date),
+            department=request.data.get('department', proposal.department),
+            lead_proponent=request.data.get('lead_proponent', proposal.lead_proponent),
+            contact_details=request.data.get('contact_details', proposal.contact_details),
+            version_status='Pending'
+        )
+
+        # Update the main Proposal object with the new data and reset status to Pending
+        proposal.title = request.data.get('title', proposal.title)
+        proposal.project_description = request.data.get('project_description', proposal.project_description)
+        proposal.status = 'Pending'
+        proposal.save()
+
+        return Response({"message": f"Proposal resubmitted as version {new_version_number}"}, status=status.HTTP_200_OK)
+    
+class ProposalVersionListView(APIView):
+    """
+    View to list all versions of a specific proposal.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, proposal_id):
+        try:
+            proposal = Proposal.objects.get(proposal_id=proposal_id)
+        except Proposal.DoesNotExist:
+            return Response({"error": "Proposal not found"}, status=404)
+
+        # Get all versions of the proposal
+        versions = ProposalVersion.objects.filter(proposal=proposal).order_by('version_number')
+        serializer = ProposalVersionSerializer(versions, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ProposalVersionDetailView(APIView):
+    """
+    View to retrieve a specific version of a proposal.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, proposal_id, version_number):
+        try:
+            proposal = Proposal.objects.get(proposal_id=proposal_id)
+        except Proposal.DoesNotExist:
+            return Response({"error": "Proposal not found"}, status=404)
+
+        try:
+            version = ProposalVersion.objects.get(proposal=proposal, version_number=version_number)
+        except ProposalVersion.DoesNotExist:
+            return Response({"error": "Version not found"}, status=404)
+
+        serializer = ProposalVersionSerializer(version)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class BarangayApprovalView(APIView):
     permission_classes = [IsAuthenticated]
 

@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, Announcement, ResearchAgenda, Proposal, BarangayApproval
-
+from .models import Account, Achievement, Announcement, ResearchAgenda, Proposal, ProposalVersion, BarangayApproval
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
@@ -22,6 +22,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)
+        user = self.user
+        if user.status != 'Active':
+            raise AuthenticationFailed('Account is not active')
 
         # Add extra responses here if necessary
         data['user_id'] = self.user.user_id
@@ -103,18 +106,23 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         if obj.image:
             return request.build_absolute_uri(obj.image.url)
         return None
-
+class ProposalVersionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProposalVersion
+        fields = '__all__'
+        
 class ProposalSerializer(serializers.ModelSerializer):
+    versions = ProposalVersionSerializer(many=True, read_only=True)
     class Meta:
         model = Proposal
         # fields = '__all__' 
-        exclude = ['user_id']  # Exclude user_id from validation
+        exclude = ['user_id', 'current_version']  # Exclude user_id from validation
         extra_kwargs = {
             'status': {'required': True}
         }
         
     def validate(self, data):
-    # Ensure either text or file is provided for identified_needs
+        # Ensure either text or file is provided for identified_needs
         if not data.get('identified_needs_text') and not data.get('identified_needs_file'):
             raise serializers.ValidationError("Either 'Identified Needs' text or file must be provided.")
 
@@ -128,6 +136,9 @@ class ProposalSerializer(serializers.ModelSerializer):
         user = self.context['request'].user  # Get the user object
         proposal = Proposal.objects.create(user_id=user, **validated_data)  # Use user.id to get the user ID
         return proposal
+
+    
+    
 class BarangayApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = BarangayApproval

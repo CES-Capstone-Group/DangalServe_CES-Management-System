@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import '/src/App.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
-
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 const ProposalForm = () => {
+  const { proposalId } = useParams(); // Retrieve proposal ID from URL
+  const [isResubmission, setIsResubmission] = useState(false); // To track if it's a resubmission
   const [govOrg, setGovOrg] = useState(false);
   const [nonGovOrg, setNonGovOrg] = useState(false);
   const [otherCommunity, setOtherCommunity] = useState(false); // Track if "Others" is selected
@@ -39,6 +42,40 @@ const ProposalForm = () => {
     budget_requirement: null, // for file upload
     status: 'Pending',
   });
+
+  useEffect(() => {
+    // Check if partner_community is a string before splitting
+    if (typeof formData.partner_community === 'string') {
+      const communities = formData.partner_community.split(','); // Split by commas
+      setFormData((prevData) => ({
+        ...prevData,
+        partner_community: communities,
+      }));
+    }
+  }, [formData.partner_community]);
+
+  useEffect(() => {
+    if (proposalId) {
+      setIsResubmission(true);
+      const fetchProposalData = async () => {
+        const token = localStorage.getItem('access_token');
+        const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposalId}/`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setFormData(data); // Pre-fill form with existing proposal data
+        } else {
+          console.error('Failed to fetch proposal data');
+        }
+      };
+  
+      fetchProposalData();
+    }
+  }, [proposalId]);
 
   const navigate = useNavigate();
 
@@ -83,6 +120,7 @@ const ProposalForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const submitData = new FormData();
+    const token = localStorage.getItem('access_token');
 
     // Append all form data including the "Others" community if filled
     if (otherCommunity && otherCommunityValue) {
@@ -90,13 +128,18 @@ const ProposalForm = () => {
     }
 
     try {
-      // Retrieve the JWT token from localStorage
-      const token = localStorage.getItem('access_token');
       if (!token) {
         console.error('No token found. Please log in.');
         return;
       }
-
+      let url = 'http://127.0.0.1:8000/api/proposals/';
+      let method = 'POST';
+  
+      if (isResubmission) {
+        url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
+        method = 'PATCH'; // Use PATCH for resubmissions
+      }
+  
       // Append other form data
       for (let key in formData) {
         if (formData[key]) {
@@ -105,11 +148,11 @@ const ProposalForm = () => {
       }
 
       // Send form data to the server
-      const response = await fetch('http://127.0.0.1:8000/api/proposals/', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         body: submitData,
         headers: {
-          Authorization: `Bearer ${token}`, // Token added to Authorization header
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -264,35 +307,42 @@ const ProposalForm = () => {
                 type="checkbox"
                 label="Baclaran"
                 value="Baclaran"
+                checked={formData.partner_community.includes('Baclaran')}
                 onChange={(e) => handleCommunityChange(e, 'Baclaran', 'Barangay')}
+                
               />
               <Form.Check
                 type="checkbox"
                 label="Bigaa"
                 value="Bigaa"
+                checked={formData.partner_community.includes('Bigaa')}
                 onChange={(e) => handleCommunityChange(e, 'Bigaa', 'Barangay')}
               />
               <Form.Check
                 type="checkbox"
                 label="Sala"
                 value="Sala"
+                checked={formData.partner_community.includes('Sala')}
                 onChange={(e) => handleCommunityChange(e, 'Sala', 'Barangay')}
               />
               <Form.Check
                 type="checkbox"
                 label="San Isidro"
                 value="San Isidro"
+                checked={formData.partner_community.includes('San Isidro')}
                 onChange={(e) => handleCommunityChange(e, 'San Isidro', 'Barangay')}
               />
               <Form.Check
                 type="checkbox"
                 label="Diezmo"
                 value="Diezmo"
+                checked={formData.partner_community.includes('Diezmo')}
                 onChange={(e) => handleCommunityChange(e, 'Diezmo', 'Barangay')}
               />
               <Form.Check
                 type="checkbox"
                 label="Others"
+                // checked={formData.partner_community.includes('Others')}
                 onChange={handleOtherCommunityChange}
               />
               {otherCommunity && (

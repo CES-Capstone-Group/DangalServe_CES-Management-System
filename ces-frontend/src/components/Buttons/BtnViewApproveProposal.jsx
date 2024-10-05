@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Modal, Col, Row } from "react-bootstrap";
-import { jwtDecode } from "jwt-decode"; // Import jwt-decode
+import { jwtDecode } from "jwt-decode";
 import ProposalPB from "../ProposalPB";
+// import Proposal from "../ProposalPB";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const [show, setShow] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
   const [rejectShow, setRejectShow] = useState(false);
-  const [rejectReason, setRejectReason] = useState(""); // Store reject reason
+  const [rejectReason, setRejectReason] = useState("");
   const handleRejectShow = () => setRejectShow(true);
   const handleRejectClose = () => setRejectShow(false);
 
@@ -20,6 +21,37 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const [vpreApproved, setVpreApprove] = useState(false);
   const [preApproved, setPreApprove] = useState(false);
   const [buttonText, setButtonText] = useState("Approve");
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const navigate = useNavigate();
+  const handleResubmit = async () => {
+    navigate(`/coor/proposal-form/${proposal.proposal_id}/resubmit`);
+    console.log(proposal.proposal_id);
+    // try {
+    //   const token = localStorage.getItem("access_token");
+    //   const response = await fetch(
+    //     `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/resubmit/`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //       body: JSON.stringify({ status: "Resubmitted" }),
+    //     }
+    //   );
+    //   if (response.ok) {
+    //     console.log("Proposal resubmitted successfully");
+    //     if (onApprove) onApprove();
+    //     handleClose();
+    //   } else {
+    //     console.error("Failed to resubmit the proposal");
+    //   }
+    // } catch (error) {
+    //   console.error("Error resubmitting the proposal:", error);
+    // }
+  };
 
   // Check if the user is an admin by decoding the JWT token
   useEffect(() => {
@@ -62,9 +94,6 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
     }
   }, [proposal.status]);
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-
   const handleApprove = async () => {
     try {
       if (!dirApproved) {
@@ -80,7 +109,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   };
 
   const approval = async (status) => {
-    const token = localStorage.getItem("access_token"); // Get access token
+    const token = localStorage.getItem("access_token");
     const response = await fetch(
       `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`,
       {
@@ -89,7 +118,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status }), // Update status
+        body: JSON.stringify({ status }),
       }
     );
     if (response.ok) {
@@ -109,8 +138,8 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
         setButtonText("Approval Complete");
       }
 
-      if (onApprove) onApprove(); // Trigger parent update on approve
-      handleClose(); // Close modal after approval
+      if (onApprove) onApprove();
+      handleClose();
     } else {
       console.error("Failed to approve the proposal");
     }
@@ -127,12 +156,12 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ status: "Rejected" }), // Update status to rejection reason
+          body: JSON.stringify({ status: "Rejected" }),
         }
       );
       if (response.ok) {
         console.log("Proposal rejected successfully");
-        handleRejectClose(); 
+        handleRejectClose();
         if (onApprove) onApprove();
       } else {
         console.error("Failed to reject the proposal");
@@ -145,32 +174,42 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   return (
     <>
       <Button
-  className="me-2"
-  onClick={handleShow}
-  style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
->
-  View
-</Button>
+        className="me-2"
+        onClick={handleShow}
+        style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
+      >
+        View
+      </Button>
 
-{/* Hide approval and rejection buttons after President's approval or if status is Rejected */}
-{isAdmin && !preApproved && proposal.status !== 'Partly Approved by Barangay' && proposal.status !== 'Rejected' && (
-  <>
-    <Button
-      className="me-2"
-      onClick={handleApprove}
-      style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
-    >
-      {buttonText}
-    </Button>
-    <Button
-      className="btn btn-danger"
-      onClick={handleRejectShow}
-      style={{ border: "0px", color: "white" }}
-    >
-      Reject
-    </Button>
-  </>
-)}
+      {isAdmin &&
+        !preApproved &&
+        proposal.status !== "Partly Approved by Barangay" &&
+        proposal.status !== "Rejected" && (
+          <>
+            <Button
+              className="me-2"
+              onClick={handleApprove}
+              style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
+            >
+              {buttonText}
+            </Button>
+            <Button
+              className="btn btn-danger"
+              onClick={handleRejectShow}
+              style={{ border: "0px", color: "white" }}
+            >
+              Reject
+            </Button>
+          </>
+        )}
+      {!isAdmin && proposal.status === "Rejected" && (
+        <Button
+          onClick={handleResubmit}
+          style={{ backgroundColor: "#007bff", border: "0px", color: "white" }}
+        >
+          Resubmit
+        </Button>
+      )}
 
       {/* Modal for Reject and Remarks */}
       <Modal
@@ -226,6 +265,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
           <Button variant="danger" onClick={handleReject}>
             Confirm Rejection
           </Button>
+          
           <Button variant="secondary" onClick={handleRejectClose}>
             Close
           </Button>
@@ -233,22 +273,15 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
       </Modal>
 
       {/* Modal for viewing proposal details */}
-      <Modal
-        backdrop="static"
-        centered
-        size="lg"
-        show={show}
-        onHide={handleClose}
-      >
+      <Modal backdrop="static" centered size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Proposal Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ProposalPB
-            status={proposal.status}
-          />
+          <ProposalPB status={proposal.status} />
 
           <Form>
+            {/* Proposal Title */}
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>
                 Proposal Title
@@ -258,15 +291,17 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
               </Col>
             </Form.Group>
 
+            {/* Location */}
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>
                 Location
               </Form.Label>
               <Col sm={8}>
-                <Form.Control readOnly type="text" value={proposal.location} />
+                <Form.Control readOnly type="text" value={proposal.location || "N/A"} />
               </Col>
             </Form.Group>
 
+            {/* Target Date */}
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>
                 Target Date
@@ -275,15 +310,173 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
                 <Form.Control
                   readOnly
                   type="text"
-                  value={new Date(proposal.target_date).toLocaleDateString()}
+                  value={new Date(proposal.target_date).toLocaleDateString() || "N/A"}
                 />
               </Col>
             </Form.Group>
 
+            {/* Status */}
             <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={4}>
-                Status
-              </Form.Label>
+              <Form.Label column sm={4}>Status</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.status || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Lead Proponent */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Lead Proponent</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.lead_proponent || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Contact Details */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Contact Details</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.contact_details || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Department */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Department</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.department || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Project Description */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Project Description</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.project_description || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Partner Community */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Partner Community</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.partner_community || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Government Organization */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Government Organization</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.government_org || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Non-Government Organization */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Non-Government Organization</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.non_government_org || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Success Indicators */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Success Indicators</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.success_indicators || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Identified Needs */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Identified Needs</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.identified_needs || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* General Objectives */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>General Objectives</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.general_objectives || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Specific Objectives */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Specific Objectives</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.specific_objectives || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Cooperating Agencies */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Cooperating Agencies</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.cooperating_agencies || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Monitoring Mechanics */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Monitoring Mechanics</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.monitoring_mechanics || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Evaluation Mechanics */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Evaluation Mechanics</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.evaluation_mechanics || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Timetable */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Timetable</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.timetable || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Risk Assessment */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Risk Assessment</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.risk_assessment || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Action Plans */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Action Plans to Address Risks</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.action_plans || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Sustainability Approaches */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Sustainability Approaches</Form.Label>
+              <Col sm={8}>
+                <Form.Control as="textarea" rows={3} readOnly value={proposal.sustainability_approaches || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            {/* Budget Requirement */}
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Budget Requirement</Form.Label>
+              <Col sm={8}>
+                <Form.Control readOnly type="text" value={proposal.budget_requirement || "N/A"} />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Status</Form.Label>
               <Col sm={8}>
                 <Form.Control readOnly type="text" value={proposal.status} />
               </Col>

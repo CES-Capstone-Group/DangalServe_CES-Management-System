@@ -26,6 +26,14 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
         )}
 
         <SidebarMenu.Body>
+        <SidebarMenu.Nav style={{marginBottom: sidebarOpen ? '75px' : '40px'}}>
+            <NavLink to={'/landing'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "" )}>
+              <SidebarMenu.Nav.Icon>
+                <FontAwesomeIcon icon={faChevronLeft} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px' }} />
+              </SidebarMenu.Nav.Icon>
+              {sidebarOpen && (<SidebarMenu.Nav.Title> Back </SidebarMenu.Nav.Title>)}
+            </NavLink>
+          </SidebarMenu.Nav>
           <SidebarMenu.Nav >
             <NavLink to={'/admin/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
@@ -182,14 +190,7 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
             </NavLink>
           </SidebarMenu.Nav>
 
-          <SidebarMenu.Nav style={{marginTop: sidebarOpen ? '75px' : '40px'}}>
-            <NavLink to={'/manage'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "" )}>
-              <SidebarMenu.Nav.Icon>
-                <FontAwesomeIcon icon={faChevronLeft} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px' }} />
-              </SidebarMenu.Nav.Icon>
-              {sidebarOpen && (<SidebarMenu.Nav.Title> Back </SidebarMenu.Nav.Title>)}
-            </NavLink>
-          </SidebarMenu.Nav>
+          
         </SidebarMenu.Body>
       </SidebarMenu>
     </div>

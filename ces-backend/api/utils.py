@@ -76,7 +76,7 @@ def generate_proposal_doc(proposal):
     # Handle signatures and display the name of all persons who sign the proposal
     partner_signatures = ''
     for barangay_approval in proposal.barangay_approvals.filter(status='Approved'):
-        partner_signatures += f"{barangay_approval.barangay_name} - Signed by {barangay_approval.remarks or 'N/A'} on {barangay_approval.sign_date}\n"
+        partner_signatures += f"{barangay_approval.barangay_name} - Signed by \non {barangay_approval.sign_date}\n\n\n"
     
     # Include the list of signers in the placeholders
     placeholders['{{partner_signatures}}'] = partner_signatures or '_____________'

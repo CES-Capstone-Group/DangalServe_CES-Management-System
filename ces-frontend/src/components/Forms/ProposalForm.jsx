@@ -126,7 +126,6 @@ const ProposalForm = () => {
     if (otherCommunity && otherCommunityValue) {
       formData.partner_community.push(otherCommunityValue);
     }
-
     try {
       if (!token) {
         console.error('No token found. Please log in.');
@@ -156,7 +155,7 @@ const ProposalForm = () => {
         },
       });
 
-      if (response.status === 201) {
+      if (response.status === 200 || response.status === 201) {
         navigate('/coor/pending-proposal');
       } else if (response.status === 401) {
         console.error('Unauthorized: Check if your token is valid.');

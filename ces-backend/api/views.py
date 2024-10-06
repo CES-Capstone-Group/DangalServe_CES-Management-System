@@ -220,7 +220,6 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         status = self.request.query_params.get('status')
         user = self.request.user
         department = self.request.user.department
-
         # Check if the user is an admin
         if user.accountType == 'Admin':
             # Admins can see all proposals, but filter out fully approved ones
@@ -360,7 +359,7 @@ class ProposalResubmissionView(generics.UpdateAPIView):
         # Find the latest version number
         latest_version = proposal.versions.order_by('-version_number').first()
         new_version_number = latest_version.version_number + 1 if latest_version else 1
-
+        # print("xxxxxx", request.data.get('school', proposal.school))
         # Create the new version in the ProposalVersion table
         ProposalVersion.objects.create(
             proposal=proposal,
@@ -372,16 +371,39 @@ class ProposalResubmissionView(generics.UpdateAPIView):
             department=request.data.get('department', proposal.department),
             lead_proponent=request.data.get('lead_proponent', proposal.lead_proponent),
             contact_details=request.data.get('contact_details', proposal.contact_details),
-            version_status='Pending'
+            target_date=request.data.get('target_date', proposal.target_date),  # Make sure to include target_date
+            location=request.data.get('location', proposal.location),  # Add location
+            partner_community=request.data.get('partner_community', proposal.partner_community),  # Add partner_community
+            school=request.data.get('school', proposal.school)  in ['true', 'True', True],  # Add school
+            barangay=request.data.get('barangay', proposal.barangay)  in ['true', 'True', True],  # Add barangay
+            government_org=request.data.get('government_org', proposal.government_org) ,
+            non_government_org=request.data.get('non_government_org', proposal.non_government_org) ,
+            identified_needs_text=request.data.get('identified_needs_text', proposal.identified_needs_text),
+            general_objectives=request.data.get('general_objectives', proposal.general_objectives),
+            specific_objectives=request.data.get('specific_objectives', proposal.specific_objectives),
+            success_indicators=request.data.get('success_indicators', proposal.success_indicators),
+            cooperating_agencies=request.data.get('cooperating_agencies', proposal.cooperating_agencies),
+            monitoring_mechanics=request.data.get('monitoring_mechanics', proposal.monitoring_mechanics),
+            evaluation_mechanics=request.data.get('evaluation_mechanics', proposal.evaluation_mechanics),
+            timetable=request.data.get('timetable', proposal.timetable),
+            risk_assessment=request.data.get('risk_assessment', proposal.risk_assessment),
+            action_plans=request.data.get('action_plans', proposal.action_plans),
+            sustainability_approaches=request.data.get('sustainability_approaches', proposal.sustainability_approaches),
+            budget_requirement_text=request.data.get('budget_requirement_text', proposal.budget_requirement_text),
+            budget_requirement_file=request.data.get('budget_requirement_file', proposal.budget_requirement_file),
+            version_status='Resubmitted-Pending'
         )
 
         # Update the main Proposal object with the new data and reset status to Pending
         proposal.title = request.data.get('title', proposal.title)
         proposal.project_description = request.data.get('project_description', proposal.project_description)
+        proposal.target_date = request.data.get('target_date', proposal.target_date)  # Update target_date in main Proposal
         proposal.status = 'Pending'
+        proposal.current_version_id = new_version_number
         proposal.save()
 
         return Response({"message": f"Proposal resubmitted as version {new_version_number}"}, status=status.HTTP_200_OK)
+
     
 class ProposalVersionListView(APIView):
     """
@@ -467,17 +489,17 @@ class DownloadProposalDoc(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, proposal_id):
-        print('Request received')  # This should print when the view is triggered
+        # print('Request received')  # This should print when the view is triggered
         try:
             proposal = Proposal.objects.get(proposal_id=proposal_id)
-            print('Proposal found:', proposal.title)  # Check if the proposal is fetched correctly
+            # print('Proposal found:', proposal.title)  # Check if the proposal is fetched correctly
         except Proposal.DoesNotExist:
-            print('Proposal not found')
+            # print('Proposal not found')
             return Response({"error": "Proposal not found"}, status=404)
         
         # Document generation
         doc_path = generate_proposal_doc(proposal)
-        print('Document path:', doc_path)  # Check if document generation is successful
+        # print('Document path:', doc_path)  # Check if document generation is successful
         
         if os.path.exists(doc_path):
             with open(doc_path, 'rb') as doc_file:
@@ -488,5 +510,5 @@ class DownloadProposalDoc(APIView):
                 response['Expires'] = '0'
                 return response
         else:
-            print('Document generation failed')
+            # print('Document generation failed')
             return Response({"error": "Document generation failed"}, status=500)

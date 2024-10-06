@@ -85,6 +85,7 @@ const CoorPenProposal = () => {
                             <th>Location</th>
                             <th>Target Date</th>
                             <th>Status</th>
+                            <th>Version</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -95,6 +96,7 @@ const CoorPenProposal = () => {
                                 <td>{proposal.location}</td>
                                 <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
                                 <td>{proposal.status}</td>
+                                <td>{proposal.current_version || 'N/A'}</td>
                                 <td>
                                     <BtnViewApproveProposal 
                                         proposal={proposal} 

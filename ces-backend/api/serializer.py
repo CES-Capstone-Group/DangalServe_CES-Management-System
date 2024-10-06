@@ -113,10 +113,12 @@ class ProposalVersionSerializer(serializers.ModelSerializer):
         
 class ProposalSerializer(serializers.ModelSerializer):
     versions = ProposalVersionSerializer(many=True, read_only=True)
+    current_version = serializers.SlugRelatedField(slug_field='version_number', read_only=True)
+
     class Meta:
         model = Proposal
         # fields = '__all__' 
-        exclude = ['user_id', 'current_version']  # Exclude user_id from validation
+        exclude = ['user_id']  # Exclude user_id from validation
         extra_kwargs = {
             'status': {'required': True}
         }

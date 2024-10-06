@@ -27,7 +27,6 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const navigate = useNavigate();
   const handleResubmit = async () => {
     navigate(`/coor/proposal-form/${proposal.proposal_id}/resubmit`);
-    console.log(proposal.proposal_id);
     // try {
     //   const token = localStorage.getItem("access_token");
     //   const response = await fetch(
@@ -480,7 +479,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
               <Col sm={8}>
                 <Form.Control readOnly type="text" value={proposal.status} />
               </Col>
-            </Form.Group>
+            </Form.Group>                          
           </Form>
         </Modal.Body>
 

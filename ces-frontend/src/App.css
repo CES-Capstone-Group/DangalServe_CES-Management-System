@@ -288,3 +288,7 @@ button.fc-Service-button.fc-button.fc-button-primary {
 .text-justify {
   text-align: justify;
 }
+
+.backBtn{
+  text-decoration: none !important;
+}

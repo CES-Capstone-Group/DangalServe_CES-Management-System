@@ -71,8 +71,8 @@ const ManageAnnouncement = () => {
                 {data.map((row, index) =>
                     <Rows key={'key-${index}'}
                         announcementTitle={row.announcementTitle}
-                        announcementDeets={row.announcementDeets} 
-                        announcementImg={row.announcementImg}/>)}
+                        announcementDeets={row.announcementDeets}
+                        announcementImg={row.announcementImg} />)}
             </Table>
         );
     }
@@ -82,9 +82,11 @@ const ManageAnnouncement = () => {
     return (
         <Container fluid>
             <Row>
-                <Button variant="link" onClick={handleBack} className="d-flex align-items-center text-success me-3">
+                <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+                    <span className="ms-2">Back</span>
                 </Button>
+
                 <Col className="d-flex justify-content-end">
                     <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
                         <FontAwesomeIcon className='me-2' icon={faFilter} ></FontAwesomeIcon>

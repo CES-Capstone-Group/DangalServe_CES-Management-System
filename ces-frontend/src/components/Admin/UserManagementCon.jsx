@@ -150,9 +150,9 @@ const UserManagementCon = () => {
         <Container fluid className="fs-5">
             <Row>
 
-                <Button variant="link" onClick={handleBack} className="d-flex align-items-center text-success me-3">
+                <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />
-
+                    <span className="ms-2">Back</span>
                 </Button>
 
                 <Col className="d-flex justify-content-end">

@@ -242,6 +242,7 @@ const ProposalForm = () => {
               value={formData.lead_proponent}
               onChange={handleChange}
             />
+            <p className='text-sm'>Comma-separated if Multiple Proponents eg. John Doe, Jane Doe</p>
           </Col>
         </Form.Group>
 

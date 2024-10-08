@@ -398,7 +398,7 @@ const AdminMainContent = () => {
                         <strong>Date:</strong> {achievement.date_awarded}<br />
                         <strong>Awarded by:</strong> {achievement.awarded_by}
                       </Card.Text>
-                      <Button onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)} variant="success">See more</Button>
+                      <h4 role="button" className="text-success" onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}>See more</h4>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -482,7 +482,7 @@ const AdminMainContent = () => {
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
                       <Card.Text className='truncate-text'>{announcement.details}</Card.Text>
-                      {/* <Button variant="success">See more</Button> */}
+                      <h4 role="button" className="text-success" onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement )} >See more</h4>
                     </Card.Body>
                   </Card>
                 </Col>

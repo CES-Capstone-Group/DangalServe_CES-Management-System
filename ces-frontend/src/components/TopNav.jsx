@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import Logo from '../assets/pnclogo.png';
 import '../App.css'
-import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button, Modal, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 const TopNav = ({ sidebarOpen, sidebarToggle }) => {
@@ -57,12 +56,18 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
               {accountType}
             </Navbar.Text>
           </Navbar.Brand>
-          <Nav className="ms-auto">
-            <Nav.Link onClick={handleShowLogoutModal} style={{ display: 'flex', alignItems: 'center' }}>
+        
+          <Dropdown align='end' >
+            <Dropdown.Toggle style={{borderWidth:'0px',backgroundColor: '#dddddd00'}}>
               <FontAwesomeIcon style={{ fontSize: '35px', color: 'white' }} icon={faCircleUser} />
-              <span className="ps-2" style={{ color: 'white', fontSize: '18px', cursor: 'pointer' }}>Logout</span>
-            </Nav.Link>
-          </Nav>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#">Profile</Dropdown.Item>
+              <Dropdown.Item onClick={handleShowLogoutModal}>Logout 
+                <FontAwesomeIcon  style={{paddingLeft:'5px', color:'#71A872'}} icon={faSignOutAlt} />
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Container>
       </Navbar>
 

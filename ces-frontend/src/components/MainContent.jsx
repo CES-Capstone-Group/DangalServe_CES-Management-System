@@ -182,7 +182,7 @@ const handleCloseModal = () => {
                         <strong>Date:</strong> {achievement.date_awarded}<br />
                         <strong>Awarded by:</strong> {achievement.awarded_by}
                       </Card.Text>
-                      <Button onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )} variant="success">See more</Button>
+                      <h4 role="button" className="text-success" onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )}>See more</h4>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -220,7 +220,7 @@ const handleCloseModal = () => {
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
                 <Col md={4} key={announcement.id}>
-                  <Card scrollable className="position-relative mb-3 overflow-auto" style={{ height: '18rem' }} id='conCard'>
+                  <Card scrollable className="position-relative mb-3" style={{height: "27rem", msOverflowY: "auto"}} id='conCard'>
                   <Card.Img 
                     className='conImg' 
                     variant="top" 
@@ -229,8 +229,8 @@ const handleCloseModal = () => {
                     style={{ cursor: 'pointer' }} />
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
-                      <Card.Text>{announcement.details}</Card.Text>
-                      <Button variant="success">See more</Button>
+                      <Card.Text className='truncate-text'>{announcement.details}</Card.Text>
+                      <h4 role="button" className="text-success " onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement )} >See more</h4>
                     </Card.Body>
                   </Card>
                 </Col>

@@ -43,6 +43,75 @@ const ProposalForm = () => {
     status: 'Pending',
   });
 
+  const [proponents, setProponents] = useState([]);
+  const [proponent, setProponent] = useState({ name: '', position: '' });
+
+  // Handle input change for proponent name and position
+  const handleProponentChange = (e) => {
+    const { name, value } = e.target;
+    setProponent({
+      ...proponent,
+      [name]: value,
+    });
+  };
+
+  // Add a new proponent to the list
+  const handleAddProponent = () => {
+    if (proponent.name && proponent.position) {
+      setProponents([...proponents, proponent]); // Add the proponent
+      setProponent({ name: '', position: '' });  // Clear the inputs
+    }
+  };
+
+  // State for each signatory section
+  const [preparedBy, setPreparedBy] = useState([]);
+  const [endorsedBy, setEndorsedBy] = useState([]);
+  const [concurredBy, setConcurredBy] = useState([]);
+
+  // Separate states for each section's signatory
+  const [preparedBySignatory, setPreparedBySignatory] = useState({ name: '', position: '' });
+  const [endorsedBySignatory, setEndorsedBySignatory] = useState({ name: '', position: '' });
+  const [concurredBySignatory, setConcurredBySignatory] = useState({ name: '', position: '' });
+
+  // Handle input changes for each section
+  const handlePreparedByChange = (e) => {
+    const { name, value } = e.target;
+    setPreparedBySignatory({
+      ...preparedBySignatory,
+      [name]: value,
+    });
+  };
+
+  const handleEndorsedByChange = (e) => {
+    const { name, value } = e.target;
+    setEndorsedBySignatory({
+      ...endorsedBySignatory,
+      [name]: value,
+    });
+  };
+
+  const handleConcurredByChange = (e) => {
+    const { name, value } = e.target;
+    setConcurredBySignatory({
+      ...concurredBySignatory,
+      [name]: value,
+    });
+  };
+
+  // Add a new signatory to the respective section
+  const handleAddSignatory = (section) => {
+    if (section === 'prepared' && preparedBySignatory.name && preparedBySignatory.position) {
+      setPreparedBy([...preparedBy, preparedBySignatory]);
+      setPreparedBySignatory({ name: '', position: '' });
+    } else if (section === 'endorsed' && endorsedBySignatory.name && endorsedBySignatory.position) {
+      setEndorsedBy([...endorsedBy, endorsedBySignatory]);
+      setEndorsedBySignatory({ name: '', position: '' });
+    } else if (section === 'concurred' && concurredBySignatory.name && concurredBySignatory.position) {
+      setConcurredBy([...concurredBy, concurredBySignatory]);
+      setConcurredBySignatory({ name: '', position: '' });
+    }
+  };
+
   useEffect(() => {
     // Check if partner_community is a string before splitting
     if (typeof formData.partner_community === 'string') {
@@ -72,7 +141,7 @@ const ProposalForm = () => {
           console.error('Failed to fetch proposal data');
         }
       };
-  
+
       fetchProposalData();
     }
   }, [proposalId]);
@@ -133,12 +202,12 @@ const ProposalForm = () => {
       }
       let url = 'http://127.0.0.1:8000/api/proposals/';
       let method = 'POST';
-  
+
       if (isResubmission) {
         url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
         method = 'PATCH'; // Use PATCH for resubmissions
       }
-  
+
       // Append other form data
       for (let key in formData) {
         if (formData[key]) {
@@ -175,6 +244,21 @@ const ProposalForm = () => {
       </h2>
 
       <Form className='form' onSubmit={handleSubmit}>
+        <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
+          <Col sm={5}>
+            <h4 className="mb-4">Please Check</h4>
+            <Form.Check
+              type="checkbox"
+              label="Three-Year-Medium-Term Plan for Community Extension¹"
+              value="Three-Year"
+            />
+            <Form.Check
+              type="checkbox"
+              label="Less than a Year-One-Year Plan for Community Service²"
+              value="LessThanYear"
+            />
+          </Col>
+        </Form.Group>
         <h4 className="mb-4">A. Basic Details</h4>
 
         <Form.Group as={Row} controlId="formTitle" className="mb-4">
@@ -232,19 +316,50 @@ const ProposalForm = () => {
 
         <h6 className="mb-4">CESU Coordinator/Proponent(s)</h6>
 
-        <Form.Group as={Row} controlId="formLeadProponent" className="mb-4">
-          <Form.Label column sm={2} id='formlabel'>Lead Proponent</Form.Label>
+        {/* Display the list of proponents */}
+        {proponents.length > 0 && (
+          <div className="mb-3">
+            <h5>Proponents List</h5>
+            <ul>
+              {proponents.map((p, index) => (
+                <li key={index}>
+                  {p.name} - {p.position}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Lead Proponent Section */}
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm={2}>Name</Form.Label>
           <Col sm={10}>
             <Form.Control
               type="text"
-              placeholder="Enter lead proponent"
-              name="lead_proponent"
-              value={formData.lead_proponent}
-              onChange={handleChange}
+              placeholder="Enter proponent name"
+              name="name"
+              value={proponent.name}
+              onChange={handleProponentChange}
             />
-            <p className='text-sm'>Comma-separated if Multiple Proponents eg. John Doe, Jane Doe</p>
           </Col>
         </Form.Group>
+
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm={2}>Position/Title</Form.Label>
+          <Col sm={10}>
+            <Form.Control
+              type="text"
+              placeholder="Enter position/title"
+              name="position"
+              value={proponent.position}
+              onChange={handleProponentChange}
+            />
+          </Col>
+        </Form.Group>
+
+        <Button variant="success" onClick={handleAddProponent} className="mb-2">
+          Add Proponent
+        </Button>
 
         <Form.Group as={Row} controlId="formContactDetails" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Contact Details</Form.Label>
@@ -302,91 +417,91 @@ const ProposalForm = () => {
 
         <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
           <Col sm={5}>
-              <h6 className="mb-4">Partner Community/Organization</h6>
-              <Form.Check
-                type="checkbox"
-                label="Baclaran"
-                value="Baclaran"
-                checked={formData.partner_community.includes('Baclaran')}
-                onChange={(e) => handleCommunityChange(e, 'Baclaran', 'Barangay')}
-                
+            <h6 className="mb-4">Partner Community/Organization</h6>
+            <Form.Check
+              type="checkbox"
+              label="Baclaran"
+              value="Baclaran"
+              checked={formData.partner_community.includes('Baclaran')}
+              onChange={(e) => handleCommunityChange(e, 'Baclaran', 'Barangay')}
+
+            />
+            <Form.Check
+              type="checkbox"
+              label="Bigaa"
+              value="Bigaa"
+              checked={formData.partner_community.includes('Bigaa')}
+              onChange={(e) => handleCommunityChange(e, 'Bigaa', 'Barangay')}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Sala"
+              value="Sala"
+              checked={formData.partner_community.includes('Sala')}
+              onChange={(e) => handleCommunityChange(e, 'Sala', 'Barangay')}
+            />
+            <Form.Check
+              type="checkbox"
+              label="San Isidro"
+              value="San Isidro"
+              checked={formData.partner_community.includes('San Isidro')}
+              onChange={(e) => handleCommunityChange(e, 'San Isidro', 'Barangay')}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Diezmo"
+              value="Diezmo"
+              checked={formData.partner_community.includes('Diezmo')}
+              onChange={(e) => handleCommunityChange(e, 'Diezmo', 'Barangay')}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Others"
+              // checked={formData.partner_community.includes('Others')}
+              onChange={handleOtherCommunityChange}
+            />
+            {otherCommunity && (
+              <Form.Control
+                type="text"
+                placeholder="Please specify"
+                className="mt-2"
+                value={otherCommunityValue}
+                onChange={(e) => setOtherCommunityValue(e.target.value)}
               />
-              <Form.Check
-                type="checkbox"
-                label="Bigaa"
-                value="Bigaa"
-                checked={formData.partner_community.includes('Bigaa')}
-                onChange={(e) => handleCommunityChange(e, 'Bigaa', 'Barangay')}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Sala"
-                value="Sala"
-                checked={formData.partner_community.includes('Sala')}
-                onChange={(e) => handleCommunityChange(e, 'Sala', 'Barangay')}
-              />
-              <Form.Check
-                type="checkbox"
-                label="San Isidro"
-                value="San Isidro"
-                checked={formData.partner_community.includes('San Isidro')}
-                onChange={(e) => handleCommunityChange(e, 'San Isidro', 'Barangay')}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Diezmo"
-                value="Diezmo"
-                checked={formData.partner_community.includes('Diezmo')}
-                onChange={(e) => handleCommunityChange(e, 'Diezmo', 'Barangay')}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Others"
-                // checked={formData.partner_community.includes('Others')}
-                onChange={handleOtherCommunityChange}
-              />
-              {otherCommunity && (
-                <Form.Control
-                  type="text"
-                  placeholder="Please specify"
-                  className="mt-2"
-                  value={otherCommunityValue}
-                  onChange={(e) => setOtherCommunityValue(e.target.value)}
-                />
-              )}
-            </Col>
-            
-            <Col sm={5}>
+            )}
+          </Col>
+
+          <Col sm={5}>
             <h6 className="mb-4">Typology</h6>
-              <Form.Check
-                type="checkbox"
-                label="School"
-                name="school"
-                onChange={handleChange}
-                checked={formData.school}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Barangay"
-                name="barangay"
-                onChange={handleChange}
-                checked={formData.barangay}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Government Organization"
-                name="government_org"
-                onChange={(e) => handleChange({ target: { name: 'government_org', value: e.target.checked ? 'Yes' : '' } })}
-                checked={formData.government_org === 'Yes'}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Non-Government Organization"
-                name="non_government_org"
-                onChange={(e) => handleChange({ target: { name: 'non_government_org', value: e.target.checked ? 'Yes' : '' } })}
-                checked={formData.non_government_org === 'Yes'}
-              />
-            </Col>
+            <Form.Check
+              type="checkbox"
+              label="School"
+              name="school"
+              onChange={handleChange}
+              checked={formData.school}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Barangay"
+              name="barangay"
+              onChange={handleChange}
+              checked={formData.barangay}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Government Organization"
+              name="government_org"
+              onChange={(e) => handleChange({ target: { name: 'government_org', value: e.target.checked ? 'Yes' : '' } })}
+              checked={formData.government_org === 'Yes'}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Non-Government Organization"
+              name="non_government_org"
+              onChange={(e) => handleChange({ target: { name: 'non_government_org', value: e.target.checked ? 'Yes' : '' } })}
+              checked={formData.non_government_org === 'Yes'}
+            />
+          </Col>
         </Form.Group>
 
         {/* Identified Needs of the Partner Community */}
@@ -574,6 +689,133 @@ const ProposalForm = () => {
             <p className='text-sm'>Max Size: 25MB</p>
           </Col>
         </Form.Group>
+
+        {/* Signatory List Section */}
+        <h4>Signatory List</h4>
+        <p className='text-sm mb-4'>Please provide names and titles/positions of individuals required to sign this document.</p>
+
+        {/* Prepared By Section */}
+        <h5 className="mb-3">Prepared By:</h5>
+        {preparedBy.length > 0 && (
+          <ul>
+            {preparedBy.map((p, index) => (
+              <li key={index}>
+                {p.name} - {p.position}
+              </li>
+            ))}
+          </ul>
+        )}
+        <Row className="mb-3">
+          <Col sm={6}>
+            <Form.Group>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={preparedBySignatory.name}
+                onChange={handlePreparedByChange}
+                placeholder="Enter name"
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={6}>
+            <Form.Group>
+              <Form.Label>Position/Title</Form.Label>
+              <Form.Control
+                type="text"
+                name="position"
+                value={preparedBySignatory.position}
+                onChange={handlePreparedByChange}
+                placeholder="Enter position/title"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Button variant="success" onClick={() => handleAddSignatory('prepared')} className="mb-4">
+          + Add Prepared By
+        </Button>
+
+        {/* Endorsed By Section */}
+        <h5 className="mb-3">Endorsed By:</h5>
+        {endorsedBy.length > 0 && (
+          <ul>
+            {endorsedBy.map((p, index) => (
+              <li key={index}>
+                {p.name} - {p.position}
+              </li>
+            ))}
+          </ul>
+        )}
+        <Row className="mb-3">
+          <Col sm={6}>
+            <Form.Group>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={endorsedBySignatory.name}
+                onChange={handleEndorsedByChange}
+                placeholder="Enter name"
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={6}>
+            <Form.Group>
+              <Form.Label>Position/Title</Form.Label>
+              <Form.Control
+                type="text"
+                name="position"
+                value={endorsedBySignatory.position}
+                onChange={handleEndorsedByChange}
+                placeholder="Enter position/title"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Button variant="success" onClick={() => handleAddSignatory('endorsed')} className="mb-4">
+          + Add Endorsed By
+        </Button>
+
+        {/* Concurred By Section */}
+        <h5 className="mb-3">Concurred By:</h5>
+        {concurredBy.length > 0 && (
+          <ul>
+            {concurredBy.map((p, index) => (
+              <li key={index}>
+                {p.name} - {p.position}
+              </li>
+            ))}
+          </ul>
+        )}
+        <Row className="mb-3">
+          <Col sm={6}>
+            <Form.Group>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={concurredBySignatory.name}
+                onChange={handleConcurredByChange}
+                placeholder="Enter name"
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={6}>
+            <Form.Group>
+              <Form.Label>Position/Title</Form.Label>
+              <Form.Control
+                type="text"
+                name="position"
+                value={concurredBySignatory.position}
+                onChange={handleConcurredByChange}
+                placeholder="Enter position/title"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Button variant="success" onClick={() => handleAddSignatory('concurred')} className="mb-4">
+          + Add Concurred By
+        </Button>
 
         <div className="d-flex justify-content-end">
           <Button variant="success" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>

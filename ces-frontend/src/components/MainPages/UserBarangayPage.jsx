@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import BrgySidebar from "../Barangay/BrgySidebar";
-import TopNav from "../TopNav";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
+import BrgyTopNav from "../BrgyTopNav";
 
 const UserBarangayPage = () => {
   const [sidebarOpen, setSidebar] = useState(true);
@@ -14,7 +14,7 @@ const UserBarangayPage = () => {
   return (
     <div>
       <header>
-        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
+        <BrgyTopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
       <Row>
         <Col style={{ padding: '0px' }} 

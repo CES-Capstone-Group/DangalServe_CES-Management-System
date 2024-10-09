@@ -52,6 +52,7 @@ import ManageAchievements from './components/ManageAchievements.jsx';
 import ManageAnnouncement from './components/ManageAnnouncement.jsx';
 import AdminLanding from './components/MainPages/AdminLanding.jsx';
 import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
+import MyProfilePage from './components/MyProfilePage.jsx';
 
 
 const App = () => {
@@ -90,6 +91,7 @@ const App = () => {
             <Route path='involvement' element={<InvolvementPage />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='kpi' element={<KpiPage />} />
+            <Route path='profile' element={<MyProfilePage />} />
           </Route>
         </Route>
 
@@ -102,6 +104,7 @@ const App = () => {
             <Route path='approved-proposal' element={<BrgyApprovedPro />} />
             <Route path='resched' element={<BrgyEventRequest />} />
             <Route path='calendar' element={<BrgyCalendar />} />
+            <Route path='profile' element={<MyProfilePage />} />
           </Route>
         </Route>
 
@@ -121,6 +124,7 @@ const App = () => {
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='proposal-form' element={<ProposalForm />} />
             <Route path='proposal-form/:proposalId/resubmit' element={<ProposalForm />} /> {/* Resubmission */}
+            <Route path='profile' element={<MyProfilePage />} />
           </Route>
         </Route>
 
@@ -139,7 +143,10 @@ const App = () => {
         <Route path='/funding' element={<FundingProposalForm />} />
         <Route path='/cesEvalForm' element={<CesEvalForm />} />
         <Route path='aarForm' element={<AARForm />} />
+
       </Routes>
+
+
     </div>
   );
 };

@@ -292,3 +292,52 @@ button.fc-Service-button.fc-button.fc-button-primary {
 .backBtn{
   text-decoration: none !important;
 }
+
+.dropdown-enter {
+  opacity: 0;
+  transform: translateY(-10px); /* Starts slightly above */
+}
+.dropdown-enter-active {
+  opacity: 1;
+  transform: translateY(0); /* Slides into place */
+  transition: opacity 300ms, transform 300ms; /* Animation duration */
+}
+.dropdown-exit {
+  opacity: 1;
+  transform: translateY(0); /* Fully in place */
+}
+.dropdown-exit-active {
+  opacity: 0;
+  transform: translateY(-10px); /* Slides out of place */
+  transition: opacity 300ms, transform 300ms; /* Animation duration */
+}
+
+
+.profile-container {
+  background-color: white;
+}
+
+.profile-header {
+  background-color: #71A872 !important;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  position: relative;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.profile-details {
+  margin-top: 30px;
+}
+
+.profile-details p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.profileContainer{
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 4px 4px 9px rgb(212, 212, 212);
+}

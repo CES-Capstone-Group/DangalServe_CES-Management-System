@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import '../App.css'
 import { Navbar, Nav, Container, Button, Modal, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket, faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-const TopNav = ({ sidebarOpen, sidebarToggle }) => {
+const AdminTopNav = ({ sidebarOpen, sidebarToggle }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [showLogoutModal, setShowLogoutModal] = useState(false); // State to show/hide modal
   const navigate = useNavigate(); // Hook to programmatically navigate
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleToggle = (isOpen) => {
+    setShowDropdown(isOpen);
+  };
 
   // Function to handle showing the logout modal
   const handleShowLogoutModal = () => setShowLogoutModal(true);
@@ -31,15 +42,15 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
     // Navigate to the login page
     navigate('/login');
   };
-  
+
   const accountType = localStorage.getItem('accountType');
   return (
     <div className='topNav'>
-      <Navbar expand="lg" style={{ 
-        backgroundColor: '#71A872', 
-        paddingLeft: sidebarOpen ? '250px' : '0px', 
-        transition: 'padding-left 0.3s ease' 
-        }}>
+      <Navbar expand="lg" style={{
+        backgroundColor: '#71A872',
+        paddingLeft: sidebarOpen ? '250px' : '0px',
+        transition: 'padding-left 0.3s ease'
+      }}>
         <Container fluid className='d-flex '>
           <Navbar.Brand style={{ color: 'white' }}>
             <Button
@@ -48,25 +59,28 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
               onClick={sidebarToggle}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              style={{backgroundColor: "transparent", transition: 'none'}}
+              style={{ backgroundColor: "transparent", transition: 'none' }}
             >
               <FontAwesomeIcon icon={faBars} color='white' />
-            </Button> 
+            </Button>
             <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
               {accountType}
             </Navbar.Text>
           </Navbar.Brand>
-        
-          <Dropdown align='end' >
-            <Dropdown.Toggle style={{borderWidth:'0px',backgroundColor: '#dddddd00'}}>
+
+          <Dropdown align='end' onToggle={handleToggle} show={showDropdown}>
+            <Dropdown.Toggle style={{ borderWidth: '0px', backgroundColor: '#dddddd00' }}>
               <FontAwesomeIcon style={{ fontSize: '35px', color: 'white' }} icon={faCircleUser} />
             </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#">Profile</Dropdown.Item>
-              <Dropdown.Item onClick={handleShowLogoutModal}>Logout 
-                <FontAwesomeIcon  style={{paddingLeft:'5px', color:'#71A872'}} icon={faSignOutAlt} />
-              </Dropdown.Item>
-            </Dropdown.Menu>
+            <CSSTransition in={showDropdown} timeout={300} classNames="dropdown" unmountOnExit>
+              <Dropdown.Menu className='dropDown'>
+                <Dropdown.Item onClick={() => handleNavigation('/admin/profile')} >My Profile</Dropdown.Item>
+                <Dropdown.Item onClick={handleShowLogoutModal}>
+                  Logout
+                  <FontAwesomeIcon style={{ paddingLeft: '5px', color: '#71A872' }} icon={faSignOutAlt} />
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </CSSTransition>
           </Dropdown>
         </Container>
       </Navbar>
@@ -94,4 +108,4 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
   );
 };
 
-export default TopNav;
+export default AdminTopNav;

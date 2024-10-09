@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import TopNav from "../TopNav";
 import { Row, Col, Container } from "react-bootstrap";
-import AdminManage from "../Admin/AdminManage";
 import { Outlet } from "react-router-dom";
+import AdminTopNav from "../AdminTopNav";
 
 const AdminManagePage = () => {
   
@@ -10,7 +9,7 @@ const AdminManagePage = () => {
   return (
     <div>
       <header>
-        <TopNav />
+        <AdminTopNav />
       </header>
       <Row>
         <Col >

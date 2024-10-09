@@ -29,7 +29,7 @@ const AdminManage = () => {
     const managementSections = [
         { title: "Account Management", path: "/manage/accmngmnt", icon: faUser },
         { title: "Barangay Management", path: "/manage/brgy-management", icon: faBuilding },
-        { title: "Department Management", path: "/manage/coor-management", icon: faUniversity },
+        { title: "Department Management", path: "/manage/dept-management", icon: faUniversity },
         { title: "Research Agenda Management", path: "/manage/manage-agenda", icon: faFileAlt },
         { title: "Achievement Management", path: "/manage/manage-ach", icon: faTrophy },
         { title: "Announcement Management", path: "/manage/manage-ann", icon: faBullhorn },

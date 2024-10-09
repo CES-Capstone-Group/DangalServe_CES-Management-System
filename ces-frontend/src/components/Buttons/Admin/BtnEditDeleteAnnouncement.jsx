@@ -1,0 +1,156 @@
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+
+const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
+    const [showEdit, setShowEdit] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [title, setTitle] = useState("");
+    const [details, setDetails] = useState("");
+    const [image, setImage] = useState(null);
+
+    // Pre-fill data when modal opens
+    useEffect(() => {
+        if (announcement) {
+            setTitle(announcement.title);
+            setDetails(announcement.details);
+        }
+    }, [announcement]);
+
+    // **Update Announcement Functionality**
+    const updateAnnouncement = async (e) => {
+        e.preventDefault();
+
+        const announcementData = new FormData();
+        announcementData.append("title", title);
+        announcementData.append("details", details);
+
+        if (image) {
+            announcementData.append("image", image);
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcement.id}/`, {
+                method: "PUT",
+                body: announcementData,
+            });
+
+            if (response.ok) {
+                onAnnouncementUpdated();  // Trigger the callback to reload announcements
+                setShowEdit(false);       // Close the edit modal
+                alert("Announcement updated successfully!");
+            } else {
+                alert("There was an error updating the announcement.");
+            }
+        } catch (error) {
+            alert("There was an error updating the announcement.");
+        }
+    };
+
+    // **Delete Announcement Functionality**
+    const deleteAnnouncement = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcement.id}/`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                alert("Announcement deleted successfully!");
+                setShowDeleteConfirm(false);  // Close delete confirmation modal
+                onAnnouncementUpdated();  // Trigger the callback to reload announcements
+            } else {
+                alert("There was an error deleting the announcement.");
+            }
+        } catch (error) {
+            alert("There was an error deleting the announcement.");
+        }
+    };
+
+    return (
+        <>
+            {/* Edit and Delete Buttons */}
+            <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '15px', fontSize: '20px' }}>
+                Edit
+            </Button>
+            <Button className="shadow" onClick={() => setShowDeleteConfirm(true)} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '20px' }}>
+                Delete
+            </Button>
+
+            {/* Edit Announcement Modal */}
+            <Modal backdrop='static' centered size="lg" show={showEdit} onHide={() => setShowEdit(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Announcement</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={updateAnnouncement}>
+                        <Form.Group className='mb-3' controlId='AnnouncementTitle'>
+                            <Form.Label className='h5'>Announcement Title</Form.Label>
+                            <InputGroup>
+                                <Form.Control 
+                                    type='text' 
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    required
+                                />
+                            </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='AnnouncementDetails'>
+                            <Form.Label className='h5'>Announcement Details</Form.Label>
+                            <InputGroup>
+                                <Form.Control 
+                                    as='textarea'
+                                    rows={4}
+                                    value={details}
+                                    onChange={(e) => setDetails(e.target.value)}
+                                    required
+                                />
+                            </InputGroup>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='AnnouncementImage'>
+                            <Form.Label className='h5'>Upload your Image (Optional)</Form.Label>
+                            <InputGroup>
+                                <Form.Control 
+                                    className="inputFile" 
+                                    type="file" 
+                                    onChange={(e) => setImage(e.target.files[0])} 
+                                    accept="image/*"
+                                />
+                            </InputGroup>
+                            <p className="text-sm">Max Size: 25MB</p>
+                        </Form.Group>
+
+                        <Modal.Footer className="d-flex justify-content-center">
+                            <Button size="lg" variant='success' type="submit">
+                                Save Changes
+                            </Button>
+                            <Button size="lg" variant="danger" onClick={() => setShowEdit(false)}>
+                                Cancel
+                            </Button>
+                        </Modal.Footer>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal size="m" centered show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)} backdrop="static">
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Deletion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you sure you want to delete this announcement?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={deleteAnnouncement} variant="danger">
+                        Yes, Delete
+                    </Button>
+                    <Button onClick={() => setShowDeleteConfirm(false)} variant="secondary">
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    );
+};
+
+export default BtnEditDeleteAnnouncement;

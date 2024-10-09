@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, Announcement, ResearchAgenda, Proposal, ProposalVersion, BarangayApproval
+from .models import Account, Achievement, Announcement, Barangay, Department, ResearchAgenda, Proposal, ProposalVersion, BarangayApproval
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -65,6 +65,18 @@ class TblAccountsSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'required': False}  # Make password field optional
         }
+
+#Serializer for handling Barangay model
+class BarangaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Barangay
+        fields = ['id', 'brgy_name', 'moa']  # Specify the fields you want to serialize
+
+# Serializer for the Department model
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = ['id', 'dept_name']  # Specify the fields to be included in the serializer
 
 # Serializer for ResearchAgenda model
 class ResearchAgendaSerializer(serializers.ModelSerializer):

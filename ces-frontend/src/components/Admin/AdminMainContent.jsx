@@ -4,9 +4,9 @@ import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import BtnAddAnnouncement from '../Buttons/Admin/BtnAddAnnouncement'; // Add Announcement Button
 import BtnAddAchievement from '../Buttons/Admin/BtnAddAchievement'; // Add Achievement Button
 import BtnAddResearchAgenda from '../Buttons/Admin/BtnAddResearchAgenda'; // Add Research Agenda Button
-import BtnEditAchievement from '../Buttons/Admin/BtnEditAchievement'; // Edit Achievement Modal
-import BtnEditAnnouncement from '../Buttons/Admin/BtnEditAnnouncement'; // Edit Announcement Modal
-import BtnEditResearchAgenda from '../Buttons/Admin/BtnEditResearchAgenda'; // Edit Research Agenda Modal
+import BtnEditAchievement from '../Buttons/Admin/BtnEditDeleteAchievement'; // Edit Achievement Modal
+import BtnEditAnnouncement from '../Buttons/Admin/BtnEditDeleteAnnouncement'; // Edit Announcement Modal
+import BtnEditResearchAgenda from '../Buttons/Admin/BtnEditDeleteResearchAgenda'; // Edit Research Agenda Modal
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -506,7 +506,7 @@ const AdminMainContent = () => {
               </Modal.Body>
             </Modal>
 
-            {/* Announcement Edit Modal */}
+            {/* Announcement Edit Modal
             {selectedAnnouncement && (
               <BtnEditAnnouncement
                 show={showEditModalAnn}
@@ -514,7 +514,7 @@ const AdminMainContent = () => {
                 announcement={selectedAnnouncement}
                 onAnnouncementUpdated={handleAnnouncementUpdated}
               />
-            )}
+            )} */}
           </Row>
         </Col>
       </Row>

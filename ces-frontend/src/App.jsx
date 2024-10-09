@@ -27,7 +27,7 @@ import CoorApprovedPro from './components/Coordinator/CoorApprovedPro';
 import CoorPenAchievements from './components/Coordinator/CoorPenAchievements';
 import CoorApprovedAch from './components/Coordinator/CoorApprovedAch';
 import CoorEventRequest from './components/Coordinator/CoorEventRequest';
-import CoorManagement from './components/Coordinator/CoorManagement.jsx';
+import DepartmentManagement from './components/Coordinator/DepartmentManagement.jsx';
 
 import EvalPage from './components/Evaluator/EvalPage';
 
@@ -74,7 +74,7 @@ const App = () => {
             <Route path='manage-ach' element={<ManageAchievements />} />
             <Route path='manage-ann' element={<ManageAnnouncement />} />
             <Route path='brgy-management' element={<BrgyManagement />} />
-            <Route path='coor-management' element={<CoorManagement />} />
+            <Route path='dept-management' element={<DepartmentManagement />} />
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />

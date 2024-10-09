@@ -4,21 +4,42 @@ import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddBrgy from "../Buttons/Manage/BtnAddBrgy";
-import "../table.css"
-import sampleimg from "../../assets/sampleimg.png";
-import samplepdf from "../../assets/samplepdf.pdf"
-import BtnEditDelete from "../Buttons/Manage/BtnEditDelete";
+import "../table.css";
+import BtnEditDelete from "../Buttons/Manage/BtnEditDelete";  // <-- Import BtnEditDelete
 
 const BrgyManagement = () => {
     const [showModal, setShowModal] = useState(false);
-    const [selectedContent, setSelectedContent] = useState(null); // State for viewing images
+    const [selectedContent, setSelectedContent] = useState(null);
     const [contentType, setContentType] = useState("");
 
+    // State to hold the barangay data fetched from the backend
+    const [barangays, setBarangays] = useState([]);
+
+    // Function to fetch barangay data from the backend
+    const fetchBarangays = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setBarangays(data);  // Set the fetched data into state
+        } catch (error) {
+            console.error("Failed to fetch barangays:", error);
+        }
+    };
+
+    // Fetch barangay data when the component mounts
+    useEffect(() => {
+        fetchBarangays();  // Initial data load
+    }, []);
+
+    // Handle file view logic
     const handleContentClick = (contentUrl) => {
         if (contentUrl.endsWith(".pdf")) {
-            setContentType("pdf"); // If the file is a PDF
+            setContentType("pdf");
         } else {
-            setContentType("image"); // If it's an image
+            setContentType("image");
         }
         setSelectedContent(contentUrl);
         setShowModal(true);
@@ -34,35 +55,12 @@ const BrgyManagement = () => {
 
     // Go back to the previous page
     const handleBack = () => {
-        navigate(-1); // This will navigate to the previous page in the history
+        navigate(-1);
     };
-    // const fetchUsers = async () => {
-    //     try {
-    //         const response = await fetch('http://127.0.0.1:8000/api/users/');
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         const data = await response.json();
-    //         setUsers(data);  // Update the state with the fetched users
-    //     } catch (error) {
-    //         console.error("Failed to fetch users:", error);
-    //     }
-    // };
 
-    // useEffect(() => {
-    //     fetchUsers(); 
-    // }, []);
-
-    // const handleAccountAdded = () => {
-    //     fetchUsers();  
-    // };
-
-    const array = [{ brgy_id: '1', brgyName: 'Bigaa', moa: sampleimg },
-    { brgy_id: '2', brgyName: 'Diezmo', moa: samplepdf }];
-
+    // Updated `Rows` component to pass all required props to `BtnEditDelete`
     const Rows = (props) => {
         const { brgy_id, brgyName, moa } = props;
-
         return (
             <tr>
                 <td>{brgy_id}</td>
@@ -72,28 +70,30 @@ const BrgyManagement = () => {
                         <FontAwesomeIcon icon={faEye} />
                     </Button>
                 </td>
-                <td><BtnEditDelete /></td>
+                {/* Pass `brgy_id` and `brgyName` to `BtnEditDelete` */}
+                <td><BtnEditDelete brgyId={brgy_id} brgyName={brgyName} onBrgyUpdated={fetchBarangays} /></td> {/* <-- Pass `brgyName` as a prop */}
             </tr>
         );
     };
 
-    const NewTable = ({ data, /*fetchUsers*/ }) => {
+    const NewTable = ({ data }) => {
         return (
             <Table responsive striped bordered hover className="tableStyle">
                 <thead>
-                    <th>Barangay ID</th>
-                    <th>Barangay Name</th>
-                    <th>MOA</th>
-                    <th>Actions</th>
+                    <tr>
+                        <th>Barangay ID</th>
+                        <th>Barangay Name</th>
+                        <th>MOA</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {data.map((row) => (
                         <Rows
-                            key={row.brgy_id}  // Use a unique ID, like accountID
-                            brgy_id={row.brgy_id}
-                            brgyName={row.brgyName}
+                            key={row.id}
+                            brgy_id={row.id}
+                            brgyName={row.brgy_name}  // <-- Pass `brgy_name` to the child component
                             moa={row.moa}
-                        //fetchUsers={fetchUsers}
                         />
                     ))}
                 </tbody>
@@ -104,12 +104,10 @@ const BrgyManagement = () => {
     return (
         <Container fluid className="fs-5">
             <Row>
-
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />
                     <span className="ms-2">Back</span>
                 </Button>
-
                 <Col className="d-flex justify-content-end">
                     <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
                         <FontAwesomeIcon className='me-2' icon={faFilter}></FontAwesomeIcon>
@@ -124,7 +122,6 @@ const BrgyManagement = () => {
                 <Col className="mb-3 d-flex justify-content-end">
                     <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
                 </Col>
-                {/* Modal for viewing full image */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
                     <Modal.Header closeButton></Modal.Header>
                     <Modal.Body className="text-center">
@@ -138,12 +135,13 @@ const BrgyManagement = () => {
                 </Modal>
             </Row>
 
-            {/* Render the table with the latest data */}
-            <NewTable data={array} />
+            {/* Render the table with the fetched data */}
+            <NewTable data={barangays} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <BtnAddBrgy />
+                    {/* Pass `fetchBarangays` as `onBrgyAdded` prop */}
+                    <BtnAddBrgy onBrgyAdded={fetchBarangays} />  {/* <-- Pass `fetchBarangays` as a prop */}
                 </Col>
             </Row>
         </Container>

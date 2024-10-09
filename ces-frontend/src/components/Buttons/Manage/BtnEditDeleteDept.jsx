@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Row, Col, Form, Modal } from "react-bootstrap";
 
-const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => {  // <-- Added `initialBrgyName` prop to prefill values
+const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpdated }) => {  // <-- Changed `initialDeptName` prop
     const [showEdit, setShowEdit] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [brgyName, setBrgyName] = useState("");  // State for barangay name
-    const [moaFile, setMoaFile] = useState(null);  // State for file upload
+    const [deptName, setDeptName] = useState("");  // State for department name
 
-    // **Modified: Open/Close Edit Modal with Prefilled Values**
+    // **Open/Close Edit Modal with Prefilled Values**
     const handleShowEdit = () => {
-        setBrgyName(initialBrgyName);  // <-- Set current `brgyName` from props
+        setDeptName(initialDeptName);  // Set current `deptName` from props
         setShowEdit(true);
     };
     const handleCloseEdit = () => setShowEdit(false);
@@ -20,37 +19,36 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
 
     // **Handle Edit Form Submission**
     const handleEditSubmit = async () => {
-        const formData = new FormData();
-        formData.append("brgy_name", brgyName);  // Append the updated barangay name
-        if (moaFile) {
-            formData.append("moa", moaFile);  // Append the MOA file if selected
-        }
+        const formData = { dept_name: deptName };  // Create form data for department
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/barangays/${brgyId}/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
                 method: "PUT",
-                body: formData,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),  // Convert formData to JSON
             });
 
             if (response.ok) {
-                alert("Barangay updated successfully!");
+                alert("Department updated successfully!");
                 handleCloseEdit();  // Close edit modal on success
-                onBrgyUpdated();  // Trigger callback to refresh parent component
+                onDepartmentUpdated();  // Trigger callback to refresh parent component
             } else {
                 const data = await response.json();
-                alert(`Failed to update barangay: ${JSON.stringify(data)}`);
+                alert(`Failed to update department: ${JSON.stringify(data)}`);
             }
         } catch (error) {
-            console.error("Error updating barangay:", error);
+            console.error("Error updating department:", error);
         }
     };
 
     // **Handle Delete Functionality**
     const handleDelete = async () => {
         try {
-            console.log(`Deleting barangay with ID: ${brgyId}`);
+            console.log(`Deleting department with ID: ${deptId}`);
 
-            const response = await fetch(`http://127.0.0.1:8000/api/barangays/${brgyId}/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,16 +56,16 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
             });
 
             if (response.ok) {
-                alert("Barangay deleted successfully!");
+                alert("Department deleted successfully!");
                 handleCloseDeleteConfirm();  // Close delete modal on success
-                onBrgyUpdated();  // Trigger callback to refresh parent component
+                onDepartmentUpdated();  // Trigger callback to refresh parent component
             } else {
                 const data = await response.json();
                 console.log("Failed to delete:", data);
-                alert(`Failed to delete barangay: ${JSON.stringify(data)}`);
+                alert(`Failed to delete department: ${JSON.stringify(data)}`);
             }
         } catch (error) {
-            console.error("Error deleting barangay:", error);
+            console.error("Error deleting department:", error);
         }
     };
 
@@ -81,44 +79,31 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
                 Delete
             </Button>
 
-            {/* **Edit Barangay Modal with Prefilled Values** */}
+            {/* **Edit Department Modal with Prefilled Values** */}
             <Modal size="lg" centered show={showEdit} onHide={handleCloseEdit} backdrop="static">
                 <Modal.Header closeButton>
-                    <h1>Edit Barangay</h1>
+                    <h1>Edit Department</h1>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>
-                                Barangay Id:
+                                Department Id:
                             </Form.Label>
                             <Col sm={8}>
-                                <Form.Control type="text" name="brgyId" value={brgyId} disabled /> {/* Display ID */}
+                                <Form.Control type="text" name="deptId" value={deptId} disabled /> {/* Display ID */}
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>
-                                Barangay Name:
+                                Department Name:
                             </Form.Label>
                             <Col sm={8}>
                                 <Form.Control
                                     type="text"
-                                    name="brgyName"
-                                    value={brgyName}  // Prefill current name
-                                    onChange={(e) => setBrgyName(e.target.value)}  // Handle name change
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>
-                                Memorandum of Agreement:
-                            </Form.Label>
-                            <Col sm={8}>
-                                <Form.Control
-                                    className="inputFile"
-                                    type="file"
-                                    accept="image/*, application/pdf"
-                                    onChange={(e) => setMoaFile(e.target.files[0])}  // Handle file change
+                                    name="deptName"
+                                    value={deptName}  // Prefill current name
+                                    onChange={(e) => setDeptName(e.target.value)}  // Handle name change
                                 />
                             </Col>
                         </Form.Group>
@@ -140,7 +125,7 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
                     <h4>Confirm Deletion</h4>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Are you sure you want to delete this Barangay?</p>
+                    <p>Are you sure you want to delete this Department?</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={handleDelete} variant="danger">
@@ -155,4 +140,4 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
     );
 };
 
-export default BtnEditDelete;
+export default BtnEditDeleteDept;

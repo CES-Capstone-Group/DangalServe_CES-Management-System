@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Achievement, Announcement, Account, ResearchAgenda, BarangayApproval
-from .serializer import AchievementSerializer, AnnouncementSerializer, TblAccountsSerializer, ResearchAgendaSerializer
+from .models import Achievement, Announcement, Account, Barangay, Department, ResearchAgenda, BarangayApproval
+from .serializer import AchievementSerializer, AnnouncementSerializer, BarangaySerializer, DepartmentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
 # from .models import CustomAuthToken
@@ -82,6 +82,99 @@ def user_info_action(request, user_id):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+#BRGY VIEWS
+# GET view for listing all Barangays
+@api_view(['GET'])
+def get_all_barangays(request):
+    barangays = Barangay.objects.all()
+    serializedData = BarangaySerializer(barangays, many=True, context={'request': request})
+    return Response(serializedData.data)
+
+
+# GET view for retrieving a specific Barangay by ID
+@api_view(['GET'])
+def get_barangay_detail(request, pk):
+    try:
+        barangay = Barangay.objects.get(pk=pk)
+    except Barangay.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializedData = BarangaySerializer(barangay, context={'request': request})
+    return Response(serializedData.data)
+
+# POST view for creating a new Barangay
+@api_view(['POST'])
+def create_barangay(request):
+    serializedData = BarangaySerializer(data=request.data, context={'request': request})
+    if serializedData.is_valid():
+        serializedData.save()
+        return Response(serializedData.data, status=status.HTTP_201_CREATED)
+    return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT', 'DELETE'])
+def update_delete_barangay(request, pk):
+    try:
+        barangay = Barangay.objects.get(pk=pk)
+    except Barangay.DoesNotExist:
+        return Response({"error": "Barangay not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    if  request.method == 'PUT':
+        # If 'PUT', replace the existing file if a new one is uploaded
+        serializedData = BarangaySerializer(barangay, data=request.data, context={'request': request})
+        if serializedData.is_valid():
+            if 'moa' in request.data and barangay.moa:
+                # Delete the old MOA file if a new one is uploaded
+                barangay.moa.delete(save=False)
+            serializedData.save()
+            return Response(serializedData.data)
+        return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        if barangay.moa:
+            # Delete the file associated with the MOA before deleting the instance
+            barangay.moa.delete(save=False)
+        barangay.delete()
+        return Response({"message": "Barangay deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+# DEPARTMENT VIEWS
+# GET: Retrieve all departments
+@api_view(['GET'])
+def get_departments(request):
+    departments = Department.objects.all()
+    serializer = DepartmentSerializer(departments, many=True)
+    return Response(serializer.data)
+
+# POST: Create a new department
+@api_view(['POST'])
+def create_department(request):
+    serializer = DepartmentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# GET, PUT, DELETE: Retrieve, update, or delete a single department by ID
+@api_view(['GET', 'PUT', 'DELETE'])
+def update_delete_department(request, pk):
+    try:
+        department = Department.objects.get(pk=pk)
+    except Department.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = DepartmentSerializer(department, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        department.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 # RESEARCH AGENDA VIEWS
 @api_view(['GET'])

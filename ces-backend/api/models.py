@@ -87,6 +87,23 @@ class Account(AbstractBaseUser):
 #         return self.key
 
 
+
+class Barangay(models.Model):
+    brgy_name = models.CharField(max_length=100)  # Field for the name of the barangay
+    moa = models.FileField(upload_to='moa_files/', blank=True, null=True)  # Field for the MOA file/image
+
+    def __str__(self):
+        return self.brgy_name
+
+
+# Department Model
+class Department(models.Model):
+    id = models.AutoField(primary_key=True)  # Auto-incrementing ID
+    dept_name = models.CharField(max_length=100)  # Department Name
+
+    def __str__(self):
+        return self.dept_name
+
 class ResearchAgenda(models.Model):
     label = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='research_agenda_images/', null=True, blank=True)
@@ -111,6 +128,9 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
 
 class Proposal(models.Model):
     STATUS_CHOICES = [

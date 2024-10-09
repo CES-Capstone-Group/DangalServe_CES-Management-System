@@ -38,6 +38,16 @@ urlpatterns = [
     path('users/create_user/', views.create_user, name="create_user"),
     path('users/user_info_action/<int:user_id>/', views.user_info_action, name="user_info_action"),
 
+    #Barangay Paths
+    path('barangays/', views.get_all_barangays, name='barangay-list'),  # List all barangays
+    path('barangays/create/', views.create_barangay, name='barangay-create'),  # Create a new barangay
+    path('barangays/<int:pk>/', views.update_delete_barangay, name='update-delete-barangay'),
+
+    #Department Paths
+    path('departments/', views.get_departments, name='department-list'),  # List all departments
+    path('departments/create/', views.create_department, name='department-create'),  # Create a new department
+    path('departments/<int:pk>/', views.update_delete_department, name='update_delete_department'),  # Retrieve, update, or delete a single department
+    
     # Research Agenda Paths
     path('research-agendas/', views.get_research_agendas, name='research-agenda-list'),
     path('research-agendas/create/', views.create_research_agenda, name='research-agenda-create'),

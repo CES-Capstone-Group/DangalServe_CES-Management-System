@@ -1,26 +1,39 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
-import BtnEditDelete from "./Buttons/Manage/BtnEditDelete";
+import BtnEditDeleteAchievement from "./Buttons/Admin/BtnEditDeleteAchievement";
 import BtnAddAchievement from "./Buttons/Admin/BtnAddAchievement";
-
-
 
 const ManageAchievements = () => {
     const [showModal, setShowModal] = useState(false);
-    const [selectedContent, setSelectedContent] = useState(null); // State for viewing images
+    const [selectedContent, setSelectedContent] = useState(null);
     const [contentType, setContentType] = useState("");
+    const [achievements, setAchievements] = useState([]);  // <-- Store achievements data
+    const navigate = useNavigate();
 
-    const handleContentClick = (contentUrl) => {
-        if (contentUrl.endsWith(".pdf")) {
-            setContentType("pdf"); // If the file is a PDF
-        } else {
-            setContentType("image"); // If it's an image
+    // Fetch Achievements from Backend
+    const fetchAchievements = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/achievements/");  // Adjust your backend URL
+            if (!response.ok) throw new Error("Failed to fetch achievements.");
+            const data = await response.json();
+            setAchievements(data);  // Update state with fetched data
+        } catch (error) {
+            console.error("Error fetching achievements:", error);
         }
+    };
+
+    // Fetch achievements on component mount
+    useEffect(() => {
+        fetchAchievements();
+    }, []);
+
+    // Handle content view modal
+    const handleContentClick = (contentUrl) => {
+        setContentType(contentUrl.endsWith(".pdf") ? "pdf" : "image");
         setSelectedContent(contentUrl);
         setShowModal(true);
     };
@@ -31,57 +44,63 @@ const ManageAchievements = () => {
         setContentType("");
     };
 
-    const array = [{ awardTitle: 'Outstanding Extension Personnel', awardee: 'Mr. John Doe', awardedBy: 'Community Outreach Foundation', awardDate: 'April 20, 2024', achImage: '' },
-    { awardTitle: 'Outstanding Extension Personnel', awardee: 'Mr. John Doe', awardedBy: 'Community Outreach Foundation', awardDate: 'April 20, 2024', achImage: '' }];
+    // Handle back navigation
+    const handleBack = () => {
+        navigate(-1);  // Navigate to the previous page
+    };
 
+    // Handle Achievement Update
+    const handleAchievementUpdated = () => {
+        fetchAchievements();  // Refresh the table data after an update
+    };
+
+    // Table row component
     const Rows = (props) => {
-        const { awardTitle, awardee, awardedBy, awardDate, achImage } = props
+        const { achievement } = props;
         return (
             <tr>
-                <td>{awardTitle}</td>
-                <td>{awardee}</td>
-                <td>{awardedBy}</td>
-                <td>{awardDate}</td>
+                <td>{achievement.award_title}</td>
+                <td>{achievement.awardee}</td>
+                <td>{achievement.awarded_by}</td>
+                <td>{achievement.date_awarded}</td>
                 <td>
-                    <Button variant="success link" onClick={() => handleContentClick(achImage)}>
+                    <Button variant="success link" onClick={() => handleContentClick(achievement.image_url)}>
                         <FontAwesomeIcon icon={faEye} />
                     </Button>
                 </td>
-                <td><BtnEditDelete /></td>
+                {/* Pass required props to child component for edit/delete functionality */}
+                <td>
+                    <BtnEditDeleteAchievement
+                        achievement={achievement}
+                        onAchievementUpdated={handleAchievementUpdated}  // Callback to refresh the table
+                    />
+                </td>
             </tr>
         );
     };
 
-    const NewTable = (props) => {
-        const { data } = props
+    // Table component
+    const NewTable = ({ data }) => {
         return (
             <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <th>Award Title</th>
-                    <th>Awardee</th>
-                    <th>Awarded By</th>
-                    <th>Date Awarded</th>
-                    <th>Image</th>
-                    <th></th>
+                    <tr>
+                        <th>Award Title</th>
+                        <th>Awardee</th>
+                        <th>Awarded By</th>
+                        <th>Date Awarded</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
-                {data.map((row, index) =>
-                    <Rows key={'key-${index}'}
-                        awardTitle={row.awardTitle}
-                        awardee={row.awardee}
-                        awardedBy={row.awardedBy}
-                        awardDate={row.awardDate}
-                        achImage={row.achImage}
-                    />)}
+                <tbody>
+                    {data.map((achievement, index) => (
+                        <Rows key={achievement.id} achievement={achievement} />  // Pass each achievement as a prop
+                    ))}
+                </tbody>
             </Table>
         );
-    }
-    const navigate = useNavigate();
-
-    // Go back to the previous page
-    const handleBack = () => {
-        navigate(-1); // This will navigate to the previous page in the history
     };
-    const [rows, setRows] = useState(array)
 
     return (
         <Container fluid>
@@ -99,7 +118,7 @@ const ManageAchievements = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Achievement Management </h1></Col>
+                <Col><h1>Achievement Management</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
@@ -119,20 +138,17 @@ const ManageAchievements = () => {
                 </Modal>
             </Row>
 
-            <Table>
-                <NewTable data={rows} />
-            </Table>
+            {/* Render the achievements table */}
+            <NewTable data={achievements} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <BtnAddAchievement />
+                    {/* Add Achievement Button */}
+                    <BtnAddAchievement onAchievementAdded={handleAchievementUpdated} />  {/* <-- Call the refresh function on add */}
                 </Col>
             </Row>
-
         </Container>
-
     );
 };
 
 export default ManageAchievements;
-

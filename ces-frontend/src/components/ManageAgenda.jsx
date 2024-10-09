@@ -1,24 +1,41 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
 import BtnAddResearchAgenda from "./Buttons/Admin/BtnAddResearchAgenda";
-import BtnEditDelete from "./Buttons/Manage/BtnEditDelete";
+import BtnEditDeleteResearchAgenda from "./Buttons/Admin/BtnEditDeleteResearchAgenda";
 
 const ManageAgenda = () => {
     const [showModal, setShowModal] = useState(false);
-    const [selectedContent, setSelectedContent] = useState(null); // State for viewing images
+    const [selectedContent, setSelectedContent] = useState(null);
     const [contentType, setContentType] = useState("");
+    const [agendas, setAgendas] = useState([]);
+    const [loadingAgendas, setLoadingAgendas] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    // Fetch Research Agendas from Backend
+    const fetchAgendas = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/research-agendas/");
+            if (!response.ok) throw new Error("Failed to fetch agendas.");
+            const data = await response.json();
+            setAgendas(data);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoadingAgendas(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchAgendas();
+    }, []);
 
     const handleContentClick = (contentUrl) => {
-        if (contentUrl.endsWith(".pdf")) {
-            setContentType("pdf"); // If the file is a PDF
-        } else {
-            setContentType("image"); // If it's an image
-        }
+        setContentType(contentUrl.endsWith(".pdf") ? "pdf" : "image");
         setSelectedContent(contentUrl);
         setShowModal(true);
     };
@@ -29,50 +46,67 @@ const ManageAgenda = () => {
         setContentType("");
     };
 
-    const navigate = useNavigate();
-
-    // Go back to the previous page
     const handleBack = () => {
-        navigate(-1); // This will navigate to the previous page in the history
+        navigate(-1);
     };
 
-    const array = [{ agendaLabel: 'Outstanding Extension Personnel', agendaImg: '' }];
-
-
-    const Rows = (props) => {
-        const { agendaLabel, agendaImg } = props
-        return (
-            <tr>
-                <td>{agendaLabel}</td>
-                <td>
-                    <Button variant="success link" onClick={() => handleContentClick(agendaImg)}>
-                        <FontAwesomeIcon icon={faEye} />
-                    </Button>
-                </td>
-                <td>
-                    <BtnEditDelete />
-                </td>
-            </tr>
-        );
+    const handleAgendaUpdated = () => {
+        fetchAgendas();
     };
 
-    const NewTable = (props) => {
-        const { data } = props
-        return (
-            <Table responsive striped hover className="tableStyle">
-                <thead>
+    // Table row component for displaying each agenda
+    const Rows = ({ agenda }) => (
+        <tr style={{ backgroundColor: "#ccffcc" }}> {/* Light green row background */}
+            <td>{agenda.label}</td>
+            <td>
+                <Button
+                    variant="link"
+                    className="viewBtn"
+                    onClick={() => handleContentClick(agenda.image_url)}
+                    style={{ backgroundColor: '#8FCB9B', color: 'white' }}
+                >
+                    <FontAwesomeIcon icon={faEye} />
+                </Button>
+            </td>
+            <td>
+                {/* Pass agenda and handleAgendaUpdated as props */}
+                <BtnEditDeleteResearchAgenda
+                    researchAgenda={agenda}
+                    onResearchAgendaUpdated={handleAgendaUpdated}
+                />
+            </td>
+        </tr>
+    );
+
+    // Table component
+    const NewTable = ({ data }) => (
+        <Table responsive striped hover className="tableStyle">
+            <thead>
+                <tr style={{ backgroundColor: "#007200", color: "white" }}> {/* Dark green header */}
                     <th>Research Agenda Label</th>
                     <th>Image</th>
-                    <th></th>
-                </thead>
-                {data.map((row, index) =>
-                    <Rows key={'key-${index}'}
-                        agendaLabel={row.agendaLabel}
-                        agendaImg={row.agendaImg} />)}
-            </Table>
-        );
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.length > 0 ? (
+                    data.map((agenda, index) => <Rows key={agenda.id} agenda={agenda} />)
+                ) : (
+                    <tr>
+                        <td colSpan="3" className="text-center">No research agendas found.</td>
+                    </tr>
+                )}
+            </tbody>
+        </Table>
+    );
+
+    if (loadingAgendas) {
+        return <p>Loading...</p>;
     }
-    const [rows, setRows] = useState(array)
+
+    if (error) {
+        return <p style={{ color: 'red' }}>Error: {error}</p>;
+    }
 
     return (
         <Container fluid>
@@ -81,7 +115,6 @@ const ManageAgenda = () => {
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />
                     <span className="ms-2">Back</span>
                 </Button>
-
                 <Col className="d-flex justify-content-end">
                     <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
                         <FontAwesomeIcon className='me-2' icon={faFilter} ></FontAwesomeIcon>
@@ -90,7 +123,7 @@ const ManageAgenda = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1> Research Agenda Management</h1></Col>
+                <Col><h1>Research Agenda Management</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
@@ -110,20 +143,16 @@ const ManageAgenda = () => {
                 </Modal>
             </Row>
 
-            <Table>
-                <NewTable data={rows} />
-            </Table>
+            {/* Render the agendas table */}
+            <NewTable data={agendas} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <BtnAddResearchAgenda />
+                    <BtnAddResearchAgenda onResearchAgendaAdded={handleAgendaUpdated} /> {/* Call the refresh function on add */}
                 </Col>
             </Row>
-
         </Container>
-
     );
 };
 
 export default ManageAgenda;
-

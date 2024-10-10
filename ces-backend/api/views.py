@@ -396,6 +396,25 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(proposal)
         return Response(serializer.data)
     
+class BarangayApprovedProposalsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        department = user.department  # Assuming department represents barangay
+
+        if not department:
+            return Response({"error": "No barangay found for the user"}, status=400)
+
+        # Get all proposals that include this barangay and are approved by barangay
+        approved_proposals = Proposal.objects.filter(
+            status='Approved by Barangay',
+            partner_community__contains=department  # Assuming partner_community is a comma-separated string
+        )
+        
+        serializer = ProposalSerializer(approved_proposals, many=True)
+        return Response(serializer.data, status=200)
+    
 class ProposalResubmissionView(generics.UpdateAPIView):
     """
     View to resubmit a rejected proposal and create a new version.

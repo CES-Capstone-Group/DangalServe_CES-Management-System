@@ -8,6 +8,7 @@ from .views import (
     ProposalVersionListView,
     ProposalVersionDetailView,
     BarangayApprovalView,
+    BarangayApprovedProposalsView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializer import CustomTokenObtainPairSerializer
@@ -33,6 +34,7 @@ urlpatterns = [
     path('proposals/<int:proposal_id>/approve/', BarangayApprovalView.as_view(), name='barangay_approval'),
     path('proposals/<int:proposal_id>/download/', DownloadProposalDoc.as_view(), name='download_proposal_doc'),
     
+    path('barangay-approved-proposals/', BarangayApprovedProposalsView.as_view(), name='barangay-approved-proposals'),
     # Accounts Paths
     path('users/', views.get_all_user, name="get_user"),
     path('users/create_user/', views.create_user, name="create_user"),

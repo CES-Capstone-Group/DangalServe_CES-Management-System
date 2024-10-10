@@ -293,6 +293,13 @@ button.fc-Service-button.fc-button.fc-button-primary {
   text-decoration: none !important;
 }
 
+.minusBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px; 
+}
+
 .dropdown-enter {
   opacity: 0;
   transform: translateY(-10px); /* Starts slightly above */

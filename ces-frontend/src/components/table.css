@@ -20,8 +20,8 @@
     vertical-align: middle;
   }
   
-  .tableStyle  tr:nth-child(even) {
-    background-color: #c0fcc0 !important; /* Alternating row background color */
+  .tableStyle tbody tr:nth-child(even) {
+    background-color: black !important; /* Alternating row background color */
   }
   
   .tableStyle  tr:hover {

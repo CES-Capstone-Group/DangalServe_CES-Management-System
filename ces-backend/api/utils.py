@@ -22,7 +22,7 @@ def generate_proposal_doc(proposal):
     # Load the document template
     doc = Document(template_path)
     
-    # Convert partner_community to a displayable format as a list (not individual barangays)
+    # Convert partner_community to a displayable format as a list
     partner_communities_display = ', '.join([community.strip() for community in proposal.partner_community.split(',')]) if proposal.partner_community else 'N/A'
 
     # Handle Identified Needs (Text or File)
@@ -37,13 +37,25 @@ def generate_proposal_doc(proposal):
     else:
         budget_requirement = proposal.budget_requirement_text or 'N/A'
 
+    # Proponents (Display all proponents - name and position)
+    proponent_details = "\n\n\n".join([f"{proponent.name} - {proponent.position}" for proponent in proposal.proponents.all()]) or 'N/A'
+
+    # Signatories (Multiple signatories for each section)
+    prepared_by_signatories = "\n\n\n".join([f"{signatory.name} - {signatory.position}" for signatory in proposal.signatories.filter(section='prepared')]) or '_____________'
+    endorsed_by_signatories = "\n\n\n".join([f"{signatory.name} - {signatory.position}" for signatory in proposal.signatories.filter(section='endorsed')]) or '_____________'
+    concurred_by_signatories = "\n\n\n".join([f"{signatory.name} - {signatory.position}" for signatory in proposal.signatories.filter(section='concurred')]) or '_____________'
+
+    three_year_checkbox = '☑' if proposal.is_three_year_plan else '☐'
+    one_year_checkbox = '☑' if proposal.is_one_year_plan else '☐'
     # Prepare placeholders and their replacements
     placeholders = {
+        '{{three_year_checkbox}}': three_year_checkbox,  # Three-Year checkbox
+        '{{one_less_checkbox}}': one_year_checkbox, # One-Year checkbox
         '{{title}}': proposal.title,
         '{{engagement_date}}': str(proposal.engagement_date) if proposal.engagement_date else '',
         '{{disengagement_date}}': str(proposal.disengagement_date) if proposal.disengagement_date else '',
         '{{department_organization}}': proposal.department,
-        '{{lead_proponent}}': proposal.lead_proponent,
+        '{{lead_proponent}}': proponent_details,  # Display all proponents
         '{{contact_details}}': proposal.contact_details,
         '{{project_description}}': proposal.project_description,
         '{{target_date}}': str(proposal.target_date) if proposal.target_date else '',
@@ -55,8 +67,8 @@ def generate_proposal_doc(proposal):
         '{{gov_org_box}}': '☑' if proposal.government_org else '☐',
         '{{non_gov_box}}': '☑' if proposal.non_government_org else '☐',
         '{{partner_community}}': partner_communities_display,
-        '{{identified_needs}}': identified_needs,  # Identified Needs (text or file reference)
-        '{{budget_requirement}}': budget_requirement,  # Budget Requirement (text or file reference)
+        '{{identified_needs}}': identified_needs,
+        '{{budget_requirement}}': budget_requirement,
         '{{gen_objs}}': proposal.general_objectives,
         '{{spec_objs}}': proposal.specific_objectives,
         '{{success_indicators}}': proposal.success_indicators,
@@ -67,18 +79,16 @@ def generate_proposal_doc(proposal):
         '{{risk_assessment}}': proposal.risk_assessment,
         '{{action_plans_to_address_risks}}': proposal.action_plans,
         '{{sustainability_approaches}}': proposal.sustainability_approaches,
-        '{{prepared_by}}': proposal.lead_proponent,
-        '{{director_sign_date}}': str(proposal.directorSignDate) if proposal.directorSignDate else '_____________',
-        '{{VPRE_sign_date}}': str(proposal.VPRESignDate) if proposal.VPRESignDate else '_____________',
-        '{{PRE_sign_date}}': str(proposal.PRESignDate) if proposal.PRESignDate else '_____________'
+        '{{prepared_by}}': prepared_by_signatories,  # Prepared By multiple signatories
+        '{{endorsed_by}}': endorsed_by_signatories,  # Endorsed By multiple signatories
+        '{{concurred_by}}': concurred_by_signatories  # Concurred By multiple signatories
     }
 
-    # Handle signatures and display the name of all persons who sign the proposal
+    # Handle partner barangay signatures if applicable
     partner_signatures = ''
     for barangay_approval in proposal.barangay_approvals.filter(status='Approved'):
-        partner_signatures += f"{barangay_approval.barangay_name} - Signed by \non {barangay_approval.sign_date}\n\n\n"
+        partner_signatures += f"{barangay_approval.barangay_name} - Signed by on {barangay_approval.sign_date}\n\n\n"
     
-    # Include the list of signers in the placeholders
     placeholders['{{partner_signatures}}'] = partner_signatures or '_____________'
 
     # Replace placeholders in all paragraphs

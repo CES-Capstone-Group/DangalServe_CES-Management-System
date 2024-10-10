@@ -132,6 +132,16 @@ class Announcement(models.Model):
 
 
 
+from django.db import models
+
+class Proponent(models.Model):
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    proposal = models.ForeignKey('Proposal', related_name='proponents', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.name} ({self.position})'
+    
 class Proposal(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
@@ -143,6 +153,9 @@ class Proposal(models.Model):
         ('Rejected', 'Rejected'),
     ]
 
+    is_three_year_plan = models.BooleanField(default=False)
+    is_one_year_plan = models.BooleanField(default=False)
+
     proposal_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -150,18 +163,18 @@ class Proposal(models.Model):
     disengagement_date = models.DateField()
     department = models.CharField(max_length=255)
     lead_proponent = models.CharField(max_length=255)
+    # Remove the ManyToManyField for proponents, as it's already handled in the Proponent model.
     contact_details = models.CharField(max_length=255)
     project_description = models.TextField()
     target_date = models.DateField()
     location = models.CharField(max_length=255)
-    partner_community = models.CharField(max_length=255)  # Comma-separated list of barangays
+    partner_community = models.CharField(max_length=255)
     school = models.BooleanField(default=False)
     barangay = models.BooleanField(default=False)
     government_org = models.CharField(max_length=255, blank=True, null=True)
     non_government_org = models.CharField(max_length=255, blank=True, null=True)
-    # identified_needs = models.FileField(upload_to='Proposals/identified_needs/', blank=True, null=True)
-    identified_needs_text = models.TextField(null=True, blank=True)  # Text input for needs
-    identified_needs_file = models.FileField(upload_to='Proposals/identified_needs/', null=True, blank=True) 
+    identified_needs_text = models.TextField(null=True, blank=True)
+    identified_needs_file = models.FileField(upload_to='Proposals/identified_needs/', null=True, blank=True)
     general_objectives = models.TextField()
     specific_objectives = models.TextField()
     success_indicators = models.TextField()
@@ -172,8 +185,7 @@ class Proposal(models.Model):
     risk_assessment = models.TextField()
     action_plans = models.TextField()
     sustainability_approaches = models.TextField()
-    # budget_requirement = models.FileField(upload_to='Proposals/budget_requirements/', blank=True, null=True)
-    budget_requirement_text = models.TextField(null=True, blank=True)  # Text input for budget
+    budget_requirement_text = models.TextField(null=True, blank=True)
     budget_requirement_file = models.FileField(upload_to='Proposals/budget_requirements/', null=True, blank=True)
 
     directorSignDate = models.DateField(null=True, blank=True)
@@ -185,24 +197,18 @@ class Proposal(models.Model):
 
     def clean(self):
         """Custom validation to ensure either text or file is provided for identified_needs and budget_requirement."""
-        # Ensure that at least one of identified_needs_text or identified_needs_file is provided
         if not self.identified_needs_text and not self.identified_needs_file:
             raise ValidationError('Either identified_needs_text or identified_needs_file must be provided.')
-
-        # Ensure that at least one of budget_requirement_text or budget_requirement_file is provided
         if not self.budget_requirement_text and not self.budget_requirement_file:
             raise ValidationError('Either budget_requirement_text or budget_requirement_file must be provided.')
-
-        super(Proposal, self).clean() 
+        super(Proposal, self).clean()
 
     def partner_community_list(self):
         """Helper method to get the partner community as a list."""
         return [barangay.strip() for barangay in self.partner_community.split(',')]
 
     def update_overall_status(self):
-        """
-        Update the overall status based on barangay approvals.
-        """
+        """Update the overall status based on barangay approvals."""
         total_barangays = len(self.partner_community_list())
         approved_barangays = self.barangay_approvals.filter(status='Approved').count()
 
@@ -211,15 +217,15 @@ class Proposal(models.Model):
         elif approved_barangays == total_barangays:
             self.status = 'Approved by Barangay'
         elif approved_barangays > 0:
-            self.status = 'Partly Approved by Barangay'  # New status
+            self.status = 'Partly Approved by Barangay'
         else:
             self.status = 'Approved by President'
-        
         self.save()
-        
+
     def __str__(self):
         return self.title
-    
+
+
 class ProposalVersion(models.Model):
     proposal = models.ForeignKey(Proposal, related_name='versions', on_delete=models.CASCADE)
     version_number = models.PositiveIntegerField()
@@ -253,7 +259,7 @@ class ProposalVersion(models.Model):
     budget_requirement_file = models.FileField(upload_to='Proposals/budget_requirements/', null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    version_status = models.CharField(max_length=30, choices=Proposal.STATUS_CHOICES, default='Pending')  # The status of this version when it was submitted
+    version_status = models.CharField(max_length=30, choices=Proposal.STATUS_CHOICES, default='Pending')
 
     def __str__(self):
         return f"{self.proposal.title} - Version {self.version_number}"
@@ -271,3 +277,18 @@ class BarangayApproval(models.Model):
 
     def __str__(self):
         return f"{self.barangay_name} - {self.status}"
+
+
+class Signatory(models.Model):
+    PROPOSAL_SECTIONS = [
+        ('prepared', 'Prepared By'),
+        ('endorsed', 'Endorsed By'),
+        ('concurred', 'Concurred By'),
+    ]
+    proposal = models.ForeignKey(Proposal, related_name='signatories', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    section = models.CharField(max_length=20, choices=PROPOSAL_SECTIONS)
+
+    def __str__(self):
+        return f'{self.name} ({self.position}) - {self.section}'

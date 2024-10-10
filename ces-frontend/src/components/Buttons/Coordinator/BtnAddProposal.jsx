@@ -8,7 +8,7 @@ const BtnAddProposal = () => {
 
     let navigate = useNavigate();
     const routeChange = () => {
-        let path = '/propForm';
+        let path = '/coor/proposal-form';
         navigate(path);
     }
     

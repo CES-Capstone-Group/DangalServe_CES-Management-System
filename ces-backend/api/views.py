@@ -308,7 +308,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
     permission_classes = [IsAuthenticated]
-
+    
     def get_queryset(self):
         status = self.request.query_params.get('status')
         user = self.request.user
@@ -342,43 +342,10 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             return Proposal.objects.extra(
                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
                 params=[department]
-            )
-
-
-# class ProposalListCreateView(generics.ListCreateAPIView):
-#     queryset = Proposal.objects.all()
-#     serializer_class = ProposalSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         status = self.request.query_params.get('status')
-#         user = self.request.user
-#         department = self.request.user.department
-        
-#         # Check if the user is an admin
-#         if user.accountType == 'Admin':
-#             # Admins can see all proposals, optionally filter by status
-#             if status:
-#                 return Proposal.objects.filter(status=status)
-#             return Proposal.objects.all()
-#         elif user.accountType == 'Proponent':
-#             if status:
-#                 return Proposal.objects.filter(user_id=user, status=status)
-#             return Proposal.objects.filter(user_id=user)
-#         else:
-#             # Non-admin users can only see their own proposals, optionally filter by status
-#             if status:
-#                 return Proposal.objects.extra(
-#                     where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
-#                     params=[department]
-#                 ).filter(status=status)
-#                 print('haha')
-        
-#             return Proposal.objects.extra(
-#                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
-#                 params=[department]
-#             )
-        
+            )        
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        return super().post(request, *args, **kwargs)    
 class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
@@ -386,46 +353,45 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         # Check if the user is an admin
-        if self.request.user.accountType == 'Admin':  # Or 'is_staff' if you're using the Django built-in staff status
+        if self.request.user.accountType == 'Admin':
             # Admin can access all proposals
             return Proposal.objects.all()
         else:
             # Non-admin users can only access their own proposals
             return Proposal.objects.filter(user_id=self.request.user)
-        
-        
+
     def patch(self, request, *args, **kwargs):
         proposal = self.get_object()
-        
         # Check if the user has permission to approve the proposal
         if request.user.accountType == 'Admin':
-            new_status = request.data.get('status', proposal.status)       
+            new_status = request.data.get('status', proposal.status)
             # Automatically set the sign date based on the status
             if new_status == 'Approved by Director':
-                
                 proposal.directorSignDate = timezone.now().date()
-                proposal.status = new_status
-                # proposal.save()
             elif new_status == 'Approved by VPRE':
                 proposal.VPRESignDate = timezone.now().date()
-                proposal.status = new_status
-                # proposal.save()
             elif new_status == 'Approved by President':
                 proposal.PRESignDate = timezone.now().date()
-                proposal.status = new_status
-                # proposal.save()
-            elif new_status == 'Rejected':
-                proposal.status = new_status
+            proposal.status = new_status
             proposal.save()
-            
 
         elif request.user == proposal.user:
             proposal.title = request.data.get('title', proposal.title)
             proposal.project_description = request.data.get('project_description', proposal.project_description)
             proposal.save()
-
         else:
             return Response({"detail": "You do not have permission to perform this action."}, status=403)
+
+        # Handle signatories if provided
+        if 'signatories' in request.data:
+            signatories_data = request.data.get('signatories', [])
+            for signatory in signatories_data:
+                Signatory.objects.update_or_create(
+                    proposal=proposal,
+                    name=signatory.get('name'),
+                    position=signatory.get('position'),
+                    section=signatory.get('section')
+                )
 
         serializer = self.get_serializer(proposal)
         return Response(serializer.data)
@@ -451,8 +417,8 @@ class ProposalResubmissionView(generics.UpdateAPIView):
 
         # Find the latest version number
         latest_version = proposal.versions.order_by('-version_number').first()
-        new_version_number = latest_version.version_number + 1 if latest_version else 1
-        # print("xxxxxx", request.data.get('school', proposal.school))
+        new_version_number = latest_version.current_version_id + 1 if latest_version else 1
+
         # Create the new version in the ProposalVersion table
         ProposalVersion.objects.create(
             proposal=proposal,
@@ -464,13 +430,13 @@ class ProposalResubmissionView(generics.UpdateAPIView):
             department=request.data.get('department', proposal.department),
             lead_proponent=request.data.get('lead_proponent', proposal.lead_proponent),
             contact_details=request.data.get('contact_details', proposal.contact_details),
-            target_date=request.data.get('target_date', proposal.target_date),  # Make sure to include target_date
-            location=request.data.get('location', proposal.location),  # Add location
-            partner_community=request.data.get('partner_community', proposal.partner_community),  # Add partner_community
-            school=request.data.get('school', proposal.school)  in ['true', 'True', True],  # Add school
-            barangay=request.data.get('barangay', proposal.barangay)  in ['true', 'True', True],  # Add barangay
-            government_org=request.data.get('government_org', proposal.government_org) ,
-            non_government_org=request.data.get('non_government_org', proposal.non_government_org) ,
+            target_date=request.data.get('target_date', proposal.target_date),
+            location=request.data.get('location', proposal.location),
+            partner_community=request.data.get('partner_community', proposal.partner_community),
+            school=request.data.get('school', proposal.school) in ['true', 'True', True],
+            barangay=request.data.get('barangay', proposal.barangay) in ['true', 'True', True],
+            government_org=request.data.get('government_org', proposal.government_org),
+            non_government_org=request.data.get('non_government_org', proposal.non_government_org),
             identified_needs_text=request.data.get('identified_needs_text', proposal.identified_needs_text),
             general_objectives=request.data.get('general_objectives', proposal.general_objectives),
             specific_objectives=request.data.get('specific_objectives', proposal.specific_objectives),
@@ -490,7 +456,7 @@ class ProposalResubmissionView(generics.UpdateAPIView):
         # Update the main Proposal object with the new data and reset status to Pending
         proposal.title = request.data.get('title', proposal.title)
         proposal.project_description = request.data.get('project_description', proposal.project_description)
-        proposal.target_date = request.data.get('target_date', proposal.target_date)  # Update target_date in main Proposal
+        proposal.target_date = request.data.get('target_date', proposal.target_date)
         proposal.status = 'Pending'
         proposal.current_version_id = new_version_number
         proposal.save()

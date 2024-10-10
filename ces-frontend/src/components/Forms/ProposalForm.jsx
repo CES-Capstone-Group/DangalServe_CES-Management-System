@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+
 const ProposalForm = () => {
   const { proposalId } = useParams(); // Retrieve proposal ID from URL
   const [isResubmission, setIsResubmission] = useState(false); // To track if it's a resubmission
@@ -18,7 +19,6 @@ const ProposalForm = () => {
     engagement_date: '',
     disengagement_date: '',
     department: '',
-    lead_proponent: '',
     contact_details: '',
     project_description: '',
     target_date: '',
@@ -28,7 +28,8 @@ const ProposalForm = () => {
     barangay: false,
     government_org: '',
     non_government_org: '',
-    identified_needs: null, // for file upload
+    identified_needs_text: '',
+    identified_needs_file: null, // for file upload
     general_objectives: '',
     specific_objectives: '',
     success_indicators: '',
@@ -39,10 +40,14 @@ const ProposalForm = () => {
     risk_assessment: '',
     action_plans: '',
     sustainability_approaches: '',
-    budget_requirement: null, // for file upload
+    budget_requirement_text: '',
+    budget_requirement_file: null, // for file upload
+    is_three_year_plan: false,  // New field for Three-Year plan
+    is_one_year_plan: false,  // New field for One-Year plan
     status: 'Pending',
   });
 
+  // Proponents array to hold all proponents
   const [proponents, setProponents] = useState([]);
   const [proponent, setProponent] = useState({ name: '', position: '' });
 
@@ -63,17 +68,20 @@ const ProposalForm = () => {
     }
   };
 
-  // State for each signatory section
+  const [isThreeYearPlan, setIsThreeYearPlan] = useState(false);
+  const [isOneYearPlan, setIsOneYearPlan] = useState(false);
+
+   // State for each signatory section
   const [preparedBy, setPreparedBy] = useState([]);
   const [endorsedBy, setEndorsedBy] = useState([]);
   const [concurredBy, setConcurredBy] = useState([]);
 
-  // Separate states for each section's signatory
+   // Separate states for each section's signatory
   const [preparedBySignatory, setPreparedBySignatory] = useState({ name: '', position: '' });
   const [endorsedBySignatory, setEndorsedBySignatory] = useState({ name: '', position: '' });
   const [concurredBySignatory, setConcurredBySignatory] = useState({ name: '', position: '' });
 
-  // Handle input changes for each section
+   // Handle input changes for each section
   const handlePreparedByChange = (e) => {
     const { name, value } = e.target;
     setPreparedBySignatory({
@@ -98,15 +106,20 @@ const ProposalForm = () => {
     });
   };
 
+  const [signatories, setSignatories] = useState([]);
+
   // Add a new signatory to the respective section
   const handleAddSignatory = (section) => {
     if (section === 'prepared' && preparedBySignatory.name && preparedBySignatory.position) {
+      setSignatories([...signatories, { ...preparedBySignatory, section: 'prepared' }]);
       setPreparedBy([...preparedBy, preparedBySignatory]);
       setPreparedBySignatory({ name: '', position: '' });
     } else if (section === 'endorsed' && endorsedBySignatory.name && endorsedBySignatory.position) {
+      setSignatories([...signatories, { ...endorsedBySignatory, section: 'endorsed' }]);
       setEndorsedBy([...endorsedBy, endorsedBySignatory]);
       setEndorsedBySignatory({ name: '', position: '' });
     } else if (section === 'concurred' && concurredBySignatory.name && concurredBySignatory.position) {
+      setSignatories([...signatories, { ...concurredBySignatory, section: 'concurred' }]);
       setConcurredBy([...concurredBy, concurredBySignatory]);
       setConcurredBySignatory({ name: '', position: '' });
     }
@@ -137,6 +150,7 @@ const ProposalForm = () => {
         if (response.ok) {
           const data = await response.json();
           setFormData(data); // Pre-fill form with existing proposal data
+          setProponents(data.proponents || []);  // Pre-fill proponents if any
         } else {
           console.error('Failed to fetch proposal data');
         }
@@ -186,56 +200,77 @@ const ProposalForm = () => {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const submitData = new FormData();
-    const token = localStorage.getItem('access_token');
+// Now in the handleSubmit, use the correct reference
 
-    // Append all form data including the "Others" community if filled
-    if (otherCommunity && otherCommunityValue) {
-      formData.partner_community.push(otherCommunityValue);
-    }
-    try {
-      if (!token) {
-        console.error('No token found. Please log in.');
-        return;
-      }
-      let url = 'http://127.0.0.1:8000/api/proposals/';
-      let method = 'POST';
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const submitData = new FormData();
+  const token = localStorage.getItem('access_token');
 
-      if (isResubmission) {
-        url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
-        method = 'PATCH'; // Use PATCH for resubmissions
-      }
-
-      // Append other form data
-      for (let key in formData) {
-        if (formData[key]) {
+  // Append form fields except for proponents, signatories, and files
+  Object.keys(formData).forEach(key => {
+      if (formData[key] && key !== 'proponents' && key !== 'signatories' && key !== 'identified_needs_file' && key !== 'budget_requirement_file') {
           submitData.append(key, formData[key]);
-        }
       }
+  });
 
-      // Send form data to the server
-      const response = await fetch(url, {
-        method: method,
-        body: submitData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // Append file fields if they exist
+  if (formData.identified_needs_file instanceof File) {
+      submitData.append('identified_needs_file', formData.identified_needs_file);
+  }
+  if (formData.budget_requirement_file instanceof File) {
+      submitData.append('budget_requirement_file', formData.budget_requirement_file);
+  }
 
-      if (response.status === 200 || response.status === 201) {
-        navigate('/coor/pending-proposal');
-      } else if (response.status === 401) {
-        console.error('Unauthorized: Check if your token is valid.');
-      } else {
-        const errorData = await response.json();
-        console.error('Error:', errorData);
-      }
-    } catch (error) {
-      console.error('Error submitting proposal:', error);
+  submitData.append('is_three_year_plan', formData.is_three_year_plan ? 'true' : 'false');
+  submitData.append('is_one_year_plan', formData.is_one_year_plan ? 'true' : 'false');
+
+  const leadProponentString = proponents.map(p => p.name).join(', ');
+  submitData.append('lead_proponent', leadProponentString);  
+
+  // Send proponents and signatories as JSON strings
+  if (proponents.length > 0) {
+      submitData.append('proponents', JSON.stringify(proponents)); // Sends proponents as a JSON array
+  }
+
+  if (signatories.length > 0) {
+      submitData.append('signatories', JSON.stringify(signatories)); // Sends signatories as a JSON array
+  }
+
+  try {
+    if (!token) {
+      console.error('No token found. Please log in.');
+      return;
     }
-  };
+    let url = 'http://127.0.0.1:8000/api/proposals/';
+    let method = 'POST';
+
+    if (isResubmission) {
+      url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
+      method = 'PATCH'; // Use PATCH for resubmissions
+    }
+
+    const response = await fetch(url, {
+      method: method,
+      body: submitData,
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      navigate('/coor/pending-proposal');
+    } else {
+      const errorData = await response.json();
+      console.error('Error:', errorData);
+    }
+  } catch (error) {
+    console.error('Error submitting proposal:', error);
+  }
+};
+
+
+
 
   return (
     <Container className='Formproposal'>
@@ -244,23 +279,38 @@ const ProposalForm = () => {
       </h2>
 
       <Form className='form' onSubmit={handleSubmit}>
-        <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
-          <Col sm={5}>
-            <h4 className="mb-4">Please Check</h4>
-            <Form.Check
-              type="checkbox"
-              label="Three-Year-Medium-Term Plan for Community Extension¹"
-              value="Three-Year"
-            />
-            <Form.Check
-              type="checkbox"
-              label="Less than a Year-One-Year Plan for Community Service²"
-              value="LessThanYear"
-            />
-          </Col>
-        </Form.Group>
+      <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
+        <Col sm={5}>
+          <h4 className="mb-4">Please Check</h4>
+          <Form.Check
+            type="checkbox"
+            label="Three-Year-Medium-Term Plan for Community Extension¹"
+            value="Three-Year"
+            onChange={(e) => {
+              setIsThreeYearPlan(e.target.checked);
+              setFormData((prevData) => ({
+                ...prevData,
+                is_three_year_plan: e.target.checked, // Update formData with this value
+              }));
+            }}
+          />
+          <Form.Check
+            type="checkbox"
+            label="Less than a Year-One-Year Plan for Community Service²"
+            value="LessThanYear"
+            onChange={(e) => {
+              setIsOneYearPlan(e.target.checked);
+              setFormData((prevData) => ({
+                ...prevData,
+                is_one_year_plan: e.target.checked, // Update formData with this value
+              }));
+            }}
+          />
+        </Col>
+      </Form.Group>
         <h4 className="mb-4">A. Basic Details</h4>
 
+        {/* Title Field */}
         <Form.Group as={Row} controlId="formTitle" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Title of the Project/Activity</Form.Label>
           <Col sm={10}>
@@ -270,6 +320,19 @@ const ProposalForm = () => {
               name="title"
               value={formData.title}
               required={true}
+              onChange={handleChange}
+            />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="formDepartment" className="mb-4">
+          <Form.Label column sm={2} id='formlabel'>Department/Program/Organization</Form.Label>
+          <Col sm={10}>
+            <Form.Control
+              type="text"
+              placeholder="Enter department"
+              name="department"
+              value={formData.department}
               onChange={handleChange}
             />
           </Col>
@@ -313,10 +376,8 @@ const ProposalForm = () => {
             />
           </Col>
         </Form.Group>
-
+        
         <h6 className="mb-4">CESU Coordinator/Proponent(s)</h6>
-
-        {/* Display the list of proponents */}
         {proponents.length > 0 && (
           <div className="mb-3">
             <h5>Proponents List</h5>
@@ -329,11 +390,9 @@ const ProposalForm = () => {
             </ul>
           </div>
         )}
-
-        {/* Lead Proponent Section */}
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm={2}>Name</Form.Label>
-          <Col sm={10}>
+          <Col sm={3}>
             <Form.Control
               type="text"
               placeholder="Enter proponent name"
@@ -342,11 +401,8 @@ const ProposalForm = () => {
               onChange={handleProponentChange}
             />
           </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3">
           <Form.Label column sm={2}>Position/Title</Form.Label>
-          <Col sm={10}>
+          <Col sm={3}>
             <Form.Control
               type="text"
               placeholder="Enter position/title"
@@ -356,11 +412,11 @@ const ProposalForm = () => {
             />
           </Col>
         </Form.Group>
-
         <Button variant="success" onClick={handleAddProponent} className="mb-2">
           Add Proponent
         </Button>
 
+        {/* Contact Details */}
         <Form.Group as={Row} controlId="formContactDetails" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Contact Details</Form.Label>
           <Col sm={10}>
@@ -374,6 +430,7 @@ const ProposalForm = () => {
           </Col>
         </Form.Group>
 
+        
         <Form.Group as={Row} controlId="formProjectDescription" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Project Description</Form.Label>
           <Col sm={10}>

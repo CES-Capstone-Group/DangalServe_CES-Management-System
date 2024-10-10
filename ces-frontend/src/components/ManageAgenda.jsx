@@ -56,14 +56,14 @@ const ManageAgenda = () => {
 
     // Table row component for displaying each agenda
     const Rows = ({ agenda }) => (
-        <tr style={{ backgroundColor: "#ccffcc" }}> {/* Light green row background */}
+        <tr>
             <td>{agenda.label}</td>
             <td>
                 <Button
                     variant="link"
                     className="viewBtn"
                     onClick={() => handleContentClick(agenda.image_url)}
-                    style={{ backgroundColor: '#8FCB9B', color: 'white' }}
+                    style={{ backgroundColor: '#71A872', color: 'white' }}
                 >
                     <FontAwesomeIcon icon={faEye} />
                 </Button>
@@ -82,7 +82,7 @@ const ManageAgenda = () => {
     const NewTable = ({ data }) => (
         <Table responsive striped hover className="tableStyle">
             <thead>
-                <tr style={{ backgroundColor: "#007200", color: "white" }}> {/* Dark green header */}
+                <tr> {/* Dark green header */}
                     <th>Research Agenda Label</th>
                     <th>Image</th>
                     <th>Actions</th>
@@ -97,6 +97,8 @@ const ManageAgenda = () => {
                     </tr>
                 )}
             </tbody>
+            
+            
         </Table>
     );
 
@@ -109,7 +111,9 @@ const ManageAgenda = () => {
     }
 
     return (
-        <Container fluid>
+        <Container fluid 
+        style={{width: '100rem'}} 
+        className="vh-100 d-flex flex-column justify-content-center me-0 ms-0">
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />

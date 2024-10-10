@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddAcc from "../Buttons/Admin/BtnAddAcc";
 import "../table.css"
+import "../../App.css"
 
 const Rows = ({ user_id, username, type, department, position, actDate, deacDate, status, fetchUsers }) => {
     const account = {
@@ -95,22 +96,22 @@ const NewTable = ({ data, fetchUsers }) => {
                 <th>Status</th>
                 <th>Actions</th>
             </thead>
-
-            {data.map((row) => (
-                <Rows
-                    key={row.user_id}  // Use a unique ID, like accountID
-                    user_id={row.user_id}
-                    username={row.username}
-                    type={row.accountType}
-                    department={row.department}
-                    position={row.position}
-                    actDate={row.activationDate}
-                    deacDate={row.deactivationDate}
-                    status={row.status}
-                    fetchUsers={fetchUsers}
-                />
-            ))}
-
+            <tbody>
+                {data.map((row) => (
+                    <Rows
+                        key={row.user_id}  // Use a unique ID, like accountID
+                        user_id={row.user_id}
+                        username={row.username}
+                        type={row.accountType}
+                        department={row.department}
+                        position={row.position}
+                        actDate={row.activationDate}
+                        deacDate={row.deactivationDate}
+                        status={row.status}
+                        fetchUsers={fetchUsers}
+                    />
+                ))}
+            </tbody>
         </Table>
     );
 };
@@ -147,14 +148,21 @@ const UserManagementCon = () => {
     };
 
     return (
-        <Container fluid className="fs-5">
+        <Container fluid
+        style={{width: '100rem', marginTop: '4rem'}} 
+        className="vh-100 d-flex flex-column justify-content-center me-0 ms-0">
+            {/* Row for the Back Button */}
             <Row>
+                <Col xs="auto">
+                    <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success">
+                        <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+                        <span className="ms-2">Back</span>
+                    </Button>
+                </Col>
+            </Row>
 
-                <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
-                    <FontAwesomeIcon icon={faChevronLeft} size="lg" />
-                    <span className="ms-2">Back</span>
-                </Button>
-
+            {/* Row for the Filter Button */}
+            <Row>
                 <Col className="d-flex justify-content-end">
                     <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
                         <FontAwesomeIcon className='me-2' icon={faFilter}></FontAwesomeIcon>
@@ -162,9 +170,11 @@ const UserManagementCon = () => {
                     </Button>
                 </Col>
             </Row>
+
             <Row>
                 <Col><h1>Account Management</h1></Col>
             </Row>
+
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
                     <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />

@@ -35,13 +35,15 @@ const NewTable = (props) => {
                 <th>Status</th>
                 <th></th>
             </thead>
-            {data.map((row, index) =>
-                <Rows key = {'key-${index}'} 
-                awardTitle = {row.awardTitle}
-                awardee = {row.awardee}
-                awardedBy = {row.awardedBy}
-                awardDate = {row.awardDate}
-                status = {row.status}/>)}
+            <tbody>
+                {data.map((row, index) =>
+                    <Rows key = {'key-${index}'} 
+                    awardTitle = {row.awardTitle}
+                    awardee = {row.awardee}
+                    awardedBy = {row.awardedBy}
+                    awardDate = {row.awardDate}
+                    status = {row.status}/>)}
+            </tbody>
         </Table>
     );
 }

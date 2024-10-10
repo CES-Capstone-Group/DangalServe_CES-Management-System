@@ -369,7 +369,7 @@ const AdminMainContent = () => {
               achievements.map((achievement) => (
                 <Col md={4} key={achievement.id}>
                   <Card className="position-relative mb-3" style={{ height: "27rem", msOverflowY: "auto"  }} id='conCard'>
-                    <Card.Img variant="top" className='conImg' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}
+                    <Card.Img variant="top" className='conImg ' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}
                       style={{ cursor: 'pointer' }} />
 
                     {/* Edit and Delete Icons */}

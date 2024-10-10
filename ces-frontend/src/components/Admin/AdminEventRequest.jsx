@@ -44,12 +44,14 @@ const NewTable = (props) => {
                 <th>Status</th>
                 <th></th>
             </thead>
-            {data.map((row, index) =>
-                <Rows key = {'key-${index}'} 
-                actTitle = {row.actTitle}
-                Requester = {row.Requester}
-                RequestDate = {row.RequestDate}
-                status = {row.status}/>)}
+            <tbody>
+                {data.map((row, index) =>
+                    <Rows key = {'key-${index}'} 
+                    actTitle = {row.actTitle}
+                    Requester = {row.Requester}
+                    RequestDate = {row.RequestDate}
+                    status = {row.status}/>)}
+            </tbody>
         </Table>
     );
 }

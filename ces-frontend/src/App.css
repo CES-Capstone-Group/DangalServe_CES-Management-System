@@ -87,9 +87,9 @@ body, html {
 .topNav{
   width: 100%;
   position: fixed;
-  left: 0;
+  top: 0;
   margin-left: 0px;
-  z-index: 1030;
+  z-index:1000 ;
   transition: 0.3s;
 }
 

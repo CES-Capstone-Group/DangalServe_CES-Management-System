@@ -138,7 +138,9 @@ const ManageDocuments = () => {
     };
 
     return (
-        <Container fluid>
+        <Container fluid 
+        style={{width: '100rem'}} 
+        className="vh-100 d-flex flex-column justify-content-center me-0 ms-0">
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />
@@ -177,7 +179,7 @@ const ManageDocuments = () => {
             </Row>
 
             {/* Render the achievements table */}
-            <NewTable data={documents} />
+            <NewTable data={documents} className="tableStyle"/>
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

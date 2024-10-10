@@ -19,13 +19,15 @@ const EvalPage = () => {
                         <th>Target Date</th>
                         <th></th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
                         <td><BtnEvaluate/></td>
                     </tr>
-                </thead>
+                </tbody>
             </Table>
         </Container>
     );

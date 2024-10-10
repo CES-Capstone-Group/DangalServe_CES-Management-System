@@ -50,6 +50,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ManageAgenda from './components/ManageAgenda.jsx';
 import ManageAchievements from './components/ManageAchievements.jsx';
 import ManageAnnouncement from './components/ManageAnnouncement.jsx';
+import ManageDocuments from './components/ManageDocuments.jsx';
 import AdminLanding from './components/MainPages/AdminLanding.jsx';
 import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
 import MyProfilePage from './components/MyProfilePage.jsx';
@@ -73,6 +74,7 @@ const App = () => {
             <Route path='manage-agenda' element={<ManageAgenda />} />
             <Route path='manage-ach' element={<ManageAchievements />} />
             <Route path='manage-ann' element={<ManageAnnouncement />} />
+            <Route path='manage-docs' element={<ManageDocuments />} />
             <Route path='brgy-management' element={<BrgyManagement />} />
             <Route path='dept-management' element={<DepartmentManagement />} />
           </Route>

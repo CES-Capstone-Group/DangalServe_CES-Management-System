@@ -5,12 +5,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"
 import { Container } from "react-bootstrap";
 import BtnResched from "../Buttons/BtnResched";
+import BtnAddSchedule from "../Buttons/BtnAddSchedule";
 
 function AdminCalendar() {
     return(
         <Container>
-            <h1>Calendar</h1>
+            <h1>Admin Calendar</h1>
             <BtnResched/>
+            <BtnAddSchedule/>
             <div>
                 <Fullcalendar
                     plugins={[dayGridPlugin,timeGridPlugin,interactionPlugin]} 

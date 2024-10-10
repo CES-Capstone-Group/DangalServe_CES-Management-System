@@ -9,7 +9,9 @@ import {
     faFileAlt,
     faTrophy,
     faBullhorn,
-    faChevronLeft
+    faChevronLeft,
+    faFolder,
+    faFolderOpen
 } from '@fortawesome/free-solid-svg-icons'; // Import the icons you want to use
 
 const AdminManage = () => {
@@ -33,6 +35,7 @@ const AdminManage = () => {
         { title: "Research Agenda Management", path: "/manage/manage-agenda", icon: faFileAlt },
         { title: "Achievement Management", path: "/manage/manage-ach", icon: faTrophy },
         { title: "Announcement Management", path: "/manage/manage-ann", icon: faBullhorn },
+        { title: "Document Management", path: "/manage/manage-docs", icon: faFolderOpen },
     ];
 
     return (

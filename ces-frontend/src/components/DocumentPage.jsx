@@ -34,6 +34,7 @@ const DocumentPage = () => {
                         <th>Status</th>
                         <th></th>
                 </thead>
+                <tbody>
                     <tr>
                         <td>Donation Form</td>
                         <td>CCS Coordinator</td>
@@ -50,6 +51,7 @@ const DocumentPage = () => {
                         <td>Pending</td>
                         <BtnRecieve />
                     </tr>
+                </tbody>
             </Table>
 
             <div>

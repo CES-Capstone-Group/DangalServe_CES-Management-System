@@ -87,15 +87,14 @@ const BtnAddSchedule = () => {
                                             type="file"
                                             name={`file-${input.id}`}
                                             onChange={(e) => handleFileChange(e, input.id)}
-                                            style={{ height: '38px' }} // Ensure this matches the button height
+                                            style={{ height: '38px' }} 
                                         />
                                         {fileInputs.length > 1 && (
                                             <Button
                                                 onClick={() => handleRemoveFile(input.id)}
                                                 variant="danger"
                                                 className="d-flex align-items-center"
-                                                style={{ height: '38px' }} // Ensure button height matches the input
-                                            >
+                                                style={{ height: '38px' }}>
                                                 <FontAwesomeIcon icon={faMinus} />
                                             </Button>
                                         )}

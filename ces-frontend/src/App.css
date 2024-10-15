@@ -89,7 +89,7 @@ body, html {
   position: fixed;
   top: 0;
   margin-left: 0px;
-  z-index:1000 ;
+  z-index:1050 ;
   transition: 0.3s;
 }
 
@@ -122,6 +122,15 @@ button.fc-Service-button.fc-button.fc-button-primary {
 
 .fc .fc-button-primary:hover{
   background-color: #446445;
+}
+
+.fc .fc-event {
+  color: white;
+  background-color: #028b06;
+}
+
+.fc .fc-event .fc-daygrid-event-dot{
+  border-color: #f1f1f1;
 }
 /* Full Calendar Styles [END]*/
 
@@ -347,4 +356,10 @@ button.fc-Service-button.fc-button.fc-button-primary {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   box-shadow: 4px 4px 9px rgb(212, 212, 212);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }

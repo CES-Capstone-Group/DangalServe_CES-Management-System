@@ -16,7 +16,7 @@ const MyProfilePage = () => {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
     const navigate = useNavigate(); 
-
+    
     // Example: Fetch user data for profile page
     useEffect(() => {
         const token = localStorage.getItem('access_token');
@@ -25,6 +25,7 @@ const MyProfilePage = () => {
             setAccountName(decodedToken.name);
             setDepartment(decodedToken.department);
             setPosition(decodedToken.position);
+            console.log(decodedToken)
         }
     }, []);
 
@@ -33,6 +34,7 @@ const MyProfilePage = () => {
         try {
             const token = localStorage.getItem('access_token');
             const userId = jwtDecode(token).user_id;  // Assuming `user_id` is in the token payload
+            
             const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/update-profile/`, {
                 method: 'PATCH',
                 headers: {
@@ -40,27 +42,30 @@ const MyProfilePage = () => {
                     'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    username: accountName,  // Use your form state for username
-                    department: department,  // Use your form state for department
-                    position: position,  // Use your form state for position
+                    username: accountName,
+                    department: department,
+                    position: position,
                 }),
             });
     
-            if (!response.ok) {
-                throw new Error('Failed to update profile');
-            }
-            else{
-                const result = await response.json();
+            const result = await response.json();
+    
+            if (response.ok) {
+                // Update the new tokens in local storage
+                localStorage.setItem('access_token', result.access_token);
+                localStorage.setItem('refresh_token', result.refresh_token);
                 setShowModal(false);
-                setAccountName(accountName);
                 alert('Profile updated successfully');
-
+            } else {
+                throw new Error('Failed to update profile');
             }
         } catch (error) {
             console.error('Error updating profile:', error);
             alert('Failed to update profile');
         }
     };
+    
+    
     
     
 

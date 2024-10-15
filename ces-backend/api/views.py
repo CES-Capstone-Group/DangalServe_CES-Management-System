@@ -46,9 +46,20 @@ class RefreshTokenView(APIView):
 
 # Account Views
 
-# class UserDetailView(generics.RetrieveAPIView):
-#     queryset = Account.objects.all()
-#     serializer_class = TblAccountsSerializer
+def reissue_token(account):
+    refresh = RefreshToken.for_user(account)
+
+    # Include additional claims in the access token
+    access_token = refresh.access_token
+    access_token['accountType'] = account.accountType
+    access_token['name'] = account.name
+    access_token['department'] = account.department
+    access_token['position'] = account.position
+
+    return {
+        'access_token': str(access_token),
+        'refresh_token': str(refresh)
+    }
     
 @api_view(['GET'])
 def get_all_user(request):
@@ -105,7 +116,14 @@ def update_user_profile(request, user_id):
     # Save the updated Account instance
     account.save()
 
-    return Response({"message": "Profile updated successfully!"}, status=status.HTTP_200_OK)
+    # Reissue new tokens after updating the profile
+    new_tokens = reissue_token(account)
+
+    return Response({
+        "message": "Profile updated successfully!",
+        "access_token": new_tokens['access_token'],  # Return the new access token
+        "refresh_token": new_tokens['refresh_token'],  # Return the new refresh token
+    }, status=status.HTTP_200_OK)
 
 
 # Change user password

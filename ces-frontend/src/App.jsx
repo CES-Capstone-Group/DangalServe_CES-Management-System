@@ -55,6 +55,7 @@ import AdminLanding from './components/MainPages/AdminLanding.jsx';
 import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
 import MyProfilePage from './components/MyProfilePage.jsx';
 import EvalSelect from './components/EvalSelect.jsx';
+import DemoCalendar from './components/CalendarDemo/DemoCalendar.jsx';
 
 
 const App = () => {
@@ -66,6 +67,8 @@ const App = () => {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
         <Route path='/eval-select' element={<EvalSelect/>}/>
+        <Route path='/demo-cal' element={<DemoCalendar/>}/>
+
         {/* Admin Routes - Only accessible to Admin */}
         <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
           <Route path='/landing' element={<AdminLanding />} />

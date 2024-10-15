@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import AdminLandingPage from "../Admin/AdminLandingPage";
-import AdminTopNav from "../AdminTopNav";
+import TopNav from "../TopNav";
 
 const AdminLanding = () => {
   
@@ -9,7 +9,7 @@ const AdminLanding = () => {
   return (
     <div>
       <header>
-        <AdminTopNav />
+        <TopNav />
       </header>
       <Row>
         <Col >

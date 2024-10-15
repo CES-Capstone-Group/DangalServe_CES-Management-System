@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import AdminSidebar from "../Admin/AdminSidebar";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
-import AdminTopNav from "../AdminTopNav";
+import TopNav from "../TopNav";
 
 const UserAdminPage = () => {
   const [sidebarOpen, setSidebar] = useState(true);
@@ -13,7 +13,7 @@ const UserAdminPage = () => {
   return (
     <div>
       <header >
-        <AdminTopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
+        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
       <Row>
         <Col

@@ -30,6 +30,7 @@ class CustomUserManager(BaseUserManager):
 class Account(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     accountType = models.CharField(max_length=255)
     department = models.CharField(null=True, blank=True, max_length=255)

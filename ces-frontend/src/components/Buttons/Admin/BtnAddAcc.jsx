@@ -15,6 +15,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
 
     const [formData, setFormData] = useState({
         username: '',
+        name: '',
         password: '',
         accountType: 'Admin', // Default value
         department: '',
@@ -54,6 +55,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
 
         setFormData({
             username: '',
+            name: '',
             password: '',
             accountType: 'Admin',
             department: '',
@@ -127,12 +129,25 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Name</Form.Label>
+                            <Form.Label column sm={4}>User Name</Form.Label>
                             <Col sm={8}>
                                 <Form.Control 
                                     type="text"
                                     name="username"
                                     value={formData.username}
+                                    onChange={handleChange}
+                                    placeholder="Enter Name"
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Name</Form.Label>
+                            <Col sm={8}>
+                                <Form.Control 
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
                                     onChange={handleChange}
                                     placeholder="Enter Name"
                                 />

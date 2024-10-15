@@ -1,49 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import '../App.css'
-import { Navbar, Nav, Container, Button, Modal, Dropdown } from 'react-bootstrap';
+import '../App.css';
+import { Navbar, Container, Button, Modal, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is installed
 
-const AdminTopNav = ({ sidebarOpen, sidebarToggle }) => {
+const TopNav = ({ sidebarOpen, sidebarToggle }) => {
+  const [loggedUser, setLoggedUser] = useState("");
+  const [accountType, setAccountType] = useState("");
   const [isHovered, setIsHovered] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
-  const [showLogoutModal, setShowLogoutModal] = useState(false); // State to show/hide modal
-  const navigate = useNavigate(); // Hook to programmatically navigate
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      // Decode the JWT token to get the user information and account type
+      const decodedToken = jwtDecode(token);
+      const userName = decodedToken.name;
+      const userAccountType = decodedToken.accountType; // Ensure this key is in your JWT payload
+      setLoggedUser(userName);
+      setAccountType(userAccountType); // Set the account type dynamically
+    }
+  }, []);
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const handleToggle = (isOpen) => {
-    setShowDropdown(isOpen);
-  };
-
-  // Function to handle showing the logout modal
   const handleShowLogoutModal = () => setShowLogoutModal(true);
 
-  // Function to handle closing the logout modal
   const handleCloseLogoutModal = () => setShowLogoutModal(false);
 
-  // Logout function
   const handleLogout = () => {
-    // Clear authentication tokens and other session-related data
-    localStorage.removeItem('access_token'); // Remove access token
-    localStorage.removeItem('refresh_token'); // Remove refresh token
-    localStorage.removeItem('authToken'); // Example: removing any other tokens from local storage
-    localStorage.removeItem('accountType'); // Example: removing any other tokens from local storage
-
-    // Close the modal
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     setShowLogoutModal(false);
-
-    // Navigate to the login page
     navigate('/login');
   };
 
-  const accountType = localStorage.getItem('accountType');
+  const profilePath = {
+    Admin: '/admin/profile',
+    Proponent: '/coor/profile',
+    'Brgy. Official': '/barangay/profile'
+  }[accountType];
+
   return (
     <div className='topNav'>
       <Navbar expand="lg" style={{
@@ -51,7 +55,7 @@ const AdminTopNav = ({ sidebarOpen, sidebarToggle }) => {
         paddingLeft: sidebarOpen ? '250px' : '0px',
         transition: 'padding-left 0.3s ease'
       }}>
-        <Container fluid className='d-flex '>
+        <Container fluid className='d-flex'>
           <Navbar.Brand style={{ color: 'white' }}>
             <Button
               variant='outline-light'
@@ -68,13 +72,29 @@ const AdminTopNav = ({ sidebarOpen, sidebarToggle }) => {
             </Navbar.Text>
           </Navbar.Brand>
 
-          <Dropdown align='end' onToggle={handleToggle} show={showDropdown}>
+          <Container className="d-flex justify-content-center">
+            <div style={{
+              backgroundColor: '#fff',
+              color: '#71A872',
+              padding: '10px 20px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              fontWeight: 'bold',
+              fontSize: '1.2rem',
+              textAlign: 'center',
+              maxWidth: '300px'
+            }}>
+              Welcome, {loggedUser}!
+            </div>
+          </Container>
+
+          <Dropdown align='end' onToggle={() => setShowDropdown(!showDropdown)} show={showDropdown}>
             <Dropdown.Toggle style={{ borderWidth: '0px', backgroundColor: '#dddddd00' }}>
               <FontAwesomeIcon style={{ fontSize: '35px', color: 'white' }} icon={faCircleUser} />
             </Dropdown.Toggle>
             <CSSTransition in={showDropdown} timeout={300} classNames="dropdown" unmountOnExit>
               <Dropdown.Menu className='dropDown'>
-                <Dropdown.Item onClick={() => handleNavigation('/admin/profile')} >My Profile</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleNavigation(profilePath)}>My Profile</Dropdown.Item>
                 <Dropdown.Item onClick={handleShowLogoutModal}>
                   Logout
                   <FontAwesomeIcon style={{ paddingLeft: '5px', color: '#71A872' }} icon={faSignOutAlt} />
@@ -108,4 +128,4 @@ const AdminTopNav = ({ sidebarOpen, sidebarToggle }) => {
   );
 };
 
-export default AdminTopNav;
+export default TopNav;

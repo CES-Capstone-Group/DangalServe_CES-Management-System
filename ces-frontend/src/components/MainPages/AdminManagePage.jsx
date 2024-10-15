@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
-import AdminTopNav from "../AdminTopNav";
+import TopNav from "../TopNav";
 import '../../App.css'
 
 const AdminManagePage = () => {
   return (
     <div>
       <header>
-        <AdminTopNav />
+        <TopNav />
       </header>
       <Row>
         <Col>

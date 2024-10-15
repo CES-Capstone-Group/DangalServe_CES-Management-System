@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CoorSidebar from "../Coordinator/CoorSidebar";
 import { Outlet } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
-import CoorTopNav from "../CoorTopNav";
+import TopNav from "../TopNav";
 
 const UserCoorPage = () => {
   const [sidebarOpen, setSidebar] = useState(true);
@@ -13,7 +13,7 @@ const UserCoorPage = () => {
   return (
     <div>
       <header>
-        <CoorTopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
+        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
       <Row>
         <Col style={{ padding: '0px' }} 

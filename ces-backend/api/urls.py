@@ -39,6 +39,10 @@ urlpatterns = [
     path('users/', views.get_all_user, name="get_user"),
     path('users/create_user/', views.create_user, name="create_user"),
     path('users/user_info_action/<int:user_id>/', views.user_info_action, name="user_info_action"),
+    path('users/<int:user_id>/update-profile/', views.update_user_profile, name='update_user_profile'),
+    path('users/<int:user_id>/change-password/', views.change_user_password, name='change_user_password'),
+
+
 
     #Barangay Paths
     path('barangays/', views.get_all_barangays, name='barangay-list'),  # List all barangays

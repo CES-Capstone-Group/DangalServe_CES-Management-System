@@ -83,6 +83,51 @@ def user_info_action(request, user_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+from django.contrib.auth.hashers import check_password, make_password
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+# Update user profile
+@api_view(['PATCH'])
+def update_user_profile(request, user_id):
+    try:
+        account = Account.objects.get(user_id=user_id)  # Retrieve the Account instance
+    except Account.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Update the profile fields from the request data
+    data = request.data
+    account.name = data.get('username', account.name)
+    account.department = data.get('department', account.department)
+    account.position = data.get('position', account.position)
+
+    # Save the updated Account instance
+    account.save()
+
+    return Response({"message": "Profile updated successfully!"}, status=status.HTTP_200_OK)
+
+
+# Change user password
+@api_view(['POST'])
+def change_user_password(request, user_id):
+    try:
+        account = Account.objects.get(user_id=user_id)  # Retrieve the Account instance
+    except Account.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    current_password = request.data.get('currentPassword')
+    new_password = request.data.get('newPassword')
+
+    # Verify that the current password is correct
+    if not check_password(current_password, account.password):
+        return Response({"error": "Current password is incorrect"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Hash the new password and save it
+    account.password = make_password(new_password)
+    account.save()
+
+    return Response({"message": "Password changed successfully!"}, status=status.HTTP_200_OK)
 
 #BRGY VIEWS
 # GET view for listing all Barangays

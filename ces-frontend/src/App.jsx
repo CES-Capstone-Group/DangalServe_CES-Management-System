@@ -54,6 +54,7 @@ import ManageDocuments from './components/ManageDocuments.jsx';
 import AdminLanding from './components/MainPages/AdminLanding.jsx';
 import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
 import MyProfilePage from './components/MyProfilePage.jsx';
+import EvalSelect from './components/EvalSelect.jsx';
 
 
 const App = () => {
@@ -64,7 +65,7 @@ const App = () => {
         <Route index element={<LoginPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
-
+        <Route path='/eval-select' element={<EvalSelect/>}/>
         {/* Admin Routes - Only accessible to Admin */}
         <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
           <Route path='/landing' element={<AdminLanding />} />

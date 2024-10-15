@@ -286,6 +286,7 @@ const handleSubmit = async (e) => {
             type="checkbox"
             label="Three-Year-Medium-Term Plan for Community Extension¹"
             value="Three-Year"
+            checked={formData.is_three_year_plan}
             onChange={(e) => {
               setIsThreeYearPlan(e.target.checked);
               setFormData((prevData) => ({
@@ -298,6 +299,7 @@ const handleSubmit = async (e) => {
             type="checkbox"
             label="Less than a Year-One-Year Plan for Community Service²"
             value="LessThanYear"
+            checked={formData.is_one_year_plan}
             onChange={(e) => {
               setIsOneYearPlan(e.target.checked);
               setFormData((prevData) => ({

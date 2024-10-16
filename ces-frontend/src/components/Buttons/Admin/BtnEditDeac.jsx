@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 
 const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
+    console.log(account);
     const [show, setShow] = useState(false);
-    const [formData, setFormData] = useState(account);
+    const [formData, setFormData] = useState(account); // Initialize formData with account details
 
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -53,8 +54,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
-
+                body: JSON.stringify(formData), // Send formData with updated name and other details
             });
 
             if (!response.ok) {
@@ -78,12 +78,11 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
 
     return (
         <>
-
             <Button style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} className="mb-2" onClick={handleShow}>
                 View/Edit
             </Button>
 
-            <Button style={{ backgroundColor: formData.status === "Active" ? "#ff3232" : "#71A872", color: "white" , border: '0px' }}  onClick={handleDeactivate}>
+            <Button style={{ backgroundColor: formData.status === "Active" ? "#ff3232" : "#71A872", color: "white", border: '0px' }} onClick={handleDeactivate}>
                 {formData.status === "Active" ? "Deactivate" : "Activate"}
             </Button>
 
@@ -96,6 +95,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSave}>
+                        {/* Account ID */}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Account ID:</Form.Label>
                             <Col sm={8}>
@@ -103,18 +103,33 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                             </Col>
                         </Form.Group>
 
+                        {/* Username */}
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Name</Form.Label>
+                            <Form.Label column sm={4}>User Name</Form.Label>
                             <Col sm={8}>
                                 <Form.Control
                                     type="text"
                                     name="username"
-                                    value= {formData.username}
+                                    value={formData.username}
                                     disabled
                                 />
                             </Col>
                         </Form.Group>
 
+                        {/* Name */}
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Name</Form.Label>
+                            <Col sm={8}>
+                                <Form.Control
+                                    type="text"
+                                    name="name"
+                                    value={formData.name} // Bind formData.name to input field
+                                    onChange={handleChange} // Update formData when name is changed
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        {/* Account Type */}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Type of Account</Form.Label>
                             <Col sm={8}>
@@ -126,6 +141,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                             </Col>
                         </Form.Group>
 
+                        {/* Department */}
                         {(formData.accountType === "Brgy. Official" || formData.accountType === "Proponent") && (
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={4}>Department</Form.Label>
@@ -153,6 +169,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                             </Form.Group>
                         )}
 
+                        {/* Position */}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Position</Form.Label>
                             <Col sm={8}>
@@ -166,6 +183,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                             </Col>
                         </Form.Group>
 
+                        {/* Deactivation Date */}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Deactivation Date</Form.Label>
                             <Col sm={8}>

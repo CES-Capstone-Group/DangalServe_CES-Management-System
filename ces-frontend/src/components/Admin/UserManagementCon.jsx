@@ -8,10 +8,11 @@ import BtnAddAcc from "../Buttons/Admin/BtnAddAcc";
 import "../table.css"
 import "../../App.css"
 
-const Rows = ({ user_id, username, type, department, position, actDate, deacDate, status, fetchUsers }) => {
+const Rows = ({ user_id, username, name, type, department, position, actDate, deacDate, status, fetchUsers }) => {
     const account = {
         user_id: user_id,
         username: username,
+        name: name,
         accountType: type,
         department: department,
         position: position,
@@ -102,6 +103,7 @@ const NewTable = ({ data, fetchUsers }) => {
                         key={row.user_id}  // Use a unique ID, like accountID
                         user_id={row.user_id}
                         username={row.username}
+                        name={row.name}
                         type={row.accountType}
                         department={row.department}
                         position={row.position}
@@ -126,6 +128,7 @@ const UserManagementCon = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
+            console.log("API Response: ", data);
             setUsers(data);  // Update the state with the fetched users
         } catch (error) {
             console.error("Failed to fetch users:", error);

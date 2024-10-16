@@ -365,19 +365,6 @@ const handleSubmit = async (e) => {
             />
           </Col>
         </Form.Group>
-
-        <Form.Group as={Row} controlId="formDepartment" className="mb-4">
-          <Form.Label column sm={2} id='formlabel'>Department/Program/Organization</Form.Label>
-          <Col sm={10}>
-            <Form.Control
-              type="text"
-              placeholder="Enter department"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-            />
-          </Col>
-        </Form.Group>
         
         <h6 className="mb-4">CESU Coordinator/Proponent(s)</h6>
         {proponents.length > 0 && (

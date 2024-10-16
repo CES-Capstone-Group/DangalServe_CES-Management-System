@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import ProposalPB from "../ProposalPB";
 // import Proposal from "../ProposalPB";
 import { useNavigate } from "react-router-dom";  // Import useNavigate
+import ButtonDownloadProposal from "./BtnDownloadProposal";
 
 const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const [show, setShow] = useState(false);
@@ -265,6 +266,8 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
             Confirm Rejection
           </Button>
           
+        
+
           <Button variant="secondary" onClick={handleRejectClose}>
             Close
           </Button>
@@ -495,7 +498,9 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
           </Form>
         </Modal.Body>
 
+        
         <Modal.Footer>
+        <ButtonDownloadProposal proposal={proposal}></ButtonDownloadProposal>
           <Button variant="success" onClick={handleClose}>
             Close
           </Button>

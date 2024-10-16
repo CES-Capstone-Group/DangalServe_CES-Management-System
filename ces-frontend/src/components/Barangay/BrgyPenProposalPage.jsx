@@ -15,7 +15,6 @@ const BrgyPenProposalPage = () => {
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
-                console.log("Decoded Token:", decodedToken); // Debugging line to check the token
                 
                 const departmentFromToken = decodedToken.department; // Check if department is present in the token
                 if (departmentFromToken) {
@@ -39,34 +38,37 @@ const BrgyPenProposalPage = () => {
         const fetchProposals = async () => {
             if (!department) {
                 console.log("Department is not set. Cannot fetch proposals.");
-                setLoading(false); // Ensure we stop loading if department is not set
+                setLoading(false);
                 return;
             }
-
+        
             const token = localStorage.getItem("access_token");
             if (!token) {
                 console.error("No token found.");
                 setLoading(false);
                 return;
             }
-
+        
             try {
                 const queryParams = new URLSearchParams({
-                    status__in: ["Approved by President", "Partly Approved by Barangay"].join(','),  // Status inclusion filter
-                    partner_community: department, // Include department in query
+                    status__in: ["Approved by President", "Partly Approved by Barangay"].join(','),
+                    partner_community: department,
                 });
-                // Adjusting the API URL to exclude "Approved by Barangay" explicitly
-                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${queryParams.toString()}&status__ne=Approved by Barangay`, {
-                method: "GET",
-                headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-                },
+        
+                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${queryParams.toString()}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
-
+        
                 if (response.ok) {
                     const data = await response.json();
-                    setProposals(data);
+                    // Add an additional safeguard to filter exactly by "Approved by Barangay"
+                    const filteredProposals = data.filter(proposal => proposal.status === "Approved by President" || proposal.status === "Partly Approved by Barangay");
+                    setProposals(filteredProposals); // Set the proposals after filtering
+                    console.log("Filtered Proposals:", filteredProposals); // Add a log to inspect filtered proposals
                 } else if (response.status === 401) {
                     console.error("Unauthorized: Check if the token is valid.");
                 } else {
@@ -75,9 +77,10 @@ const BrgyPenProposalPage = () => {
             } catch (error) {
                 console.error("Error fetching proposals:", error);
             } finally {
-                setLoading(false); // Stop loading after the fetch is done
+                setLoading(false);
             }
         };
+        
 
         if (department) {
             fetchProposals();

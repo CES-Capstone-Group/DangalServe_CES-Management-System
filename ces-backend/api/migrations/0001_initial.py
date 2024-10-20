@@ -6,6 +6,7 @@ from django.db import migrations, models
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 
+
 def create_default_account(apps, schema_editor):
     Account = apps.get_model('api', 'Account')
     Account.objects.create(

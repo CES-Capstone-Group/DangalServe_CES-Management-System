@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 import TopNav from "../TopNav";
@@ -8,11 +8,11 @@ const AdminManagePage = () => {
   return (
     <div>
       <header>
-        <TopNav />
+        <TopNav/>
       </header>
       <Row>
         <Col>
-          <Container className="vh-100 d-flex flex-column justify-content-center align-items-center">
+          <Container className="vh-100 d-flex flex-column justify-content-center align-items-center" style={{marginTop: '60px'}}>
             <Outlet/>
           </Container>
         </Col>

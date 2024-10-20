@@ -36,11 +36,9 @@ const BtnAddBrgy= ({onBrgyAdded }) => {
                 alert("Barangay added successfully!");
                 handleCloseModal();  // Close the modal on success
                 onBrgyAdded();  // Call the onBrgyAdded callback
-            } else {
-                const data = await response.json();
-                alert(`Failed to add barangay: ${data}`);
-                alert(`Failed to add barangay: ${JSON.stringify(data)}`);  // Convert the error object to a readable format
-
+            }
+            else {
+                alert(`Failed to add barangay: Input Field should not be blank`);  // Convert the error object to a readable format
             }
         } catch (error) {
             console.error("Error adding barangay:", error);
@@ -72,6 +70,7 @@ const BtnAddBrgy= ({onBrgyAdded }) => {
                             <Form.Label column sm={4}>Name:</Form.Label>
                             <Col sm={8}>
                                 {/* **Added onChange to update state** */}
+                                
                                 <Form.Control 
                                     type="text"
                                     name="brgyName"
@@ -89,6 +88,7 @@ const BtnAddBrgy= ({onBrgyAdded }) => {
                                 <Form.Control 
                                     className="inputFile" 
                                     type="file" 
+                                    controlId="inpMoa"
                                     accept="image/*, application/pdf"
                                     onChange={(e) => setMoaFile(e.target.files[0])}  // <-- Handle file selection
                                 />

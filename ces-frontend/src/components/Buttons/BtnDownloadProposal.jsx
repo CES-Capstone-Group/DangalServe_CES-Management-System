@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
-const ButtonDownloadProposal = ({ proposal }) => {
+const BtnDownloadProposal = ({ proposal }) => {
     const [loading, setLoading] = useState(false);
 
     const handleDownload = async () => {
+        console.log('clicked')
         setLoading(true); // Start loading
         try {
             const token = localStorage.getItem('access_token'); // Get the token from localStorage
@@ -21,11 +22,27 @@ const ButtonDownloadProposal = ({ proposal }) => {
                 }
             });
             if (response.ok) {
+                // Get the filename from Content-Disposition header if present
+                const disposition = response.headers.get('Content-Disposition');
+                let filename = '';
+                
+                if (disposition && disposition.includes('attachment')) {
+                    const filenameMatch = disposition.match(/filename="(.+)"/);
+                    if (filenameMatch && filenameMatch.length === 2) {
+                        filename = filenameMatch[1]; // Extract filename from the header
+                    }
+                }
+    
+                // If no filename is found in the header, use a default filename
+                if (!filename) {
+                    filename = `proposal_${proposal.proposal_id}.pdf`; // Default name
+                }
+    
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', `proposal_${proposal.proposal_id}.docx`);
+                link.setAttribute('download', filename); // Use the extracted or default filename
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -46,4 +63,4 @@ const ButtonDownloadProposal = ({ proposal }) => {
     );
 };
 
-export default ButtonDownloadProposal;
+export default BtnDownloadProposal;

@@ -1,45 +1,13 @@
 import React, { useState } from "react";
 import { Button, Form, Modal, Col, Row } from "react-bootstrap";
 import ProposalPB from "../../ProposalPB";
+import BtnDownloadProposal from "../BtnDownloadProposal";
 
 const BtnCoorViewApprovedProposal = ({ proposal }) => {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-
-    const handleDownload = async () => {
-        try {
-            const token = localStorage.getItem('access_token'); // Get the token from localStorage
-            if (!token) {
-                console.error("No token found.");
-                setLoading(false); // Stop loading if there's no token
-                return;
-            }
-            const timestamp = new Date().getTime();
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/download/?_=${timestamp}`, {                
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`, // Add this if you are using token-based authentication
-                }
-            });
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', `proposal_${proposal.proposal_id}.docx`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else {
-                console.error('Failed to download document');
-            }
-        } catch (error) {
-            console.error('Error while downloading the file:', error);
-        }
-    };
-
     return (
         <>
             <Button
@@ -250,9 +218,10 @@ const BtnCoorViewApprovedProposal = ({ proposal }) => {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleDownload}>
+                    {/* <Button variant="primary" onClick={handleDownload}>
                         Download Proposal
-                    </Button>
+                    </Button> */}
+                    <BtnDownloadProposal proposal={proposal}></BtnDownloadProposal>
                     <Button variant="success" onClick={handleClose}>
                         Close
                     </Button>

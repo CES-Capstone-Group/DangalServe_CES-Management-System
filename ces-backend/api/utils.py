@@ -1,6 +1,25 @@
 from docx import Document
 from django.conf import settings
 import os
+import pythoncom
+from docx2pdf import convert
+
+def convert_docx_to_pdf(docx_path):
+    pythoncom.CoInitialize()
+    try:
+        # Define the output path for the PDF
+        pdf_output_path = docx_path.replace('.docx', '.pdf')
+        
+        # Perform the conversion
+        convert(docx_path, pdf_output_path)
+        
+        # Print paths for debugging
+        print(f"DOCX Path: {docx_path}")
+        print(f"PDF Path: {pdf_output_path}")
+        
+        return pdf_output_path
+    finally:
+        pythoncom.CoUninitialize()
 
 def replace_text_in_paragraph(paragraph, placeholders):
     """Replaces placeholders in a given paragraph with actual values."""

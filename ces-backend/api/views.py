@@ -623,33 +623,47 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
 from .models import Proposal
-from .utils import generate_proposal_doc  # Assuming the function is in a utils.py file
+from .utils import generate_proposal_doc, convert_docx_to_pdf # Assuming the function is in a utils.py file
 import os
 
 class DownloadProposalDoc(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, proposal_id):
-        # print('Request received')  # This should print when the view is triggered
         try:
             proposal = Proposal.objects.get(proposal_id=proposal_id)
-            # print('Proposal found:', proposal.title)  # Check if the proposal is fetched correctly
         except Proposal.DoesNotExist:
-            # print('Proposal not found')
             return Response({"error": "Proposal not found"}, status=404)
         
-        # Document generation
+        # Step 1: Generate the .docx file using the existing function
         doc_path = generate_proposal_doc(proposal)
-        # print('Document path:', doc_path)  # Check if document generation is successful
         
-        if os.path.exists(doc_path):
-            with open(doc_path, 'rb') as doc_file:
-                response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                response['Content-Disposition'] = f'attachment; filename=proposal_{proposal_id}.docx'
+        # Step 2: Convert the .docx file to .pdf
+        pdf_path = convert_docx_to_pdf(doc_path)
+        
+        # Step 3: Serve the PDF file with the correct extension
+        if os.path.exists(pdf_path):
+            with open(pdf_path, 'rb') as pdf_file:
+                # Log for debugging purposes
+                print(f"Serving file: {pdf_path}")
+                
+                # Read and serve the PDF file
+                response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+                
+                # Force the filename to be a PDF, even if the docx was used for generation
+                response['Content-Disposition'] = f'attachment; filename="proposal_{proposal_id}.pdf"'
+                
+                # Log the Content-Disposition for debugging purposes
+                print(f"Content-Disposition: {response['Content-Disposition']}")
+                
+                # No cache
                 response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
                 response['Pragma'] = 'no-cache'
                 response['Expires'] = '0'
+                
                 return response
         else:
-            # print('Document generation failed')
             return Response({"error": "Document generation failed"}, status=500)
+
+
+

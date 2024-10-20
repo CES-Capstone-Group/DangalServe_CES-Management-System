@@ -12,6 +12,8 @@ const ProposalForm = () => {
   const [nonGovOrg, setNonGovOrg] = useState(false);
   const [otherCommunity, setOtherCommunity] = useState(false); // Track if "Others" is selected
   const [otherCommunityValue, setOtherCommunityValue] = useState(''); // Store the "Others" value
+  const [otherTypology, setOtherTypology] = useState(false); // Track if "Others" is selected
+  const [otherTypologyValue, setOtherTypologyValue] = useState(''); // Store the "Others" value
 
   // State to hold the form data
   const [formData, setFormData] = useState({
@@ -71,17 +73,17 @@ const ProposalForm = () => {
   const [isThreeYearPlan, setIsThreeYearPlan] = useState(false);
   const [isOneYearPlan, setIsOneYearPlan] = useState(false);
 
-   // State for each signatory section
+  // State for each signatory section
   const [preparedBy, setPreparedBy] = useState([]);
   const [endorsedBy, setEndorsedBy] = useState([]);
   const [concurredBy, setConcurredBy] = useState([]);
 
-   // Separate states for each section's signatory
+  // Separate states for each section's signatory
   const [preparedBySignatory, setPreparedBySignatory] = useState({ name: '', position: '' });
   const [endorsedBySignatory, setEndorsedBySignatory] = useState({ name: '', position: '' });
   const [concurredBySignatory, setConcurredBySignatory] = useState({ name: '', position: '' });
 
-   // Handle input changes for each section
+  // Handle input changes for each section
   const handlePreparedByChange = (e) => {
     const { name, value } = e.target;
     setPreparedBySignatory({
@@ -190,6 +192,14 @@ const ProposalForm = () => {
     }
   };
 
+  // Handle Other Typology input field visibility
+  const handleOtherTypologyChange = (e) => {
+    setOtherTypology(e.target.checked);
+    if (!e.target.checked) {
+      setOtherTypologyValue('');
+    }
+  };
+
   // Handle file input changes
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -200,74 +210,74 @@ const ProposalForm = () => {
   };
 
   // Handle form submission
-// Now in the handleSubmit, use the correct reference
+  // Now in the handleSubmit, use the correct reference
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const submitData = new FormData();
-  const token = localStorage.getItem('access_token');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const submitData = new FormData();
+    const token = localStorage.getItem('access_token');
 
-  // Append form fields except for proponents, signatories, and files
-  Object.keys(formData).forEach(key => {
+    // Append form fields except for proponents, signatories, and files
+    Object.keys(formData).forEach(key => {
       if (formData[key] && key !== 'proponents' && key !== 'signatories' && key !== 'identified_needs_file' && key !== 'budget_requirement_file') {
-          submitData.append(key, formData[key]);
+        submitData.append(key, formData[key]);
       }
-  });
-
-  // Append file fields if they exist
-  if (formData.identified_needs_file instanceof File) {
-      submitData.append('identified_needs_file', formData.identified_needs_file);
-  }
-  if (formData.budget_requirement_file instanceof File) {
-      submitData.append('budget_requirement_file', formData.budget_requirement_file);
-  }
-
-  submitData.append('is_three_year_plan', formData.is_three_year_plan ? 'true' : 'false');
-  submitData.append('is_one_year_plan', formData.is_one_year_plan ? 'true' : 'false');
-
-  const leadProponentString = proponents.map(p => p.name).join(', ');
-  submitData.append('lead_proponent', leadProponentString);  
-
-  // Send proponents and signatories as JSON strings
-  if (proponents.length > 0) {
-      submitData.append('proponents', JSON.stringify(proponents)); // Sends proponents as a JSON array
-  }
-
-  if (signatories.length > 0) {
-      submitData.append('signatories', JSON.stringify(signatories)); // Sends signatories as a JSON array
-  }
-
-  try {
-    if (!token) {
-      console.error('No token found. Please log in.');
-      return;
-    }
-    let url = 'http://127.0.0.1:8000/api/proposals/';
-    let method = 'POST';
-
-    if (isResubmission) {
-      url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
-      method = 'PATCH'; // Use PATCH for resubmissions
-    }
-
-    const response = await fetch(url, {
-      method: method,
-      body: submitData,
-      headers: {
-          Authorization: `Bearer ${token}`,
-      },
     });
 
-    if (response.ok) {
-      navigate('/coor/pending-proposal');
-    } else {
-      const errorData = await response.json();
-      console.error('Error:', errorData);
+    // Append file fields if they exist
+    if (formData.identified_needs_file instanceof File) {
+      submitData.append('identified_needs_file', formData.identified_needs_file);
     }
-  } catch (error) {
-    console.error('Error submitting proposal:', error);
-  }
-};
+    if (formData.budget_requirement_file instanceof File) {
+      submitData.append('budget_requirement_file', formData.budget_requirement_file);
+    }
+
+    submitData.append('is_three_year_plan', formData.is_three_year_plan ? 'true' : 'false');
+    submitData.append('is_one_year_plan', formData.is_one_year_plan ? 'true' : 'false');
+
+    const leadProponentString = proponents.map(p => p.name).join(', ');
+    submitData.append('lead_proponent', leadProponentString);
+
+    // Send proponents and signatories as JSON strings
+    if (proponents.length > 0) {
+      submitData.append('proponents', JSON.stringify(proponents)); // Sends proponents as a JSON array
+    }
+
+    if (signatories.length > 0) {
+      submitData.append('signatories', JSON.stringify(signatories)); // Sends signatories as a JSON array
+    }
+
+    try {
+      if (!token) {
+        console.error('No token found. Please log in.');
+        return;
+      }
+      let url = 'http://127.0.0.1:8000/api/proposals/';
+      let method = 'POST';
+
+      if (isResubmission) {
+        url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
+        method = 'PATCH'; // Use PATCH for resubmissions
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        body: submitData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        navigate('/coor/pending-proposal');
+      } else {
+        const errorData = await response.json();
+        console.error('Error:', errorData);
+      }
+    } catch (error) {
+      console.error('Error submitting proposal:', error);
+    }
+  };
 
 
 
@@ -279,37 +289,37 @@ const handleSubmit = async (e) => {
       </h2>
 
       <Form className='form' onSubmit={handleSubmit}>
-      <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
-        <Col sm={5}>
-          <h4 className="mb-4">Please Check</h4>
-          <Form.Check
-            type="checkbox"
-            label="Three-Year-Medium-Term Plan for Community Extension¹"
-            value="Three-Year"
-            checked={formData.is_three_year_plan}
-            onChange={(e) => {
-              setIsThreeYearPlan(e.target.checked);
-              setFormData((prevData) => ({
-                ...prevData,
-                is_three_year_plan: e.target.checked, // Update formData with this value
-              }));
-            }}
-          />
-          <Form.Check
-            type="checkbox"
-            label="Less than a Year-One-Year Plan for Community Service²"
-            value="LessThanYear"
-            checked={formData.is_one_year_plan}
-            onChange={(e) => {
-              setIsOneYearPlan(e.target.checked);
-              setFormData((prevData) => ({
-                ...prevData,
-                is_one_year_plan: e.target.checked, // Update formData with this value
-              }));
-            }}
-          />
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
+          <Col sm={5}>
+            <h4 className="mb-4">Please Check</h4>
+            <Form.Check
+              type="checkbox"
+              label="Three-Year-Medium-Term Plan for Community Extension¹"
+              value="Three-Year"
+              checked={formData.is_three_year_plan}
+              onChange={(e) => {
+                setIsThreeYearPlan(e.target.checked);
+                setFormData((prevData) => ({
+                  ...prevData,
+                  is_three_year_plan: e.target.checked, // Update formData with this value
+                }));
+              }}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Less than a Year-One-Year Plan for Community Service²"
+              value="LessThanYear"
+              checked={formData.is_one_year_plan}
+              onChange={(e) => {
+                setIsOneYearPlan(e.target.checked);
+                setFormData((prevData) => ({
+                  ...prevData,
+                  is_one_year_plan: e.target.checked, // Update formData with this value
+                }));
+              }}
+            />
+          </Col>
+        </Form.Group>
         <h4 className="mb-4">A. Basic Details</h4>
 
         {/* Title Field */}
@@ -365,7 +375,7 @@ const handleSubmit = async (e) => {
             />
           </Col>
         </Form.Group>
-        
+
         <h6 className="mb-4">CESU Coordinator/Proponent(s)</h6>
         {proponents.length > 0 && (
           <div className="mb-3">
@@ -419,7 +429,7 @@ const handleSubmit = async (e) => {
           </Col>
         </Form.Group>
 
-        
+
         <Form.Group as={Row} controlId="formProjectDescription" className="mb-4">
           <Form.Label column sm={2} id='formlabel'>Project Description</Form.Label>
           <Col sm={10}>
@@ -547,6 +557,21 @@ const handleSubmit = async (e) => {
               onChange={(e) => handleChange({ target: { name: 'non_government_org', value: e.target.checked ? 'Yes' : '' } })}
               checked={formData.non_government_org === 'Yes'}
             />
+            <Form.Check
+              type="checkbox"
+              label="Others"
+              // checked={formData.partner_community.includes('Others')}
+              onChange={handleOtherTypologyChange}
+            />
+            {otherTypology && (
+              <Form.Control
+                type="text"
+                placeholder="Please specify"
+                className="mt-2"
+                value={otherTypologyValue}
+                onChange={(e) => setOtherTypologyValue(e.target.value)}
+              />
+            )}
           </Col>
         </Form.Group>
 

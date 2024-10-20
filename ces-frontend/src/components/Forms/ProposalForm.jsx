@@ -14,6 +14,7 @@ const ProposalForm = () => {
   const [otherCommunityValue, setOtherCommunityValue] = useState(''); // Store the "Others" value
   const [otherTypology, setOtherTypology] = useState(false); // Track if "Others" is selected
   const [otherTypologyValue, setOtherTypologyValue] = useState(''); // Store the "Others" value
+  const [errors, setErrors] = useState({}); // Track errors for fields
 
   // State to hold the form data
   const [formData, setFormData] = useState({
@@ -62,6 +63,55 @@ const ProposalForm = () => {
     });
   };
 
+  // Handle validation when the user leaves a field
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: `${name.replace('_', ' ')} is required`,
+      }));
+    } else {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name]; // Clear the error if the field is not empty
+        return newErrors;
+      });
+    }
+  };
+
+  // Validate Identified Needs when losing focus (onBlur)
+  const validateIdentifiedNeeds = () => {
+    if (!formData.identified_needs_text && !formData.identified_needs_file) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        identified_needs: 'Please either provide identified needs text or upload a file.',
+      }));
+    } else {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors.identified_needs;
+        return newErrors;
+      });
+    }
+  };
+
+  // Validate Budget Requirement when losing focus (onBlur)
+  const validateBudgetRequirement = () => {
+    if (!formData.budget_requirement_text && !formData.budget_requirement_file) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        budget_requirement: 'Please either provide budget requirement text or upload a file.',
+      }));
+    } else {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors.budget_requirement;
+        return newErrors;
+      });
+    }
+  };
+
   // Add a new proponent to the list
   const handleAddProponent = () => {
     if (proponent.name && proponent.position) {
@@ -79,9 +129,9 @@ const ProposalForm = () => {
   const [concurredBy, setConcurredBy] = useState([]);
 
   // Separate states for each section's signatory
-  const [preparedBySignatory, setPreparedBySignatory] = useState({ name: '', position: '' });
-  const [endorsedBySignatory, setEndorsedBySignatory] = useState({ name: '', position: '' });
-  const [concurredBySignatory, setConcurredBySignatory] = useState({ name: '', position: '' });
+  const [preparedBySignatory, setPreparedBySignatory] = useState({ PreparedByname: '', PreparedByposition: '' });
+  const [endorsedBySignatory, setEndorsedBySignatory] = useState({ EndorsedByname: '', EndorsedByposition: '' });
+  const [concurredBySignatory, setConcurredBySignatory] = useState({ ConcurredByname: '', ConcurredByposition: '' });
 
   // Handle input changes for each section
   const handlePreparedByChange = (e) => {
@@ -289,7 +339,7 @@ const ProposalForm = () => {
       </h2>
 
       <Form className='form' onSubmit={handleSubmit}>
-        <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
+        <Form.Group as={Row} controlId="formPlan" className="mb-4">
           <Col sm={5}>
             <h4 className="mb-4">Please Check</h4>
             <Form.Check
@@ -318,6 +368,7 @@ const ProposalForm = () => {
                 }));
               }}
             />
+
           </Col>
         </Form.Group>
         <h4 className="mb-4">A. Basic Details</h4>
@@ -333,12 +384,14 @@ const ProposalForm = () => {
               value={formData.title}
               required={true}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.title && <p className="text-danger">{errors.title}</p>}
           </Col>
         </Form.Group>
 
         <Form.Group as={Row} controlId="formDepartment" className="mb-4">
-          <Form.Label column sm={2} id='formlabel'>Department/Program/Organization</Form.Label>
+          <Form.Label column sm={2} id='formlabel'>Department/Program /Organization </Form.Label>
           <Col sm={10}>
             <Form.Control
               type="text"
@@ -346,7 +399,9 @@ const ProposalForm = () => {
               name="department"
               value={formData.department}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.department && <p className="text-danger">{errors.department}</p>}
           </Col>
         </Form.Group>
 
@@ -360,7 +415,9 @@ const ProposalForm = () => {
               name="engagement_date"
               value={formData.engagement_date}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.engagement_date && <p className="text-danger">{errors.engagement_date}</p>}
           </Col>
         </Form.Group>
 
@@ -372,7 +429,9 @@ const ProposalForm = () => {
               name="disengagement_date"
               value={formData.disengagement_date}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.disengagement_date && <p className="text-danger">{errors.disengagement_date}</p>}
           </Col>
         </Form.Group>
 
@@ -398,7 +457,9 @@ const ProposalForm = () => {
               name="name"
               value={proponent.name}
               onChange={handleProponentChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.name && <p className="text-danger">{errors.name}</p>}
           </Col>
           <Form.Label column sm={2}>Position/Title</Form.Label>
           <Col sm={3}>
@@ -408,7 +469,9 @@ const ProposalForm = () => {
               name="position"
               value={proponent.position}
               onChange={handleProponentChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.position && <p className="text-danger">{errors.position}</p>}
           </Col>
         </Form.Group>
         <Button variant="success" onClick={handleAddProponent} className="mb-2">
@@ -425,7 +488,9 @@ const ProposalForm = () => {
               name="contact_details"
               value={formData.contact_details}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.contact_details && <p className="text-danger">{errors.contact_details}</p>}
           </Col>
         </Form.Group>
 
@@ -440,7 +505,9 @@ const ProposalForm = () => {
               name="project_description"
               value={formData.project_description}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.project_description && <p className="text-danger">{errors.project_description}</p>}
           </Col>
         </Form.Group>
 
@@ -452,7 +519,9 @@ const ProposalForm = () => {
               name="target_date"
               value={formData.target_date}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.target_date && <p className="text-danger">{errors.target_date}</p>}
           </Col>
         </Form.Group>
 
@@ -465,7 +534,9 @@ const ProposalForm = () => {
               name="location"
               value={formData.location}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.location && <p className="text-danger">{errors.location}</p>}
           </Col>
         </Form.Group>
 
@@ -586,15 +657,21 @@ const ProposalForm = () => {
               name="identified_needs_text"
               value={formData.identified_needs_text}
               onChange={handleChange}
+              onBlur={validateIdentifiedNeeds}  // Validate when user leaves field
             />
             <div className="mt-3">or upload a file:</div>
             <Form.Control
               className="inputFile"
               type="file"
               name="identified_needs_file"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                handleFileChange(e);
+                validateIdentifiedNeeds(); // Validate as soon as file is uploaded
+              }}
+              onBlur={validateIdentifiedNeeds}
             />
             <p className='text-sm'>Max Size: 25MB</p>
+            {errors.identified_needs && <p className="text-danger">{errors.identified_needs}</p>}
           </Col>
         </Form.Group>
 
@@ -608,7 +685,9 @@ const ProposalForm = () => {
               name="general_objectives"
               value={formData.general_objectives}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.general_objectives && <p className="text-danger">{errors.general_objectives}</p>}
           </Col>
         </Form.Group>
 
@@ -622,7 +701,9 @@ const ProposalForm = () => {
               name="specific_objectives"
               value={formData.specific_objectives}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.specific_objectives && <p className="text-danger">{errors.specific_objectives}</p>}
           </Col>
         </Form.Group>
 
@@ -636,7 +717,9 @@ const ProposalForm = () => {
               name="success_indicators"
               value={formData.success_indicators}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.success_indicators && <p className="text-danger">{errors.success_indicators}</p>}
           </Col>
         </Form.Group>
 
@@ -650,7 +733,9 @@ const ProposalForm = () => {
               name="cooperating_agencies"
               value={formData.cooperating_agencies}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.cooperating_agencies && <p className="text-danger">{errors.cooperating_agencies}</p>}
           </Col>
         </Form.Group>
 
@@ -664,7 +749,9 @@ const ProposalForm = () => {
               name="monitoring_mechanics"
               value={formData.monitoring_mechanics}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.monitoring_mechanics && <p className="text-danger">{errors.monitoring_mechanics}</p>}
           </Col>
         </Form.Group>
 
@@ -678,7 +765,9 @@ const ProposalForm = () => {
               name="evaluation_mechanics"
               value={formData.evaluation_mechanics}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.evaluation_mechanics && <p className="text-danger">{errors.evaluation_mechanics}</p>}
           </Col>
         </Form.Group>
 
@@ -692,7 +781,9 @@ const ProposalForm = () => {
               name="timetable"
               value={formData.timetable}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.timetable && <p className="text-danger">{errors.timetable}</p>}
           </Col>
         </Form.Group>
 
@@ -706,7 +797,9 @@ const ProposalForm = () => {
               name="risk_assessment"
               value={formData.risk_assessment}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.risk_assessment && <p className="text-danger">{errors.risk_assessment}</p>}
           </Col>
         </Form.Group>
 
@@ -720,7 +813,9 @@ const ProposalForm = () => {
               name="action_plans"
               value={formData.action_plans}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.action_plans && <p className="text-danger">{errors.action_plans}</p>}
           </Col>
         </Form.Group>
 
@@ -734,7 +829,9 @@ const ProposalForm = () => {
               name="sustainability_approaches"
               value={formData.sustainability_approaches}
               onChange={handleChange}
+              onBlur={handleBlur} // Validate onBlur
             />
+            {errors.sustainability_approaches && <p className="text-danger">{errors.sustainability_approaches}</p>}
           </Col>
         </Form.Group>
 
@@ -749,15 +846,21 @@ const ProposalForm = () => {
               name="budget_requirement_text"
               value={formData.budget_requirement_text}
               onChange={handleChange}
+              onBlur={validateBudgetRequirement}  // Validate when user leaves field
             />
             <div className="mt-3">or upload a file:</div>
             <Form.Control
               className="inputFile"
               type="file"
               name="budget_requirement_file"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                handleFileChange(e);
+                validateBudgetRequirement(); // Validate as soon as file is uploaded
+              }}
+              onBlur={validateBudgetRequirement}
             />
             <p className='text-sm'>Max Size: 25MB</p>
+            {errors.budget_requirement && <p className="text-danger">{errors.budget_requirement}</p>}
           </Col>
         </Form.Group>
 
@@ -782,11 +885,13 @@ const ProposalForm = () => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
+                name="PreparedByname"
                 value={preparedBySignatory.name}
                 onChange={handlePreparedByChange}
+                onBlur={handleBlur} // Validate onBlur
                 placeholder="Enter name"
               />
+              {errors.PreparedByname && <p className="text-danger">name is required</p>}
             </Form.Group>
           </Col>
           <Col sm={6}>
@@ -794,11 +899,13 @@ const ProposalForm = () => {
               <Form.Label>Position/Title</Form.Label>
               <Form.Control
                 type="text"
-                name="position"
+                name="PreparedByposition"
                 value={preparedBySignatory.position}
                 onChange={handlePreparedByChange}
+                onBlur={handleBlur} // Validate onBlur
                 placeholder="Enter position/title"
               />
+              {errors.PreparedByposition && <p className="text-danger">position is required</p>}
             </Form.Group>
           </Col>
         </Row>
@@ -823,11 +930,13 @@ const ProposalForm = () => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
+                name="EndorsedByname"
                 value={endorsedBySignatory.name}
                 onChange={handleEndorsedByChange}
+                onBlur={handleBlur} // Validate onBlur
                 placeholder="Enter name"
               />
+              {errors.EndorsedByname && <p className="text-danger">name is required</p>}
             </Form.Group>
           </Col>
           <Col sm={6}>
@@ -835,11 +944,13 @@ const ProposalForm = () => {
               <Form.Label>Position/Title</Form.Label>
               <Form.Control
                 type="text"
-                name="position"
+                name="EndorsedByposition"
                 value={endorsedBySignatory.position}
                 onChange={handleEndorsedByChange}
+                onBlur={handleBlur} // Validate onBlur
                 placeholder="Enter position/title"
               />
+              {errors.EndorsedByposition && <p className="text-danger">position is required</p>}
             </Form.Group>
           </Col>
         </Row>
@@ -864,11 +975,13 @@ const ProposalForm = () => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
+                name="ConcurredByname"
                 value={concurredBySignatory.name}
                 onChange={handleConcurredByChange}
+                onBlur={handleBlur} // Validate onBlur
                 placeholder="Enter name"
               />
+              {errors.ConcurredByname && <p className="text-danger">name is required</p>}
             </Form.Group>
           </Col>
           <Col sm={6}>
@@ -876,11 +989,13 @@ const ProposalForm = () => {
               <Form.Label>Position/Title</Form.Label>
               <Form.Control
                 type="text"
-                name="position"
+                name="ConcurredByposition"
                 value={concurredBySignatory.position}
                 onChange={handleConcurredByChange}
+                onBlur={handleBlur} // Validate onBlur
                 placeholder="Enter position/title"
               />
+              {errors.ConcurredByposition && <p className="text-danger">position is required</p>}
             </Form.Group>
           </Col>
         </Row>

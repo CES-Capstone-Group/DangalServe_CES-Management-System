@@ -10,7 +10,6 @@ def create_default_account(apps, schema_editor):
     Account = apps.get_model('api', 'Account')
     Account.objects.create(
         username="Anna",
-        name="Anna-Liza",
         password=make_password("Anna"),  # Hash password
         accountType="Admin",
         department="Administration",

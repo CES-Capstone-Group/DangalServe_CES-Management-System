@@ -343,9 +343,10 @@ const ProposalForm = () => {
           <Col sm={5}>
             <h4 className="mb-4">Please Check</h4>
             <Form.Check
-              type="checkbox"
+              type="radio"
               label="Three-Year-Medium-Term Plan for Community Extension¹"
               value="Three-Year"
+              name= 'plan'
               checked={formData.is_three_year_plan}
               onChange={(e) => {
                 setIsThreeYearPlan(e.target.checked);
@@ -354,11 +355,13 @@ const ProposalForm = () => {
                   is_three_year_plan: e.target.checked, // Update formData with this value
                 }));
               }}
+              required={true}
             />
             <Form.Check
-              type="checkbox"
+              type="radio"
               label="Less than a Year-One-Year Plan for Community Service²"
               value="LessThanYear"
+              name='plan'
               checked={formData.is_one_year_plan}
               onChange={(e) => {
                 setIsOneYearPlan(e.target.checked);
@@ -367,6 +370,7 @@ const ProposalForm = () => {
                   is_one_year_plan: e.target.checked, // Update formData with this value
                 }));
               }}
+              required={true}
             />
 
           </Col>
@@ -398,6 +402,7 @@ const ProposalForm = () => {
               placeholder="Enter department"
               name="department"
               value={formData.department}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -414,6 +419,7 @@ const ProposalForm = () => {
               type="date"
               name="engagement_date"
               value={formData.engagement_date}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -428,6 +434,7 @@ const ProposalForm = () => {
               type="date"
               name="disengagement_date"
               value={formData.disengagement_date}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -487,6 +494,7 @@ const ProposalForm = () => {
               placeholder="Enter contact details"
               name="contact_details"
               value={formData.contact_details}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -504,6 +512,7 @@ const ProposalForm = () => {
               placeholder="Enter project description"
               name="project_description"
               value={formData.project_description}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -518,6 +527,7 @@ const ProposalForm = () => {
               type="date"
               name="target_date"
               value={formData.target_date}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -533,6 +543,7 @@ const ProposalForm = () => {
               placeholder="Enter location"
               name="location"
               value={formData.location}
+              required={true}
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -684,6 +695,7 @@ const ProposalForm = () => {
               placeholder="Enter general objectives"
               name="general_objectives"
               value={formData.general_objectives}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -700,6 +712,7 @@ const ProposalForm = () => {
               placeholder="Enter specific objectives"
               name="specific_objectives"
               value={formData.specific_objectives}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -716,6 +729,7 @@ const ProposalForm = () => {
               placeholder="Enter success indicators"
               name="success_indicators"
               value={formData.success_indicators}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -732,6 +746,7 @@ const ProposalForm = () => {
               placeholder="Enter cooperating agencies"
               name="cooperating_agencies"
               value={formData.cooperating_agencies}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -748,6 +763,7 @@ const ProposalForm = () => {
               placeholder="Enter monitoring mechanics"
               name="monitoring_mechanics"
               value={formData.monitoring_mechanics}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -762,6 +778,7 @@ const ProposalForm = () => {
               as="textarea"
               rows={3}
               placeholder="Enter evaluation mechanics"
+              required
               name="evaluation_mechanics"
               value={formData.evaluation_mechanics}
               onChange={handleChange}
@@ -780,6 +797,7 @@ const ProposalForm = () => {
               placeholder="Enter timetable"
               name="timetable"
               value={formData.timetable}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -796,6 +814,7 @@ const ProposalForm = () => {
               placeholder="Enter risk assessment"
               name="risk_assessment"
               value={formData.risk_assessment}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -812,6 +831,7 @@ const ProposalForm = () => {
               placeholder="Enter action plans to address risks"
               name="action_plans"
               value={formData.action_plans}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />
@@ -828,6 +848,7 @@ const ProposalForm = () => {
               placeholder="Enter sustainability approaches"
               name="sustainability_approaches"
               value={formData.sustainability_approaches}
+              required
               onChange={handleChange}
               onBlur={handleBlur} // Validate onBlur
             />

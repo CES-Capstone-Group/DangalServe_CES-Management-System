@@ -56,6 +56,7 @@ import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
 import MyProfilePage from './components/MyProfilePage.jsx';
 import EvalSelect from './components/EvalSelect.jsx';
 import DemoCalendar from './components/CalendarDemo/DemoCalendar.jsx';
+import ManageCalendar from './components/ManageCalendar.jsx';
 
 
 const App = () => {
@@ -66,7 +67,6 @@ const App = () => {
         <Route index element={<LoginPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
-        <Route path='/eval-select' element={<EvalSelect/>}/>
         <Route path='/demo-cal' element={<DemoCalendar/>}/>
 
         {/* Admin Routes - Only accessible to Admin */}
@@ -81,6 +81,7 @@ const App = () => {
             <Route path='manage-docs' element={<ManageDocuments />} />
             <Route path='brgy-management' element={<BrgyManagement />} />
             <Route path='dept-management' element={<DepartmentManagement />} />
+            <Route path='manage-calendar' element={<ManageCalendar />} />
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />
@@ -144,6 +145,7 @@ const App = () => {
         {/* </Route> */}
 
         {/* Other Routes */}
+        <Route path='/eval-select' element={<EvalSelect/>}/>
         <Route path='/propForm' element={<ProposalForm />} />
         <Route path='/actEvalForm' element={<ActEvalForm />} />
         <Route path='/funding' element={<FundingProposalForm />} />

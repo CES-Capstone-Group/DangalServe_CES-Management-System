@@ -137,8 +137,8 @@ const App = () => {
 
         {/* Evaluator Routes - Only accessible to Evaluators */}
         {/* <Route element={<PrivateRoute allowedRoles={['Evaluator']} />}> */}
-        <Route path='/eval' element={<UserEvalPage />}>
-          <Route index element={<MainContent />} />
+        <Route path='/eval' element={<EvalSelect />}>
+          <Route index element={<EvalSelect />} />
           <Route path='dashboard' element={<MainContent />} />
           <Route path='eval-page' element={<EvalPage />} />
         </Route>

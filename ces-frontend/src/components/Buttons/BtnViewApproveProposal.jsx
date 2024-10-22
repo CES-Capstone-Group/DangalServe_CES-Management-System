@@ -215,7 +215,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
       <Modal
         backdrop="static"
         centered
-        size="lg"
+        size="xl"
         show={rejectShow}
         onHide={handleRejectClose}
       >
@@ -275,7 +275,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
       </Modal>
 
       {/* Modal for viewing proposal details */}
-      <Modal backdrop="static" centered size="lg" show={show} onHide={handleClose}>
+      <Modal backdrop="static" centered size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Proposal Details</Modal.Title>
         </Modal.Header>

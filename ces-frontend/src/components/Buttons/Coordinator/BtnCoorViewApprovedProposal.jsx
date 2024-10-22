@@ -18,7 +18,7 @@ const BtnCoorViewApprovedProposal = ({ proposal }) => {
                 View
             </Button>
 
-            <Modal backdrop="static" centered size="lg" show={show} onHide={handleClose}>
+            <Modal backdrop="static" centered size="xl" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Proposal Details</Modal.Title>
                 </Modal.Header>

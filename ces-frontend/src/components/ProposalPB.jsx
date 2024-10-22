@@ -27,14 +27,14 @@ const ProposalPB = ({ status }) => {
                     <h6 className="h6"> Signed By Barangay</h6>
                 </Col>
             </Row>
-            <Row className="mb-3">
+            <Row className="mb-3 align-items-center">
                 <Col>
                     {/* Director's Approval */}
                     <ProgressBar variant={isDirectorApproved ? "success" : "danger"} now={isDirectorApproved ? 100 : 0} style={{ height: '1px' }} />
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-                    <FontAwesomeIcon icon={isDirectorApproved ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon className={isDirectorApproved ? "text-success" : "text-danger"} icon={isDirectorApproved ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
 
                 <Col>
@@ -43,7 +43,7 @@ const ProposalPB = ({ status }) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-                    <FontAwesomeIcon icon={isVPREApproved ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon className={isVPREApproved ? "text-success" : "text-danger"} icon={isVPREApproved ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
 
                 <Col>
@@ -52,7 +52,7 @@ const ProposalPB = ({ status }) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-                    <FontAwesomeIcon icon={isPresidentApproved ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon className={isPresidentApproved ? "text-success" : "text-danger"} icon={isPresidentApproved ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
 
                 <Col>
@@ -65,7 +65,7 @@ const ProposalPB = ({ status }) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-                    <FontAwesomeIcon icon={isBarangayApproved || isPartlyBrgyApproved ? faCheckCircle : faXmarkCircle} size="3x" />
+                    <FontAwesomeIcon className={isBarangayApproved ? "text-success" : isPartlyBrgyApproved ? "text-warning" : "text-danger"} icon={isBarangayApproved || isPartlyBrgyApproved ? faCheckCircle : faXmarkCircle} size="3x" />
                 </Col>
             </Row>
         </Container>

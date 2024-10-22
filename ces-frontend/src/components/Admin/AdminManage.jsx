@@ -10,8 +10,9 @@ import {
     faTrophy,
     faBullhorn,
     faChevronLeft,
-    faFolder,
-    faFolderOpen
+    faFolderOpen,
+    faCalendarAlt,
+    faGraduationCap,
 } from '@fortawesome/free-solid-svg-icons'; // Import the icons you want to use
 
 const AdminManage = () => {
@@ -31,11 +32,14 @@ const AdminManage = () => {
     const managementSections = [
         { title: "Account Management", path: "/manage/accmngmnt", icon: faUser },
         { title: "Barangay Management", path: "/manage/brgy-management", icon: faBuilding },
-        { title: "Department Management", path: "/manage/dept-management", icon: faUniversity },
         { title: "Research Agenda Management", path: "/manage/manage-agenda", icon: faFileAlt },
+        { title: "Course Management", path: "/manage/course-management", icon: faGraduationCap },
+        { title: "Department Management", path: "/manage/dept-management", icon: faUniversity },
         { title: "Achievement Management", path: "/manage/manage-ach", icon: faTrophy },
         { title: "Announcement Management", path: "/manage/manage-ann", icon: faBullhorn },
         { title: "Document Management", path: "/manage/manage-docs", icon: faFolderOpen },
+        { title: "Calendar Management", path: "/manage/manage-calendar", icon: faCalendarAlt },
+        
     ];
 
     return (

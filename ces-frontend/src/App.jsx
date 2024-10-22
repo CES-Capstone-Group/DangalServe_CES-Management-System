@@ -57,6 +57,7 @@ import MyProfilePage from './components/MyProfilePage.jsx';
 import EvalSelect from './components/EvalSelect.jsx';
 import DemoCalendar from './components/CalendarDemo/DemoCalendar.jsx';
 import ManageCalendar from './components/ManageCalendar.jsx';
+import ManageCourse from './components/ManageCourse.jsx';
 
 
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
             <Route path='manage-docs' element={<ManageDocuments />} />
             <Route path='brgy-management' element={<BrgyManagement />} />
             <Route path='dept-management' element={<DepartmentManagement />} />
+            <Route path='course-management' element={<ManageCourse />} />
             <Route path='manage-calendar' element={<ManageCalendar />} />
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>

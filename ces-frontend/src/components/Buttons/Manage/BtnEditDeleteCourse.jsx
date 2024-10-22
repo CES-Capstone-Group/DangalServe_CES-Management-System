@@ -1,0 +1,143 @@
+import React, { useState } from "react";
+import { Button, Row, Col, Form, Modal } from "react-bootstrap";
+
+const BtnEditDeleteCourse = ({ deptId, deptName: initialDeptName, onDepartmentUpdated }) => {  // <-- Changed `initialDeptName` prop
+    const [showEdit, setShowEdit] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [deptName, setDeptName] = useState("");  // State for department name
+
+    // **Open/Close Edit Modal with Prefilled Values**
+    const handleShowEdit = () => {
+        setDeptName(initialDeptName);  // Set current `deptName` from props
+        setShowEdit(true);
+    };
+    const handleCloseEdit = () => setShowEdit(false);
+
+    // Open/Close Delete Confirmation Modal
+    const handleShowDeleteConfirm = () => setShowDeleteConfirm(true);
+    const handleCloseDeleteConfirm = () => setShowDeleteConfirm(false);
+
+    // **Handle Edit Form Submission**
+    // const handleEditSubmit = async () => {
+    //     const formData = { dept_name: deptName };  // Create form data for department
+
+    //     try {
+    //         const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
+    //             method: "PUT",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify(formData),  // Convert formData to JSON
+    //         });
+
+    //         if (response.ok) {
+    //             alert("Department updated successfully!");
+    //             handleCloseEdit();  // Close edit modal on success
+    //             onDepartmentUpdated();  // Trigger callback to refresh parent component
+    //         } else {
+    //             const data = await response.json();
+    //             alert(`Failed to update department: ${JSON.stringify(data)}`);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error updating department:", error);
+    //     }
+    // };
+
+    // **Handle Delete Functionality**
+    // const handleDelete = async () => {
+    //     try {
+    //         console.log(`Deleting department with ID: ${deptId}`);
+
+    //         const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
+    //             method: "DELETE",
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //         });
+
+    //         if (response.ok) {
+    //             alert("Department deleted successfully!");
+    //             handleCloseDeleteConfirm();  // Close delete modal on success
+    //             onDepartmentUpdated();  // Trigger callback to refresh parent component
+    //         } else {
+    //             const data = await response.json();
+    //             console.log("Failed to delete:", data);
+    //             alert(`Failed to delete department: ${JSON.stringify(data)}`);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error deleting department:", error);
+    //     }
+    // };
+
+    return (
+        <>
+            {/* Edit and Delete Buttons */}
+            <Button className="shadow" onClick={handleShowEdit} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '15px', fontSize: '20px' }}>
+                Edit
+            </Button>
+            <Button className="shadow" onClick={handleShowDeleteConfirm} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '20px' }}>
+                Delete
+            </Button>
+
+            {/* **Edit Department Modal with Prefilled Values** */}
+            <Modal size="lg" centered show={showEdit} onHide={handleCloseEdit} backdrop="static">
+                <Modal.Header closeButton>
+                    <h1>Edit Course</h1>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>
+                                Course Id:
+                            </Form.Label>
+                            <Col sm={8}>
+                                <Form.Control type="text" name="deptId" value={"***"} disabled /> {/* Display ID */}
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>
+                                Course Name:
+                            </Form.Label>
+                            <Col sm={8}>
+                                <Form.Control
+                                    type="text"
+                                    name="deptName"
+                                    value={"*******"}  // Prefill current name
+                                    onChange={(e) => setDeptName(e.target.value)}  // Handle name change
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={/* handleEditSubmit */ handleCloseEdit} variant='success'>
+                        Save Changes
+                    </Button>
+                    <Button onClick={handleCloseEdit} variant="danger">
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* **Delete Confirmation Modal** */}
+            {/* <Modal size="m" centered show={showDeleteConfirm} onHide={handleCloseDeleteConfirm} backdrop="static">
+                <Modal.Header closeButton>
+                    <h4>Confirm Deletion</h4>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you sure you want to delete this Department?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={handleDelete/} variant="danger">
+                        Yes, Delete
+                    </Button>
+                    <Button onClick={handleCloseDeleteConfirm} variant="secondary">
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal> */}
+        </>
+    );
+};
+
+export default BtnEditDeleteCourse;

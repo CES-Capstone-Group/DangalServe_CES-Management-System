@@ -8,10 +8,11 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [activityTitle, setActivityTitle] = useState(""); // For capturing activity title
     const [targetTime, setTargetTime] = useState(""); // For capturing target time  
     const [manualDate, setManualDate] = useState(selectedDate || new Date().toISOString().split('T')[0]); // Default to today's date if not selected
+    const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
 
     // Handle adding new event when form is submitted in modal
     const handleAddSchedule = () => {
-        if (!activityTitle || !manualDate || !targetTime) {
+        if (!activityTitle || !manualDate || !targetTime || !proposalTitle) {
             alert("Please fill in all the details.");
             return;
         }
@@ -20,20 +21,21 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
         const eventStart = `${manualDate}T${targetTime}`;
 
         const newEvent = {
-            title: activityTitle,
-            start: eventStart, // Combine the date and time
+            title: activityTitle,  // Use Activity Title for the event's main title
+            start: eventStart,
+            extendedProps: {
+                proposal: proposalTitle  // Store Proposal Title in extendedProps
+            }
         };
 
-        // Pass new event to parent to add it to FullCalendar
-        addNewEvent(newEvent);
-
-        // Close the modal after adding the event
+        addNewEvent(newEvent);  // Pass the new event data to FullCalendar
         handleCloseModal();
 
         // Reset form fields
         setActivityTitle("");
         setTargetTime("");
-        setManualDate(new Date().toISOString().split('T')[0]); // Reset to today's date
+        setManualDate(new Date().toISOString().split('T')[0]);
+        setProposalTitle("");  // Reset the proposal title
     };
 
     // Handle adding a new file input field
@@ -54,7 +56,6 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
 
     return (
         <div className="d-flex justify-content-start m-3">
-            {/* This Add Schedule button now opens the modal */}
             <div>
                 <Button
                     style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }}
@@ -72,13 +73,16 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                 </Modal.Header>
                 <Modal.Body className="">
                     <Form>
-                        <Form.Group as={Row} className="mb-3" controlId="ActivityTitle">
-                            <Form.Label column sm={2} className="h5">Proposal:</Form.Label>
+                        <Form.Group className="mb-3" as={Row} controlId="proposalTitle">
+                            <Form.Label column sm={2}>Proposal:</Form.Label>
                             <Col>
-                                <Form.Select>
-                                    <option label="Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" type="checkbox" />
-                                    <option label="Healthy Community, Healthy Families: Empowering Individuals Through Health and Wellness Education and Training" type="checkbox" />
-    
+                                <Form.Select
+                                    value={proposalTitle}
+                                    onChange={(e) => setProposalTitle(e.target.value)}  // Bind to state
+                                >
+                                    <option value="" disabled>Select Proposal</option>
+                                    <option value="Green Community Initiative">Green Community Initiative</option>
+                                    <option value="Healthy Community">Healthy Community</option>
                                 </Form.Select>
                             </Col>
                         </Form.Group>

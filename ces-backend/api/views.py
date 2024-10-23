@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Achievement, Announcement, Account, ActivitySchedule, Barangay, Department, Document, ResearchAgenda, BarangayApproval
-from .serializer import AchievementSerializer, AnnouncementSerializer, ActivityScheduleSerializer, BarangaySerializer, DepartmentSerializer, DocumentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
+from .models import Achievement, Announcement, Account, ActivitySchedule, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
+from .serializer import AchievementSerializer, AnnouncementSerializer, ActivityScheduleSerializer, BarangaySerializer, CourseSerializer, DepartmentSerializer, DocumentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
 # from .models import CustomAuthToken
@@ -237,6 +237,45 @@ def update_delete_department(request, pk):
         department.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# COURSE VIEWS
+# GET: Retrieve all courses
+@api_view(['GET'])
+def get_courses(request):
+    courses = Course.objects.all()
+    serializer = CourseSerializer(courses, many=True)
+    return Response(serializer.data)
+
+# POST: Create a new course
+@api_view(['POST'])
+def create_course(request):
+    serializer = CourseSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# GET, PUT, DELETE: Retrieve, update, or delete a single course by course_id
+@api_view(['GET', 'PUT', 'DELETE'])
+def course_detail(request, course_id):
+    try:
+        course = Course.objects.get(course_id=course_id)
+    except Course.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CourseSerializer(course)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CourseSerializer(course, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        course.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # RESEARCH AGENDA VIEWS

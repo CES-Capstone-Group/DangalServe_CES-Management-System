@@ -245,6 +245,15 @@ def get_courses(request):
     serializer = CourseSerializer(courses, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_courses_by_department(request, dept_id):
+    try:
+        courses = Course.objects.filter(dept__dept_id=dept_id)  # Filter courses by department ID
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
+    except Department.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 # POST: Create a new course
 @api_view(['POST'])
 def create_course(request):

@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
-import bcrypt from 'bcryptjs';  // Import bcryptjs
 
 const BtnAddAcc = ({ onAccountAdded }) => {
     const [showModal, setShowModal] = useState(false);
+    const [departments, setDepartments] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [barangays, setBarangays] = useState([]);
+    const [filteredCourses, setFilteredCourses] = useState([]);
+    const [userChangedDepartment, setUserChangedDepartment] = useState(false);
 
     const getCurrentDate = () => {
         const today = new Date();
         const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
         const dd = String(today.getDate()).padStart(2, '0');
         return `${yyyy}-${mm}-${dd}`;
     };
@@ -17,36 +21,75 @@ const BtnAddAcc = ({ onAccountAdded }) => {
         username: '',
         name: '',
         password: '',
-        accountType: 'Admin', // Default value
+        accountType: 'Admin',
         department: '',
+        course: '',
         position: '',
+        barangay: '',
         activationDate: getCurrentDate(),
         deactivationDate: '',
-        status: 'Active', // Default value
+        status: 'Active',
     });
 
-    const [userChangedDepartment, setUserChangedDepartment] = useState(false);
-
+    // Fetch departments
     useEffect(() => {
-        if (!userChangedDepartment) {
-            if (formData.accountType === 'Brgy. Official') {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    department: 'Baclaran', 
-                }));
-            } else if (formData.accountType === 'Proponent') {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    department: 'Bachelor of Science in Computer Science', 
-                }));
-            } else {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    department: '', 
-                }));
+        const fetchDepartments = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/departments/');
+                if (response.ok) {
+                    const data = await response.json();
+                    setDepartments(data);
+                } else {
+                    console.error("Failed to fetch departments");
+                }
+            } catch (error) {
+                console.error("Error fetching departments:", error);
             }
-        }
-    }, [formData.accountType, userChangedDepartment]);
+        };
+        fetchDepartments();
+    }, []);
+
+    // Fetch courses
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/courses/');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCourses(data);
+                } else {
+                    console.error("Failed to fetch courses");
+                }
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+            }
+        };
+        fetchCourses();
+    }, []);
+
+    //fetch barangays
+    useEffect(() => {
+        const fetchBarangays = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+                if (response.ok) {
+                    const data = await response.json();
+                    setBarangays(data);
+                } else {
+                    console.error("Failed to fetch departments");
+                }
+            } catch (error) {
+                console.error("Error fetching departments:", error);
+            }
+        };
+        fetchBarangays();
+    }, []);
+
+    // Update filtered courses when department changes
+    useEffect(() => {
+        const filtered = courses.filter(course => course.department_id === formData.department);
+        setFilteredCourses(filtered);
+    }, [formData.department, courses]);
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => {
@@ -59,12 +102,14 @@ const BtnAddAcc = ({ onAccountAdded }) => {
             password: '',
             accountType: 'Admin',
             department: '',
+            course: '',
             position: '',
+            barangay: '',
             activationDate: getCurrentDate(),
             deactivationDate: '',
             status: 'Active',
         });
-    }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,8 +117,27 @@ const BtnAddAcc = ({ onAccountAdded }) => {
             ...prevState,
             [name]: value || null
         }));
+    
         if (name === 'department') {
             setUserChangedDepartment(true);
+            setFormData(prevState => ({
+                ...prevState,
+                course: '', // Reset course selection when department changes
+            }));
+    
+            // Fetch courses based on department selection
+            if (value) {
+                fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFilteredCourses(data);  // Update the filtered courses state
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching courses:", error);
+                    });
+            } else {
+                setFilteredCourses([]);  // Clear courses if no department selected
+            }
         }
     };
 
@@ -81,7 +145,6 @@ const BtnAddAcc = ({ onAccountAdded }) => {
         e.preventDefault();
         const dataToSend = {
             ...formData,
-            
             deactivationDate: formData.deactivationDate || null,
         };
         try {
@@ -119,6 +182,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                     <Button onClick={handleCloseModal} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
                     <Modal.Title> Add New Account </Modal.Title>
                 </Modal.Header>
+
                 <Modal.Body>
                     <Form>
                         <Form.Group as={Row} className="mb-3">
@@ -182,32 +246,65 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                             </Col>
                         </Form.Group>
 
-                        {(formData.accountType === "Brgy. Official" || formData.accountType === "Proponent") && (
+                        {/* Proponent Account Type */}
+                        {formData.accountType === "Proponent" && (
+                            <>
+                                <Form.Group as={Row} className="mb-3">
+                                    <Form.Label column sm={4}>Department</Form.Label>
+                                    <Col sm={8}>
+                                        <Form.Select 
+                                            name="department" 
+                                            value={formData.department}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Select Department</option>
+                                            {departments.map(dept => (
+                                                <option key={dept.dept_id} value={dept.dept_id}>
+                                                    {dept.dept_name}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Col>
+                                </Form.Group>
+
+                                {formData.department && (
+                                    <Form.Group as={Row} className="mb-3">
+                                        <Form.Label column sm={4}>Course</Form.Label>
+                                        <Col sm={8}>
+                                            <Form.Select
+                                                name="course"
+                                                value={formData.course}
+                                                onChange={handleChange}
+                                            >
+                                                <option value="">Select Course</option>
+                                                {filteredCourses.map(course => (
+                                                    <option key={course.course_id} value={course.course_id}>
+                                                        {course.course_name}
+                                                    </option>
+                                                ))}
+                                            </Form.Select>
+                                        </Col>
+                                    </Form.Group>
+                                )}
+                            </>
+                        )}
+
+                        {/* Barangay Official Account Type */}
+                        {formData.accountType === "Brgy. Official" && (
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={4}>Department</Form.Label>
-                                <Col sm={8}>
-                                    <Form.Select
-                                        name="department" 
-                                        value={formData.department}
+                                <Form.Label column sm={4}>Barangay</Form.Label>
+                                <Col sm={8}>                                        
+                                    <Form.Select 
+                                        name="barangay" 
+                                        value={formData.barangay}
                                         onChange={handleChange}
                                     >
-                                        {formData.accountType === "Brgy. Official" ? (
-                                            <>
-                                                <option value="Baclaran">Baclaran</option>
-                                                <option value="Bigaa">Bigaa</option>
-                                                <option value="Diezmo">Diezmo</option>
-                                                <option value="Sala">Sala</option>
-                                                <option value="San Isidro">San Isidro</option>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <option value="Bachelor of Science in Computer Science">Bachelor of Science in Computer Science</option>
-                                                <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
-                                                <option value="Bachelor of Science in Accounting">Bachelor of Science in Accounting</option>
-                                                <option value="Bachelor of Science in Nursing">Bachelor of Science in Nursing</option>
-                                                <option value="Bachelor of Science in Industrial Engineering">Bachelor of Science in Industrial Engineering</option>
-                                            </>
-                                        )}
+                                        <option value="">Select Barangay</option>
+                                        {barangays.map(b => (
+                                            <option key={b.id} value={b.brgy_name}>
+                                                {b.brgy_name}
+                                            </option>
+                                        ))}
                                     </Form.Select>
                                 </Col>
                             </Form.Group>

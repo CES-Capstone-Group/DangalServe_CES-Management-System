@@ -5,6 +5,8 @@ import { faCheck, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 
+import { useUser } from './UserContext';
+
 const MyProfilePage = () => {
     const [isEditingName, setIsEditingName] = useState(false);
     const [accountName, setAccountName] = useState('');
@@ -16,6 +18,7 @@ const MyProfilePage = () => {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [originalName, setOriginalName] = useState(''); // Store original name for cancel
 
+    const { loggedUser, setLoggedUser } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -52,6 +55,7 @@ const MyProfilePage = () => {
                 localStorage.setItem('access_token', result.access_token);
                 localStorage.setItem('refresh_token', result.refresh_token);
                 alert('Name updated successfully');
+                setLoggedUser(accountName);
                 setIsEditingName(false);
             } else {
                 throw new Error('Failed to update name');

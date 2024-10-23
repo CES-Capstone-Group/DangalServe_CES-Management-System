@@ -131,6 +131,14 @@ class Announcement(models.Model):
         return self.title
 
 
+class Document(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='documents/')  # Files will be uploaded to the 'documents/' folder
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
 
 
 from django.db import models
@@ -293,3 +301,14 @@ class Signatory(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.position}) - {self.section}'
+
+
+class ActivitySchedule(models.Model):
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)  # Foreign key to the Proposal table
+    activity_title = models.CharField(max_length=255)
+    target_date = models.DateField()
+    target_time = models.TimeField(null=True, blank=True)
+    file = models.FileField(upload_to='activity_files/', max_length=25, null=True, blank=True)
+
+    def __str__(self):
+        return self.activity_title

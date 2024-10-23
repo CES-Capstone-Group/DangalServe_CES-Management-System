@@ -76,9 +76,9 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                             <Form.Label column sm={2} className="h5">Proposal:</Form.Label>
                             <Col>
                                 <Form.Select>
-                                    <option label="Community Cleanup Drive" type="checkbox" />
-                                    <option label="Tree Planting" type="checkbox" />
-                                    <option label="Technology Education" type="checkbox" />
+                                    <option label="Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" type="checkbox" />
+                                    <option label="Healthy Community, Healthy Families: Empowering Individuals Through Health and Wellness Education and Training" type="checkbox" />
+    
                                 </Form.Select>
                             </Col>
                         </Form.Group>

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, Announcement, Barangay, Department, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
+from .models import Account, Achievement, ActivitySchedule, Announcement, Barangay, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -120,6 +120,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         if obj.image:
             return request.build_absolute_uri(obj.image.url)
         return None
+
+class DocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = ['id', 'title', 'file', 'uploaded_at']
+
 class ProposalVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProposalVersion
@@ -188,3 +194,10 @@ class BarangayApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = BarangayApproval
         fields = ['barangay_name', 'status', 'sign_date', 'remarks']
+
+class ActivityScheduleSerializer(serializers.ModelSerializer):
+    proposal_title = serializers.ReadOnlyField(source='proposal.title')  # This will retrieve the title from the Proposal model
+
+    class Meta:
+        model = ActivitySchedule
+        fields = ['id', 'proposal', 'proposal_title', 'activity_title', 'target_date', 'target_time', 'file']

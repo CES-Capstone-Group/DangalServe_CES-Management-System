@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 
-const BtnAddDocument = ({ onDocumentAdded }) => {  // <-- Added `onDepartmentAdded` prop
+const BtnAddDocument = ({ onDocumentAdded }) => {
     const [showModal, setShowModal] = useState(false);
-    const [documentName, setDocumentName] = useState("");  // <-- State for document name
-    const [documentFile, setDocumentFile] = useState("");  // <-- Set Document File 
+    const [documentTitle, setDocumentTitle] = useState("");  // <-- Changed to `documentTitle`
+    const [documentFile, setDocumentFile] = useState(null);  // <-- Set Document File 
 
     // Open the modal
     const handleShowModal = () => setShowModal(true);
@@ -12,20 +12,25 @@ const BtnAddDocument = ({ onDocumentAdded }) => {  // <-- Added `onDepartmentAdd
     // Close the modal and reset form fields
     const handleCloseModal = () => {
         setShowModal(false);
-        setDocumentName("");  // Reset department name
+        setDocumentTitle("");  // Reset document title
+        setDocumentFile(null);  // Reset file selection
     };
 
     // **Function to handle form submission and backend integration**
     const handleSubmit = async () => {
-        const formData = { doc_name: documentName };  // Prepare data to send to backend
+        if (!documentTitle || !documentFile) {
+            alert("Please provide both a document title and a file.");
+            return;
+        }
+
+        const formData = new FormData();  // Prepare FormData to send both file and title
+        formData.append("title", documentTitle);  // Append document title, renamed to `title`
+        formData.append("file", documentFile);  // Append selected file, renamed to `file`
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/departments/create/", {  // Backend URL
+            const response = await fetch("http://127.0.0.1:8000/api/documents/upload/", {  // Backend URL
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",  // Specify the content type
-                },
-                body: JSON.stringify(formData),  // Convert formData to JSON
+                body: formData,  // Send FormData (not JSON)
             });
 
             if (response.ok) {
@@ -59,26 +64,27 @@ const BtnAddDocument = ({ onDocumentAdded }) => {  // <-- Added `onDepartmentAdd
                             <Col sm={8}>
                                 <Form.Control 
                                     type="text"
-                                    name="docName"
-                                    placeholder="Enter Department Name"
-                                    value={documentName}  // Link the state
-                                    onChange={(e) => setDocumentName(e.target.value)}  // Update state on change
+                                    name="docTitle"
+                                    placeholder="Enter Document Title"
+                                    value={documentTitle}  // Link the state
+                                    onChange={(e) => setDocumentTitle(e.target.value)}  // Update state on change
                                 />
                             </Col>
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Upload File:</Form.Label>
                             <Form.Control
                                  className="inputFile" 
                                  type="file" 
-                                 accept="image/*, application/pdf"
-                                 onChange={(e) => setDocumentFile(e.target.files[0])}  // <-- Handle file selection
+                                 accept="image/*, application/pdf, .docx"  // Accept image, PDF, DOCX formats
+                                 onChange={(e) => setDocumentFile(e.target.files[0])}  // Handle file selection
                             />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
 
                 <Modal.Footer className="d-flex justify-content-center">
-                    <Button onClick={handleSubmit} variant='success'>  {/* <-- Call handleSubmit on click */}
+                    <Button onClick={handleSubmit} variant='success'>  {/* Call handleSubmit on click */}
                         Save Changes
                     </Button>
                     <Button onClick={handleCloseModal} variant="danger">

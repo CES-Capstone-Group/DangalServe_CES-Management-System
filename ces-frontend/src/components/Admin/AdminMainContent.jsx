@@ -270,7 +270,7 @@ const AdminMainContent = () => {
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
 
-          {/* Add Research Agenda*/}
+          {/* Add Research Agenda
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Research Agendas</h3>
@@ -278,7 +278,7 @@ const AdminMainContent = () => {
                 <BtnAddResearchAgenda onResearchAgendaAdded={handleResearchAgendaAdded} />
               </div>
             </Col>
-          </Row>
+          </Row> */}
 
           <br />
 
@@ -295,7 +295,7 @@ const AdminMainContent = () => {
                       className="d-block w-100"
                       alt={agenda.label} />
 
-                    {/* Button Container */}
+                    {/* Button Container
                     <div className="carousel-buttons">
                       <Button
                         variant="link"
@@ -311,7 +311,7 @@ const AdminMainContent = () => {
                       >
                         <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
                       </Button>
-                    </div>
+                    </div> */}
 
                   </div>
                 ))
@@ -355,9 +355,9 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Achievements</h3>
-              <div className='d-flex'>
+              {/* <div className='d-flex'>
                 <BtnAddAchievement onAchievementAdded={handleAchievementAdded} />
-              </div>
+              </div> */}
             </Col>
           </Row>
 
@@ -372,7 +372,7 @@ const AdminMainContent = () => {
                     <Card.Img variant="top" className='conImg ' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}
                       style={{ cursor: 'pointer' }} />
 
-                    {/* Edit and Delete Icons */}
+                    {/* Edit and Delete Icons
                     <div className="d-flex position-absolute top-0 end-0 m-1">
                       <Button
                         variant="link"
@@ -389,7 +389,7 @@ const AdminMainContent = () => {
                       >
                         <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
                       </Button>
-                    </div>
+                    </div> */}
 
                     <Card.Body>
                       <Card.Title style={{ fontStyle: 'bold' }}>{achievement.award_title}</Card.Title>
@@ -442,9 +442,9 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Announcements</h3>
-              <div className='d-flex'>
+              {/* <div className='d-flex'>
                 <BtnAddAnnouncement onAnnouncementAdded={handleAnnouncementAdded} />
-              </div>
+              </div> */}
             </Col>
           </Row>
 
@@ -463,7 +463,7 @@ const AdminMainContent = () => {
                       onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}
                       style={{ cursor: 'pointer' }} />
 
-                    <div className="d-flex position-absolute top-0 end-0 m-1">
+                    {/* <div className="d-flex position-absolute top-0 end-0 m-1">
                       <Button
                         variant="link"
                         className="p-0 me-3"
@@ -478,7 +478,7 @@ const AdminMainContent = () => {
                       >
                         <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
                       </Button>
-                    </div>
+                    </div> */}
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
                       <Card.Text className='truncate-text'>{announcement.details}</Card.Text>

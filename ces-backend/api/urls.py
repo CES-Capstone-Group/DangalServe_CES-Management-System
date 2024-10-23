@@ -68,5 +68,15 @@ urlpatterns = [
     path('announcements/', views.get_announcement, name='announcement-list'),
     path('announcements/create/', views.create_announcement, name='announcement-create'),
     path('announcements/<int:pk>/', views.announcement_detail, name='announcement-detail'),
+
+    # ActivitySchedule URLs
+    path('activity-schedules/', views.get_all_activity_schedules, name='get-all-activity-schedules'),
+    path('activity-schedules/<int:pk>/', views.get_activity_schedule_detail, name='get-activity-schedule-detail'),
+    path('activity-schedules/create/', views.create_activity_schedule, name='create-activity-schedule'),
+
+    #Documents URLs
+    path('documents/', views.get_all_documents, name='get_all_documents'),
+    path('documents/upload/', views.upload_document, name='upload_document'),
+    path('documents/delete/<int:pk>/', views.delete_document, name='delete_document'),
 ]
 

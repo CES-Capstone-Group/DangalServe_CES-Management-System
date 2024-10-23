@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Achievement, Announcement, Account, Barangay, Department, ResearchAgenda, BarangayApproval
-from .serializer import AchievementSerializer, AnnouncementSerializer, BarangaySerializer, DepartmentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
+from .models import Achievement, Announcement, Account, ActivitySchedule, Barangay, Department, Document, ResearchAgenda, BarangayApproval
+from .serializer import AchievementSerializer, AnnouncementSerializer, ActivityScheduleSerializer, BarangaySerializer, DepartmentSerializer, DocumentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
 # from .models import CustomAuthToken
@@ -362,6 +362,64 @@ def announcement_detail(request, pk):
             return Response(serializedData.data)
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
     
+# POST view for creating a new ActivitySchedule
+@api_view(['POST'])
+def create_activity_schedule(request):
+    serializedData = ActivityScheduleSerializer(data=request.data, context={'request': request})
+    if serializedData.is_valid():
+        serializedData.save()
+        return Response(serializedData.data, status=status.HTTP_201_CREATED)
+    return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# GET view for retrieving all ActivitySchedules
+@api_view(['GET'])
+def get_all_activity_schedules(request):
+    activity_schedules = ActivitySchedule.objects.all()
+    serializedData = ActivityScheduleSerializer(activity_schedules, many=True, context={'request': request})
+    return Response(serializedData.data)
+
+# GET view for retrieving a specific ActivitySchedule by ID
+@api_view(['GET'])
+def get_activity_schedule_detail(request, pk):
+    try:
+        activity_schedule = ActivitySchedule.objects.get(pk=pk)
+    except ActivitySchedule.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializedData = ActivityScheduleSerializer(activity_schedule, context={'request': request})
+    return Response(serializedData.data)
+
+
+
+# GET: Retrieve all documents
+@api_view(['GET'])
+def get_all_documents(request):
+    documents = Document.objects.all()
+    serializer = DocumentSerializer(documents, many=True)
+    return Response(serializer.data)
+
+# POST: Create a new document
+@api_view(['POST'])
+def upload_document(request):
+    serializer = DocumentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# DELETE: Delete a specific document
+@api_view(['DELETE'])
+def delete_document(request, pk):
+    try:
+        document = Document.objects.get(pk=pk)
+    except Document.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    document.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 from rest_framework import generics
 from .models import Proposal, ProposalVersion
 from .serializer import ProposalSerializer, ProposalVersionSerializer
@@ -663,7 +721,14 @@ class DownloadProposalDoc(APIView):
                 
                 return response
         else:
+<<<<<<< Updated upstream
             return Response({"error": "Document generation failed"}, status=500)
 
 
 
+=======
+            # print('Document generation failed')
+            return Response({"error": "Document generation failed"}, status=500)
+
+
+>>>>>>> Stashed changes

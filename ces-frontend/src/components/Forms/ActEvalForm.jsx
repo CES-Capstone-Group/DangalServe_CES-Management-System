@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap';
 
 const ActEvalForm = () => {
 
     const navigate = useNavigate();
+    const [showPrompt, setShowPrompt] = useState(false); // State to manage the success prompt
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Show native alert dialog
+        window.alert("Your response has been submitted successfully!");
+
+        // Navigate back after alert is closed
+        navigate(-1);
+    };
 
     return (
         <Container>
             <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader'>Activity Evaluation Form</h2>
-            <Form className='form'>
+            <Form className='form' onSubmit={handleSubmit}>
                 <Form.Group as={Row} controlId="formDivisionDepartment" className="mb-4">
                     <Form.Label column sm={3}>Name of the Division/Department/
                         Organizing Team</Form.Label>

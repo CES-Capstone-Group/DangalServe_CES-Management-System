@@ -721,14 +721,7 @@ class DownloadProposalDoc(APIView):
                 
                 return response
         else:
-<<<<<<< Updated upstream
             return Response({"error": "Document generation failed"}, status=500)
 
 
 
-=======
-            # print('Document generation failed')
-            return Response({"error": "Document generation failed"}, status=500)
-
-
->>>>>>> Stashed changes

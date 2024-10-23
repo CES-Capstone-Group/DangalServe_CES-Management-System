@@ -27,22 +27,14 @@ const ProposalPB = ({ status }) => {
                     <h6 className="h6"> Signed By Barangay</h6>
                 </Col>
             </Row>
-<<<<<<< Updated upstream
             <Row className="mb-3 align-items-center">
-=======
-            <Row className="mb-3 justify-content-center align-items-center">
->>>>>>> Stashed changes
                 <Col>
                     {/* Director's Approval */}
                     <ProgressBar variant={isDirectorApproved ? "success" : "danger"} now={isDirectorApproved ? 100 : 0} style={{ height: '1px' }} />
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-<<<<<<< Updated upstream
                     <FontAwesomeIcon className={isDirectorApproved ? "text-success" : "text-danger"} icon={isDirectorApproved ? faCheckCircle : faXmarkCircle} size="3x" />
-=======
-                    <FontAwesomeIcon variant={isDirectorApproved ? "success" : "danger"} icon={isDirectorApproved ? faCheckCircle : faXmarkCircle} size="3x" />
->>>>>>> Stashed changes
                 </Col>
 
                 <Col>
@@ -51,11 +43,7 @@ const ProposalPB = ({ status }) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-<<<<<<< Updated upstream
                     <FontAwesomeIcon className={isVPREApproved ? "text-success" : "text-danger"} icon={isVPREApproved ? faCheckCircle : faXmarkCircle} size="3x" />
-=======
-                    <FontAwesomeIcon  variant={isVPREApproved ? "success" : "danger"}  icon={isVPREApproved ? faCheckCircle : faXmarkCircle} size="3x" />
->>>>>>> Stashed changes
                 </Col>
 
                 <Col>
@@ -64,11 +52,7 @@ const ProposalPB = ({ status }) => {
                 </Col>
 
                 <Col xs="auto" className="d-flex justify-content-center align-items-center">
-<<<<<<< Updated upstream
                     <FontAwesomeIcon className={isPresidentApproved ? "text-success" : "text-danger"} icon={isPresidentApproved ? faCheckCircle : faXmarkCircle} size="3x" />
-=======
-                    <FontAwesomeIcon variant={isPresidentApproved ? "success" : "danger"} icon={isPresidentApproved ? faCheckCircle : faXmarkCircle} size="3x" />
->>>>>>> Stashed changes
                 </Col>
 
                 <Col>

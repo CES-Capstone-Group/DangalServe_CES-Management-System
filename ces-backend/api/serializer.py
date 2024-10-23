@@ -74,12 +74,6 @@ class BarangaySerializer(serializers.ModelSerializer):
         model = Barangay
         fields = ['id', 'brgy_name', 'moa']  # Specify the fields you want to serialize
 
-# Serializer for the Department model
-class DepartmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields = ['dept_id', 'dept_name']  # Specify the fields to be included in the serializer
-
 # Serializer for the Course model
 class CourseSerializer(serializers.ModelSerializer):
     dept_name = serializers.CharField(source='dept.dept_name', read_only=True)  # Display department name
@@ -87,6 +81,13 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['course_id', 'course_name', 'dept', 'dept_name']  
+class DepartmentSerializer(serializers.ModelSerializer):
+# Serializer for the Department model
+    courses = CourseSerializer(many=True, read_only=True) 
+
+    class Meta:
+        model = Department
+        fields = ['dept_id', 'dept_name', 'courses']
 
 
 # Serializer for ResearchAgenda model

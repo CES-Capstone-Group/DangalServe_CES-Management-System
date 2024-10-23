@@ -51,6 +51,7 @@ urlpatterns = [
     path('departments/', views.get_departments, name='department-list'),  # List all departments
     path('departments/create/', views.create_department, name='department-create'),  # Create a new department
     path('departments/<int:dept_id>/', views.update_delete_department, name='update_delete_department'),  # Retrieve, update, or delete a single department
+    path('departments/<int:dept_id>/courses/', views.get_courses_by_department, name='get_courses_by_department'),  # New URL to get courses by department
     
     #Course Paths
     path('courses/', views.get_courses, name='get-courses'),  # GET: List all courses

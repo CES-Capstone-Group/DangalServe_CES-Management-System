@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
 import BtnEditDeleteCourse from "./Buttons/Manage/BtnEditDeleteCourse";
+import BtnAddCourse from "./Buttons/Manage/BtnAddCourse";
 
 
 const ManageCourse = () => {
@@ -116,7 +117,7 @@ const ManageCourse = () => {
                 </Col>
             </Row>
             <Row>
-                <Col><h1>Achievement Management</h1></Col>
+                <Col><h1>Course Management</h1></Col>
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
@@ -137,6 +138,7 @@ const ManageCourse = () => {
             </Row>
 
             <NewTable data={array} />
+            <BtnAddCourse />
         </Container>
     );
 };

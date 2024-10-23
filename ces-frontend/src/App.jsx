@@ -58,6 +58,7 @@ import EvalSelect from './components/EvalSelect.jsx';
 import DemoCalendar from './components/CalendarDemo/DemoCalendar.jsx';
 import ManageCalendar from './components/ManageCalendar.jsx';
 import ManageCourse from './components/ManageCourse.jsx';
+import ManageResponse from './components/ManageResponse.jsx';
 
 
 const App = () => {
@@ -84,6 +85,7 @@ const App = () => {
             <Route path='dept-management' element={<DepartmentManagement />} />
             <Route path='course-management' element={<ManageCourse />} />
             <Route path='manage-calendar' element={<ManageCalendar />} />
+            <Route path='manage-response' element={<ManageResponse />} />
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />
@@ -139,7 +141,7 @@ const App = () => {
 
         {/* Evaluator Routes - Only accessible to Evaluators */}
         {/* <Route element={<PrivateRoute allowedRoles={['Evaluator']} />}> */}
-        <Route path='/eval' element={<EvalSelect />}>
+        <Route path='/eval' element={<UserEvalPage />}>
           <Route index element={<EvalSelect />} />
           <Route path='dashboard' element={<MainContent />} />
           <Route path='eval-page' element={<EvalPage />} />

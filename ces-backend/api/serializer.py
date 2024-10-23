@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, ActivitySchedule, Announcement, Barangay, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
+from .models import Account, Achievement, ActivitySchedule, Announcement, Barangay, Course, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -78,7 +78,16 @@ class BarangaySerializer(serializers.ModelSerializer):
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['id', 'dept_name']  # Specify the fields to be included in the serializer
+        fields = ['dept_id', 'dept_name']  # Specify the fields to be included in the serializer
+
+# Serializer for the Course model
+class CourseSerializer(serializers.ModelSerializer):
+    dept_name = serializers.CharField(source='dept.dept_name', read_only=True)  # Display department name
+
+    class Meta:
+        model = Course
+        fields = ['course_id', 'course_name', 'dept', 'dept_name']  
+
 
 # Serializer for ResearchAgenda model
 class ResearchAgendaSerializer(serializers.ModelSerializer):

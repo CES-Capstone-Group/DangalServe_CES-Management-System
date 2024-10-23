@@ -99,11 +99,20 @@ class Barangay(models.Model):
 
 # Department Model
 class Department(models.Model):
-    id = models.AutoField(primary_key=True)  # Auto-incrementing ID
+    dept_id = models.AutoField(primary_key=True)  # Auto-incrementing ID
     dept_name = models.CharField(max_length=100)  # Department Name
 
     def __str__(self):
         return self.dept_name
+
+#Course Model
+class Course(models.Model):
+    course_id = models.AutoField(primary_key=True)  # Auto-incrementing primary key
+    course_name = models.CharField(max_length=100)
+    dept = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='courses')
+
+    def __str__(self):
+        return self.course_name
 
 class ResearchAgenda(models.Model):
     label = models.CharField(max_length=255, null=True, blank=True)

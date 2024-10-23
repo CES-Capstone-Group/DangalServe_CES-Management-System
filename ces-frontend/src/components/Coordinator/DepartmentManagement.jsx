@@ -65,8 +65,8 @@ const DepartmentManagement = () => {
                 <tbody>
                     {data.map((row) => (
                         <Rows
-                            key={row.id}  // Use a unique ID for each row
-                            dept_id={row.id}  // Pass department ID
+                            key={row.dept_id}  // Use a unique ID for each row
+                            dept_id={row.dept_id}  // Pass department ID
                             dept_name={row.dept_name}  // Pass department name
                         />
                     ))}

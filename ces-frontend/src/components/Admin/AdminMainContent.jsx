@@ -269,17 +269,6 @@ const AdminMainContent = () => {
       <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>
-
-          {/* Add Research Agenda
-          <Row>
-            <Col className="d-flex justify-content-between align-items-center">
-              <h3>Research Agendas</h3>
-              <div className='d-flex'>
-                <BtnAddResearchAgenda onResearchAgendaAdded={handleResearchAgendaAdded} />
-              </div>
-            </Col>
-          </Row> */}
-
           <br />
 
           {/* Carousel Section */}
@@ -294,25 +283,6 @@ const AdminMainContent = () => {
                       src={agenda.image_url || '/placeholder.png'}
                       className="d-block w-100"
                       alt={agenda.label} />
-
-                    {/* Button Container
-                    <div className="carousel-buttons">
-                      <Button
-                        variant="link"
-                        className="p-0 me-3"
-                        onClick={() => editResearchAgenda(agenda)}
-                      >
-                        <FontAwesomeIcon icon={faEdit} size="lg" color="#A7C7E7" />
-                      </Button>
-                      <Button
-                        variant="link"
-                        className="p-0"
-                        onClick={() => deleteResearchAgenda(agenda.id)}
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
-                      </Button>
-                    </div> */}
-
                   </div>
                 ))
               ) : (
@@ -355,9 +325,6 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Achievements</h3>
-              {/* <div className='d-flex'>
-                <BtnAddAchievement onAchievementAdded={handleAchievementAdded} />
-              </div> */}
             </Col>
           </Row>
 
@@ -371,25 +338,6 @@ const AdminMainContent = () => {
                   <Card className="position-relative mb-3" style={{ height: "27rem", msOverflowY: "auto"  }} id='conCard'>
                     <Card.Img variant="top" className='conImg ' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}
                       style={{ cursor: 'pointer' }} />
-
-                    {/* Edit and Delete Icons
-                    <div className="d-flex position-absolute top-0 end-0 m-1">
-                      <Button
-                        variant="link"
-                        className="p-0 me-3"
-                        onClick={() => editAchievement(achievement)}  // Open modal when clicked
-                      >
-                        <FontAwesomeIcon icon={faEdit} size="lg" color="#A7C7E7" />
-                      </Button>
-
-                      <Button
-                        variant="link"
-                        className="p-0"
-                        onClick={() => deleteAchievement(achievement.id)}  // Trigger delete action
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
-                      </Button>
-                    </div> */}
 
                     <Card.Body>
                       <Card.Title style={{ fontStyle: 'bold' }}>{achievement.award_title}</Card.Title>
@@ -442,9 +390,6 @@ const AdminMainContent = () => {
           <Row>
             <Col className="d-flex justify-content-between align-items-center">
               <h3>Announcements</h3>
-              {/* <div className='d-flex'>
-                <BtnAddAnnouncement onAnnouncementAdded={handleAnnouncementAdded} />
-              </div> */}
             </Col>
           </Row>
 
@@ -463,22 +408,6 @@ const AdminMainContent = () => {
                       onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}
                       style={{ cursor: 'pointer' }} />
 
-                    {/* <div className="d-flex position-absolute top-0 end-0 m-1">
-                      <Button
-                        variant="link"
-                        className="p-0 me-3"
-                        onClick={() => editAnnouncement(announcement)}  // Open modal for editing
-                      >
-                        <FontAwesomeIcon icon={faEdit} size="lg" color="#A7C7E7" />
-                      </Button>
-                      <Button
-                        variant="link"
-                        className="p-0"
-                        onClick={() => deleteAnnouncement(announcement.id)}  // Trigger delete action
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#ff6961" />
-                      </Button>
-                    </div> */}
                     <Card.Body>
                       <Card.Title>{announcement.title}</Card.Title>
                       <Card.Text className='truncate-text'>{announcement.details}</Card.Text>
@@ -505,16 +434,6 @@ const AdminMainContent = () => {
                 <p className="mt-3 text-justify">{selectedAnnouncement?.details}</p>
               </Modal.Body>
             </Modal>
-
-            {/* Announcement Edit Modal
-            {selectedAnnouncement && (
-              <BtnEditAnnouncement
-                show={showEditModalAnn}
-                onHide={() => setShowEditModalAnn(false)}
-                announcement={selectedAnnouncement}
-                onAnnouncementUpdated={handleAnnouncementUpdated}
-              />
-            )} */}
           </Row>
         </Col>
       </Row>

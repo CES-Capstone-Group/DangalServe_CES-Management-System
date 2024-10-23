@@ -1,42 +1,18 @@
-import React, { createContext, useState, useEffect } from 'react';
-import {jwtDecode} from 'jwt-decode'; // Use jwtDecode without destructuring
+import React, { createContext, useState, useContext } from 'react';
 
+// Create a context for the user
 export const UserContext = createContext();
 
+// Create a provider component
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState({
-        name: '',
-        accountType: '',
-        department: '',
-        position: '',
-    });
-
-    const updateUser = (userInfo) => {
-        setUser(userInfo || {
-            name: '',
-            accountType: '',
-            department: '',
-            position: '',
-        });
-    };
-
-    // Load the user data from the token stored in localStorage on initial load
-    useEffect(() => {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            const decodedToken = jwtDecode(token);
-            setUser({
-                name: decodedToken.name,
-                accountType: decodedToken.accountType,
-                department: decodedToken.department,
-                position: decodedToken.position,
-            });
-        }
-    }, []);
+    const [loggedUser, setLoggedUser] = useState("");
 
     return (
-        <UserContext.Provider value={{ user, updateUser }}>
-            {children}
-        </UserContext.Provider>
+    <UserContext.Provider value={{ loggedUser, setLoggedUser }}>
+        {children}
+    </UserContext.Provider>
     );
-};
+};  
+
+// Custom hook to use the UserContext
+export const useUser = () => useContext(UserContext);

@@ -7,13 +7,16 @@ import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-s
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is installed
 
+import { useUser } from './UserContext';
+
 const TopNav = ({ sidebarOpen, sidebarToggle }) => {
-  const [loggedUser, setLoggedUser] = useState("");
   const [accountType, setAccountType] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+
+  const { loggedUser, setLoggedUser } = useUser();
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");

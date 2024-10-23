@@ -60,10 +60,12 @@ import ManageCalendar from './components/ManageCalendar.jsx';
 import ManageCourse from './components/ManageCourse.jsx';
 import ManageResponse from './components/ManageResponse.jsx';
 
+import { UserProvider } from './components/UserContext.jsx';
 
 const App = () => {
   return (
     <div>
+      <UserProvider>
       <Routes>
         {/* Public Routes */}
         <Route index element={<LoginPage />} />
@@ -157,6 +159,8 @@ const App = () => {
         <Route path='aarForm' element={<AARForm />} />
 
       </Routes>
+
+      </UserProvider>
 
 
     </div>

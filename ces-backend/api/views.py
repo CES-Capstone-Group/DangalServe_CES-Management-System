@@ -85,15 +85,39 @@ def create_user(request):
 @api_view(['PUT'])
 def user_info_action(request, user_id):
     try:
-        account = Account.objects.get(user_id=user_id)  # Ensure 'user_id' matches your model's PK field
+        # Fetch the account using the user_id
+        account = Account.objects.get(user_id=user_id)
     except Account.DoesNotExist:
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
-    
+
+    # Get the department and course names from the request data
+    department_name = request.data.get('department')
+    course_name = request.data.get('course')
+
+    # Check and resolve the department_name to dept_id
+    if department_name:
+        department = Department.objects.filter(dept_name=department_name).first()
+        if department:
+            request.data['department'] = department.dept_id
+        else:
+            return Response({"error": f"Department '{department_name}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check and resolve the course_name to course_id
+    if course_name:
+        course = Course.objects.filter(course_name=course_name).first()
+        if course:
+            request.data['course'] = course.course_id
+        else:
+            return Response({"error": f"Course '{course_name}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Serialize and validate the data
     serializer = TblAccountsSerializer(account, data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save()  # Save the updated data
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 from django.contrib.auth.hashers import check_password, make_password
 from rest_framework.decorators import api_view

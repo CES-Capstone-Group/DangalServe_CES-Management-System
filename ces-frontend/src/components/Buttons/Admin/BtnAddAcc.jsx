@@ -8,6 +8,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
     const [barangays, setBarangays] = useState([]);
     const [filteredCourses, setFilteredCourses] = useState([]);
     const [userChangedDepartment, setUserChangedDepartment] = useState(false);
+    const [errors, setErrors] = useState({}); // Validation error state
 
     const getCurrentDate = () => {
         const today = new Date();
@@ -67,7 +68,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
         fetchCourses();
     }, []);
 
-    //fetch barangays
+    // Fetch barangays
     useEffect(() => {
         const fetchBarangays = async () => {
             try {
@@ -76,10 +77,10 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                     const data = await response.json();
                     setBarangays(data);
                 } else {
-                    console.error("Failed to fetch departments");
+                    console.error("Failed to fetch barangays");
                 }
             } catch (error) {
-                console.error("Error fetching departments:", error);
+                console.error("Error fetching barangays:", error);
             }
         };
         fetchBarangays();
@@ -109,6 +110,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
             deactivationDate: '',
             status: 'Active',
         });
+        setErrors({}); // Reset errors when modal is closed
     };
 
     const handleChange = (e) => {
@@ -117,14 +119,14 @@ const BtnAddAcc = ({ onAccountAdded }) => {
             ...prevState,
             [name]: value || null
         }));
-    
+
         if (name === 'department') {
             setUserChangedDepartment(true);
             setFormData(prevState => ({
                 ...prevState,
                 course: '', // Reset course selection when department changes
             }));
-    
+
             // Fetch courses based on department selection
             if (value) {
                 fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
@@ -141,8 +143,40 @@ const BtnAddAcc = ({ onAccountAdded }) => {
         }
     };
 
+    // Validate form data
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.username) newErrors.username = 'Username is required';
+        if (!formData.name) newErrors.name = 'Name is required';
+        if (!formData.password || formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters long';
+        }
+        if (!formData.position) newErrors.position = 'Position is required';
+
+        if (formData.accountType === 'Proponent') {
+            if (!formData.department) newErrors.department = 'Department is required for Proponent';
+            if (!formData.course) newErrors.course = 'Course is required for Proponent';
+        }
+
+        if (formData.accountType === 'Brgy. Official' && !formData.barangay) {
+            newErrors.barangay = 'Barangay is required for Brgy. Official';
+        }
+
+        if (!formData.activationDate) newErrors.activationDate = 'Activation date is required';
+
+        if (formData.deactivationDate && formData.deactivationDate < formData.activationDate) {
+            newErrors.deactivationDate = 'Deactivation date cannot be earlier than activation date';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return; // Stop submission if validation fails
+
         const dataToSend = {
             ...formData,
             deactivationDate: formData.deactivationDate || null,
@@ -188,7 +222,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Account ID:</Form.Label>
                             <Col sm={8}>
-                                <Form.Control placeholder="#######" disabled/>
+                                <Form.Control placeholder="#######" disabled />
                             </Col>
                         </Form.Group>
 
@@ -200,8 +234,12 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     name="username"
                                     value={formData.username}
                                     onChange={handleChange}
-                                    placeholder="Enter Name"
+                                    isInvalid={!!errors.username}
+                                    placeholder="Enter Username"
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.username}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -213,8 +251,12 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
+                                    isInvalid={!!errors.name}
                                     placeholder="Enter Name"
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.name}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -225,7 +267,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     onChange={handleChange} 
                                     value={formData.accountType}  
                                     name="accountType"
-                                >                                
+                                >
                                     <option value="Admin">Admin</option>
                                     <option value="Proponent">Proponent</option>
                                     <option value="Brgy. Official">Brgy. Official</option>
@@ -241,8 +283,12 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    isInvalid={!!errors.password}
                                     placeholder="Enter password"
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -256,6 +302,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                             name="department" 
                                             value={formData.department}
                                             onChange={handleChange}
+                                            isInvalid={!!errors.department}
                                         >
                                             <option value="">Select Department</option>
                                             {departments.map(dept => (
@@ -264,28 +311,33 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                                 </option>
                                             ))}
                                         </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.department}
+                                        </Form.Control.Feedback>
                                     </Col>
                                 </Form.Group>
 
-                                {formData.department && (
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={4}>Course</Form.Label>
-                                        <Col sm={8}>
-                                            <Form.Select
-                                                name="course"
-                                                value={formData.course}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="">Select Course</option>
-                                                {filteredCourses.map(course => (
-                                                    <option key={course.course_id} value={course.course_id}>
-                                                        {course.course_name}
-                                                    </option>
-                                                ))}
-                                            </Form.Select>
-                                        </Col>
-                                    </Form.Group>
-                                )}
+                                <Form.Group as={Row} className="mb-3">
+                                    <Form.Label column sm={4}>Course</Form.Label>
+                                    <Col sm={8}>
+                                        <Form.Select
+                                            name="course"
+                                            value={formData.course}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.course}
+                                        >
+                                            <option value="">Select Course</option>
+                                            {filteredCourses.map(course => (
+                                                <option key={course.course_id} value={course.course_id}>
+                                                    {course.course_name}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.course}
+                                        </Form.Control.Feedback>
+                                    </Col>
+                                </Form.Group>
                             </>
                         )}
 
@@ -293,11 +345,12 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                         {formData.accountType === "Brgy. Official" && (
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={4}>Barangay</Form.Label>
-                                <Col sm={8}>                                        
+                                <Col sm={8}>
                                     <Form.Select 
                                         name="barangay" 
                                         value={formData.barangay}
                                         onChange={handleChange}
+                                        isInvalid={!!errors.barangay}
                                     >
                                         <option value="">Select Barangay</option>
                                         {barangays.map(b => (
@@ -306,6 +359,9 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                             </option>
                                         ))}
                                     </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.barangay}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         )}
@@ -318,8 +374,12 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     name="position"
                                     value={formData.position}
                                     onChange={handleChange}
+                                    isInvalid={!!errors.position}
                                     placeholder="Enter Position"
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.position}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -331,7 +391,11 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     name="activationDate"
                                     value={formData.activationDate}
                                     onChange={handleChange}
-                                /> 
+                                    isInvalid={!!errors.activationDate}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.activationDate}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -343,7 +407,11 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                     name="deactivationDate"
                                     value={formData.deactivationDate || ''}
                                     onChange={handleChange}
-                                /> 
+                                    isInvalid={!!errors.deactivationDate}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.deactivationDate}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                     </Form>

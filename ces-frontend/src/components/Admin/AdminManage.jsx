@@ -45,6 +45,7 @@ const AdminManage = () => {
         { title: "Calendar Management", path: "/manage/calendar", icon: faCalendarAlt },
         { title: "Evaluator Management", path: "/manage/evaluators", icon: faPerson},
         { title: "Evaluation Responses Management", path: "/manage/responses", icon: faFile },
+        { title: "Evaluation Form Management", path: "/manage/eval-page", icon: faFileAlt },
         
     ];
 
@@ -67,7 +68,7 @@ const AdminManage = () => {
             {/* Management Cards */}
             <Row className="g-4 d-flex justify-content-center">
                 {managementSections.map((section, index) => (
-                    <Col key={index} xs={12} sm={6} md={4} className="d-flex justify-content-center">
+                    <Col key={index} xs={12} sm={12} md={3} className="d-flex justify-content-center">
                         <Card
                             onClick={() => handleNavigation(section.path)}
                             className="landCard clickable-card text-center shadow p-4"

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Container, Table, Button, Row, Col, Modal, Dropdown } from "react-bootstrap";
+import { Container, Table, Button, Row, Col, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
 import { CSSTransition } from "react-transition-group";
 
@@ -20,15 +20,16 @@ const ManageResponses = () => {
         navigate(-1);  // Navigate to the previous page
     };
     
-    const array = [{id:1, eval_deptname: 'CCS', eval_title: 'CCLIP: PC Awareness', QA1: 1, QA2: 2, QA3: 3, QB1: 4, QB2: 5, QC: 4, QD: 3, QE: 2, QG1: 1, QG2: 2, QG: 3,QI1: 4,QI2: 5,QJ1: 4,QJ2: 3, eval_suggestion: 'N/A'}];
+    const array = [{id:1, eval_name: 'Laurence Andrew B. Santos' , eval_deptname: 'CCS', eval_title: 'CCLIP: PC Awareness', QA1: 1, QA2: 2, QA3: 3, QB1: 4, QB2: 5, QC: 4, QD: 3, QE: 2, QG1: 1, QG2: 2, QH: 3,QI1: 4,QI2: 5,QJ1: 4,QJ2: 3, eval_suggestion: 'N/A'}];
 
 
     // Table student row 
     const Rows = (props) => {
-        const { id, eval_deptname, eval_title, QA1, QA2, QA3, QB1, QB2, QC, QD, QE, QG1, QG2, QH, QI1, QI2, QJ1, QJ2, eval_suggestion} = props;
+        const { id,eval_name, eval_deptname, eval_title, QA1, QA2, QA3, QB1, QB2, QC, QD, QE, QG1, QG2, QH, QI1, QI2, QJ1, QJ2, eval_suggestion} = props;
         return (
             <tr>
                 <td>{id}</td>
+                <td>{eval_name}</td>
                 <td>{eval_deptname}</td>
                 <td>{eval_title}</td>
                 <td>{QA1}</td>
@@ -52,13 +53,13 @@ const ManageResponses = () => {
         );
     };
 
-    // Table Student
-    const newTable = ({ data }) => {
+    const NewTable = ({ data }) => {
         return (
             <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <tr>
+                    {/* <tr>
                         <th>ID</th>
+                        <th>Evaluator Name</th>
                         <th>Division/ Department/ Organizing Team</th>
                         <th>Activity Title</th>
                         <th>A1</th>
@@ -77,13 +78,48 @@ const ManageResponses = () => {
                         <th>J2</th>
                         <th>J2</th>
                         <th>Suggestions</th>
-                        
+                    </tr> */}
+                    <tr>
+                        <th rowSpan={2}>ID</th>
+                        <th rowSpan={2}>Evaluator Name</th>
+                        <th rowSpan={2}>Division/ Department/ Organizing Team</th>
+                        <th rowSpan={2}>Activity Title</th>
+                        <th colSpan={3}>Objectives</th>
+                        <th colSpan={2}>Activities</th>
+                        <th colSpan={1}>Conduct of Activites</th>
+                        <th colSpan={1}>Flow of the Program</th>
+                        <th colSpan={1}>Time Management</th>
+                        <th colSpan={2}>Venue and Facilities</th>
+                        <th colSpan={1}>Food</th>
+                        <th colSpan={2}>Resource Person/Speaker</th>
+                        <th colSpan={2}>Organazing Team</th>
+                        <th rowSpan={2}>Suggestions</th>
                     </tr>
+                    <tr>
+                        <th>A1</th>
+                        <th>A2</th>
+                        <th>A3</th>
+                        <th>B1</th>
+                        <th>B2</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>G1</th>
+                        <th>G2</th>
+                        <th>H</th>
+                        <th>I1</th>
+                        <th>I2</th>
+                        <th>J2</th>
+                        <th>J2</th>
+                    </tr>
+
+                    
                 </thead>
                 <tbody>
                     {array.map((response, index) => (
                         <Rows key={index}
                         id={response.id}
+                        eval_name={response.eval_name}
                         eval_deptname={response.eval_deptname}
                         eval_title={response.eval_title}  
                         QA1={response.QA1}
@@ -111,7 +147,7 @@ const ManageResponses = () => {
 
 
     return (
-        <Container fluid style={{width: '100rem'}}
+        <Container fluid style={{width: '115rem'}}
         className="vh-100 d-flex flex-column justify-content-center me-0 ms-0" >
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success">
@@ -145,12 +181,7 @@ const ManageResponses = () => {
                 </Col>
             </Row>
 
-            {/* Render the achievements table */}
-            {visible === 'student' && <StudentTable data={studentData} />}
-            {visible === 'nonTeaching' && <NonTeachingTable data={nonteachingData} />}
-            {visible === 'teaching' && <TeachingTable data={teachingData} />}
-            {visible === 'alumni' && <AlumniTable data={alumniData} />}
-            {visible === 'participant' && <ParticipantTable data={participantData} />}
+            <NewTable data={array}/>
 
         </Container>
     );

@@ -11,9 +11,7 @@ const BtnViewTally = () => {
     }
 
     return(
-        <td>
-            <Button onClick={routeChange} className='me-3' style={{backgroundColor:"#71A872", border: '0px', color: 'white'}}>View Summary</Button>             
-        </td>
+        <Button onClick={routeChange} className='me-3' style={{backgroundColor:"#71A872", border: '0px', color: 'white'}}>View Summary</Button>             
     );
     
 };

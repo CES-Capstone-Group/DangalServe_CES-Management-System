@@ -44,3 +44,4 @@ cache/
 # Coverage reports
 coverage/
 coverage-final.json
+ces-backend/crud/settings.py

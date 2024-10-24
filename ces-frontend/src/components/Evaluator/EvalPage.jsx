@@ -1,7 +1,9 @@
 import React from "react";
-import {Container, Table } from "react-bootstrap";
-import BtnEvaluate from "../Buttons/Evaluator/BtnEvaluate";
+import {Col, Container, Row, Table } from "react-bootstrap";
 import "../table.css"
+import BtnAddEval from "../Buttons/Evaluator/BtnAddEval";
+import BtnViewTally from "../Buttons/Evaluator/BtnViewTally";
+import BtnViewAllResponse from "../Buttons/Evaluator/BtnViewAllResponse";
 
 
 const EvalPage = () => {
@@ -11,7 +13,7 @@ const EvalPage = () => {
                 <h1> ACTIVITY EVALUATION </h1>
             </div>
 
-            <Table responsive bordered striped hover className="tableStyle">
+            <Table responsive bordered striped hover className="tableStyle" >
                 <thead>
                     <tr>
                         <th>Proposal Title</th>
@@ -25,10 +27,17 @@ const EvalPage = () => {
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
-                        <td><BtnEvaluate/></td>
+                        <td><BtnViewTally/><BtnViewAllResponse /></td>
                     </tr>
                 </tbody>
             </Table>
+            
+            <Row>
+                <Col className="mb-3 d-flex justify-content-end">
+                    <BtnAddEval/>
+                </Col>
+            </Row>
+
         </Container>
     );
 };

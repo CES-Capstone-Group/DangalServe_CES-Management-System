@@ -87,6 +87,7 @@ const App = () => {
             <Route path='calendar' element={<ManageCalendar />} />
             <Route path='evaluators' element={<ManageEvaluators />} />
             <Route path='responses' element={<ManageResponses />} />
+            <Route path='eval-page' element={<EvalPage />} />
 
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
@@ -134,7 +135,6 @@ const App = () => {
             <Route path='docs' element={<DocumentPage />} />
             <Route path='calendar' element={<CoorCalendar />} />
             <Route path='kpi' element={<KpiPage />} />
-            <Route path='eval-page' element={<EvalPage />} />
             <Route path='proposal-form' element={<ProposalForm />} />
             <Route path='proposal-form/:proposalId/resubmit' element={<ProposalForm />} /> {/* Resubmission */}
             <Route path='profile' element={<MyProfilePage />} />

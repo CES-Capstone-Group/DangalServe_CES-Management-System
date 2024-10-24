@@ -194,7 +194,6 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                 const errorData = await response.json();
                 throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorData)}`);
             }
-
             const data = await response.json();
             // console.log('Account created:', data);
             handleCloseModal();
@@ -351,10 +350,10 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                                         value={formData.barangay}
                                         onChange={handleChange}
                                         isInvalid={!!errors.barangay}
-                                    >
+                                    >   
                                         <option value="">Select Barangay</option>
                                         {barangays.map(b => (
-                                            <option key={b.id} value={b.brgy_name}>
+                                            <option key={b.id} value={b.id}>                                                
                                                 {b.brgy_name}
                                             </option>
                                         ))}

@@ -16,6 +16,25 @@ const ProposalForm = () => {
   const [otherTypologyValue, setOtherTypologyValue] = useState(''); // Store the "Others" value
   const [errors, setErrors] = useState({}); // Track errors for fields
 
+  const [barangays, setBarangays] = useState([]);
+  // Fetch barangays
+  useEffect(() => {
+    const fetchBarangays = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+            if (response.ok) {
+                const data = await response.json();
+                setBarangays(data);
+            } else {
+                console.error("Failed to fetch barangays");
+            }
+        } catch (error) {
+            console.error("Error fetching barangays:", error);
+        }
+    };
+    fetchBarangays();
+}, []);
+
   // State to hold the form data
   const [formData, setFormData] = useState({
     title: '',
@@ -554,60 +573,33 @@ const ProposalForm = () => {
         <h4 className="mb-4">B. Project Details</h4>
 
         <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
-          <Col sm={5}>
-            <h6 className="mb-4">Partner Community/Organization</h6>
+        <Col sm={5}>
+          <h6 className="mb-4">Partner Community/Organization</h6>
+          {barangays.map((barangay) => (
             <Form.Check
+              key={barangay.id}
               type="checkbox"
-              label="Baclaran"
-              value="Baclaran"
-              checked={formData.partner_community.includes('Baclaran')}
-              onChange={(e) => handleCommunityChange(e, 'Baclaran', 'Barangay')}
-
+              label={barangay.brgy_name}
+              value={barangay.brgy_name}
+              checked={formData.partner_community.includes(barangay.brgy_name)}
+              onChange={(e) => handleCommunityChange(e, barangay.brgy_name, 'Barangay')}
             />
-            <Form.Check
-              type="checkbox"
-              label="Bigaa"
-              value="Bigaa"
-              checked={formData.partner_community.includes('Bigaa')}
-              onChange={(e) => handleCommunityChange(e, 'Bigaa', 'Barangay')}
+          ))}
+          <Form.Check
+            type="checkbox"
+            label="Others"
+            onChange={handleOtherCommunityChange}
+          />
+          {otherCommunity && (
+            <Form.Control
+              type="text"
+              placeholder="Please specify"
+              className="mt-2"
+              value={otherCommunityValue}
+              onChange={(e) => setOtherCommunityValue(e.target.value)}
             />
-            <Form.Check
-              type="checkbox"
-              label="Sala"
-              value="Sala"
-              checked={formData.partner_community.includes('Sala')}
-              onChange={(e) => handleCommunityChange(e, 'Sala', 'Barangay')}
-            />
-            <Form.Check
-              type="checkbox"
-              label="San Isidro"
-              value="San Isidro"
-              checked={formData.partner_community.includes('San Isidro')}
-              onChange={(e) => handleCommunityChange(e, 'San Isidro', 'Barangay')}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Diezmo"
-              value="Diezmo"
-              checked={formData.partner_community.includes('Diezmo')}
-              onChange={(e) => handleCommunityChange(e, 'Diezmo', 'Barangay')}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Others"
-              // checked={formData.partner_community.includes('Others')}
-              onChange={handleOtherCommunityChange}
-            />
-            {otherCommunity && (
-              <Form.Control
-                type="text"
-                placeholder="Please specify"
-                className="mt-2"
-                value={otherCommunityValue}
-                onChange={(e) => setOtherCommunityValue(e.target.value)}
-              />
-            )}
-          </Col>
+          )}
+        </Col>
 
           <Col sm={5}>
             <h6 className="mb-4">Typology</h6>

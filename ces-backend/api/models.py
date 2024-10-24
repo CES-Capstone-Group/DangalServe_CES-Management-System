@@ -43,6 +43,16 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name
 
+class Barangay(models.Model):
+    brgy_name = models.CharField(max_length=100)  # Field for the name of the barangay
+    moa = models.FileField(upload_to='moa_files/', blank=True, null=True)  # Field for the MOA file/image
+
+    def __str__(self):
+        return self.brgy_name
+    
+    class Meta:
+        abstract = True
+
 # Account model that represents your custom user table (api_account)
 class Account(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
@@ -50,6 +60,7 @@ class Account(AbstractBaseUser):
     name = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     accountType = models.CharField(max_length=255)
+    barangay = models.ForeignKey(Barangay, on_delete=models.SET_NULL, null=True, blank=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)  
     position = models.CharField(null=True, max_length=255)

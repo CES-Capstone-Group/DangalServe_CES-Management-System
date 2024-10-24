@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
 from .models import Account, Achievement, ActivitySchedule, Announcement, Barangay, Course, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -74,7 +75,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class TblAccountsSerializer(serializers.ModelSerializer):   
     department_name = serializers.CharField(source='department.dept_name', read_only=True)
     course_name = serializers.CharField(source='course.course_name', read_only=True)
-
+    barangay_name = serializers.CharField(source='barangay.brgy_name', read_only=True)
     class Meta:
         model = Account
         fields = '__all__'
@@ -85,6 +86,15 @@ class TblAccountsSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'required': False}  # Make password field optional
         }
+        
+    def validate(self, data):
+        # Call the model's clean method to perform the validation
+        account = Account(**data)
+        try:
+            account.clean()  # This will raise a ValidationError if the data is invalid
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+        return data
 
 #Serializer for handling Barangay model
 class BarangaySerializer(serializers.ModelSerializer):

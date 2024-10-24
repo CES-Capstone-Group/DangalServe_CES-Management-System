@@ -3,6 +3,7 @@ import {Col, Container, Row, Table } from "react-bootstrap";
 import "../table.css"
 import BtnAddEval from "../Buttons/Evaluator/BtnAddEval";
 import BtnViewTally from "../Buttons/Evaluator/BtnViewTally";
+import BtnViewAllResponse from "../Buttons/Evaluator/BtnViewAllResponse";
 
 
 const EvalPage = () => {
@@ -26,7 +27,7 @@ const EvalPage = () => {
                         <td>CCLIP: PC Awareness</td>
                         <td>San Isidro Elementary School</td>
                         <td>April 21, 2023</td>
-                        <td><BtnViewTally/></td>
+                        <td><BtnViewTally/><BtnViewAllResponse /></td>
                     </tr>
                 </tbody>
             </Table>

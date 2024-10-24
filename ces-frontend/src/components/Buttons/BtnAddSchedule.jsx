@@ -51,7 +51,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     // Handle file input change
     const handleFileChange = (e, id) => {
         const files = e.target.files;
-        console.log(`Files for input ${id}:`, files);
+        // console.log(`Files for input ${id}:`, files);
     };
 
     return (

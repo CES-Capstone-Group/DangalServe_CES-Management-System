@@ -17,7 +17,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['name'] = user.name
         token['accountType'] = user.accountType
-        token['department'] = user.department
+        if user.accountType == 'Proponent' and user.department:
+            token['department'] = user.department.dept_name
+        else:
+            token['department'] = None  # Or omit this field if you prefer
+        
         token['position'] = user.position
 
         return token
@@ -32,8 +36,16 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['user_id'] = self.user.user_id
         data['username'] = self.user.username
         data['accountType'] = self.user.accountType
-        data['department'] = self.user.department
-
+        
+        if user.accountType == 'Proponent' and user.department:
+            data['department_name'] = user.department.dept_name 
+        else:
+            data['department_name'] = None
+            
+        if user.accountType == 'Proponent' and user.course:
+            data['course_name'] = user.course.course_name
+        else:
+            data['course_name'] = None
         return data
 
 
@@ -59,10 +71,16 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 #             raise serializers.ValidationError("Must include username and password.")
 
 # Serializer for handling Account model
-class TblAccountsSerializer(serializers.ModelSerializer):
+class TblAccountsSerializer(serializers.ModelSerializer):   
+    department_name = serializers.CharField(source='department.dept_name', read_only=True)
+    course_name = serializers.CharField(source='course.course_name', read_only=True)
+
     class Meta:
         model = Account
         fields = '__all__'
+        # fields = ['user_id', 'username', 'name', 'accountType', 'position', 
+        #         'activationDate', 'deactivationDate', 'status', 
+        #         'department_name', 'course_name']
         
         extra_kwargs = {
             'password': {'required': False}  # Make password field optional

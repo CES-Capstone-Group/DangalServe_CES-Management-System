@@ -169,7 +169,7 @@ function AdminCalendar() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('New event added to backend:', data);
+            // console.log('New event added to backend:', data);
         })
         .catch(error => {
             console.error('Error adding event to backend', error);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 
 const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
-    console.log(account);
+    // console.log(account);
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(account); // Initialize formData with account details
 
@@ -62,7 +62,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
             }
 
             const data = await response.json();
-            console.log("Account updated:", data);
+            // console.log("Account updated:", data);
             onSave(); // Notify parent to refresh data
             handleClose();
         } catch (error) {

@@ -46,7 +46,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
     // **Handle Delete Functionality**
     const handleDelete = async () => {
         try {
-            console.log(`Deleting department with ID: ${deptId}`);
+            // console.log(`Deleting department with ID: ${deptId}`);
 
             const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
                 method: "DELETE",
@@ -61,7 +61,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
                 onDepartmentUpdated();  // Trigger callback to refresh parent component
             } else {
                 const data = await response.json();
-                console.log("Failed to delete:", data);
+                // console.log("Failed to delete:", data);
                 alert(`Failed to delete department: ${JSON.stringify(data)}`);
             }
         } catch (error) {

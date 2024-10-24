@@ -122,7 +122,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
       }
     );
     if (response.ok) {
-      console.log("Proposal approved successfully");
+      // console.log("Proposal approved successfully");
 
       if (status === "Approved by Director") {
         setDirApprove(true);
@@ -160,7 +160,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
         }
       );
       if (response.ok) {
-        console.log("Proposal rejected successfully");
+        // console.log("Proposal rejected successfully");
         handleRejectClose();
         if (onApprove) onApprove();
       } else {

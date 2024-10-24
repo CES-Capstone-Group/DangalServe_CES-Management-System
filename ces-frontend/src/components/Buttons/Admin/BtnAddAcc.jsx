@@ -162,7 +162,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
             }
 
             const data = await response.json();
-            console.log('Account created:', data);
+            // console.log('Account created:', data);
             handleCloseModal();
 
             if (onAccountAdded) onAccountAdded(); // Notify parent component to refresh the list

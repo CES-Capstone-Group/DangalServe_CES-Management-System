@@ -8,13 +8,14 @@ import BtnAddAcc from "../Buttons/Admin/BtnAddAcc";
 import "../table.css"
 import "../../App.css"
 
-const Rows = ({ user_id, username, name, type, department, position, actDate, deacDate, status, fetchUsers }) => {
+const Rows = ({ user_id, username, name, type, department_name, course_name, position, actDate, deacDate, status, fetchUsers }) => {
     const account = {
         user_id: user_id,
         username: username,
         name: name,
         accountType: type,
-        department: department,
+        department: department_name,
+        course: course_name,
         position: position,
         activationDate: actDate,
         deactivationDate: deacDate,
@@ -61,13 +62,15 @@ const Rows = ({ user_id, username, name, type, department, position, actDate, de
         }
     };
 
+    const displayField = (field, fallback) => field || fallback;
 
     return (
         <tr>
             <td>{user_id}</td>
             <td>{username}</td>
             <td>{type}</td>
-            <td>{department}</td>
+            <td>{displayField(department_name, "No Department")}</td>
+            <td>{displayField(course_name, "No Course")}</td>
             <td>{position}</td>
             <td>{actDate}</td>
             <td>{deacDate}</td>
@@ -91,6 +94,7 @@ const NewTable = ({ data, fetchUsers }) => {
                 <th>Name</th>
                 <th>Type of Account</th>
                 <th>Department</th>
+                <th>Course</th>
                 <th>Position</th>
                 <th>Activation Date</th>
                 <th>Deactivation Date</th>
@@ -105,7 +109,8 @@ const NewTable = ({ data, fetchUsers }) => {
                         username={row.username}
                         name={row.name}
                         type={row.accountType}
-                        department={row.department}
+                        department_name={row.department_name}
+                        course_name={row.course_name}
                         position={row.position}
                         actDate={row.activationDate}
                         deacDate={row.deactivationDate}
@@ -128,7 +133,7 @@ const UserManagementCon = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            console.log("API Response: ", data);
+            // console.log("API Response: ", data);
             setUsers(data);  // Update the state with the fetched users
         } catch (error) {
             console.error("Failed to fetch users:", error);

@@ -66,6 +66,7 @@ def get_all_user(request):
     try:
         users = Account.objects.all()
         serializer = TblAccountsSerializer(users, many=True)
+        # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -513,7 +514,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                 params=[department]
             )        
     def post(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         return super().post(request, *args, **kwargs)    
 class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Proposal.objects.all()
@@ -751,7 +752,7 @@ class DownloadProposalDoc(APIView):
         if os.path.exists(pdf_path):
             with open(pdf_path, 'rb') as pdf_file:
                 # Log for debugging purposes
-                print(f"Serving file: {pdf_path}")
+                # print(f"Serving file: {pdf_path}")
                 
                 # Read and serve the PDF file
                 response = HttpResponse(pdf_file.read(), content_type='application/pdf')
@@ -760,7 +761,7 @@ class DownloadProposalDoc(APIView):
                 response['Content-Disposition'] = f'attachment; filename="proposal_{proposal_id}.pdf"'
                 
                 # Log the Content-Disposition for debugging purposes
-                print(f"Content-Disposition: {response['Content-Disposition']}")
+                # print(f"Content-Disposition: {response['Content-Disposition']}")
                 
                 # No cache
                 response['Cache-Control'] = 'no-cache, no-store, must-revalidate'

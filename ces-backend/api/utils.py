@@ -13,9 +13,9 @@ def convert_docx_to_pdf(docx_path):
         # Perform the conversion
         convert(docx_path, pdf_output_path)
         
-        # Print paths for debugging
-        print(f"DOCX Path: {docx_path}")
-        print(f"PDF Path: {pdf_output_path}")
+        # for debugging
+        # print(f"DOCX Path: {docx_path}")
+        # print(f"PDF Path: {pdf_output_path}")
         
         return pdf_output_path
     finally:

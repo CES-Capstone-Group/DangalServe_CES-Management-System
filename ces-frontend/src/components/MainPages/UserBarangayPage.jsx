@@ -8,7 +8,7 @@ const UserBarangayPage = () => {
   const [sidebarOpen, setSidebar] = useState(true);
   const showSidebar = () => {
     setSidebar(!sidebarOpen);
-    console.log(sidebarOpen);
+    // console.log(sidebarOpen);
   };
 
   return (

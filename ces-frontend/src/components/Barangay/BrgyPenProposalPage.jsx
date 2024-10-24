@@ -68,7 +68,7 @@ const BrgyPenProposalPage = () => {
                     // Add an additional safeguard to filter exactly by "Approved by Barangay"
                     const filteredProposals = data.filter(proposal => proposal.status === "Approved by President" || proposal.status === "Partly Approved by Barangay");
                     setProposals(filteredProposals); // Set the proposals after filtering
-                    console.log("Filtered Proposals:", filteredProposals); // Add a log to inspect filtered proposals
+                    // console.log("Filtered Proposals:", filteredProposals); // Add a log to inspect filtered proposals
                 } else if (response.status === 401) {
                     console.error("Unauthorized: Check if the token is valid.");
                 } else {

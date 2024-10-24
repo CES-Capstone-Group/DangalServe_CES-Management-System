@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col, Form, FormControl, FormGroup, FormLabel, Modal, ModalTitle, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEdit} from '@fortawesome/free-solid-svg-icons'
 

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Container, Table, Button, Row, Col, Modal, Dropdown } from "react-bootstrap";
+import { Container, Table, Button, Row, Col, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
 import { CSSTransition } from "react-transition-group";
 
-const ManageResponse = () => {
+const ManageResponses = () => {
     const navigate = useNavigate();
     const [showFilter, setShowFilter] = useState(false);
     const [visible, setVisible] = useState('student');
@@ -20,59 +20,124 @@ const ManageResponse = () => {
         navigate(-1);  // Navigate to the previous page
     };
     
-    const studentData = [{id:1, stud_name:'Student Full Name', stud_email:'student@email.com', stud_num:'09986854452', stud_id:'19087657', course:'Bachelor of Science in Information Technology', stud_section:'4IT-A', stud_dept:'CCS'}];
-    const nonteachingData = [{id:1, nt_name:'NonTeaching Full Name', nt_email:'nonteaching@email.com', nt_num:'09986854452', nt_dept:'Government', nt_brgy:'Bigaa'}];
-    const teachingData = [{id:1, t_name:'Teaching Full Name', t_email:'teaching@email.com', t_num:'09986854452', t_school:'University of Cabuyao', t_dept:'CCS'}];
-    const alumniData = [{id:1, alumni_name:'Alumni Full Name', alumni_email:'alumni@email.com', alumni_num:'09986854452', alumni_school:'University of Cabuyao', alumni_course:'Bachelor of Science in Information Technology', alumni_dept:'CCS'}];
-    const participantData = [{id:1, p_name:'Participant Full Name', p_email:'participantg@email.com', p_num:'09986854452', p_brgy:'Bigaa'}];
+    const array = [{id:1, eval_name: 'Laurence Andrew B. Santos' , eval_deptname: 'CCS', eval_title: 'CCLIP: PC Awareness', QA1: 1, QA2: 2, QA3: 3, QB1: 4, QB2: 5, QC: 4, QD: 3, QE: 2, QG1: 1, QG2: 2, QH: 3,QI1: 4,QI2: 5,QJ1: 4,QJ2: 3, eval_suggestion: 'N/A'}];
 
 
     // Table student row 
-    const StudentRows = (props) => {
-        const { id, stud_name, stud_email, stud_num, stud_id, course, stud_section, stud_dept} = props;
+    const Rows = (props) => {
+        const { id,eval_name, eval_deptname, eval_title, QA1, QA2, QA3, QB1, QB2, QC, QD, QE, QG1, QG2, QH, QI1, QI2, QJ1, QJ2, eval_suggestion} = props;
         return (
             <tr>
                 <td>{id}</td>
-                <td>{stud_name}</td>
-                <td>{stud_email}</td>
-                <td>{stud_num}</td>
-                <td>{stud_id}</td>
-                <td>{course}</td>
-                <td>{stud_section}</td>
-                <td>{stud_dept}</td>
+                <td>{eval_name}</td>
+                <td>{eval_deptname}</td>
+                <td>{eval_title}</td>
+                <td>{QA1}</td>
+                <td>{QA2}</td>
+                <td>{QA3}</td>
+                <td>{QB1}</td>
+                <td>{QB2}</td>
+                <td>{QC}</td>
+                <td>{QD}</td>
+                <td>{QE}</td>
+                <td>{QG1}</td>
+                <td>{QG2}</td>
+                <td>{QH}</td>
+                <td>{QI1}</td>
+                <td>{QI2}</td>
+                <td>{QJ1}</td>
+                <td>{QJ2}</td>
+                <td>{eval_suggestion}</td>
 
             </tr>
         );
     };
 
-    // Table Student
-    const StudentTable = ({ data }) => {
+    const NewTable = ({ data }) => {
         return (
             <Table responsive bordered striped hover className="tableStyle">
                 <thead>
-                    <tr>
+                    {/* <tr>
                         <th>ID</th>
-                        <th>Student Full Name</th>
-                        <th>Student Email</th>
-                        <th>Contact Number</th>
-                        <th>Student ID</th>
-                        <th>Course</th>
-                        <th>Section</th>
-                        <th>Department</th>
-                        
+                        <th>Evaluator Name</th>
+                        <th>Division/ Department/ Organizing Team</th>
+                        <th>Activity Title</th>
+                        <th>A1</th>
+                        <th>A2</th>
+                        <th>A3</th>
+                        <th>B1</th>
+                        <th>B2</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>G1</th>
+                        <th>G2</th>
+                        <th>H</th>
+                        <th>I1</th>
+                        <th>I2</th>
+                        <th>J2</th>
+                        <th>J2</th>
+                        <th>Suggestions</th>
+                    </tr> */}
+                    <tr>
+                        <th rowSpan={2}>ID</th>
+                        <th rowSpan={2}>Evaluator Name</th>
+                        <th rowSpan={2}>Division/ Department/ Organizing Team</th>
+                        <th rowSpan={2}>Activity Title</th>
+                        <th colSpan={3}>Objectives</th>
+                        <th colSpan={2}>Activities</th>
+                        <th colSpan={1}>Conduct of Activites</th>
+                        <th colSpan={1}>Flow of the Program</th>
+                        <th colSpan={1}>Time Management</th>
+                        <th colSpan={2}>Venue and Facilities</th>
+                        <th colSpan={1}>Food</th>
+                        <th colSpan={2}>Resource Person/Speaker</th>
+                        <th colSpan={2}>Organazing Team</th>
+                        <th rowSpan={2}>Suggestions</th>
                     </tr>
+                    <tr>
+                        <th>A1</th>
+                        <th>A2</th>
+                        <th>A3</th>
+                        <th>B1</th>
+                        <th>B2</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>G1</th>
+                        <th>G2</th>
+                        <th>H</th>
+                        <th>I1</th>
+                        <th>I2</th>
+                        <th>J2</th>
+                        <th>J2</th>
+                    </tr>
+
+                    
                 </thead>
                 <tbody>
-                    {studentData.map((student, index) => (
-                        <StudentRows key={index}
-                        id={student.id}
-                        stud_name={student.stud_name}
-                        stud_email={student.stud_email}  
-                        stud_num={student.stud_num}
-                        stud_id={student.stud_id} 
-                        course={student.course}  
-                        stud_section={student.stud_section}
-                        stud_dept={student.stud_dept}
+                    {array.map((response, index) => (
+                        <Rows key={index}
+                        id={response.id}
+                        eval_name={response.eval_name}
+                        eval_deptname={response.eval_deptname}
+                        eval_title={response.eval_title}  
+                        QA1={response.QA1}
+                        QA2={response.QA2} 
+                        QA3={response.QA3}  
+                        QB1={response.QB1}
+                        QB2={response.QB2}
+                        QC={response.QC}
+                        QD={response.QD}
+                        QE={response.QE}
+                        QG1={response.QG1}
+                        QG2={response.QG2}
+                        QH={response.QH}
+                        QI1={response.QI1}
+                        QI2={response.QI2}
+                        QJ1={response.QJ1}
+                        QJ2={response.QJ2}
+                        eval_suggestion={response.eval_suggestion}
                         /> 
                     ))}
                 </tbody>
@@ -80,188 +145,9 @@ const ManageResponse = () => {
         );
     };
 
-    // Table Non Teaching row 
-    const NonTeachingRows = (props) => {
-        const { id, nt_name, nt_email, nt_num, nt_dept, nt_brgy} = props;
-        return (
-            <tr>
-                <td>{id}</td>
-                <td>{nt_name}</td>
-                <td>{nt_email}</td>
-                <td>{nt_num}</td>
-                <td>{nt_dept}</td>
-                <td>{nt_brgy}</td>
-
-            </tr>
-        );
-    };
-    // Table Non Teaching
-    const NonTeachingTable = ({ data }) => {
-        return (
-            <Table responsive bordered striped hover className="tableStyle">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Contact Number</th>
-                        <th>Department</th>
-                        <th>Barangay</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    {nonteachingData.map((nt, index) => (
-                        <NonTeachingRows key={index}
-                        id={nt.id}
-                        nt_name={nt.nt_name}
-                        nt_email={nt.nt_email}  
-                        nt_num={nt.nt_num}
-                        nt_dept={nt.nt_dept} 
-                        nt_brgy={nt.nt_brgy}  
-                        /> 
-                    ))}
-                </tbody>
-            </Table>
-        );
-    };
-
-    // Table Non Teaching row 
-    const TeachingRows = (props) => {
-            const { id, t_name, t_email, t_num, t_school, t_dept} = props;
-            return (
-                <tr>
-                    <td>{id}</td>
-                    <td>{t_name}</td>
-                    <td>{t_email}</td>
-                    <td>{t_num}</td>
-                    <td>{t_school}</td>
-                    <td>{t_dept}</td>
-                </tr>
-            );
-    };
-    // Table Non Teaching
-    const TeachingTable = ({ data }) => {
-            return (
-                <Table responsive bordered striped hover className="tableStyle">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Contact Number</th>
-                            <th>Department</th>
-                            <th>Barangay</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {teachingData.map((t, index) => (
-                            <TeachingRows key={index}
-                            id={t.id}
-                            t_name={t.t_name}
-                            t_email={t.t_email}  
-                            t_num={t.t_num}
-                            t_school={t.t_school} 
-                            t_dept={t.t_dept}  
-                            /> 
-                        ))}
-                    </tbody>
-                </Table>
-            );
-    };
-
-    // Table Alumni
-    const AlumniRows = (props) => {
-        const { id, alumni_name, alumni_email, alumni_num, alumni_school, alumni_course, alumni_dept} = props;
-        return (
-            <tr>
-                <td>{id}</td>
-                <td>{alumni_name}</td>
-                <td>{alumni_email}</td>
-                <td>{alumni_num}</td>
-                <td>{alumni_school}</td>
-                <td>{alumni_course}</td>
-                <td>{alumni_dept}</td>
-
-            </tr>
-        );
-    };
-    // Table Alumni
-    const AlumniTable = ({ data }) => {
-            return (
-                <Table responsive bordered striped hover className="tableStyle">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Contact Number</th>
-                            <th>School</th>
-                            <th>Course</th>
-                            <th>Department</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {alumniData.map((alumni, index) => (
-                            <AlumniRows key={index}
-                            id={alumni.id}
-                            alumni_name={alumni.alumni_name}
-                            alumni_email={alumni.alumni_email}  
-                            alumni_num={alumni.alumni_num}
-                            alumni_school={alumni.alumni_school} 
-                            alumni_course={alumni.alumni_course} 
-                            alumni_dept={alumni.alumni_dept}  
-                            /> 
-                        ))}
-                    </tbody>
-                </Table>
-            );
-    };
-
-    // Table Non Teaching row 
-    const ParticipantRows = (props) => {
-        const { id, p_name, p_email, p_num, p_brgy} = props;
-            return (
-                <tr>
-                    <td>{id}</td>
-                    <td>{p_name}</td>
-                    <td>{p_email}</td>
-                    <td>{p_num}</td>
-                    <td>{p_brgy}</td>
-                </tr>
-            );
-        };
-    // Table Non Teaching
-    const ParticipantTable = ({ data }) => {
-        return (
-            <Table style={{display: visible}} responsive bordered striped hover className="tableStyle">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Contact Number</th>
-                        <th>Barangay</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {participantData.map((p, index) => (
-                        <ParticipantRows key={index}
-                            id={p.id}
-                            p_name={p.p_name}
-                            p_email={p.p_email}  
-                            p_num={p.p_num}
-                            p_brgy={p.p_brgy} 
-                            /> 
-                        ))}
-                </tbody>
-            </Table>
-        );
-    };
 
     return (
-        <Container fluid style={{width: '100rem'}}
+        <Container fluid style={{width: '115rem'}}
         className="vh-100 d-flex flex-column justify-content-center me-0 ms-0" >
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success">
@@ -295,15 +181,10 @@ const ManageResponse = () => {
                 </Col>
             </Row>
 
-            {/* Render the achievements table */}
-            {visible === 'student' && <StudentTable data={studentData} />}
-            {visible === 'nonTeaching' && <NonTeachingTable data={nonteachingData} />}
-            {visible === 'teaching' && <TeachingTable data={teachingData} />}
-            {visible === 'alumni' && <AlumniTable data={alumniData} />}
-            {visible === 'participant' && <ParticipantTable data={participantData} />}
+            <NewTable data={array}/>
 
         </Container>
     );
 };
 
-export default ManageResponse;
+export default ManageResponses;

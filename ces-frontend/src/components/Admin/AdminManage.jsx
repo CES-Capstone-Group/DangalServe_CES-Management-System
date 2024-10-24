@@ -13,6 +13,10 @@ import {
     faFolderOpen,
     faCalendarAlt,
     faGraduationCap,
+    faSquarePersonConfined,
+    faFileArchive,
+    faFile,
+    faPerson,
 } from '@fortawesome/free-solid-svg-icons'; // Import the icons you want to use
 
 const AdminManage = () => {
@@ -38,7 +42,9 @@ const AdminManage = () => {
         { title: "Achievement Management", path: "/manage/manage-ach", icon: faTrophy },
         { title: "Announcement Management", path: "/manage/manage-ann", icon: faBullhorn },
         { title: "Document Management", path: "/manage/manage-docs", icon: faFolderOpen },
-        { title: "Calendar Management", path: "/manage/manage-calendar", icon: faCalendarAlt },
+        { title: "Calendar Management", path: "/manage/calendar", icon: faCalendarAlt },
+        { title: "Evaluator Management", path: "/manage/evaluators", icon: faPerson},
+        { title: "Evaluation Responses Management", path: "/manage/responses", icon: faFile },
         
     ];
 

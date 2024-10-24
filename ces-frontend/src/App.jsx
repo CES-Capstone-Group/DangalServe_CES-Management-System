@@ -55,12 +55,11 @@ import AdminLanding from './components/MainPages/AdminLanding.jsx';
 import AdminManagePage from './components/MainPages/AdminManagePage.jsx';
 import MyProfilePage from './components/MyProfilePage.jsx';
 import EvalSelect from './components/EvalSelect.jsx';
-import DemoCalendar from './components/CalendarDemo/DemoCalendar.jsx';
 import ManageCalendar from './components/ManageCalendar.jsx';
 import ManageCourse from './components/ManageCourse.jsx';
-import ManageResponse from './components/ManageResponse.jsx';
-
+import ManageEvaluators from './components/ManageEvaluators.jsx';
 import { UserProvider } from './components/UserContext.jsx';
+import ManageResponses from './components/ManageResponse.jsx';
 
 const App = () => {
   return (
@@ -71,7 +70,6 @@ const App = () => {
         <Route index element={<LoginPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/unauthorized' element={<UnauthorizedPage />} />
-        <Route path='/demo-cal' element={<DemoCalendar/>}/>
 
         {/* Admin Routes - Only accessible to Admin */}
         <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
@@ -86,8 +84,10 @@ const App = () => {
             <Route path='brgy-management' element={<BrgyManagement />} />
             <Route path='dept-management' element={<DepartmentManagement />} />
             <Route path='course-management' element={<ManageCourse />} />
-            <Route path='manage-calendar' element={<ManageCalendar />} />
-            <Route path='manage-response' element={<ManageResponse />} />
+            <Route path='calendar' element={<ManageCalendar />} />
+            <Route path='evaluators' element={<ManageEvaluators />} />
+            <Route path='responses' element={<ManageResponses />} />
+
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />

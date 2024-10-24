@@ -1,0 +1,21 @@
+import React from "react";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
+const BtnViewTally = () => {
+
+    let navigate = useNavigate();
+    const routeChange = () => {
+        let path = '/#';
+        navigate(path);
+    }
+
+    return(
+        <td>
+            <Button onClick={routeChange} className='me-3' style={{backgroundColor:"#71A872", border: '0px', color: 'white'}}>View Summary</Button>             
+        </td>
+    );
+    
+};
+
+export default BtnViewTally;

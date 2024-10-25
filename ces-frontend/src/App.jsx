@@ -60,6 +60,7 @@ import ManageCourse from './components/ManageCourse.jsx';
 import ManageEvaluators from './components/ManageEvaluators.jsx';
 import { UserProvider } from './components/UserContext.jsx';
 import ManageResponses from './components/ManageResponse.jsx';
+import EvalSummary from './components/EvalSummary.jsx';
 
 const App = () => {
   return (
@@ -88,7 +89,7 @@ const App = () => {
             <Route path='evaluators' element={<ManageEvaluators />} />
             <Route path='responses' element={<ManageResponses />} />
             <Route path='eval-page' element={<EvalPage />} />
-
+            <Route path='eval-sum' element={<EvalSummary />} />
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />

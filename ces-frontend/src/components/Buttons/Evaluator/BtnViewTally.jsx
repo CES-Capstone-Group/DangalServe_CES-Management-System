@@ -6,7 +6,7 @@ const BtnViewTally = () => {
 
     let navigate = useNavigate();
     const routeChange = () => {
-        let path = '/#';
+        let path = '/manage/eval-sum';
         navigate(path);
     }
 

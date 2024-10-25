@@ -14,26 +14,34 @@ const ProposalForm = () => {
   const [otherCommunityValue, setOtherCommunityValue] = useState(''); // Store the "Others" value
   const [otherTypology, setOtherTypology] = useState(false); // Track if "Others" is selected
   const [otherTypologyValue, setOtherTypologyValue] = useState(''); // Store the "Others" value
-  const [errors, setErrors] = useState({}); // Track errors for fields
+  const [errors, setErrors] = useState({
+    preparedByName: '',
+    preparedByPosition: '',
+    endorsedByName: '',
+    endorsedByPosition: '',
+    concurredByName: '',
+    concurredByPosition: '',
+  });
+
 
   const [barangays, setBarangays] = useState([]);
   // Fetch barangays
   useEffect(() => {
     const fetchBarangays = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/barangays/');
-            if (response.ok) {
-                const data = await response.json();
-                setBarangays(data);
-            } else {
-                console.error("Failed to fetch barangays");
-            }
-        } catch (error) {
-            console.error("Error fetching barangays:", error);
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+        if (response.ok) {
+          const data = await response.json();
+          setBarangays(data);
+        } else {
+          console.error("Failed to fetch barangays");
         }
+      } catch (error) {
+        console.error("Error fetching barangays:", error);
+      }
     };
     fetchBarangays();
-}, []);
+  }, []);
 
   // State to hold the form data
   const [formData, setFormData] = useState({
@@ -142,59 +150,83 @@ const ProposalForm = () => {
   const [isThreeYearPlan, setIsThreeYearPlan] = useState(false);
   const [isOneYearPlan, setIsOneYearPlan] = useState(false);
 
-  // State for each signatory section
-  const [preparedBy, setPreparedBy] = useState([]);
-  const [endorsedBy, setEndorsedBy] = useState([]);
-  const [concurredBy, setConcurredBy] = useState([]);
-
-  // Separate states for each section's signatory
-  const [preparedBySignatory, setPreparedBySignatory] = useState({ PreparedByname: '', PreparedByposition: '' });
-  const [endorsedBySignatory, setEndorsedBySignatory] = useState({ EndorsedByname: '', EndorsedByposition: '' });
-  const [concurredBySignatory, setConcurredBySignatory] = useState({ ConcurredByname: '', ConcurredByposition: '' });
-
-  // Handle input changes for each section
-  const handlePreparedByChange = (e) => {
+  const handleSignatoryChange = (e) => {
     const { name, value } = e.target;
-    setPreparedBySignatory({
-      ...preparedBySignatory,
+
+    // Update the input value
+    setSignatoryInput({
+      ...signatoryInput,
       [name]: value,
+    });
+
+    // Update validation errors if the field is empty
+    setErrors({
+      ...errors,
+      [name]: value.trim() === '' ? 'This field is required' : '',
     });
   };
 
-  const handleEndorsedByChange = (e) => {
-    const { name, value } = e.target;
-    setEndorsedBySignatory({
-      ...endorsedBySignatory,
-      [name]: value,
-    });
-  };
 
-  const handleConcurredByChange = (e) => {
-    const { name, value } = e.target;
-    setConcurredBySignatory({
-      ...concurredBySignatory,
-      [name]: value,
-    });
-  };
-
+  // State for signatories
   const [signatories, setSignatories] = useState([]);
+
+  // State for input fields, now with more descriptive keys
+  const [signatoryInput, setSignatoryInput] = useState({
+    preparedByName: '',
+    preparedByPosition: '',
+    endorsedByName: '',
+    endorsedByPosition: '',
+    concurredByName: '',
+    concurredByPosition: '',
+  });
+
+  const handleBlurSig = (e) => {
+    const { name, value } = e.target;
+
+    // Update validation errors if the field is empty
+    setErrors({
+      ...errors,
+      [name]: value.trim() === '' ? 'This field is required' : '',
+    });
+  };
+
 
   // Add a new signatory to the respective section
   const handleAddSignatory = (section) => {
-    if (section === 'prepared' && preparedBySignatory.name && preparedBySignatory.position) {
-      setSignatories([...signatories, { ...preparedBySignatory, section: 'prepared' }]);
-      setPreparedBy([...preparedBy, preparedBySignatory]);
-      setPreparedBySignatory({ name: '', position: '' });
-    } else if (section === 'endorsed' && endorsedBySignatory.name && endorsedBySignatory.position) {
-      setSignatories([...signatories, { ...endorsedBySignatory, section: 'endorsed' }]);
-      setEndorsedBy([...endorsedBy, endorsedBySignatory]);
-      setEndorsedBySignatory({ name: '', position: '' });
-    } else if (section === 'concurred' && concurredBySignatory.name && concurredBySignatory.position) {
-      setSignatories([...signatories, { ...concurredBySignatory, section: 'concurred' }]);
-      setConcurredBy([...concurredBy, concurredBySignatory]);
-      setConcurredBySignatory({ name: '', position: '' });
+    if (section === 'prepared' && signatoryInput.preparedByName && signatoryInput.preparedByPosition) {
+      setSignatories([
+        ...signatories,
+        {
+          name: signatoryInput.preparedByName,
+          position: signatoryInput.preparedByPosition,
+          section: 'prepared',
+        },
+      ]);
+      setSignatoryInput({ ...signatoryInput, preparedByName: '', preparedByPosition: '' }); // Reset input fields for "Prepared By"
+    } else if (section === 'endorsed' && signatoryInput.endorsedByName && signatoryInput.endorsedByPosition) {
+      setSignatories([
+        ...signatories,
+        {
+          name: signatoryInput.endorsedByName,
+          position: signatoryInput.endorsedByPosition,
+          section: 'endorsed',
+        },
+      ]);
+      setSignatoryInput({ ...signatoryInput, endorsedByName: '', endorsedByPosition: '' }); // Reset input fields for "Endorsed By"
+    } else if (section === 'concurred' && signatoryInput.concurredByName && signatoryInput.concurredByPosition) {
+      setSignatories([
+        ...signatories,
+        {
+          name: signatoryInput.concurredByName,
+          position: signatoryInput.concurredByPosition,
+          section: 'concurred',
+        },
+      ]);
+      setSignatoryInput({ ...signatoryInput, concurredByName: '', concurredByPosition: '' }); // Reset input fields for "Concurred By"
     }
   };
+
+
 
   useEffect(() => {
     // Check if partner_community is a string before splitting
@@ -365,7 +397,7 @@ const ProposalForm = () => {
               type="radio"
               label="Three-Year-Medium-Term Plan for Community Extension¹"
               value="Three-Year"
-              name= 'plan'
+              name='plan'
               checked={formData.is_three_year_plan}
               onChange={(e) => {
                 setIsThreeYearPlan(e.target.checked);
@@ -573,33 +605,33 @@ const ProposalForm = () => {
         <h4 className="mb-4">B. Project Details</h4>
 
         <Form.Group as={Row} controlId="formPartnerCommunity" className="mb-4">
-        <Col sm={5}>
-          <h6 className="mb-4">Partner Community/Organization</h6>
-          {barangays.map((barangay) => (
+          <Col sm={5}>
+            <h6 className="mb-4">Partner Community/Organization</h6>
+            {barangays.map((barangay) => (
+              <Form.Check
+                key={barangay.id}
+                type="checkbox"
+                label={barangay.brgy_name}
+                value={barangay.brgy_name}
+                checked={formData.partner_community.includes(barangay.brgy_name)}
+                onChange={(e) => handleCommunityChange(e, barangay.brgy_name, 'Barangay')}
+              />
+            ))}
             <Form.Check
-              key={barangay.id}
               type="checkbox"
-              label={barangay.brgy_name}
-              value={barangay.brgy_name}
-              checked={formData.partner_community.includes(barangay.brgy_name)}
-              onChange={(e) => handleCommunityChange(e, barangay.brgy_name, 'Barangay')}
+              label="Others"
+              onChange={handleOtherCommunityChange}
             />
-          ))}
-          <Form.Check
-            type="checkbox"
-            label="Others"
-            onChange={handleOtherCommunityChange}
-          />
-          {otherCommunity && (
-            <Form.Control
-              type="text"
-              placeholder="Please specify"
-              className="mt-2"
-              value={otherCommunityValue}
-              onChange={(e) => setOtherCommunityValue(e.target.value)}
-            />
-          )}
-        </Col>
+            {otherCommunity && (
+              <Form.Control
+                type="text"
+                placeholder="Please specify"
+                className="mt-2"
+                value={otherCommunityValue}
+                onChange={(e) => setOtherCommunityValue(e.target.value)}
+              />
+            )}
+          </Col>
 
           <Col sm={5}>
             <h6 className="mb-4">Typology</h6>
@@ -880,12 +912,11 @@ const ProposalForm = () => {
         {/* Signatory List Section */}
         <h4>Signatory List</h4>
         <p className='text-sm mb-4'>Please provide names and titles/positions of individuals required to sign this document.</p>
-
         {/* Prepared By Section */}
         <h5 className="mb-3">Prepared By:</h5>
-        {preparedBy.length > 0 && (
+        {signatories.filter(s => s.section === 'prepared').length > 0 && (
           <ul>
-            {preparedBy.map((p, index) => (
+            {signatories.filter(s => s.section === 'prepared').map((p, index) => (
               <li key={index}>
                 {p.name} - {p.position}
               </li>
@@ -898,39 +929,43 @@ const ProposalForm = () => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="PreparedByname"
-                value={preparedBySignatory.name}
-                onChange={handlePreparedByChange}
-                onBlur={handleBlur} // Validate onBlur
+                name="preparedByName" // Unique name for "Prepared By" name field
+                value={signatoryInput.preparedByName}
+                onChange={handleSignatoryChange}
+                onBlur={handleBlurSig}
                 placeholder="Enter name"
               />
-              {errors.PreparedByname && <p className="text-danger">name is required</p>}
             </Form.Group>
+            {errors.preparedByName && <p className="text-danger">{errors.preparedByName}</p>}
           </Col>
           <Col sm={6}>
             <Form.Group>
               <Form.Label>Position/Title</Form.Label>
               <Form.Control
                 type="text"
-                name="PreparedByposition"
-                value={preparedBySignatory.position}
-                onChange={handlePreparedByChange}
-                onBlur={handleBlur} // Validate onBlur
+                name="preparedByPosition" // Unique name for "Prepared By" position field
+                value={signatoryInput.preparedByPosition}
+                onChange={handleSignatoryChange}
+                onBlur={handleBlurSig}
                 placeholder="Enter position/title"
               />
-              {errors.PreparedByposition && <p className="text-danger">position is required</p>}
             </Form.Group>
+            {errors.preparedByPosition && <p className="text-danger">{errors.preparedByPosition}</p>}
           </Col>
         </Row>
-        <Button variant="success" onClick={() => handleAddSignatory('prepared')} className="mb-4">
+        <Button
+          variant="success"
+          onClick={() => handleAddSignatory('prepared')}
+          className="mb-4"
+        >
           + Add Prepared By
         </Button>
 
         {/* Endorsed By Section */}
         <h5 className="mb-3">Endorsed By:</h5>
-        {endorsedBy.length > 0 && (
+        {signatories.filter(s => s.section === 'endorsed').length > 0 && (
           <ul>
-            {endorsedBy.map((p, index) => (
+            {signatories.filter(s => s.section === 'endorsed').map((p, index) => (
               <li key={index}>
                 {p.name} - {p.position}
               </li>
@@ -943,39 +978,43 @@ const ProposalForm = () => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="EndorsedByname"
-                value={endorsedBySignatory.name}
-                onChange={handleEndorsedByChange}
-                onBlur={handleBlur} // Validate onBlur
+                name="endorsedByName" // Unique name for "Endorsed By" name field
+                value={signatoryInput.endorsedByName}
+                onChange={handleSignatoryChange}
+                onBlur={handleBlurSig}
                 placeholder="Enter name"
               />
-              {errors.EndorsedByname && <p className="text-danger">name is required</p>}
             </Form.Group>
+            {errors.endorsedByName && <p className="text-danger">{errors.endorsedByName}</p>}
           </Col>
           <Col sm={6}>
             <Form.Group>
               <Form.Label>Position/Title</Form.Label>
               <Form.Control
                 type="text"
-                name="EndorsedByposition"
-                value={endorsedBySignatory.position}
-                onChange={handleEndorsedByChange}
-                onBlur={handleBlur} // Validate onBlur
+                name="endorsedByPosition" // Unique name for "Endorsed By" position field
+                value={signatoryInput.endorsedByPosition}
+                onChange={handleSignatoryChange}
+                onBlur={handleBlurSig}
                 placeholder="Enter position/title"
               />
-              {errors.EndorsedByposition && <p className="text-danger">position is required</p>}
             </Form.Group>
+            {errors.endorsedByPosition && <p className="text-danger">{errors.endorsedByPosition}</p>}
           </Col>
         </Row>
-        <Button variant="success" onClick={() => handleAddSignatory('endorsed')} className="mb-4">
+        <Button
+          variant="success"
+          onClick={() => handleAddSignatory('endorsed')}
+          className="mb-4"
+        >
           + Add Endorsed By
         </Button>
 
         {/* Concurred By Section */}
         <h5 className="mb-3">Concurred By:</h5>
-        {concurredBy.length > 0 && (
+        {signatories.filter(s => s.section === 'concurred').length > 0 && (
           <ul>
-            {concurredBy.map((p, index) => (
+            {signatories.filter(s => s.section === 'concurred').map((p, index) => (
               <li key={index}>
                 {p.name} - {p.position}
               </li>
@@ -988,33 +1027,38 @@ const ProposalForm = () => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="ConcurredByname"
-                value={concurredBySignatory.name}
-                onChange={handleConcurredByChange}
-                onBlur={handleBlur} // Validate onBlur
+                name="concurredByName" // Unique name for "Concurred By" name field
+                value={signatoryInput.concurredByName}
+                onChange={handleSignatoryChange}
+                onBlur={handleBlurSig}
                 placeholder="Enter name"
               />
-              {errors.ConcurredByname && <p className="text-danger">name is required</p>}
             </Form.Group>
+            {errors.concurredByName && <p className="text-danger">{errors.concurredByName}</p>}
           </Col>
           <Col sm={6}>
             <Form.Group>
               <Form.Label>Position/Title</Form.Label>
               <Form.Control
                 type="text"
-                name="ConcurredByposition"
-                value={concurredBySignatory.position}
-                onChange={handleConcurredByChange}
-                onBlur={handleBlur} // Validate onBlur
+                name="concurredByPosition" // Unique name for "Concurred By" position field
+                value={signatoryInput.concurredByPosition}
+                onChange={handleSignatoryChange}
+                onBlur={handleBlurSig}
                 placeholder="Enter position/title"
               />
-              {errors.ConcurredByposition && <p className="text-danger">position is required</p>}
             </Form.Group>
+            {errors.concurredByPosition && <p className="text-danger">{errors.concurredByPosition}</p>}
           </Col>
         </Row>
-        <Button variant="success" onClick={() => handleAddSignatory('concurred')} className="mb-4">
+        <Button
+          variant="success"
+          onClick={() => handleAddSignatory('concurred')}
+          className="mb-4"
+        >
           + Add Concurred By
         </Button>
+
 
         <div className="d-flex justify-content-end">
           <Button variant="success" type="submit" className="mt-4" id='formbtn' style={{ margin: '.5rem' }}>

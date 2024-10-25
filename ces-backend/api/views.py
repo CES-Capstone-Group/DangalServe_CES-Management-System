@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from datetime import datetime
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Achievement, Announcement, Account, ActivitySchedule, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
 from .serializer import AchievementSerializer, AnnouncementSerializer, ActivityScheduleSerializer, BarangaySerializer, CourseSerializer, DepartmentSerializer, DocumentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
@@ -85,12 +86,21 @@ def create_user(request):
 @api_view(['PUT'])
 def user_info_action(request, user_id):
     try:
-        # Fetch the account using the user_id
         account = Account.objects.get(user_id=user_id)
     except Account.DoesNotExist:
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    # Get the department and course names from the request data
+    if 'status' in request.data and len(request.data) == 1:
+    
+        account.status = request.data.get('status')
+        if account.status == "Inactive":
+            account.deactivationDate = datetime.now().date()  
+        elif account.status == "Active":
+            account.deactivationDate = None
+        account.save()
+        return Response({"message": "Account status updated successfully"}, status=status.HTTP_200_OK)
+    
+    # For editing account details, validate and update the other fields
     department_id = request.data.get('department')
     course_id = request.data.get('course')
     barangay_id = request.data.get('barangay')
@@ -116,11 +126,10 @@ def user_info_action(request, user_id):
         
         if barangay:
             request.data['barangay'] = barangay.id
-            # print("barangay query ", barangay.id)
         else:
-            return Response({"error": f"Barangay '{id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": f"Barangay '{barangay_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Serialize and validate the data
+    # Serialize and validate the data for full account editing
     serializer = TblAccountsSerializer(account, data=request.data)
     if serializer.is_valid():
         serializer.save()  # Save the updated data
@@ -516,7 +525,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         status = self.request.query_params.get('status')
         user = self.request.user
-        department = self.request.user.department
+        department = self.request.user.barangay
         # Check if the user is an admin
         if user.accountType == 'Admin':
             # Admins can see all proposals, but filter out fully approved ones

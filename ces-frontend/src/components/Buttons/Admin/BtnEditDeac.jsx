@@ -1,17 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
-
-const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
+import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
+const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(account); // Initialize formData with account details
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+
+        const user = getCurrentUserFromToken(); // Get the current user when "Edit" is clicked
+        if (user) {
+            setCurrentUser(user); // Set the current user info
+        }
+
+        // Check if the current user is trying to edit their own account
+        if (user && user.user_id === account.user_id) {
+            // console.log("User is editing their own account.");
+            // Redirect to profile page
+            navigate("/admin/profile");
+        }
+    };
     const handleClose = () => setShow(false);
+
+    const [currentUser, setCurrentUser] = useState(null);
 
     const [userChangedDepartment, setUserChangedDepartment] = useState(false);
     const [departments, setDepartments] = useState([]);
     const [courses, setCourses] = useState([]);
     const [filteredCourses, setFilteredCourses] = useState([]);
     const [barangays, setBarangays] = useState([]);
+
+    const navigate = useNavigate();
+
+    const getCurrentUserFromToken = () => {
+        const token = localStorage.getItem("access_token"); // Assuming token is stored in localStorage
+        if (token) {
+            const decoded = jwtDecode(token); // Decode the token to get user info
+            return decoded;
+        }
+        return null;
+    };
+
+    // useEffect(() => {
+    //     const user = getCurrentUserFromToken(); // Get the current user on component mount
+    //     if (user) {
+    //         setCurrentUser(user); // Set the current user info
+    //     }
+
+    //     if (user && user.user_id === account.user_id) {
+    //         // If the current user is editing their own account, you can redirect or adjust the UI accordingly
+    //         console.log("User is editing their own account.");
+    //         navigate('/admin/profile');
+    //     }
+    // }, [account]);
 
     // Fetch departments
     useEffect(() => {
@@ -157,10 +198,34 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     };
     
 
-    const handleDeactivate = () => {
+    const handleDeactivate = async () => {
         const newStatus = formData.status === "Active" ? "Inactive" : "Active";
-        onDeactivate(account.user_id, newStatus);
-        setFormData((prev) => ({ ...prev, status: newStatus }));
+    
+        // Send only the status in the request
+        const updatedData = {
+            status: newStatus,
+        };
+        // console.log(JSON.stringify(updatedData))
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${account.user_id}/`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedData), // Only send status change
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            onSave();  // Notify the parent to refresh data
+            setFormData((prev) => ({ ...prev, status: newStatus })); // Update status locally
+            handleClose();
+        } catch (error) {
+            console.error("Failed to deactivate account:", error);
+        }
     };
 
     return (
@@ -169,9 +234,11 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                 View/Edit
             </Button>
 
+            {currentUser?.user_id !== account.user_id && (
             <Button style={{ backgroundColor: formData.status === "Active" ? "#ff3232" : "#71A872", color: "white", border: '0px' }} onClick={handleDeactivate}>
                 {formData.status === "Active" ? "Deactivate" : "Activate"}
             </Button>
+            )}
 
             <Modal show={show} onHide={handleClose} backdrop="static" centered size="lg">
                 <Modal.Header closeButton>

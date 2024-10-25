@@ -88,7 +88,8 @@ const BtnAddAcc = ({ onAccountAdded }) => {
 
     // Update filtered courses when department changes
     useEffect(() => {
-        const filtered = courses.filter(course => course.department_id === formData.department);
+        const filtered = courses.filter(course => course.dept_id === formData.department);
+        // console.log("filtered",filtered);
         setFilteredCourses(filtered);
     }, [formData.department, courses]);
 

@@ -56,7 +56,7 @@ const Rows = ({ user_id, username, name, type, department_name, course_name, bar
             }
 
             const data = await response.json();
-            console.log("Account status updated:", data);
+            // console.log("Account status updated:", data);
             fetchUsers();
         } catch (error) {
             console.error("Failed to update account status:", error);
@@ -68,7 +68,7 @@ const Rows = ({ user_id, username, name, type, department_name, course_name, bar
     return (
         <tr>
             <td>{user_id}</td>
-            <td>{username}</td>
+            <td>{name}</td>
             <td>{type}</td>
             <td>{displayField(department_name, "Not Applicable")}</td>
             <td>{displayField(course_name, "Not Applicable")}</td>
@@ -137,7 +137,7 @@ const UserManagementCon = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            console.log("API Response: ", data);
+            // console.log("API Response: ", data);
             setUsers(data);  // Update the state with the fetched users
         } catch (error) {
             console.error("Failed to fetch users:", error);

@@ -4,7 +4,6 @@ import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(account); // Initialize formData with account details
-
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
 
@@ -70,29 +69,34 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
 
     // Populate formData on modal open
     useEffect(() => {
-        console.log(account)
+        // console.log(account)
         if (account) {
             if(account.accountType === "Proponent"){
+                const matchedDepartment = departments.find(dept => dept.dept_name === account.department);
+                const matchedCourse = courses.find(course => course.course_name === account.course);
+                // console.log("matched course: ", matchedCourse)
                 setFormData({
                     ...account,
-                    department: account.department_name || "", // Assuming `department_name` is coming from the API
-                    course: account.course_name || "" // Assuming `course_name` is coming from the API
+                    department: matchedDepartment ? matchedDepartment.dept_id : "",  // Set dept_id if found
+                    course: matchedCourse ? matchedCourse.course_id : ""  // Set course_id if found
                 });
             }
             else if(account.accountType === "Brgy. Official"){
+                const matchedBarangay = barangays.find(b => b.brgy_name === account.barangay);
                 setFormData({
                     ...account,
-                    barangay: account.barangay || "", // Assuming `barangay
+                    barangay: matchedBarangay ? matchedBarangay.id : "" // Assuming `barangay
                 });
-
+                // console.log("matched:", matchedBarangay)
+                // console.log("brgy :", formData.barangay)
             }
         }
-    }, [account]);
+    },  [account, departments, courses]);
 
     // Pre-fill department and courses based on the account data when modal is shown
     useEffect(() => {
-        if (formData.department && courses.length > 0) {
-            const filtered = courses.filter(course => course.department_id === formData.department);
+        if (formData.department) {
+            const filtered = courses.filter(course => course.dept === formData.department);
             setFilteredCourses(filtered);
         }
     }, [formData.department, courses]);
@@ -103,40 +107,55 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
             ...prevState,
             [name]: value,
         }));
-
+    
         // Filter courses when department changes
         if (name === "department") {
             setUserChangedDepartment(true);
-            const filtered = courses.filter(course => course.department_id === value);
+            const filtered = courses.filter(course => course.department_id === value); // Ensure filtering is based on department_id
             setFilteredCourses(filtered);
             setFormData((prevState) => ({
                 ...prevState,
                 course: "" // Reset course when department changes
             }));
+            if (value) {
+                fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFilteredCourses(data);  // Update the filtered courses state
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching courses:", error);
+                    });
+            } else {
+                setFilteredCourses([]);  // Clear courses if no department selected
+            }
         }
+
     };
 
     const handleSave = async (e) => {
         e.preventDefault();
+        // console.log("form data",  JSON.stringify(formData))
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${account.user_id}/`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData), // Send formData with updated name and other details
+                body: JSON.stringify(formData), // Send the updated form data
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            onSave(); // Notify parent to refresh data
+            onSave();  // Notify the parent to refresh data
             handleClose();
         } catch (error) {
             console.error("Failed to update account:", error);
         }
     };
+    
 
     const handleDeactivate = () => {
         const newStatus = formData.status === "Active" ? "Inactive" : "Active";
@@ -264,7 +283,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                                     >
                                         <option value="">Select Barangay</option>
                                         {barangays.map(b => (
-                                            <option key={b.id} value={b.brgy_name}>
+                                            <option key={b.id} value={b.id}>
                                                 {b.brgy_name}
                                             </option>
                                         ))}

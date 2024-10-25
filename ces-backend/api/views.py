@@ -91,24 +91,34 @@ def user_info_action(request, user_id):
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
 
     # Get the department and course names from the request data
-    department_name = request.data.get('department')
-    course_name = request.data.get('course')
+    department_id = request.data.get('department')
+    course_id = request.data.get('course')
+    barangay_id = request.data.get('barangay')
 
     # Check and resolve the department_name to dept_id
-    if department_name:
-        department = Department.objects.filter(dept_name=department_name).first()
+    if department_id:
+        department = Department.objects.filter(dept_id=department_id).first()
         if department:
             request.data['department'] = department.dept_id
         else:
-            return Response({"error": f"Department '{department_name}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": f"Department '{department_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Check and resolve the course_name to course_id
-    if course_name:
-        course = Course.objects.filter(course_name=course_name).first()
+    if course_id:
+        course = Course.objects.filter(course_id=course_id).first()
         if course:
             request.data['course'] = course.course_id
         else:
-            return Response({"error": f"Course '{course_name}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": f"Course '{course_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    if barangay_id:
+        barangay = Barangay.objects.filter(id=barangay_id).first()
+        
+        if barangay:
+            request.data['barangay'] = barangay.id
+            # print("barangay query ", barangay.id)
+        else:
+            return Response({"error": f"Barangay '{id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Serialize and validate the data
     serializer = TblAccountsSerializer(account, data=request.data)

@@ -5,7 +5,7 @@ const BtnDownloadProposal = ({ proposal }) => {
     const [loading, setLoading] = useState(false);
 
     const handleDownload = async () => {
-        console.log('clicked')
+        // console.log('clicked')
         setLoading(true); // Start loading
         try {
             const token = localStorage.getItem('access_token'); // Get the token from localStorage

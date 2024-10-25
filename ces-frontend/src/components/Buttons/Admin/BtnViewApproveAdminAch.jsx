@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Modal, Col, Row } from "react-bootstrap";
-import { jwtDecode } from "jwt-decode"; // Assuming jwtDecode is available
+import { jwtDecode } from "jwt-decode";
 
 const BtnViewApproveAdmin = ({ proposal }) => {
     const [show, setShow] = useState(false);
-    const [userBarangay, setUserBarangay] = useState("");  // To store user's barangay
-    const [isApproved, setIsApproved] = useState(false);   // To track if barangay has already approved
-    const [remarks, setRemarks] = useState("");  // To store remarks
+    const [userBarangay, setUserBarangay] = useState(""); 
+    const [isApproved, setIsApproved] = useState(false); 
+    const [remarks, setRemarks] = useState("");
 
     // Fetch user barangay (assuming it's stored in JWT or from API)
     useEffect(() => {
         const token = localStorage.getItem("access_token");
         if (token) {
-            const decodedToken = jwtDecode(token);  // Assuming you have jwtDecode function
-            setUserBarangay(decodedToken.department || "");  // Replace department with the correct claim
+            const decodedToken = jwtDecode(token); 
+            setUserBarangay(decodedToken.barangay || "");  // Replace department with the correct claim
         }
     }, []);
 
@@ -26,11 +26,12 @@ const BtnViewApproveAdmin = ({ proposal }) => {
             }
         }
     }, [proposal, userBarangay]);
-
+    
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-
+    
     const handleApprove = async () => {
+
         if (!userBarangay) {
             alert("Your barangay is not recognized.");
             return;
@@ -38,7 +39,6 @@ const BtnViewApproveAdmin = ({ proposal }) => {
 
         try {
             const token = localStorage.getItem("access_token");
-
             const response = await fetch(
                 `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/approve/`,
                 {
@@ -54,7 +54,7 @@ const BtnViewApproveAdmin = ({ proposal }) => {
                     }),
                 }
             );
-
+            
             if (response.ok) {
                 alert("Proposal approved successfully.");
                 setIsApproved(true);  // Disable the button after approval

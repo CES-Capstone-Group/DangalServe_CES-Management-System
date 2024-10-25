@@ -20,6 +20,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['accountType'] = user.accountType
         if user.accountType == 'Proponent' and user.department:
             token['department'] = user.department.dept_name
+        elif user.accountType == 'Brgy. Official' and user.barangay:
+            token['barangay'] = user.barangay.brgy_name
         else:
             token['department'] = None  # Or omit this field if you prefer
         
@@ -30,6 +32,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         user = self.user
+        # print(user)
+        
         if user.status != 'Active':
             raise AuthenticationFailed('Account is not active')
 
@@ -45,6 +49,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             
         if user.accountType == 'Proponent' and user.course:
             data['course_name'] = user.course.course_name
+        else:
+            data['course_name'] = None
+            
+        if user.accountType == 'Brgy. Official' and user.barangay:
+            data['brgy_name'] = user.barangay.brgy_name
+            # print(user.barangay.brgy_name)
         else:
             data['course_name'] = None
         return data

@@ -614,8 +614,8 @@ class BarangayApprovedProposalsView(APIView):
 
     def get(self, request):
         user = request.user
-        department = user.department  # Assuming department represents barangay
-
+        department = user.barangay  # Assuming department represents barangay
+        
         if not department:
             return Response({"error": "No barangay found for the user"}, status=400)
 
@@ -624,6 +624,8 @@ class BarangayApprovedProposalsView(APIView):
             status='Approved by Barangay',
             partner_community__contains=department  # Assuming partner_community is a comma-separated string
         )
+        
+        print(approved_proposals)
         
         serializer = ProposalSerializer(approved_proposals, many=True)
         return Response(serializer.data, status=200)
@@ -739,7 +741,7 @@ class BarangayApprovalView(APIView):
 
     def patch(self, request, proposal_id):
         user = request.user
-        barangay = user.department  # Assuming the barangay is stored in the department field
+        barangay = user.barangay.brgy_name  # Assuming the barangay is stored in the department field
 
         try:
             proposal = Proposal.objects.get(proposal_id=proposal_id)

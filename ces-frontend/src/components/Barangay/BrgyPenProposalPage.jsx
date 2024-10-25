@@ -15,8 +15,8 @@ const BrgyPenProposalPage = () => {
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
-                
-                const departmentFromToken = decodedToken.department; // Check if department is present in the token
+                // console.log(decodedToken)
+                const departmentFromToken = decodedToken.barangay; // Check if department is present in the token
                 if (departmentFromToken) {
                     setDepartment(departmentFromToken);
                 } else {

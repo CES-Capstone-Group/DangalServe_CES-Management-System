@@ -1,14 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import BtnViewApproveAdminAch from "../Buttons/Admin/BtnViewApproveAdminAch";
 import {jwtDecode} from "jwt-decode"; // To decode JWT and get user info
 import "../table.css";
+import BtnViewApproveProposal from "../Buttons/BtnViewApproveProposal";
 
 const BrgyPenProposalPage = () => {
     const [proposals, setProposals] = useState([]);
     const [loading, setLoading] = useState(true); // Start with loading = true
     const [department, setDepartment] = useState("");
 
+    const fetchProposals = async (status) => {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            console.error("No token found.");
+            setLoading(false);
+            return;
+        }
+        
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${filter}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setProposals(data);
+            } else if (response.status === 401) {
+                console.error('Unauthorized: Check if the token is valid.');
+            } else {
+                console.error('Error fetching proposals:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching proposals:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        fetchProposals();
+    }, []);
+
+    const handleProposalApproved = () => {
+        setLoading(true);
+        fetchProposals();
+    };
     // Fetch the current user's department from JWT token (or from API)
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -68,7 +109,6 @@ const BrgyPenProposalPage = () => {
                     // Add an additional safeguard to filter exactly by "Approved by Barangay"
                     const filteredProposals = data.filter(proposal => proposal.status === "Approved by President" || proposal.status === "Partly Approved by Barangay");
                     setProposals(filteredProposals); // Set the proposals after filtering
-                    // console.log("Filtered Proposals:", filteredProposals); // Add a log to inspect filtered proposals
                 } else if (response.status === 401) {
                     console.error("Unauthorized: Check if the token is valid.");
                 } else {
@@ -114,7 +154,10 @@ const BrgyPenProposalPage = () => {
                                     <td>{proposal.location}</td>
                                     <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
                                     <td>{proposal.status}</td>
-                                    <td><BtnViewApproveAdminAch proposal={proposal} /></td>
+                                    <td><BtnViewApproveProposal 
+                                        proposal={proposal} 
+                                        onApprove={handleProposalApproved} 
+                                     /></td>
                                 </tr>
                             ))
                         ) : (

@@ -10,7 +10,7 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
   return(
     <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side collapsed'}`} style={{  width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 10px', marginTop: sidebarOpen ? '0' : '50px' }}>
     {/*SidebarMenu Header*/}
-    <SidebarMenu.Toggle oncClick={toggleSidebar}>
+    <SidebarMenu.Toggle onClick={toggleSidebar}>
       <SidebarMenu.Brand>
         <img className='logo img-fluid' src={Logo} alt="pnclogo"  style={{ display: sidebarOpen ? 'block' : 'none' }} />
       </SidebarMenu.Brand>

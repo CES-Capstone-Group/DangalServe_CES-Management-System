@@ -9,6 +9,7 @@ import ButtonDownloadProposal from "./BtnDownloadProposal";
 const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const [show, setShow] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isBrgy, setIsBrgy] = useState(false);
   const [rejectShow, setRejectShow] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const handleRejectShow = () => setRejectShow(true);
@@ -17,10 +18,14 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const [dirProgress, setDirProgress] = useState(0);
   const [vpreProgress, setVpreProgress] = useState(0);
   const [preProgress, setPreProgress] = useState(0);
+  const [isApproved, setIsApproved] = useState(false);
+  const [userBarangay, setUserBarangay] = useState("");  // Track the user's barangay
+  const [remarks, setRemarks] = useState("");  // Track any remarks
 
   const [dirApproved, setDirApprove] = useState(false);
   const [vpreApproved, setVpreApprove] = useState(false);
   const [preApproved, setPreApprove] = useState(false);
+  const [brgyApproved, setBrgyApprove] = useState(false);
   const [buttonText, setButtonText] = useState("Approve");
 
   const handleShow = () => setShow(true);
@@ -28,39 +33,18 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const navigate = useNavigate();
   const handleResubmit = async () => {
     navigate(`/coor/proposal-form/${proposal.proposal_id}/resubmit`);
-    // try {
-    //   const token = localStorage.getItem("access_token");
-    //   const response = await fetch(
-    //     `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/resubmit/`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //       body: JSON.stringify({ status: "Resubmitted" }),
-    //     }
-    //   );
-    //   if (response.ok) {
-    //     console.log("Proposal resubmitted successfully");
-    //     if (onApprove) onApprove();
-    //     handleClose();
-    //   } else {
-    //     console.error("Failed to resubmit the proposal");
-    //   }
-    // } catch (error) {
-    //   console.error("Error resubmitting the proposal:", error);
-    // }
   };
 
-  // Check if the user is an admin by decoding the JWT token
+  // Fetch and set the user's barangay from the JWT token
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
       const decodedToken = jwtDecode(token);
-      const isAdmin =
-        decodedToken.is_staff || decodedToken.accountType === "Admin";
+      const isAdmin = decodedToken.is_staff || decodedToken.accountType === "Admin";
       setIsAdmin(isAdmin);
+      const isBrgy = decodedToken.accountType === "Brgy. Official";  // Adjust for your data
+      setIsBrgy(isBrgy);
+      setUserBarangay(decodedToken.barangay || "");  // Fetch and store barangay from the token
     }
   }, []);
 
@@ -86,7 +70,11 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
         setVpreProgress(100);
         setPreApprove(true);
         setPreProgress(100);
-        setButtonText("Approval Complete");
+        setButtonText("Barangay Approve");
+        break;
+      case "Approved":
+        setIsApproved(true);
+        setBrgyApprove(true);
         break;
       default:
         setButtonText("Approve");
@@ -97,51 +85,101 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const handleApprove = async () => {
     try {
       if (!dirApproved) {
-        approval("Approved by Director");
+        console.log("Approving as Director...");
+        await approval("Approved by Director");
       } else if (dirApproved && !vpreApproved) {
-        approval("Approved by VPRE");
+        console.log("Approving as VPRE...");
+        await approval("Approved by VPRE");
       } else if (dirApproved && vpreApproved && !preApproved) {
-        approval("Approved by President");
+        console.log("Approving as President...");
+        await approval("Approved by President");
+      } else if (dirApproved && vpreApproved && preApproved && isBrgy) {
+        console.log("Final Approval for Barangay...");
+        await barangayApproval("Approved");
       }
     } catch (error) {
       console.error("Error approving the proposal:", error);
     }
   };
 
+  // The original approval function for Director/VPRE/President
   const approval = async (status) => {
     const token = localStorage.getItem("access_token");
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`,
-      {
+    const apiUrl = `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`;
+
+    try {
+      console.log("Sending approval request with status:", status);
+
+      const response = await fetch(apiUrl, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ status }),
-      }
-    );
-    if (response.ok) {
-      // console.log("Proposal approved successfully");
+      });
 
-      if (status === "Approved by Director") {
-        setDirApprove(true);
-        setDirProgress(100);
-        setButtonText("VPRE Approve");
-      } else if (status === "Approved by VPRE") {
-        setVpreApprove(true);
-        setVpreProgress(100);
-        setButtonText("President Approve");
-      } else if (status === "Approved by President") {
-        setPreApprove(true);
-        setPreProgress(100);
-        setButtonText("Approval Complete");
-      }
+      if (response.ok) {
+        console.log("Proposal approved successfully with status:", status);
+        
+        if (status === "Approved by Director") {
+          setDirApprove(true);
+          setButtonText("VPRE Approve");
+        } else if (status === "Approved by VPRE") {
+          setVpreApprove(true);
+          setButtonText("President Approve");
+        } else if (status === "Approved by President") {
+          setPreApprove(true);
+          setButtonText("Barangay Approve");
+        } else if (status === "Approved") {
+          setButtonText("Approval Complete");
+        }
 
-      if (onApprove) onApprove();
-      handleClose();
-    } else {
-      console.error("Failed to approve the proposal");
+        if (onApprove) onApprove();
+        handleClose();
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to approve the proposal:", errorData);
+      }
+    } catch (error) {
+      console.error("Error during the approval process:", error);
+    }
+  };
+
+  // The Barangay approval function
+  const barangayApproval = async (status) => {
+    if (!userBarangay) {
+      alert("Your barangay is not recognized.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const apiUrl = `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/approve/`;
+
+      const response = await fetch(apiUrl, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status,  // Approve the proposal
+          barangay: userBarangay,
+          remarks: remarks,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Proposal approved successfully.");
+        setIsApproved(true);  // Disable the button after approval
+        handleClose();
+      } else {
+        const data = await response.json();
+        console.error("Failed to approve the proposal", data);
+      }
+    } catch (error) {
+      console.error("Error approving the proposal:", error);
     }
   };
 
@@ -160,7 +198,6 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
         }
       );
       if (response.ok) {
-        // console.log("Proposal rejected successfully");
         handleRejectClose();
         if (onApprove) onApprove();
       } else {
@@ -180,6 +217,23 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
       >
         View
       </Button>
+
+      {isBrgy && preApproved && (
+        <Button
+          className="mt-2 mb-2"
+          style={{
+            backgroundColor: isApproved ? "#ccc" : "#71A872",
+            margin: "0px",
+            border: "0px",
+            color: "white",
+          }}
+          onClick={handleApprove}
+          disabled={isApproved} // Disable if already approved
+        >
+          {isApproved ? "Already Approved" : "Approve"}
+        </Button>
+      )}
+      
 
       {isAdmin &&
         !preApproved &&
@@ -201,7 +255,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
               Reject
             </Button>
           </>
-        )}
+      )}
       {!isAdmin && proposal.status === "Rejected" && (
         <Button
           onClick={handleResubmit}
@@ -494,7 +548,23 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
               <Col sm={8}>
                 <Form.Control readOnly type="text" value={proposal.status} />
               </Col>
-            </Form.Group>                          
+            </Form.Group> 
+
+            {/* Remarks for Barangay approval */}
+            {isBrgy && (
+              <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={4}>Remarks</Form.Label>
+                <Col sm={8}>
+                  <Form.Control 
+                    as="textarea" 
+                    rows={3} 
+                    value={remarks} 
+                    onChange={(e) => setRemarks(e.target.value)} 
+                    placeholder="Add any remarks (optional)" 
+                  />
+                </Col>
+              </Form.Group>
+            )}                         
           </Form>
         </Modal.Body>
 

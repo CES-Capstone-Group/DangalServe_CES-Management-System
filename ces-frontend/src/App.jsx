@@ -61,6 +61,7 @@ import ManageEvaluators from './components/ManageEvaluators.jsx';
 import { UserProvider } from './components/UserContext.jsx';
 import ManageResponses from './components/ManageResponse.jsx';
 import EvalSummary from './components/EvalSummary.jsx';
+import EvalCards from './components/Evaluator/EvalCards.jsx';
 
 const App = () => {
   return (
@@ -88,8 +89,9 @@ const App = () => {
             <Route path='calendar' element={<ManageCalendar />} />
             <Route path='evaluators' element={<ManageEvaluators />} />
             <Route path='responses' element={<ManageResponses />} />
-            <Route path='eval-page' element={<EvalPage />} />
+            <Route path='eval-management' element={<EvalPage />} />
             <Route path='eval-sum' element={<EvalSummary />} />
+            <Route path='eval-cards' element={<EvalCards />} />
           </Route>
           <Route path='/admin' element={<UserAdminPage />}>
             <Route path='proposal-form' element={<ProposalForm />} />
@@ -106,6 +108,7 @@ const App = () => {
             <Route path='involvement' element={<InvolvementPage />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='kpi' element={<KpiPage />} />
+            <Route path='eval-cards' element={<EvalCards />} />
             <Route path='profile' element={<MyProfilePage />} />
           </Route>
         </Route>
@@ -148,6 +151,7 @@ const App = () => {
           <Route index element={<EvalSelect />} />
           <Route path='dashboard' element={<MainContent />} />
           <Route path='eval-page' element={<EvalPage />} />
+          <Route path='eval-cards' element={<EvalCards />} />
         </Route>
         {/* </Route> */}
 

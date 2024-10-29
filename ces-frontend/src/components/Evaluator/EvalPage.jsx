@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, Row, Table, Button } from "react-bootstrap";
+import { Col, Container, Row, Table, Button, Card } from "react-bootstrap";
 import "../table.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -11,8 +11,7 @@ import BtnViewAllResponse from "../Buttons/Evaluator/BtnViewAllResponse";
 
 const EvalPage = () => {
     const navigate = useNavigate();
-
-    // Go back to the previous page
+    // // Go back to the previous page
     const handleBack = () => {
         navigate(-1); // This will navigate to the previous page in the history
     };
@@ -60,7 +59,6 @@ const EvalPage = () => {
                     <BtnAddEval />
                 </Col>
             </Row>
-
         </Container>
     );
 };

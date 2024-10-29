@@ -370,18 +370,10 @@ const AdminMainContent = () => {
                 <strong>Awardee:</strong> {selectedAchievement?.awardee}<br />
                 <strong>Date:</strong> {selectedAchievement?.date_awarded}<br />
                 <strong>Awarded by:</strong> {selectedAchievement?.awarded_by}
+
+                 
               </Modal.Body>
             </Modal>
-
-            {/* Achievement Edit Modal */}
-            {selectedAchievement && (
-              <BtnEditAchievement
-                show={showEditModalAch}
-                onHide={() => setShowEditModalAch(false)}
-                achievement={selectedAchievement}
-                onAchievementUpdated={handleAchievementUpdated}
-              />
-            )}
           </Row>
 
           <br />

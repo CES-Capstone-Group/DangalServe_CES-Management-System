@@ -524,17 +524,33 @@ class ProposalListCreateView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         status = self.request.query_params.get('status')
+        department_id = self.request.query_params.get('department_id')
         user = self.request.user
-        department = self.request.user.barangay
+        barangay = self.request.user.barangay
         # Check if the user is an admin
         if user.accountType == 'Admin':
-            # Admins can see all proposals, but filter out fully approved ones
+            # Start with a base queryset for admins
+            queryset = Proposal.objects.all()
+
+            # Apply the status filter for admins
             if status:
                 if status == 'Pending':
-                    # Exclude fully approved proposals (e.g., Approved by Barangay)
-                    return Proposal.objects.exclude(status='Approved by Barangay').filter(status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay'])
-                return Proposal.objects.filter(status=status)
-            return Proposal.objects.exclude(status='Approved by Barangay')  # Exclude fully approved proposals
+                    # Exclude fully approved proposals for 'Pending' status
+                    queryset = queryset.exclude(status='Approved by Barangay').filter(
+                        status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay']
+                    )
+                else:
+                    queryset = queryset.filter(status=status)
+            
+            # Apply the department_id filter if provided
+            if department_id:
+                queryset = queryset.filter(user_id__department_id=department_id)
+            
+            # If no specific status was provided, exclude fully approved proposals by default
+            if not status:
+                queryset = queryset.exclude(status='Approved by Barangay')
+
+            return queryset
         elif user.accountType == 'Proponent':
             if status:
                 if status == 'Pending':
@@ -549,12 +565,12 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             if status:
                 return Proposal.objects.extra(
                     where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
-                    params=[department]
+                    params=[barangay]
                 ).filter(status=status)
             
             return Proposal.objects.extra(
                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
-                params=[department]
+                params=[barangay]
             )        
     def post(self, request, *args, **kwargs):
         # print(request.data)

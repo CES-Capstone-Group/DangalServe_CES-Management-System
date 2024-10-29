@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,52 +9,59 @@ const AdminDeptApprovedPro = () => {
     const [departmentProposals, setDepartmentProposals] = useState([]);
     const [departmentName, setDepartmentName] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        // Fetch proposals for the specific department
-        const fetchDepartmentProposals = async () => {
-            const token = localStorage.getItem("access_token");
-            if (!token) {
-                console.error("No token found.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay&department=${departmentId}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setDepartmentProposals(data);
-                } else {
-                    console.error("Error fetching department proposals:", response.statusText);
+        // Check if departmentProposals and departmentName are passed in location state
+        if (location.state?.departmentProposals && location.state?.departmentName) {
+            setDepartmentProposals(location.state.departmentProposals);
+            setDepartmentName(location.state.departmentName);
+        } else {
+            // Fetch data if not available in location state
+            // Fetch proposals for the departmentId here as a fallback
+            const fetchDepartmentProposals = async () => {
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                    console.error("No token found.");
+                    return;
                 }
-            } catch (error) {
-                console.error("Error fetching department proposals:", error);
-            }
-        };
 
-        // Fetch department name by ID
-        const fetchDepartmentName = async () => {
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/api/departments/${departmentId}/`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setDepartmentName(data.dept_name);
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay&department=${departmentId}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setDepartmentProposals(data);
+                    } else {
+                        console.error("Error fetching department proposals:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error fetching department proposals:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching department name:", error);
-            }
-        };
+            };
 
-        fetchDepartmentProposals();
-        fetchDepartmentName();
-    }, [departmentId]);
+            const fetchDepartmentName = async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/api/departments/${departmentId}/`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setDepartmentName(data.dept_name);
+                    }
+                } catch (error) {
+                    console.error("Error fetching department name:", error);
+                }
+            };
+
+            fetchDepartmentProposals();
+            fetchDepartmentName();
+        }
+    }, [departmentId, location.state]);
 
     return (
         <Container>

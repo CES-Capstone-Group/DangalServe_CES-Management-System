@@ -9,6 +9,7 @@ const AdminApprovedPro = () => {
     const [proposals, setProposals] = useState([]);
     const [departments, setDepartments] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [departmentProposals, setDepartmentProposals] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,7 +65,14 @@ const AdminApprovedPro = () => {
     }, []);
 
     const handleDepartmentClick = (department) => {
-        navigate(`/admin/approved-proposal/${department.dept_id}`);
+        // Filter proposals based on user_department_id
+        const filteredProposals = proposals.filter(
+            (proposal) => proposal.user_department_id === department.dept_id
+        );
+        setDepartmentProposals(filteredProposals);
+    
+        // Pass departmentProposals to AdminDeptApprovedPro using state
+        navigate(`/admin/approved-proposal/${department.dept_id}`, { state: { departmentProposals: filteredProposals, departmentName : department.dept_name } });
     };
 
     return (

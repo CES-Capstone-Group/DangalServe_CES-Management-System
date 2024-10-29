@@ -105,7 +105,7 @@ const AdminApprovedPro = () => {
                                     No. of Approved Proposals:{" "}
                                     {
                                         proposals.filter(
-                                            (proposal) => proposal.department === department.dept_name
+                                            (proposal) => proposal.user_department_id === department.dept_id
                                         ).length
                                     }
                                 </Card.Text>

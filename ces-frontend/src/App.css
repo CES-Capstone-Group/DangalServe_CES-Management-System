@@ -401,3 +401,12 @@ button.fc-Service-button.fc-button.fc-button-primary {
   justify-content: center;
   text-align: center;
 }
+
+.department-card1 {
+  cursor: pointer;
+  border: 2px solid #71A872 !important;
+  border-radius: 8px !important;
+  width: 500px !important; /* Set a fixed width */
+  height: 50px !important; /* Set a fixed height */
+  justify-content: center;
+}

@@ -62,108 +62,110 @@ import { UserProvider } from './components/UserContext.jsx';
 import ManageResponses from './components/ManageResponse.jsx';
 import EvalSummary from './components/EvalSummary.jsx';
 import EvalCards from './components/Evaluator/EvalCards.jsx';
+import AdminDeptApprovedPro from './components/Admin/AdminDeptApprovedPro.jsx';
 
 const App = () => {
   return (
     <div>
       <UserProvider>
-      <Routes>
-        {/* Public Routes */}
-        <Route index element={<LoginPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/unauthorized' element={<UnauthorizedPage />} />
+        <Routes>
+          {/* Public Routes */}
+          <Route index element={<LoginPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/unauthorized' element={<UnauthorizedPage />} />
 
-        {/* Admin Routes - Only accessible to Admin */}
-        <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
-          <Route path='/landing' element={<AdminLanding />} />
-          <Route path='/manage' element={<AdminManagePage />} >
-            <Route index element={<AdminManage />} />
-            <Route path='accmngmnt' element={<UserManagementCon />} />
-            <Route path='manage-agenda' element={<ManageAgenda />} />
-            <Route path='manage-ach' element={<ManageAchievements />} />
-            <Route path='manage-ann' element={<ManageAnnouncement />} />
-            <Route path='manage-docs' element={<ManageDocuments />} />
-            <Route path='brgy-management' element={<BrgyManagement />} />
-            <Route path='dept-management' element={<DepartmentManagement />} />
-            <Route path='course-management' element={<ManageCourse />} />
-            <Route path='calendar' element={<ManageCalendar />} />
-            <Route path='evaluators' element={<ManageEvaluators />} />
-            <Route path='responses' element={<ManageResponses />} />
-            <Route path='eval-management' element={<EvalPage />} />
-            <Route path='eval-sum' element={<EvalSummary />} />
-            <Route path='eval-cards' element={<EvalCards />} />
+          {/* Admin Routes - Only accessible to Admin */}
+          <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
+            <Route path='/landing' element={<AdminLanding />} />
+            <Route path='/manage' element={<AdminManagePage />} >
+              <Route index element={<AdminManage />} />
+              <Route path='accmngmnt' element={<UserManagementCon />} />
+              <Route path='manage-agenda' element={<ManageAgenda />} />
+              <Route path='manage-ach' element={<ManageAchievements />} />
+              <Route path='manage-ann' element={<ManageAnnouncement />} />
+              <Route path='manage-docs' element={<ManageDocuments />} />
+              <Route path='brgy-management' element={<BrgyManagement />} />
+              <Route path='dept-management' element={<DepartmentManagement />} />
+              <Route path='course-management' element={<ManageCourse />} />
+              <Route path='calendar' element={<ManageCalendar />} />
+              <Route path='evaluators' element={<ManageEvaluators />} />
+              <Route path='responses' element={<ManageResponses />} />
+              <Route path='eval-management' element={<EvalPage />} />
+              <Route path='eval-sum' element={<EvalSummary />} />
+              <Route path='eval-cards' element={<EvalCards />} />
+            </Route>
+            <Route path='/admin' element={<UserAdminPage />}>
+              <Route path='proposal-form' element={<ProposalForm />} />
+              <Route index element={<AdminMainContent />} />
+              <Route path='accmngmnt' element={<UserManagementCon />} />
+              <Route path='dashboard' element={<AdminMainContent />} />
+              <Route path='pending-proposal' element={<AdminPenProposal />} />
+              <Route path='approved-proposal' element={<AdminApprovedPro />} />
+              <Route path='/admin/approved-proposal/:departmentId' element={<AdminDeptApprovedPro />} />
+              <Route path='pending-achievements' element={<AdminPenAchievements />} />
+              <Route path='approved-achievements' element={<AdminApprovedAch />} />
+              <Route path='resched' element={<AdminEventRequest />} />
+              <Route path='docs' element={<DocumentPage />} />
+              <Route path='calendar' element={<AdminCalendar />} />
+              <Route path='involvement' element={<InvolvementPage />} />
+              <Route path='eval-page' element={<EvalPage />} />
+              <Route path='kpi' element={<KpiPage />} />
+              <Route path='eval-cards' element={<EvalCards />} />
+              <Route path='profile' element={<MyProfilePage />} />
+            </Route>
           </Route>
-          <Route path='/admin' element={<UserAdminPage />}>
-            <Route path='proposal-form' element={<ProposalForm />} />
-            <Route index element={<AdminMainContent />} />
-            <Route path='accmngmnt' element={<UserManagementCon />} />
-            <Route path='dashboard' element={<AdminMainContent />} />
-            <Route path='pending-proposal' element={<AdminPenProposal />} />
-            <Route path='approved-proposal' element={<AdminApprovedPro />} />
-            <Route path='pending-achievements' element={<AdminPenAchievements />} />
-            <Route path='approved-achievements' element={<AdminApprovedAch />} />
-            <Route path='resched' element={<AdminEventRequest />} />
-            <Route path='docs' element={<DocumentPage />} />
-            <Route path='calendar' element={<AdminCalendar />} />
-            <Route path='involvement' element={<InvolvementPage />} />
+
+          {/* Barangay Routes - Only accessible to Barangay Officials */}
+          <Route element={<PrivateRoute allowedRoles={['Brgy. Official']} />}>
+            <Route path='/barangay' element={<UserBarangayPage />}>
+              <Route index element={<MainContent />} />
+              <Route path='dashboard' element={<MainContent />} />
+              <Route path='pending-proposal' element={<BrgyPenProposalPage />} />
+              <Route path='approved-proposal' element={<BrgyApprovedPro />} />
+              <Route path='resched' element={<BrgyEventRequest />} />
+              <Route path='calendar' element={<BrgyCalendar />} />
+              <Route path='profile' element={<MyProfilePage />} />
+            </Route>
+          </Route>
+
+          {/* Coordinator Routes - Only accessible to Proponents */}
+          <Route element={<PrivateRoute allowedRoles={['Proponent']} />}>
+            <Route path='/coor' element={<UserCoorPage />}>
+              <Route index element={<MainContent />} />
+              <Route path='dashboard' element={<MainContent />} />
+              <Route path='pending-proposal' element={<CoorPenProposal />} />
+              <Route path='approved-proposal' element={<CoorApprovedPro />} />
+              <Route path='pending-achievements' element={<CoorPenAchievements />} />
+              <Route path='approved-achievements' element={<CoorApprovedAch />} />
+              <Route path='resched' element={<CoorEventRequest />} />
+              <Route path='docs' element={<DocumentPage />} />
+              <Route path='calendar' element={<CoorCalendar />} />
+              <Route path='kpi' element={<KpiPage />} />
+              <Route path='proposal-form' element={<ProposalForm />} />
+              <Route path='proposal-form/:proposalId/resubmit' element={<ProposalForm />} /> {/* Resubmission */}
+              <Route path='profile' element={<MyProfilePage />} />
+            </Route>
+          </Route>
+
+          {/* Evaluator Routes - Only accessible to Evaluators */}
+          {/* <Route element={<PrivateRoute allowedRoles={['Evaluator']} />}> */}
+          <Route path='/eval' element={<UserEvalPage />}>
+            <Route index element={<EvalSelect />} />
+            <Route path='dashboard' element={<MainContent />} />
             <Route path='eval-page' element={<EvalPage />} />
-            <Route path='kpi' element={<KpiPage />} />
             <Route path='eval-cards' element={<EvalCards />} />
-            <Route path='profile' element={<MyProfilePage />} />
           </Route>
-        </Route>
+          {/* </Route> */}
 
-        {/* Barangay Routes - Only accessible to Barangay Officials */}
-        <Route element={<PrivateRoute allowedRoles={['Brgy. Official']} />}>
-          <Route path='/barangay' element={<UserBarangayPage />}>
-            <Route index element={<MainContent />} />
-            <Route path='dashboard' element={<MainContent />} />
-            <Route path='pending-proposal' element={<BrgyPenProposalPage />} />
-            <Route path='approved-proposal' element={<BrgyApprovedPro />} />
-            <Route path='resched' element={<BrgyEventRequest />} />
-            <Route path='calendar' element={<BrgyCalendar />} />
-            <Route path='profile' element={<MyProfilePage />} />
-          </Route>
-        </Route>
+          {/* Other Routes */}
+          <Route path='/eval-select' element={<EvalSelect />} />
+          <Route path='/propForm' element={<ProposalForm />} />
+          <Route path='/actEvalForm' element={<ActEvalForm />} />
+          <Route path='/funding' element={<FundingProposalForm />} />
+          <Route path='/cesEvalForm' element={<CesEvalForm />} />
+          <Route path='aarForm' element={<AARForm />} />
 
-        {/* Coordinator Routes - Only accessible to Proponents */}
-        <Route element={<PrivateRoute allowedRoles={['Proponent']} />}>
-          <Route path='/coor' element={<UserCoorPage />}>
-            <Route index element={<MainContent />} />
-            <Route path='dashboard' element={<MainContent />} />
-            <Route path='pending-proposal' element={<CoorPenProposal />} />
-            <Route path='approved-proposal' element={<CoorApprovedPro />} />
-            <Route path='pending-achievements' element={<CoorPenAchievements />} />
-            <Route path='approved-achievements' element={<CoorApprovedAch />} />
-            <Route path='resched' element={<CoorEventRequest />} />
-            <Route path='docs' element={<DocumentPage />} />
-            <Route path='calendar' element={<CoorCalendar />} />
-            <Route path='kpi' element={<KpiPage />} />
-            <Route path='proposal-form' element={<ProposalForm />} />
-            <Route path='proposal-form/:proposalId/resubmit' element={<ProposalForm />} /> {/* Resubmission */}
-            <Route path='profile' element={<MyProfilePage />} />
-          </Route>
-        </Route>
-
-        {/* Evaluator Routes - Only accessible to Evaluators */}
-        {/* <Route element={<PrivateRoute allowedRoles={['Evaluator']} />}> */}
-        <Route path='/eval' element={<UserEvalPage />}>
-          <Route index element={<EvalSelect />} />
-          <Route path='dashboard' element={<MainContent />} />
-          <Route path='eval-page' element={<EvalPage />} />
-          <Route path='eval-cards' element={<EvalCards />} />
-        </Route>
-        {/* </Route> */}
-
-        {/* Other Routes */}
-        <Route path='/eval-select' element={<EvalSelect/>}/>
-        <Route path='/propForm' element={<ProposalForm />} />
-        <Route path='/actEvalForm' element={<ActEvalForm />} />
-        <Route path='/funding' element={<FundingProposalForm />} />
-        <Route path='/cesEvalForm' element={<CesEvalForm />} />
-        <Route path='aarForm' element={<AARForm />} />
-
-      </Routes>
+        </Routes>
 
       </UserProvider>
 

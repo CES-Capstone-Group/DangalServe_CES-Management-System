@@ -54,7 +54,7 @@ def reissue_token(account):
     access_token = refresh.access_token
     access_token['accountType'] = account.accountType
     access_token['name'] = account.name
-    access_token['department'] = account.department
+    refresh['department'] = account.department.dept_id if account.department else None 
     access_token['position'] = account.position
 
     return {
@@ -154,7 +154,15 @@ def update_user_profile(request, user_id):
     # Update the profile fields from the request data
     data = request.data
     account.name = data.get('username', account.name)
-    account.department = data.get('department', account.department)
+    department_id = data.get('department')
+    # print("dataaa", department_id)
+    if department_id:
+        try:
+            department = Department.objects.get(id=department_id)
+            account.department = department  # Set the department instance
+        except Department.DoesNotExist:
+            return Response({"error": "Department not found"}, status=status.HTTP_404_NOT_FOUND)
+
     account.position = data.get('position', account.position)
 
     # Save the updated Account instance

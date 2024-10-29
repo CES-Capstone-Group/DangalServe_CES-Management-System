@@ -194,6 +194,7 @@ class SignatorySerializer(serializers.ModelSerializer):
 class ProposalSerializer(serializers.ModelSerializer):
     proponents = ProponentSerializer(many=True, required=False)
     signatories = SignatorySerializer(many=True, required=False)
+    user_department_id = serializers.IntegerField(source='user_id.department_id', read_only=True)
 
     class Meta:
         model = Proposal

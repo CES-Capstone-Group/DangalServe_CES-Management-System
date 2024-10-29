@@ -66,12 +66,15 @@ const AdminApprovedPro = () => {
     }, []);
 
     // Department card click handler
-    const handleDepartmentClick = (departmentName) => {
-        setSelectedDepartment(departmentName);
+    const handleDepartmentClick = (department) => {
+        setSelectedDepartment(department.dept_name);
+
+        // Filter proposals based on user_department_id
         const filteredProposals = proposals.filter(
-            (proposal) => proposal.department === departmentName
+            (proposal) => proposal.user_department_id === department.dept_id
         );
         setDepartmentProposals(filteredProposals);
+        console.log(filteredProposals)
     };
 
     const handleBackClick = () => {
@@ -90,7 +93,11 @@ const AdminApprovedPro = () => {
                     <Col key={index} md={3} className="mb-3">
                         <Card
                             className="department-card clickable-card"
-                            onClick={() => handleDepartmentClick(department.dept_name)}
+                            
+                            onClick={() => {
+                                // console.log("department = ", department);
+                                handleDepartmentClick(department);
+                            }}
                         >
                             <Card.Body>
                                 <Card.Title>{department.dept_name}</Card.Title>

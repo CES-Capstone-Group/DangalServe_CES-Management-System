@@ -18,7 +18,7 @@ const ActEvalForm = () => {
 
     return (
         <Container>
-            <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader'>Activity Evaluation Form</h2>
+            <h2 className="mt-4 mb-4 text-white" style={{ textAlign: 'center' }} id='propHeader'>Activity Evaluation Form</h2>
             <Form className='form' onSubmit={handleSubmit}>
                 <Form.Group as={Row} controlId="formDivisionDepartment" className="mb-4">
                     <Form.Label column sm={3}>Name of the Division/Department/

@@ -11,7 +11,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
     const [proposals, setProposals] = useState([]);//for drop down menu
     const [error, setError] = useState(null);
-    const [loadingProposals, setLoadingProposals] = useState(true);
+    // const [loadingProposals, setLoadingProposals] = useState(true);
 
     // Handle adding new event when form is submitted in modal
     const handleAddSchedule = () => {
@@ -72,7 +72,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
             setLoadingProposals(false);
         }
     };
-
+    
     useEffect(() => {
         fetchProposals();
     }, []);

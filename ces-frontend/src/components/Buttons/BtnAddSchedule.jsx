@@ -11,7 +11,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
     const [proposals, setProposal] = useState([]);//for drop down menu
     const [error, setError] = useState(null);
-    const [loadingProposals, setLoadingProposals] = useState(true);
+    // const [loadingProposals, setLoadingProposals] = useState(true);
 
     // Handle adding new event when form is submitted in modal
     const handleAddSchedule = () => {
@@ -43,25 +43,31 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
 
     const fetchProposals = async () => {
         try {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                console.error("No token found.");
+                setLoading(false);
+                return;
+            }
             const response = await fetch('http://127.0.0.1:8000/api/proposals/', {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
+                headers: {                    
                     'Authorization': `Bearer ${token}`,
                 }
-            })
-            if (!response.ok) {
-                throw new Error('Failed to fetch proposals');
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProposal(data);
+            } else if (response.status === 401) {
+                console.error('Unauthorized: Check if the token is valid.');
+            } else {
+                console.error('Error fetching proposals:', response.statusText);
             }
-            const data = await response.json();
-            setProposal(data)
         } catch (err){
             setError(err.message);
-        } finally {
-            setLoadingProposals(false);
-        }
+        } 
     };
-
+    
     useEffect(() => {
         fetchProposals();
     }, []);

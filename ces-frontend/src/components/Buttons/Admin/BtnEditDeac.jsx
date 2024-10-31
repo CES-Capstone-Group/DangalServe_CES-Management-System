@@ -41,19 +41,6 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
         return null;
     };
 
-    // useEffect(() => {
-    //     const user = getCurrentUserFromToken(); // Get the current user on component mount
-    //     if (user) {
-    //         setCurrentUser(user); // Set the current user info
-    //     }
-
-    //     if (user && user.user_id === account.user_id) {
-    //         // If the current user is editing their own account, you can redirect or adjust the UI accordingly
-    //         console.log("User is editing their own account.");
-    //         navigate('/admin/profile');
-    //     }
-    // }, [account]);
-
     // Fetch departments
     useEffect(() => {
         const fetchDepartments = async () => {

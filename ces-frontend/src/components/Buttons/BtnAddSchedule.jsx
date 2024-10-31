@@ -1,6 +1,6 @@
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Row, Col, Form, InputGroup, Container } from "react-bootstrap";
 
 const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selectedDate, addNewEvent }) => {
@@ -9,6 +9,9 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [targetTime, setTargetTime] = useState(""); // For capturing target time  
     const [manualDate, setManualDate] = useState(selectedDate || new Date().toISOString().split('T')[0]); // Default to today's date if not selected
     const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
+    const [proposals, setProposal] = useState([]);//for drop down menu
+    const [error, setError] = useState(null);
+    const [loadingProposals, setLoadingProposals] = useState(true);
 
     // Handle adding new event when form is submitted in modal
     const handleAddSchedule = () => {
@@ -38,6 +41,25 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
         setProposalTitle("");  // Reset the proposal title
     };
 
+    const fetchProposals = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/proposals/')
+            if (!response.ok) {
+                throw new Error('Failed to fetch proposals');
+            }
+            const data = await response.json();
+            setProposal(data)
+        } catch (err){
+            setError(err.message);
+        } finally {
+            setLoadingProposals(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProposals();
+    }, []);
+
     // Handle adding a new file input field
     const handleAddMoreFile = () => {
         setFileInputs([...fileInputs, { id: fileInputs.length + 1 }]);
@@ -51,7 +73,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     // Handle file input change
     const handleFileChange = (e, id) => {
         const files = e.target.files;
-        // console.log(`Files for input ${id}:`, files);
+        console.log(`Files for input ${id}:`, files);
     };
 
     return (
@@ -81,8 +103,11 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                                     onChange={(e) => setProposalTitle(e.target.value)}  // Bind to state
                                 >
                                     <option value="" disabled>Select Proposal</option>
-                                    <option value="Green Community Initiative">Green Community Initiative</option>
-                                    <option value="Healthy Community">Healthy Community</option>
+                                    {proposals.map((proposal, index) => (
+                                        <option key={index} value={proposal.title}>
+                                            {proposal.title}
+                                        </option>
+                                    ))}
                                 </Form.Select>
                             </Col>
                         </Form.Group>

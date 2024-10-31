@@ -147,32 +147,37 @@ function AdminCalendar() {
         setSelectedEvent(null);  // Reset selected event when modal closes
     };
 
-    // Function to add new event to FullCalendar and persist it to backend
     const addNewEvent = (eventData) => {
         const calendarApi = calendarRef.current.getApi();
         calendarApi.addEvent(eventData);  // Add the new event to the calendar
     
-        // Send new event to backend
+        // Prepare data for POST request
         const newEvent = {
             activity_title: eventData.title,
-            target_date: eventData.start.split('T')[0],  // Extract date
-            target_time: eventData.start.split('T')[1],  // Extract time
-            proposal_id: eventData.extendedProps.proposal, // Use proposal ID here instead of title
+            target_date: eventData.start.split('T')[0],
+            target_time: eventData.start.split('T')[1],
+            proposal_id: eventData.extendedProps.proposal,
         };
     
-        fetch('http://127.0.0.1:8000/api/activity-schedules/', {
+        fetch('http://127.0.0.1:8000/api/activity-schedules/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(newEvent),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                // Throw an error if response is not ok to handle it in catch
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('New event added to backend:', data);
         })
         .catch(error => {
-            console.error('Error adding event to backend', error);
+            console.error('Error adding event to backend:', error.message);
         });
     };
     

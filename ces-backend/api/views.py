@@ -773,6 +773,25 @@ class ProposalVersionDetailView(APIView):
 class BarangayApprovalView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get(self, request, proposal_id):
+        user = request.user
+        barangay = user.barangay.brgy_name  # Assuming barangay name is stored here
+
+        try:
+            proposal = Proposal.objects.get(proposal_id=proposal_id)
+        except Proposal.DoesNotExist:
+            return Response({"error": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            barangay_approval = BarangayApproval.objects.get(proposal=proposal, barangay_name=barangay)
+            return Response({
+                "status": barangay_approval.status,
+                "sign_date": barangay_approval.sign_date,
+                "remarks": barangay_approval.remarks
+            }, status=status.HTTP_200_OK)
+        except BarangayApproval.DoesNotExist:
+            return Response({"status": "Pending"}, status=status.HTTP_200_OK)
+        
     def patch(self, request, proposal_id):
         user = request.user
         barangay = user.barangay.brgy_name  # Assuming the barangay is stored in the department field

@@ -9,7 +9,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [targetTime, setTargetTime] = useState(""); // For capturing target time  
     const [manualDate, setManualDate] = useState(selectedDate || new Date().toISOString().split('T')[0]); // Default to today's date if not selected
     const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
-    const [proposals, setProposal] = useState([]);//for drop down menu
+    const [proposals, setProposals] = useState([]);//for drop down menu
     const [error, setError] = useState(null);
     const [loadingProposals, setLoadingProposals] = useState(true);
 
@@ -41,22 +41,33 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
         setProposalTitle("");  // Reset the proposal title
     };
 
-    const fetchProposals = async () => {
+     // Fetch proposals from API
+     const fetchProposals = async () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            console.error("No token found.");
+            setLoadingProposals(false);
+            return;
+        }
+
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/proposals/', {
-                method: 'GET',
+            const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved%20by%20Barangay", {
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
-            })
-            if (!response.ok) {
-                throw new Error('Failed to fetch proposals');
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setProposals(data); // Use correct state setter here
+            } else {
+                console.error("Error fetching approved proposals:", response.statusText);
             }
-            const data = await response.json();
-            setProposal(data)
-        } catch (err){
-            setError(err.message);
+        } catch (error) {
+            console.error("Error fetching approved proposals:", error);
+            setError("Failed to load proposals");
         } finally {
             setLoadingProposals(false);
         }
@@ -106,7 +117,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                             <Col>
                                 <Form.Select
                                     value={proposalTitle}
-                                    onChange={(e) => setProposalTitle(e.target.value)}  // Bind to state
+                                    onChange={(e) => setProposalTitle(e.target.value)}
                                 >
                                     <option value="" disabled>Select Proposal</option>
                                     {proposals.map((proposal, index) => (

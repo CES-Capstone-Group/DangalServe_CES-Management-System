@@ -11,7 +11,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
     const [proposals, setProposals] = useState([]);//for drop down menu
     const [error, setError] = useState(null);
-    // const [loadingProposals, setLoadingProposals] = useState(true);
+    const [loadingProposals, setLoadingProposals] = useState(true);
 
     // Handle adding new event when form is submitted in modal
     const handleAddSchedule = () => {
@@ -19,28 +19,28 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
             alert("Please fill in all the details.");
             return;
         }
-
+    
         // Combine manualDate and targetTime to create the start time for the event
         const eventStart = `${manualDate}T${targetTime}`;
-
+    
         const newEvent = {
             title: activityTitle,  // Use Activity Title for the event's main title
             start: eventStart,
             extendedProps: {
-                proposal: proposalTitle  // Store Proposal Title in extendedProps
+                proposal: proposalTitle  // Now using proposal ID instead of title
             }
         };
-
+    
         addNewEvent(newEvent);  // Pass the new event data to FullCalendar
         handleCloseModal();
-
+    
         // Reset form fields
         setActivityTitle("");
         setTargetTime("");
         setManualDate(new Date().toISOString().split('T')[0]);
-        setProposalTitle("");  // Reset the proposal title
+        setProposalTitle("");  // Reset the proposal ID
     };
-
+    
      // Fetch proposals from API
      const fetchProposals = async () => {
         const token = localStorage.getItem("access_token");
@@ -93,6 +93,12 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
         console.log(`Files for input ${id}:`, files);
     };
 
+    // Format target time for HTML input
+    const handleTimeChange = (e) => {
+        const time = e.target.value;
+        setTargetTime(time.slice(0, 5)); // Set time in HH:mm format
+    };
+
     return (
         <div className="d-flex justify-content-start m-3">
             <div>
@@ -115,17 +121,17 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                         <Form.Group className="mb-3" as={Row} controlId="proposalTitle">
                             <Form.Label column sm={2}>Proposal:</Form.Label>
                             <Col>
-                                <Form.Select
-                                    value={proposalTitle}
-                                    onChange={(e) => setProposalTitle(e.target.value)}
-                                >
-                                    <option value="" disabled>Select Proposal</option>
-                                    {proposals.map((proposal, index) => (
-                                        <option key={index} value={proposal.title}>
-                                            {proposal.title}
-                                        </option>
-                                    ))}
-                                </Form.Select>
+                            <Form.Select
+                                value={proposalTitle}
+                                onChange={(e) => setProposalTitle(e.target.value)}  // Bind to state
+                            >
+                                <option value="" disabled>Select Proposal</option>
+                                {proposals.map((proposal) => (
+                                    <option key={proposal.id} value={proposal.id}> {/* Use proposal.id here */}
+                                        {proposal.title} {/* Display proposal title */}
+                                    </option>
+                                ))}
+                            </Form.Select>
                             </Col>
                         </Form.Group>
 
@@ -164,7 +170,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                                         type="time"
                                         placeholder="Enter time"
                                         value={targetTime}
-                                        onChange={(e) => setTargetTime(e.target.value)}
+                                        onChange={handleTimeChange}
                                     />
                                 </InputGroup>
                             </Col>

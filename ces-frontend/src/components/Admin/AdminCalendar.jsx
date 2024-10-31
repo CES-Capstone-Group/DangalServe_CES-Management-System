@@ -151,16 +151,16 @@ function AdminCalendar() {
     const addNewEvent = (eventData) => {
         const calendarApi = calendarRef.current.getApi();
         calendarApi.addEvent(eventData);  // Add the new event to the calendar
-
-        // **Send new event to backend**
+    
+        // Send new event to backend
         const newEvent = {
             activity_title: eventData.title,
-            proposal_title: eventData.extendedProps.proposal,  // Include the proposal title in the backend
             target_date: eventData.start.split('T')[0],  // Extract date
             target_time: eventData.start.split('T')[1],  // Extract time
+            proposal_id: eventData.extendedProps.proposal, // Use proposal ID here instead of title
         };
-
-        fetch('/api/activity-schedules/', {
+    
+        fetch('http://127.0.0.1:8000/api/activity-schedules/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -169,13 +169,13 @@ function AdminCalendar() {
         })
         .then(response => response.json())
         .then(data => {
-            // console.log('New event added to backend:', data);
+            console.log('New event added to backend:', data);
         })
         .catch(error => {
             console.error('Error adding event to backend', error);
         });
     };
-
+    
     // Handle year change from the combo box
     const handleYearChange = (e) => {
         const newYear = e.target.value;

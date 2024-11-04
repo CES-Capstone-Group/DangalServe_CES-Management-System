@@ -474,12 +474,11 @@ def announcement_detail(request, pk):
 
 @api_view(['POST'])
 def create_activity_schedule(request):
-    if request.method == 'POST':
-        serializedData = ActivityScheduleSerializer(data=request.data)
-        if serializedData.is_valid():
-            serializedData.save()
-            return Response(serializedData.data, status=status.HTTP_201_CREATED)
-        return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializedData = ActivityScheduleSerializer(data=request.data)
+    if serializedData.is_valid():
+        serializedData.save()
+        return Response(serializedData.data, status=status.HTTP_201_CREATED)
+    return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # GET view for retrieving all ActivitySchedules
 @api_view(['GET'])

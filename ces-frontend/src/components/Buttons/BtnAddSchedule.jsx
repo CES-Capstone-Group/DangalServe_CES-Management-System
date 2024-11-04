@@ -12,33 +12,42 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const [proposals, setProposals] = useState([]);//for drop down menu
     const [error, setError] = useState(null);
     const [loadingProposals, setLoadingProposals] = useState(true);
-
-    // Handle adding new event when form is submitted in modal
+    
     const handleAddSchedule = () => {
         if (!activityTitle || !manualDate || !targetTime || !proposalTitle) {
             alert("Please fill in all the details.");
             return;
         }
     
-        // Combine manualDate and targetTime to create the start time for the event
         const eventStart = `${manualDate}T${targetTime}`;
     
+        console.log("Selected proposal title:", proposalTitle);
+        const selectedProposal = proposals.find(proposal => 
+            proposal.title.trim().toLowerCase() === proposalTitle.trim().toLowerCase()
+        );
+    
+        if (!selectedProposal) {
+            console.error(`Proposal ID not found for title: ${proposalTitle}`);
+            return;
+        }
+    
+        const proposalId = selectedProposal.proposal_id;
+    
         const newEvent = {
-            title: activityTitle,  // Use Activity Title for the event's main title
+            title: activityTitle,
             start: eventStart,
             extendedProps: {
-                proposal: proposalTitle  // Now using proposal ID instead of title
+                proposal: proposalId  // Correctly setting proposal ID here
             }
         };
     
-        addNewEvent(newEvent);  // Pass the new event data to FullCalendar
+        addNewEvent(newEvent);
         handleCloseModal();
     
-        // Reset form fields
         setActivityTitle("");
         setTargetTime("");
         setManualDate(new Date().toISOString().split('T')[0]);
-        setProposalTitle("");  // Reset the proposal ID
+        setProposalTitle("");
     };
     
      // Fetch proposals from API
@@ -127,7 +136,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                             >
                                 <option value="" disabled>Select Proposal</option>
                                 {proposals.map((proposal) => (
-                                    <option key={proposal.id} value={proposal.id}> {/* Use proposal.id here */}
+                                    <option key={proposal.id} value={proposal.title}> {/* Use proposal.id here */}
                                         {proposal.title} {/* Display proposal title */}
                                     </option>
                                 ))}

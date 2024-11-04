@@ -15,6 +15,8 @@ function AdminCalendar() {
     const [selectedEvent, setSelectedEvent] = useState(null);    
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [events, setEvents] = useState([]); // **State to store events fetched from backend**
+    const [proposals, setProposals] = useState([]);
+    const [proposalMap, setProposalMap] = useState({});
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/activity-schedules/`)
@@ -55,80 +57,6 @@ function AdminCalendar() {
         setShowEventDetailsModal(true);  // Show the event details modal
     };
 
-    // Render modal dynamically based on selected event
-    const renderEventModal = () => {
-        if (!selectedEvent) return null;  // Return null if no event is selected
-        const { proposal, activity, date, time } = selectedEvent;
-        return (
-            <Modal backdrop="static" centered size="lg" show={showEventDetailsModal} onHide={handleCloseEventDetailsModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Activity Details</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group as={Row} className="mb-3" controlId="txtProposalTitle">
-                            <Form.Label column sm={2} className="h5">Proposal Title:</Form.Label>
-                            <Col>
-                                <InputGroup>
-                                    <Form.Control
-                                        className="input"
-                                        type="text"
-                                        value={proposal || "No Proposal"} // Display the proposal title
-                                        readOnly
-                                    />
-                                </InputGroup>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3" controlId="txtActivityTitle">
-                            <Form.Label column sm={2} className="h5">Activity Title:</Form.Label>
-                            <Col>
-                                <InputGroup>
-                                    <Form.Control
-                                        className="input"
-                                        type="text"
-                                        value={activity}
-                                        readOnly
-                                    />
-                                </InputGroup>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3" controlId="DateActivity">
-                            <Form.Label column sm={2} className="h5">Target Date:</Form.Label>
-                            <Col>
-                                <InputGroup>
-                                    <Form.Control
-                                        className="input"
-                                        type="date"
-                                        value={date}
-                                        readOnly
-                                    />
-                                </InputGroup>
-                            </Col>
-                            <Form.Label column sm={2} className="h5">Target Time:</Form.Label>
-                            <Col>
-                                <InputGroup>
-                                    <Form.Control
-                                        className="input"
-                                        type="time"
-                                        value={time}
-                                        readOnly
-                                    />
-                                </InputGroup>
-                            </Col>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="success" onClick={handleCloseEventDetailsModal}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    };
-
     // Function to open modal for creating new events
     const handleShowAddScheduleModal = (selectInfo) => {
         setSelectedDate(selectInfo.startStr);  // Get the start date from the selection
@@ -147,16 +75,55 @@ function AdminCalendar() {
         setSelectedEvent(null);  // Reset selected event when modal closes
     };
 
+    const fetchProposals = async () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            console.error("No token found.");
+            return;
+        }
+    
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                setProposals(data);
+                console.log("Proposals:", data); 
+    
+                // Create a title-to-id mapping for easy lookup
+                const map = {};
+                data.forEach((proposal) => {
+                    map[proposal.title] = proposal.id; // Assuming `title` and `id` are keys in your proposal data
+                });
+                setProposalMap(map);
+            } else {
+                console.error("Error fetching proposals:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching proposals:", error);
+        }
+    };
+    
+    useEffect(() => {
+        fetchProposals();
+    }, []);
+
+
     const addNewEvent = (eventData) => {
         const calendarApi = calendarRef.current.getApi();
         calendarApi.addEvent(eventData);  // Add the new event to the calendar
     
-        // Prepare data for POST request
         const newEvent = {
             activity_title: eventData.title,
             target_date: eventData.start.split('T')[0],
             target_time: eventData.start.split('T')[1],
-            proposal_id: eventData.extendedProps.proposal,
+            proposal: eventData.extendedProps.proposal  // Using proposal ID directly
         };
     
         fetch('http://127.0.0.1:8000/api/activity-schedules/create/', {
@@ -168,7 +135,6 @@ function AdminCalendar() {
         })
         .then(response => {
             if (!response.ok) {
-                // Throw an error if response is not ok to handle it in catch
                 return response.text().then(text => { throw new Error(text) });
             }
             return response.json();
@@ -181,6 +147,7 @@ function AdminCalendar() {
         });
     };
     
+    
     // Handle year change from the combo box
     const handleYearChange = (e) => {
         const newYear = e.target.value;
@@ -188,6 +155,80 @@ function AdminCalendar() {
         const calendarApi = calendarRef.current.getApi();  // Get the calendar API
         calendarApi.gotoDate(`${newYear}-01-01`);  // Go to January 1st of the selected year
     };
+
+        // Render modal dynamically based on selected event
+        const renderEventModal = () => {
+            if (!selectedEvent) return null;  // Return null if no event is selected
+            const { proposal, activity, date, time } = selectedEvent;
+            return (
+                <Modal backdrop="static" centered size="lg" show={showEventDetailsModal} onHide={handleCloseEventDetailsModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Activity Details</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group as={Row} className="mb-3" controlId="txtProposalTitle">
+                                <Form.Label column sm={2} className="h5">Proposal Title:</Form.Label>
+                                <Col>
+                                    <InputGroup>
+                                        <Form.Control
+                                            className="input"
+                                            type="text"
+                                            value={proposal || "No Proposal"} // Display the proposal title
+                                            readOnly
+                                        />
+                                    </InputGroup>
+                                </Col>
+                            </Form.Group>
+    
+                            <Form.Group as={Row} className="mb-3" controlId="txtActivityTitle">
+                                <Form.Label column sm={2} className="h5">Activity Title:</Form.Label>
+                                <Col>
+                                    <InputGroup>
+                                        <Form.Control
+                                            className="input"
+                                            type="text"
+                                            value={activity}
+                                            readOnly
+                                        />
+                                    </InputGroup>
+                                </Col>
+                            </Form.Group>
+    
+                            <Form.Group as={Row} className="mb-3" controlId="DateActivity">
+                                <Form.Label column sm={2} className="h5">Target Date:</Form.Label>
+                                <Col>
+                                    <InputGroup>
+                                        <Form.Control
+                                            className="input"
+                                            type="date"
+                                            value={date}
+                                            readOnly
+                                        />
+                                    </InputGroup>
+                                </Col>
+                                <Form.Label column sm={2} className="h5">Target Time:</Form.Label>
+                                <Col>
+                                    <InputGroup>
+                                        <Form.Control
+                                            className="input"
+                                            type="time"
+                                            value={time}
+                                            readOnly
+                                        />
+                                    </InputGroup>
+                                </Col>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleCloseEventDetailsModal}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            );
+        };
 
     return (
         <Container>

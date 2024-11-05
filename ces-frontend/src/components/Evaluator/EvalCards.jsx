@@ -34,7 +34,7 @@ const EvalCards = () => {
                     </Button>
                 </Col>
             </Row>
-            <div className="container">
+            <div className="container mb-4">
                 <h1> ACTIVITY EVALUATION </h1>
             </div>
 
@@ -42,7 +42,7 @@ const EvalCards = () => {
               {evalCard.length > 0 ? (
                 evalCard.map((evaluation, index) => (
                   <Col md={4} key={index}>
-                    <Card className="position-relative mb-3" style={{ height: "15rem", msOverflowY: "auto"  }} id='conCard'>
+                    <Card className="position-relative mb-3" style={{ height: "16rem", msOverflowY: "auto"  }} id='conCard'>
                       <Card.Body>
                         <Card.Title style={{ fontStyle: 'bold' }}>{evaluation.title}</Card.Title>
                         <Card.Text fluid>

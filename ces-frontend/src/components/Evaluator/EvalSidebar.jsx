@@ -35,7 +35,7 @@ const EvalSidebar = ({ sidebarOpen, toggleSidebar }) => {
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                    <NavLink to={'/eval/eval-page'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+                    <NavLink to={'/eval/eval-cards'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                         <SidebarMenu.Nav.Icon>
                         <FontAwesomeIcon icon={faClipboardList} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '25px', marginBottom: sidebarOpen ? '0px' : '20px', marginTop: sidebarOpen ? '0px' : '100px'}}  />
                         </SidebarMenu.Nav.Icon>

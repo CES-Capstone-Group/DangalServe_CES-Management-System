@@ -63,6 +63,7 @@ import ManageResponses from './components/ManageResponse.jsx';
 import EvalSummary from './components/EvalSummary.jsx';
 import EvalCards from './components/Evaluator/EvalCards.jsx';
 import AdminDeptApprovedPro from './components/Admin/AdminDeptApprovedPro.jsx';
+import ManageQuestions from './components/ManageQuestions.jsx';
 
 const App = () => {
   return (
@@ -73,6 +74,7 @@ const App = () => {
           <Route index element={<LoginPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/unauthorized' element={<UnauthorizedPage />} />
+          <Route path='/manage-questions' element={<ManageQuestions />} />
 
           {/* Admin Routes - Only accessible to Admin */}
           <Route element={<PrivateRoute allowedRoles={['Admin']} />}>

@@ -63,6 +63,7 @@ import ManageResponses from './components/ManageResponse.jsx';
 import EvalSummary from './components/EvalSummary.jsx';
 import EvalCards from './components/Evaluator/EvalCards.jsx';
 import AdminDeptApprovedPro from './components/Admin/AdminDeptApprovedPro.jsx';
+import EvalLogIn from './components/EvalLogIn.jsx';
 import ManageQuestions from './components/ManageQuestions.jsx';
 import AdminEventPage from './components/Admin/AdminEventPage.jsx';
 
@@ -154,7 +155,7 @@ const App = () => {
           {/* Evaluator Routes - Only accessible to Evaluators */}
           {/* <Route element={<PrivateRoute allowedRoles={['Evaluator']} />}> */}
           <Route path='/eval' element={<UserEvalPage />}>
-            <Route index element={<EvalSelect />} />
+            <Route index element={<MainContent />} />
             <Route path='dashboard' element={<MainContent />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='eval-cards' element={<EvalCards />} />
@@ -168,6 +169,7 @@ const App = () => {
           <Route path='/funding' element={<FundingProposalForm />} />
           <Route path='/cesEvalForm' element={<CesEvalForm />} />
           <Route path='aarForm' element={<AARForm />} />
+          <Route path='eval-login' element={<EvalLogIn/>} />
 
         </Routes>
 

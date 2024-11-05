@@ -11,7 +11,7 @@ import './Login.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import { jwtDecode } from "jwt-decode";
 
-function LoginPage() {
+function EvalLogIn() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -26,56 +26,6 @@ function LoginPage() {
         }
     }, []);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        const loginData = { username, password };
-
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/token/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(loginData),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('access_token', data.access);
-                localStorage.setItem('refresh_token', data.refresh);
-
-                // Decode the access token to get the accountType and other user info
-                const decodedToken = jwtDecode(data.access);  // Using jwt_decode
-                const accountType = decodedToken.accountType;
-                if (rememberMe) {
-                    localStorage.setItem('rememberedUsername', username);
-                } else {
-                    localStorage.removeItem('rememberedUsername');
-                }
-
-                redirectToRolePage(accountType);
-            } else {
-                const errorData = await response.json();
-                alert('Login failed: ' + (errorData.detail || 'Invalid credentials'));
-            }
-        } catch (error) {
-            console.error('Error during login:', error);
-            alert('An error occurred. Please try again later.');
-        }
-    };
-
-    const redirectToRolePage = (accountType) => {
-        if (accountType === 'Admin') {
-            navigate('/landing');
-        } else if (accountType === 'Brgy. Official') {
-            navigate('/barangay');
-        } else if (accountType === 'Proponent') {
-            navigate('/coor');
-        } else if (accountType === 'Evaluator') {
-            navigate('/eval');
-        } else {
-            alert('Unknown account type!');
-        }
-    };
-
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -85,10 +35,10 @@ function LoginPage() {
             <Container className="d-flex justify-content-center align-items-center min-vh-100">
                 <Card>
                     <Card.Img className='fluid ps-5 pe-5' variant='top' src={Logo} />
-                    <Card.Title className='text-success' style={{ textAlign: 'center', fontSize: '3vh' }}>Community Extension Service Management System</Card.Title><br />
+                    <Card.Title className='text-success' style={{ textAlign: 'center', fontSize: '3vh' }}>Community Extension and Services Evaluation</Card.Title><br />
                     <Row>
                         <Col sm={12} md={12} lg={12}>
-                            <Form onSubmit={handleLogin}>
+                            <Form>
                                 <Row>
                                     <Form.Group as={Col} className='mb-3 ps-5 pe-5' controlId='LogUsername'>
                                         <Form.Label className='h5'>Username</Form.Label>
@@ -132,6 +82,13 @@ function LoginPage() {
                                         />
                                     </Form.Group>
                                 </Row>
+
+                                <Row>
+                                    <Form.Group as={Col} className="mb-3 ps-5" controlId="CheckBox">
+                                        <Button className='text-success' variant='link' onClick={() => navigate("/eval-select")}>Don't Have an Account? Register</Button>
+                                    </Form.Group>
+                                </Row>
+
                                 <Row>
                                     <Form.Group as={Col} className='d-grid gap-2 ps-5 pe-5 pb-5'>
                                         <Button style={{ marginTop: '2rem' }} controlId='button' variant='success' type='submit' size='lg'>Submit</Button>
@@ -146,4 +103,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default EvalLogIn;

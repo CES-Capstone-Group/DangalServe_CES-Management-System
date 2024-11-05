@@ -81,6 +81,7 @@ const AdminApprovedPro = () => {
                 <h1>APPROVED PROPOSALS</h1>
             </div>
 
+
             <Row className="mb-4">
                 {departments.map((department, index) => (
                     <Col key={index} md={3} className="mb-3">
@@ -91,10 +92,10 @@ const AdminApprovedPro = () => {
                             <Card.Body>
                                 <Card.Title>{department.dept_name}</Card.Title>
                                 <Card.Text>
-                                    No. of Approved Proposals:{" "}
+                                       No. of Approved Proposals:{" "}
                                     {
                                         proposals.filter(
-                                            (proposal) => proposal.user_department_id === department.dept_id
+                                        (proposal) => proposal.user_department_id === department.dept_id
                                         ).length
                                     }
                                 </Card.Text>
@@ -103,6 +104,7 @@ const AdminApprovedPro = () => {
                     </Col>
                 ))}
             </Row>
+            
 
             {loading ? (
                 <p>Loading...</p>

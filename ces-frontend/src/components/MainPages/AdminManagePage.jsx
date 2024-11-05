@@ -12,7 +12,7 @@ const AdminManagePage = () => {
       </header>
       <Row>
         <Col>
-          <Container className="vh-100 d-flex flex-column justify-content-center align-items-center" style={{marginTop: '60px'}}>
+          <Container className="vh-80 d-flex flex-column justify-content-center align-items-center" style={{marginTop: '60px'}}>
             <Outlet/>
           </Container>
         </Col>

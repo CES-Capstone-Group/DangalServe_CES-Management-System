@@ -64,6 +64,7 @@ import EvalSummary from './components/EvalSummary.jsx';
 import EvalCards from './components/Evaluator/EvalCards.jsx';
 import AdminDeptApprovedPro from './components/Admin/AdminDeptApprovedPro.jsx';
 import ManageQuestions from './components/ManageQuestions.jsx';
+import AdminEventPage from './components/Admin/AdminEventPage.jsx';
 
 const App = () => {
   return (
@@ -104,6 +105,7 @@ const App = () => {
               <Route path='pending-proposal' element={<AdminPenProposal />} />
               <Route path='approved-proposal' element={<AdminApprovedPro />} />
               <Route path='/admin/approved-proposal/:departmentId' element={<AdminDeptApprovedPro />} />
+              <Route path='/admin/approved-proposal/:proposalId' element={<AdminEventPage />} />
               <Route path='pending-achievements' element={<AdminPenAchievements />} />
               <Route path='approved-achievements' element={<AdminApprovedAch />} />
               <Route path='resched' element={<AdminEventRequest />} />

@@ -8,6 +8,7 @@ const AdminDeptApprovedPro = () => {
     const { departmentId } = useParams(); // Retrieve the department ID from the URL
     const [departmentProposals, setDepartmentProposals] = useState([]);
     const [departmentName, setDepartmentName] = useState("");
+    const [events, setEvents] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -63,6 +64,18 @@ const AdminDeptApprovedPro = () => {
         }
     }, [departmentId, location.state]);
 
+    const handleProposalClick = (proposal) => {
+        const filteredEvents = events.filter(
+            (event) => event.proposal_id === proposal.proposal_id
+        );
+        setEvents(filteredEvents);
+
+        navigate(`/admin/approved-proposal/${proposal.proposal_id}`, { state: { proposalEvents: filteredEvents, proposalName : proposal.title } });
+    };
+
+
+
+    
     return (
         <Container>
             <Row>
@@ -75,7 +88,7 @@ const AdminDeptApprovedPro = () => {
             <Row className="mb-4">
                 {departmentProposals.map((proposal) => (
                     <Col key={proposal.proposal_id} md={6} className="mb-3">
-                        <Card className="department-card1">
+                        <Card className="department-card1" onClick={() => handleProposalClick(proposal)}>
                             <Card.Body>
                                 <Card.Title className="text-success">{proposal.title}</Card.Title>
                             </Card.Body>

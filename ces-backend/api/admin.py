@@ -3,15 +3,16 @@ from django.contrib.auth.hashers import make_password
 from .models import Account
 
 class TblAccountsAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'username', 'hashed_password', 'accountType', 'department', 'position', 'activationDate', 'deactivationDate', 'status')
+    list_display = (
+        'user_id', 'username', 'hashed_password', 'accountType', 'get_department_name', 'position', 'activationDate', 'deactivationDate', 'status'
+    )  # Use 'get_department_name' instead of 'department'
 
     search_fields = ('user_id', 'accountType', 'status')
-
     list_filter = ('accountType', 'status', 'activationDate')
 
     fieldsets = (
         (None, {
-            'fields': ('user_id', 'username', 'password', 'accountType', 'department', 'position', 'activationDate', 'deactivationDate', 'status')
+            'fields': ('user_id', 'username', 'password', 'accountType', 'position', 'activationDate', 'deactivationDate', 'status')
         }),
     )
 

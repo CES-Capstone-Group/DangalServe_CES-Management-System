@@ -19,61 +19,69 @@ from .serializer import CustomTokenObtainPairSerializer
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+# Refresh Token View
 class RefreshTokenView(APIView):
     def post(self, request, *args, **kwargs):
         refresh_token = request.data.get('refresh_token')
 
         try:
-            # Find the token using the refresh token
-            token = TokenObtainPairView.objects.get(refresh_key=refresh_token)
+            # Reissue tokens
+            refresh = RefreshToken(refresh_token)
+            refresh.blacklist()  # Blacklist the old token if necessary
+            new_access_token = refresh.access_token
 
-            # Check if the refresh token is still valid
-            if not token.is_refresh_token_valid():
-                return Response({'error': 'Refresh token has expired.'}, status=status.HTTP_401_UNAUTHORIZED)
-
-            # Generate a new access token
-            token.refresh_access_token()
-
+            user = Account.objects.get(user_id=refresh['user_id'])
             return Response({
-                'access_token': token.key,
-                'refresh_token': token.refresh_key,
-                'user_id': token.user.user_id,
-                'username': token.user.username,
-                'accountType': token.user.accountType,
-                'department': token.user.department,
+                'access_token': str(new_access_token),
+                'refresh_token': str(refresh),
+                'user_id': user.user_id,
+                'username': user.username,
+                'accountType': user.accountType,
+                'department': getattr(user.proponentaccount, 'department', None),
             }, status=status.HTTP_200_OK)
 
-        except TokenObtainPairView.DoesNotExist:
-            return Response({'error': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response({'error': 'Invalid or expired refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
 
-# Account Views
-
+# Helper Function to Reissue Tokens
 def reissue_token(account):
     refresh = RefreshToken.for_user(account)
-
-    # Include additional claims in the access token
     access_token = refresh.access_token
+
+    # Include additional claims
     access_token['accountType'] = account.accountType
-    access_token['name'] = account.name
-    refresh['department'] = account.department.dept_id if account.department else None 
+    # access_token['name'] = account.name
     access_token['position'] = account.position
 
+    if account.accountType == 'Admin' and hasattr(account, 'adminaccount'):
+        access_token['name'] = account.adminaccount.name
+    elif account.accountType == 'Brgy. Official' and hasattr(account, 'brgyofficialaccount'):
+        access_token['name'] = account.brgyofficialaccount.name
+    elif account.accountType == 'Proponent' and hasattr(account, 'proponentaccount'):
+        access_token['name'] = account.proponentaccount.name
+        # Include department information for Proponent accounts
+        refresh['department'] = account.proponentaccount.department.dept_id if account.proponentaccount.department else None
+    elif account.accountType == 'Evaluator' and hasattr(account, 'evaluatoraccount'):
+        access_token['name'] = account.evaluatoraccount.name
+    else:
+        access_token['name'] = "Unknown"
+        
     return {
         'access_token': str(access_token),
         'refresh_token': str(refresh)
     }
-    
+
+# Get All Users
 @api_view(['GET'])
 def get_all_user(request):
     try:
         users = Account.objects.all()
         serializer = TblAccountsSerializer(users, many=True)
-        # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+# Create User
 @api_view(['POST'])
 def create_user(request):
     data = request.data
@@ -83,7 +91,7 @@ def create_user(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# Update User Information
 @api_view(['PUT'])
 def user_info_action(request, user_id):
     try:
@@ -92,51 +100,43 @@ def user_info_action(request, user_id):
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
 
     if 'status' in request.data and len(request.data) == 1:
-    
         account.status = request.data.get('status')
         if account.status == "Inactive":
-            account.deactivationDate = datetime.now().date()  
+            account.deactivationDate = datetime.now().date()
         elif account.status == "Active":
             account.deactivationDate = None
         account.save()
         return Response({"message": "Account status updated successfully"}, status=status.HTTP_200_OK)
-    
-    # For editing account details, validate and update the other fields
+
+    # Full Account Editing
     department_id = request.data.get('department')
     course_id = request.data.get('course')
     barangay_id = request.data.get('barangay')
 
-    # Check and resolve the department_name to dept_id
     if department_id:
         department = Department.objects.filter(dept_id=department_id).first()
-        if department:
-            request.data['department'] = department.dept_id
-        else:
+        if not department:
             return Response({"error": f"Department '{department_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+        request.data['department'] = department.dept_id
 
-    # Check and resolve the course_name to course_id
     if course_id:
         course = Course.objects.filter(course_id=course_id).first()
-        if course:
-            request.data['course'] = course.course_id
-        else:
+        if not course:
             return Response({"error": f"Course '{course_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
-        
+        request.data['course'] = course.course_id
+
     if barangay_id:
         barangay = Barangay.objects.filter(id=barangay_id).first()
-        
-        if barangay:
-            request.data['barangay'] = barangay.id
-        else:
+        if not barangay:
             return Response({"error": f"Barangay '{barangay_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
+        request.data['barangay'] = barangay.id
 
-    # Serialize and validate the data for full account editing
     serializer = TblAccountsSerializer(account, data=request.data)
     if serializer.is_valid():
-        serializer.save()  # Save the updated data
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 from django.contrib.auth.hashers import check_password, make_password
@@ -144,62 +144,80 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-# Update user profile
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Account, Department, AdminAccount, BrgyOfficialAccount, ProponentAccount, EvaluatorAccount
+
 @api_view(['PATCH'])
 def update_user_profile(request, user_id):
     try:
-        account = Account.objects.get(user_id=user_id)  # Retrieve the Account instance
+        account = Account.objects.get(user_id=user_id)
     except Account.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    # Update the profile fields from the request data
     data = request.data
-    account.name = data.get('username', account.name)
-    department_id = data.get('department')
-    # print("dataaa", department_id)
-    if department_id:
-        try:
-            department = Department.objects.get(id=department_id)
-            account.department = department  # Set the department instance
-        except Department.DoesNotExist:
-            return Response({"error": "Department not found"}, status=status.HTTP_404_NOT_FOUND)
+    name = data.get('username')
 
+    # Update the name field for the appropriate account type
+    if account.accountType == 'Admin':
+        admin_account = AdminAccount.objects.get(account=account)
+        admin_account.name = name or admin_account.name
+        print("xxx", name)
+        admin_account.save()
+
+    elif account.accountType == 'Brgy. Official':
+        brgy_official_account = BrgyOfficialAccount.objects.get(account=account)
+        brgy_official_account.name = name or brgy_official_account.name
+        brgy_official_account.save()
+
+    elif account.accountType == 'Proponent':
+        proponent_account = ProponentAccount.objects.get(account=account)
+        proponent_account.name = name or proponent_account.name
+        department_id = data.get('department')
+        if department_id:
+            try:
+                department = Department.objects.get(dept_id=department_id)
+                proponent_account.department = department
+            except Department.DoesNotExist:
+                return Response({"error": "Department not found"}, status=status.HTTP_404_NOT_FOUND)
+        proponent_account.save()
+
+    elif account.accountType == 'Evaluator':
+        evaluator_account = EvaluatorAccount.objects.get(account=account)
+        evaluator_account.name = name or evaluator_account.name
+        evaluator_account.save()
+
+    # Update common fields
     account.position = data.get('position', account.position)
-
-    # Save the updated Account instance
     account.save()
 
-    # Reissue new tokens after updating the profile
+    # Reissue tokens
     new_tokens = reissue_token(account)
-
     return Response({
         "message": "Profile updated successfully!",
-        "access_token": new_tokens['access_token'],  # Return the new access token
-        "refresh_token": new_tokens['refresh_token'],  # Return the new refresh token
+        "access_token": new_tokens['access_token'],
+        "refresh_token": new_tokens['refresh_token'],
     }, status=status.HTTP_200_OK)
 
 
-# Change user password
+# Change User Password
 @api_view(['POST'])
 def change_user_password(request, user_id):
     try:
-        account = Account.objects.get(user_id=user_id)  # Retrieve the Account instance
+        account = Account.objects.get(user_id=user_id)
     except Account.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     current_password = request.data.get('currentPassword')
     new_password = request.data.get('newPassword')
 
-    # Verify that the current password is correct
     if not check_password(current_password, account.password):
         return Response({"error": "Current password is incorrect"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Hash the new password and save it
     account.password = make_password(new_password)
     account.save()
-
     return Response({"message": "Password changed successfully!"}, status=status.HTTP_200_OK)
-
 #BRGY VIEWS
 # GET view for listing all Barangays
 @api_view(['GET'])
@@ -658,7 +676,7 @@ class BarangayApprovedProposalsView(APIView):
             partner_community__contains=department  # Assuming partner_community is a comma-separated string
         )
         
-        print(approved_proposals)
+        # print(approved_proposals)
         
         serializer = ProposalSerializer(approved_proposals, many=True)
         return Response(serializer.data, status=200)

@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from django.core.exceptions import ValidationError
 from .models import Account, Achievement, ActivitySchedule, Announcement, Barangay, Course, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework import serializers
+from django.core.exceptions import ValidationError
 import json
 
 # Custom Token Serializer to include extra fields in JWT
@@ -14,50 +13,89 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims to the token
-        token['username'] = user.username
-        token['name'] = user.name
-        token['accountType'] = user.accountType
-        if user.accountType == 'Proponent' and user.department:
-            token['department'] = user.department.dept_name
-        elif user.accountType == 'Brgy. Official' and user.barangay:
-            token['barangay'] = user.barangay.brgy_name
+        # Set 'name' claim in the token using the appropriate name from the associated model
+        if user.accountType == 'Admin' and hasattr(user, 'adminaccount'):
+            token['name'] = user.adminaccount.name
+        elif user.accountType == 'Brgy. Official' and hasattr(user, 'brgyofficialaccount'):
+            token['name'] = user.brgyofficialaccount.name
+        elif user.accountType == 'Proponent' and hasattr(user, 'proponentaccount'):
+            token['name'] = user.proponentaccount.name
+        elif user.accountType == 'Evaluator' and hasattr(user, 'evaluatoraccount'):
+            token['name'] = user.evaluatoraccount.name
         else:
-            token['department'] = None  # Or omit this field if you prefer
-        
+            token['name'] = user.username  # Fallback to the account's username if no name is found
+
+        # Add additional claims
         token['position'] = user.position
+        token['accountType'] = user.accountType
+
+        # Include additional details for Proponents
+        if user.accountType == 'Proponent':
+            proponent = getattr(user, 'proponentaccount', None)
+            if proponent and proponent.department:
+                token['department'] = proponent.department.dept_name
+            else:
+                token['department'] = None
+
+        # Include additional details for Barangay Officials
+        elif user.accountType == 'Brgy. Official':
+            brgy_official = getattr(user, 'brgyofficialaccount', None)
+            if brgy_official and brgy_official.barangay:
+                token['barangay'] = brgy_official.barangay.brgy_name
+            else:
+                token['barangay'] = None
 
         return token
 
     def validate(self, attrs):
         data = super().validate(attrs)
         user = self.user
-        # print(user)
-        
+
+        # Ensure the account is active
         if user.status != 'Active':
             raise AuthenticationFailed('Account is not active')
 
-        # Add extra responses here if necessary
-        data['user_id'] = self.user.user_id
-        data['username'] = self.user.username
-        data['accountType'] = self.user.accountType
-        
-        if user.accountType == 'Proponent' and user.department:
-            data['department_name'] = user.department.dept_name 
+        # Add extra response data
+        data['user_id'] = user.user_id
+
+        # Set 'name' in the response using the appropriate associated model
+        if user.accountType == 'Admin' and hasattr(user, 'adminaccount'):
+            data['name'] = user.adminaccount.name
+        elif user.accountType == 'Brgy. Official' and hasattr(user, 'brgyofficialaccount'):
+            data['name'] = user.brgyofficialaccount.name
+        elif user.accountType == 'Proponent' and hasattr(user, 'proponentaccount'):
+            data['name'] = user.proponentaccount.name
+        elif user.accountType == 'Evaluator' and hasattr(user, 'evaluatoraccount'):
+            data['name'] = user.evaluatoraccount.name
         else:
-            data['department_name'] = None
-            
-        if user.accountType == 'Proponent' and user.course:
-            data['course_name'] = user.course.course_name
-        else:
-            data['course_name'] = None
-            
-        if user.accountType == 'Brgy. Official' and user.barangay:
-            data['brgy_name'] = user.barangay.brgy_name
-            # print(user.barangay.brgy_name)
-        else:
-            data['course_name'] = None
+            data['name'] = user.username  # Fallback to the account's username if no name is found
+
+        data['accountType'] = user.accountType
+        data['position'] = user.position
+
+        # Include additional details for Proponents
+        if user.accountType == 'Proponent':
+            proponent = getattr(user, 'proponentaccount', None)
+            if proponent and proponent.department:
+                data['department_name'] = proponent.department.dept_name
+            else:
+                data['department_name'] = None
+
+            if proponent and proponent.course:
+                data['course_name'] = proponent.course.course_name
+            else:
+                data['course_name'] = None
+
+        # Include additional details for Barangay Officials
+        elif user.accountType == 'Brgy. Official':
+            brgy_official = getattr(user, 'brgyofficialaccount', None)
+            if brgy_official and brgy_official.barangay:
+                data['brgy_name'] = brgy_official.barangay.brgy_name
+            else:
+                data['brgy_name'] = None
+
         return data
+
 
 
 # Serializer for login and authentication
@@ -82,10 +120,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 #             raise serializers.ValidationError("Must include username and password.")
 
 # Serializer for handling Account model
-class TblAccountsSerializer(serializers.ModelSerializer):   
-    department_name = serializers.CharField(source='department.dept_name', read_only=True)
-    course_name = serializers.CharField(source='course.course_name', read_only=True)
-    barangay_name = serializers.CharField(source='barangay.brgy_name', read_only=True)
+class TblAccountsSerializer(serializers.ModelSerializer):
+    department_name = serializers.CharField(source='proponentaccount.department.dept_name', read_only=True)
+    course_name = serializers.CharField(source='proponentaccount.course.course_name', read_only=True)
+    barangay_name = serializers.CharField(source='brgyofficialaccount.barangay.brgy_name', read_only=True)
+
     class Meta:
         model = Account
         fields = '__all__'
@@ -98,10 +137,10 @@ class TblAccountsSerializer(serializers.ModelSerializer):
         }
         
     def validate(self, data):
-        # Call the model's clean method to perform the validation
+        # Perform model-level validation
         account = Account(**data)
         try:
-            account.clean()  # This will raise a ValidationError if the data is invalid
+            account.clean()  # Raises ValidationError if data is invalid
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)
         return data

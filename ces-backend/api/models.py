@@ -50,23 +50,19 @@ class Barangay(models.Model):
     def __str__(self):
         return self.brgy_name
     
-    class Meta:
-        abstract = True
+    # class Meta:
+    #     abstract = True
 
 # Account model that represents your custom user table (api_account)
 class Account(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
-    accountType = models.CharField(max_length=255)
-    barangay = models.ForeignKey(Barangay, on_delete=models.SET_NULL, null=True, blank=True)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)  
-    position = models.CharField(null=True, max_length=255)
+    accountType = models.CharField(max_length=255)  # 'Admin', 'Brgy. Official', 'Proponent', 'Evaluator'
+    position = models.CharField(max_length=255)
+    status = models.CharField(max_length=50)
     activationDate = models.DateField()
     deactivationDate = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=50)
 
     objects = CustomUserManager()
 
@@ -74,58 +70,71 @@ class Account(AbstractBaseUser):
 
     def __str__(self):
         return f"{self.user_id} - {self.accountType}"
+
     def save(self, *args, **kwargs):
-        # Hash the password if it's not already hashed
-        if self._state.adding or not self.pk:  # If creating a new user or updating the password
+        if self._state.adding or not self.pk:  # If creating or updating the password
             self.password = make_password(self.password)
         super(Account, self).save(*args, **kwargs)
+        
+    def get_department_name(self):
+        # Check if the account is a Proponent and has a department
+        if hasattr(self, 'proponentaccount') and self.proponentaccount.department:
+            return self.proponentaccount.department.dept_name
+        return None
+    get_department_name.short_description = 'Department'  # This will be the display name in the admin
 
-# Custom token model for authentication
-# class CustomAuthToken(models.Model):
-#     key = models.CharField(max_length=40, primary_key=True)
-#     refresh_key = models.CharField(max_length=40, unique=True, blank=True, null=True)  # Refresh Token
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='auth_tokens', on_delete=models.CASCADE)
-#     created = models.DateTimeField(default=timezone.now)
-#     refresh_expiration = models.DateTimeField(null=True, blank=True)  # Expiration date for refresh token
+# Admin account details
+class AdminAccount(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
 
-#     def save(self, *args, **kwargs):
-#         # Generate a new access token key if it's not provided
-#         if not self.key:
-#             self.key = self.generate_key()
+# Barangay Official account details
+class BrgyOfficialAccount(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    barangay = models.ForeignKey(Barangay, on_delete=models.SET_NULL, null=True)
 
-#         # Generate a refresh token and set expiration date if it's not already present
-#         if not self.refresh_key:
-#             self.refresh_key = self.generate_key()
-#             self.refresh_expiration = timezone.now() + timedelta(days=7)  # Refresh token valid for 7 days
+# Proponent account details
+class ProponentAccount(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
 
-#         return super().save(*args, **kwargs)
+# Evaluator account details
+class EvaluatorAccount(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    evaluator_type = models.CharField(max_length=50)  # 'Student', 'Faculty', 'External', 'Alumni'
 
-#     @staticmethod
-#     def generate_key():
-#         return binascii.hexlify(os.urandom(20)).decode()
+# Specific evaluator types
+class StudentEvaluator(models.Model):
+    evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
+    student_id = models.CharField(max_length=50)  # Student ID field
+    student_email = models.EmailField()  # Student Email field
+    contact_number = models.CharField(max_length=15)  # Contact Number field
+    course = models.CharField(max_length=255)  # Course field
+    department = models.CharField(max_length=255)  # Department field
 
-#     def is_refresh_token_valid(self):
-#         # Check if refresh token is still valid
-#         return timezone.now() <= self.refresh_expiration
+class FacultyEvaluator(models.Model):
+    evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
+    email = models.EmailField()  # Email field
+    contact_number = models.CharField(max_length=15)  # Contact Number field
+    department = models.CharField(max_length=255)  # Department field
+    position = models.CharField(max_length=255)  # Position field
 
-#     def refresh_access_token(self):
-#         # Generate a new access token
-#         self.key = self.generate_key()
-#         self.save()
+class AlumniEvaluator(models.Model):
+    evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
+    email = models.EmailField()  # Email field
+    contact_number = models.CharField(max_length=15)  # Contact Number field
+    course = models.CharField(max_length=255)  # Course field
+    department = models.CharField(max_length=255)  # Department field
 
-#     def __str__(self):
-#         return self.key
-
-
-
-class Barangay(models.Model):
-    brgy_name = models.CharField(max_length=100)  # Field for the name of the barangay
-    moa = models.FileField(upload_to='moa_files/', blank=True, null=True)  # Field for the MOA file/image
-
-    def __str__(self):
-        return self.brgy_name
-
-
+class ExternalParticipantEvaluator(models.Model):
+    evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
+    email = models.EmailField()  # Email field
+    contact_number = models.CharField(max_length=15)  # Contact Number field
+    barangay = models.CharField(max_length=255)  # Barangay field
 
 
 class ResearchAgenda(models.Model):

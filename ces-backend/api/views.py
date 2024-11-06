@@ -5,7 +5,18 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from datetime import datetime
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Achievement, Announcement, Account, ActivitySchedule, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
+from .models import Achievement, Announcement, ActivitySchedule, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
+from .models import (
+    Account,
+    EvaluatorAccount,
+    StudentEvaluator,
+    FacultyEvaluator,
+    AlumniEvaluator,
+    ExternalParticipantEvaluator,
+    BrgyOfficialAccount,
+    ProponentAccount,
+    AdminAccount,
+)
 from .serializer import AchievementSerializer, AnnouncementSerializer, ActivityScheduleSerializer, BarangaySerializer, CourseSerializer, DepartmentSerializer, DocumentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
 from django.contrib.auth import authenticate
@@ -15,7 +26,7 @@ from django.utils import timezone
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import CustomTokenObtainPairSerializer
-
+from django.shortcuts import get_object_or_404
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
@@ -85,12 +96,107 @@ def get_all_user(request):
 @api_view(['POST'])
 def create_user(request):
     data = request.data
-    serializer = TblAccountsSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Start by validating the common account fields
+    account_data = {
+        "username": data.get("username"),
+        "password": data.get("password"),
+        "accountType": data.get("accountType"),
+        "position": data.get("position"),
+        "status": data.get("status"),
+        "activationDate": data.get("activationDate"),
+        "deactivationDate": data.get("deactivationDate"),
+    }
+    
+    # Create the Account instance
+    account_serializer = TblAccountsSerializer(data=account_data)
+    if account_serializer.is_valid():
+        account_instance = account_serializer.save()  # Save account instance
+        
+        # Now handle the creation based on account type
+        account_type = data.get("accountType")
+        
+        if account_type == 'Admin':
+            AdminAccount.objects.create(account=account_instance, name=data.get("name"))
 
+        elif account_type == 'Brgy. Official':
+            # Make sure to retrieve the Barangay instance
+            barangay_id = data.get("barangay")
+            if barangay_id:
+                barangay = get_object_or_404(Barangay, id=barangay_id)
+                BrgyOfficialAccount.objects.create(
+                    account=account_instance,
+                    name=data.get("name"),
+                    barangay=barangay  # Set the Barangay instance
+                )
+            else:
+                return Response({"error": "Barangay is required for Brgy. Official"}, status=status.HTTP_400_BAD_REQUEST)
+
+        elif account_type == 'Proponent':
+            department_id = data.get("department")  # Fetch department ID from the request
+            course_id = data.get("course")  # Fetch course ID from the request
+
+            # Fetch the Department instance
+            department = get_object_or_404(Department, dept_id=department_id) if department_id else None
+
+            # Fetch the Course instance
+            course = get_object_or_404(Course, course_id=course_id) if course_id else None
+
+            # Create the ProponentAccount
+            ProponentAccount.objects.create(
+                account=account_instance,
+                name=data.get("name"),
+                department=department,  # Set the Department instance
+                course=course  # Set the Course instance
+            )
+
+        elif account_type == 'Evaluator':
+            evaluator_type = data.get("evaluator_type")  # This should be sent in the request
+            evaluator_account = EvaluatorAccount.objects.create(
+                account=account_instance,
+                name=data.get("name"),
+                evaluator_type=evaluator_type
+            )
+            
+            # Create specific evaluator details based on evaluator_type
+            if evaluator_type == 'Student':
+                StudentEvaluator.objects.create(
+                    evaluator=evaluator_account,
+                    student_id=data.get("studentId"),
+                    student_email=data.get("email"),
+                    contact_number=data.get("contactNumber"),
+                    course=data.get("course"),
+                    department=data.get("department"),
+                )
+            elif evaluator_type == 'Faculty':
+                FacultyEvaluator.objects.create(
+                    evaluator=evaluator_account,
+                    email=data.get("email"),
+                    contact_number=data.get("contactNumber"),
+                    department=data.get("department"),
+                    position=data.get("position"),
+                )
+            elif evaluator_type == 'Alumni':
+                AlumniEvaluator.objects.create(
+                    evaluator=evaluator_account,
+                    email=data.get("email"),
+                    contact_number=data.get("contactNumber"),
+                    course=data.get("course"),
+                    department=data.get("department"),
+                )
+            elif evaluator_type == 'External':
+                ExternalParticipantEvaluator.objects.create(
+                    evaluator=evaluator_account,
+                    email=data.get("email"),
+                    contact_number=data.get("contactNumber"),
+                    barangay=data.get("barangay"),
+                )
+            else:
+                return Response({"error": "Invalid evaluator type"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(account_serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(account_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # Update User Information
 @api_view(['PUT'])
 def user_info_action(request, user_id):

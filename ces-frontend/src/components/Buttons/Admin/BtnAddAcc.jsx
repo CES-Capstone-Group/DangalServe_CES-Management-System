@@ -190,7 +190,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                 },
                 body: JSON.stringify(dataToSend),
             });
-
+            console.log(JSON.stringify(dataToSend));
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorData)}`);

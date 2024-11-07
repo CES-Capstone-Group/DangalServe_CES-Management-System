@@ -12,12 +12,16 @@ const EvalSelect = () => {
     const [showModal, setShowModal] = useState(false);
     const [role, setRole] = useState("");
 
+    const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState('');
+    const [filteredCourses, setFilteredCourses] = useState([]);
+
     const [barangays, setBarangays] = useState([]);
     const [selectedBarangays, setSelectedBarangays] = useState('');
-
+    
     const [departments, setDepartments] = useState([]);
     const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [userChangedDepartment, setUserChangedDepartment] = useState(false);
 
     const [isOtherSelected, setIsOtherSelected] = useState(false);
     const [otherDepartment, setOtherDepartment] = useState('');
@@ -25,6 +29,8 @@ const EvalSelect = () => {
     const handleShowModal = () => { setShowModal(true); };
     const handleCloseModal = () => { setShowModal(false) };
     const navigate = useNavigate();
+
+    const [errors, setErrors] = useState({}); // Validation error state
 
     const handleSetRole = (selectedRole) => {
         setRole(selectedRole);
@@ -34,6 +40,11 @@ const EvalSelect = () => {
     const handleSubmit = () => {
         navigate("/eval");
     }
+
+    const [formData, setFormData] = useState({
+        department: '',
+        course: '',
+    });
 
     useEffect(() => {
         const fetchBarangay = async () => {
@@ -54,14 +65,63 @@ const EvalSelect = () => {
             }
         };
 
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/courses/');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCourses(data);
+                } else {
+                    console.error("Failed to fetch courses");
+                }
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+            }
+        };
 
+        fetchCourses();
         fetchDepartments();
         fetchBarangay();
     }, []);
 
+    // Update filtered courses when department changes
+    useEffect(() => {
+        const filtered = courses.filter(course => course.dept_id === formData.department);
+        // console.log("filtered",filtered);
+        setFilteredCourses(filtered);
+    }, [formData.department, courses]);
+    
     const handleDepartmentChange = (e) => {
         const selectedValue = e.target.value;
         setSelectedDepartment(selectedValue);
+
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value || null
+        }));
+
+        if (name === 'department') {
+            setUserChangedDepartment(true);
+            setFormData(prevState => ({
+                ...prevState,
+                course: '', // Reset course selection when department changes
+            }));
+
+            // Fetch courses based on department selection
+            if (value) {
+                fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFilteredCourses(data);  // Update the filtered courses state
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching courses:", error);
+                    });
+            } else {
+                setFilteredCourses([]);  // Clear courses if no department selected
+            }
+        }
 
         // Check if "Other" is selected
         if (selectedValue === 'Other') {
@@ -80,25 +140,11 @@ const EvalSelect = () => {
         setSelectedBarangays(e.target.value);  // Capture selected department
     };
 
-
-
     const roles = [{ label: 'Student' },
     { label: 'Non-Teaching' },
     { label: 'Teaching' },
     { label: 'Alumni' },
     { label: 'Participant' }
-    ];
-
-    const course = [{ label: 'Bachelor of Science in Information Technology' },
-    { label: 'Bachelor of Science in Computer Science' },
-    { label: 'Bachelor of Science in Psychology' },
-    { label: 'Bachelor of Science in Nursing' },
-    { label: 'Bachelor of Science in Business Accounting' },
-    { label: 'Bachelor of Science in Accountancy' },
-    { label: 'Bachelor of Science in Mechanical Engineering' },
-    { label: 'Bachelor of Science in Computer Engineering' },
-    { label: 'Bachelor of Science in Civil Engineering' },
-
     ];
 
     return (
@@ -153,27 +199,45 @@ const EvalSelect = () => {
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Course:</Form.Label>
+                                    <Form.Label column sm={3}>Department:</Form.Label>
                                     <Col>
-                                        <Form.Select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
-                                            {course.map((courseItem, index) => (
-                                                <option key={index} value={courseItem.label}>
-                                                    {courseItem.label}
+                                        <Form.Select 
+                                            name="department" 
+                                            value={formData.department}
+                                            onChange={handleDepartmentChange}
+                                            isInvalid={!!errors.department}
+                                        >
+                                            <option value="">Select Department</option>
+                                            {departments.map(dept => (
+                                                <option key={dept.dept_id} value={dept.dept_id}>
+                                                    {dept.dept_name}
                                                 </option>
                                             ))}
                                         </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.department}
+                                        </Form.Control.Feedback>
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Department:</Form.Label>
+                                    <Form.Label column sm={3}>Course:</Form.Label>
                                     <Col>
-                                        <Form.Select value={selectedDepartment} onChange={handleDepartmentChange}>
-                                            {departments.map(department => (
-                                                <option key={department.id} value={department.id}>
-                                                    {department.dept_name}
+                                    <Form.Select
+                                            name="course"
+                                            value={formData.course}
+                                            onChange={handleDepartmentChange}
+                                            isInvalid={!!errors.course}
+                                        >
+                                            <option value="">Select Course</option>
+                                            {filteredCourses.map(course => (
+                                                <option key={course.course_id} value={course.course_id}>
+                                                    {course.course_name}
                                                 </option>
                                             ))}
                                         </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.course}
+                                        </Form.Control.Feedback>
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} className="mb-3">
@@ -213,16 +277,18 @@ const EvalSelect = () => {
                                 <Form.Group as={Row} className="mb-3">
                                     <Form.Label column sm={3}>Department:</Form.Label>
                                     <Col>
-                                        <Form.Select
-                                            value={selectedDepartment}
+                                        <Form.Select 
+                                            name="department" 
+                                            value={formData.department}
                                             onChange={handleDepartmentChange}
+                                            isInvalid={!!errors.department}
                                         >
-                                            {departments.map((department) => (
-                                                <option key={department.id} value={department.id}>
-                                                    {department.dept_name}
+                                            <option value="">Select Department</option>
+                                            {departments.map(dept => (
+                                                <option key={dept.dept_id} value={dept.dept_id}>
+                                                    {dept.dept_name}
                                                 </option>
                                             ))}
-                                            <option value="Other">Other</option>
                                         </Form.Select>
                                     </Col>
 
@@ -326,28 +392,46 @@ const EvalSelect = () => {
                                                 <Form.Control type="text" placeholder="eg. 09123456789" />
                                             </Col>
                                         </Form.Group>
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Course:</Form.Label>
+                                                <Form.Group as={Row} className="mb-3">
+                                            <Form.Label column sm={3}>Department:</Form.Label>
                                             <Col>
-                                                <Form.Select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
-                                                    {course.map((courseItem, index) => (
-                                                        <option key={index} value={courseItem.label}>
-                                                            {courseItem.label}
+                                                <Form.Select 
+                                                    name="department" 
+                                                    value={formData.department}
+                                                    onChange={handleDepartmentChange}
+                                                    isInvalid={!!errors.department}
+                                                >
+                                                    <option value="">Select Department</option>
+                                                    {departments.map(dept => (
+                                                        <option key={dept.dept_id} value={dept.dept_id}>
+                                                            {dept.dept_name}
                                                         </option>
                                                     ))}
                                                 </Form.Select>
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.department}
+                                                </Form.Control.Feedback>
                                             </Col>
                                         </Form.Group>
                                         <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Department:</Form.Label>
+                                            <Form.Label column sm={3}>Course:</Form.Label>
                                             <Col>
-                                                <Form.Select value={selectedDepartment} onChange={handleDepartmentChange}>
-                                                    {departments.map(department => (
-                                                        <option key={department.id} value={department.id}>
-                                                            {department.dept_name}
+                                            <Form.Select
+                                                    name="course"
+                                                    value={formData.course}
+                                                    onChange={handleDepartmentChange}
+                                                    isInvalid={!!errors.course}
+                                                >
+                                                    <option value="">Select Course</option>
+                                                    {filteredCourses.map(course => (
+                                                        <option key={course.course_id} value={course.course_id}>
+                                                            {course.course_name}
                                                         </option>
                                                     ))}
                                                 </Form.Select>
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.course}
+                                                </Form.Control.Feedback>
                                             </Col>
                                         </Form.Group>
                                         <Form.Group as={Row} className="mb-3">

@@ -5,6 +5,7 @@ import {jwtDecode} from "jwt-decode";
 const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(account); // Initialize formData with account details
+    // console.log("account is", account);
     const handleShow = () => {
         setShow(true);
 

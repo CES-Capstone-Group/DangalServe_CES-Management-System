@@ -87,10 +87,47 @@ def reissue_token(account):
 def get_all_user(request):
     try:
         users = Account.objects.all()
-        serializer = TblAccountsSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        formatted_users = []
+
+        for user in users:
+            user_data = {
+                "user_id": user.user_id,
+                "username": user.username,
+                "accountType": user.accountType,
+                "position": user.position,
+                "status": user.status,
+                "activationDate": user.activationDate,
+                "deactivationDate": user.deactivationDate,
+                "department_name": None,
+                "course_name": None,
+                "barangay_name": None,
+                "last_login": user.last_login,
+                "name": None  # Initialize name to None
+            }
+
+            # Get name from related account type
+            if user.accountType == 'Admin':
+                admin_account = getattr(user, 'adminaccount', None)
+                user_data["name"] = admin_account.name if admin_account else None
+            elif user.accountType == 'Proponent':
+                proponent_account = getattr(user, 'proponentaccount', None)
+                user_data["name"] = proponent_account.name if proponent_account else None
+                user_data["department_name"] = proponent_account.department.dept_name if proponent_account and proponent_account.department else None
+                user_data["course_name"] = proponent_account.course.course_name if proponent_account and proponent_account.course else None
+            elif user.accountType == 'Brgy. Official':
+                brgy_account = getattr(user, 'brgyofficialaccount', None)
+                user_data["name"] = brgy_account.name if brgy_account else None
+                user_data["barangay_name"] = brgy_account.barangay.brgy_name if brgy_account and brgy_account.barangay else None
+            elif user.accountType == 'Evaluator':
+                evaluator_account = getattr(user, 'evaluatoraccount', None)
+                user_data["name"] = evaluator_account.name if evaluator_account else None
+
+            formatted_users.append(user_data)
+
+        return Response(formatted_users, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 # Create User
 @api_view(['POST'])
@@ -197,7 +234,6 @@ def create_user(request):
         return Response(account_serializer.data, status=status.HTTP_201_CREATED)
     
     return Response(account_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# Update User Information
 @api_view(['PUT'])
 def user_info_action(request, user_id):
     try:
@@ -205,43 +241,104 @@ def user_info_action(request, user_id):
     except Account.DoesNotExist:
         return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    if 'status' in request.data and len(request.data) == 1:
-        account.status = request.data.get('status')
-        if account.status == "Inactive":
+    # Initialize the response data
+    response_data = {}
+
+    # Update the common fields in Account
+    name = request.data.get('name')
+    if name:
+        # Update the name in the related account type
+        if account.accountType == 'Admin':
+            admin_account = AdminAccount.objects.get(account=account)
+            admin_account.name = name
+            admin_account.save()
+        elif account.accountType == 'Brgy. Official':
+            brgy_official_account = BrgyOfficialAccount.objects.get(account=account)
+            brgy_official_account.name = name
+            brgy_official_account.save()
+        elif account.accountType == 'Proponent':
+            proponent_account = ProponentAccount.objects.get(account=account)
+            proponent_account.name = name
+            proponent_account.save()
+        elif account.accountType == 'Evaluator':
+            evaluator_account = EvaluatorAccount.objects.get(account=account)
+            evaluator_account.name = name
+            evaluator_account.save()
+        response_data['name'] = name
+
+    # Update the position
+    position = request.data.get('position')
+    if position:
+        account.position = position  # Update position
+        response_data['position'] = position
+
+    # Update status if provided
+    accstatus = request.data.get('status')
+    if status:
+        account.status = accstatus
+        if accstatus == "Inactive":
             account.deactivationDate = datetime.now().date()
-        elif account.status == "Active":
+        elif accstatus == "Active":
             account.deactivationDate = None
-        account.save()
-        return Response({"message": "Account status updated successfully"}, status=status.HTTP_200_OK)
+        response_data['status'] = accstatus
 
-    # Full Account Editing
-    department_id = request.data.get('department')
-    course_id = request.data.get('course')
-    barangay_id = request.data.get('barangay')
+    # Check if account type has changed
+    new_account_type = request.data.get('accountType')
+    if new_account_type and new_account_type != account.accountType:
+        # Handle the change in account type as previously described
+        # First delete the existing related account entry
+        if account.accountType == 'Admin':
+            AdminAccount.objects.get(account=account).delete()
+        elif account.accountType == 'Brgy. Official':
+            BrgyOfficialAccount.objects.get(account=account).delete()
+        elif account.accountType == 'Proponent':
+            ProponentAccount.objects.get(account=account).delete()
+        elif account.accountType == 'Evaluator':
+            EvaluatorAccount.objects.get(account=account).delete()
 
-    if department_id:
-        department = Department.objects.filter(dept_id=department_id).first()
-        if not department:
-            return Response({"error": f"Department '{department_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
-        request.data['department'] = department.dept_id
+        # Create the new account type with updated fields
+        account.accountType = new_account_type
+        account.save()  # Save the updated account type first
 
-    if course_id:
-        course = Course.objects.filter(course_id=course_id).first()
-        if not course:
-            return Response({"error": f"Course '{course_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
-        request.data['course'] = course.course_id
+        if new_account_type == 'Admin':
+            AdminAccount.objects.create(account=account, name=name)
+        elif new_account_type == 'Brgy. Official':
+            barangay_id = request.data.get('barangay')
+            BrgyOfficialAccount.objects.create(account=account, name=name, barangay_id=barangay_id)
+        elif new_account_type == 'Proponent':
+            department_id = request.data.get('department')
+            course_id = request.data.get('course')
+            department = Department.objects.get(dept_id=department_id) if department_id else None
+            course = Course.objects.get(course_id=course_id) if course_id else None
+            ProponentAccount.objects.create(account=account, name=name, department=department, course=course)
+        elif new_account_type == 'Evaluator':
+            evaluator_type = request.data.get('evaluator_type')
+            EvaluatorAccount.objects.create(account=account, name=name, evaluator_type=evaluator_type)
+    elif account.accountType == 'Proponent':
+        proponent_account = ProponentAccount.objects.get(account=account)
+        
+        # Update department if provided
+        department_id = request.data.get('department')
+        if department_id:
+            department = Department.objects.get(dept_id=department_id)
+            proponent_account.department = department
+            response_data['department'] = department.dept_name  # Assuming you want to return the name
 
-    if barangay_id:
-        barangay = Barangay.objects.filter(id=barangay_id).first()
-        if not barangay:
-            return Response({"error": f"Barangay '{barangay_id}' not found"}, status=status.HTTP_400_BAD_REQUEST)
-        request.data['barangay'] = barangay.id
+        # Update course if provided
+        course_id = request.data.get('course')
+        if course_id:
+            course = Course.objects.get(course_id=course_id)
+            proponent_account.course = course
+            response_data['course'] = course.course_name  # Assuming you want to return the name
 
-    serializer = TblAccountsSerializer(account, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        proponent_account.save()
+
+    # Save changes to the Account model
+    account.save()
+
+    # Return the updated account information
+    return Response({"message": "Account status updated successfully"}, status=status.HTTP_200_OK)
+
 
 
 

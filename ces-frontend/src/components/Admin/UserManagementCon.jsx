@@ -137,8 +137,24 @@ const UserManagementCon = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            // console.log("API Response: ", data);
-            setUsers(data);  // Update the state with the fetched users
+            const formattedData = data.map(user => ({
+                user_id: user.user_id,
+                username: user.username,
+                name: user.accountType === 'Admin' ? user.adminaccount?.name || 'No Name' :
+                    user.accountType === 'Proponent' ? user.proponentaccount?.name || 'No Name' :
+                    user.accountType === 'Brgy. Official' ? user.brgyofficialaccount?.name || 'No Name' :
+                    user.accountType === 'Evaluator' ? user.evaluatoraccount?.name || 'No Name' : 'No Name',
+                accountType: user.accountType,
+                department_name: user.department_name,
+                course_name: user.course_name,
+                barangay_name: user.barangay_name,
+                position: user.position,
+                activationDate: user.activationDate,
+                deactivationDate: user.deactivationDate,
+                status: user.status
+            }));
+
+            setUsers(data);  // Update the state with the fetched users           
         } catch (error) {
             console.error("Failed to fetch users:", error);
         }

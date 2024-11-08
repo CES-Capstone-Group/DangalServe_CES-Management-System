@@ -17,6 +17,7 @@ import {
     faFileArchive,
     faFile,
     faPerson,
+    faClipboardQuestion,
 } from '@fortawesome/free-solid-svg-icons'; // Import the icons you want to use
 
 const AdminManage = () => {
@@ -45,7 +46,8 @@ const AdminManage = () => {
         { title: "Calendar Management", path: "/manage/calendar", icon: faCalendarAlt },
         { title: "Evaluator Management", path: "/manage/evaluators", icon: faPerson},
         { title: "Evaluation Responses Management", path: "/manage/responses", icon: faFile },
-        { title: "Evaluation Form Management", path: "/manage/eval-page", icon: faFileAlt },
+        { title: "Evaluation Form Management", path: "/manage/eval-management", icon: faFileAlt },
+        { title: "Question Management", path: "/manage/manage-questions", icon: faClipboardQuestion },
         
     ];
 
@@ -71,13 +73,13 @@ const AdminManage = () => {
                     <Col key={index} xs={12} sm={12} md={3} className="d-flex justify-content-center">
                         <Card
                             onClick={() => handleNavigation(section.path)}
-                            className="landCard clickable-card text-center shadow p-4"
+                            className="landCard clickable-card text-center shadow p-0"
                             style={{
                                 cursor: 'pointer',
                                 width: '90%',
                                 maxWidth: '300px',
                                 height: 'auto',
-                                minHeight: '200px',
+                                minHeight: '100px',
                             }}
                         >
                             <Card.Body className="d-flex flex-column justify-content-center align-items-center">

@@ -82,7 +82,6 @@ const ManageQuestions = () => {
     return (
         <Container 
             fluid 
-            style={{ width: "100rem" }} 
             className="vh-80 d-flex flex-column justify-content-center m-5"
         >
             <Row>

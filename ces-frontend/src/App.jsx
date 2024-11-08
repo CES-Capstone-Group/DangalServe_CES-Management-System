@@ -66,6 +66,7 @@ import AdminDeptApprovedPro from './components/Admin/AdminDeptApprovedPro.jsx';
 import EvalLogIn from './components/EvalLogIn.jsx';
 import ManageQuestions from './components/ManageQuestions.jsx';
 import AdminEventPage from './components/Admin/AdminEventPage.jsx';
+import EvalCreate from './components/Evaluator/EvalCreate.jsx';
 
 const App = () => {
   return (
@@ -76,7 +77,6 @@ const App = () => {
           <Route index element={<LoginPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/unauthorized' element={<UnauthorizedPage />} />
-          <Route path='/manage-questions' element={<ManageQuestions />} />
 
           {/* Admin Routes - Only accessible to Admin */}
           <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
@@ -97,6 +97,8 @@ const App = () => {
               <Route path='eval-management' element={<EvalPage />} />
               <Route path='eval-sum' element={<EvalSummary />} />
               <Route path='eval-cards' element={<EvalCards />} />
+              <Route path='manage-questions' element={<ManageQuestions />} />
+              <Route path='eval-create' element={<EvalCreate />} />
             </Route>
             <Route path='/admin' element={<UserAdminPage />}>
               <Route path='proposal-form' element={<ProposalForm />} />

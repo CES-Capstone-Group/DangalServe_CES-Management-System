@@ -114,7 +114,8 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const handleApprove = async () => {
     try {
       // Check if the user is a barangay official and if the proposal requires barangay approval
-      if (isBrgy && proposal.status === "Partly Approved by Barangay" && !isApproved) {
+      if (isBrgy && (proposal.status === "Approved by President" || proposal.status === "Partly Approved by Barangay")  && !isApproved ) {
+        //console.log("not approved")
         console.log("Final Approval for Barangay...");
         await barangayApproval("Approved");
       } else if (!dirApproved) {
@@ -248,7 +249,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
         View
       </Button>
 
-      {isBrgy && !isApproved && proposal.status === "Partly Approved by Barangay" && (
+      {isBrgy && !isApproved && (proposal.status === "Partly Approved by Barangay" || proposal.status === "Approved by President")  && (
         <Button
           className="mt-2 mb-2"
           style={{

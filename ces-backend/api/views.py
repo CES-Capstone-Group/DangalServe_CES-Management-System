@@ -764,7 +764,14 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         status = self.request.query_params.get('status')
         department_id = self.request.query_params.get('department_id')
         user = self.request.user
-        barangay = self.request.user.barangay
+        # Initialize barangay
+        barangay = None
+
+        # Accessing barangay based on account type
+        if user.accountType == 'Brgy. Official':
+            brgy_account = BrgyOfficialAccount.objects.get(account=user)
+            barangay = brgy_account.barangay.brgy_name if brgy_account.barangay else None
+            
         # Check if the user is an admin
         if user.accountType == 'Admin':
             # Start with a base queryset for admins
@@ -866,23 +873,28 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
 class BarangayApprovedProposalsView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get_barangay(self, user):
+        """Helper method to get barangay name from the user."""
+        if hasattr(user, 'brgyofficialaccount'):  # Adjust according to your model
+            return user.brgyofficialaccount.barangay.brgy_name
+        return None
+
     def get(self, request):
         user = request.user
-        department = user.barangay  # Assuming department represents barangay
+        barangay = self.get_barangay(user)  # Use the helper method to get barangay name
         
-        if not department:
+        if not barangay:
             return Response({"error": "No barangay found for the user"}, status=400)
 
         # Get all proposals that include this barangay and are approved by barangay
         approved_proposals = Proposal.objects.filter(
             status='Approved by Barangay',
-            partner_community__contains=department  # Assuming partner_community is a comma-separated string
+            partner_community__contains=barangay  # Assuming partner_community is a comma-separated string
         )
-        
-        # print(approved_proposals)
         
         serializer = ProposalSerializer(approved_proposals, many=True)
         return Response(serializer.data, status=200)
+
     
 class ProposalResubmissionView(generics.UpdateAPIView):
     """
@@ -993,9 +1005,18 @@ class ProposalVersionDetailView(APIView):
 class BarangayApprovalView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get_barangay(self, user):
+        """Helper method to get barangay name from the user."""
+        if hasattr(user, 'brgyofficialaccount'):  # Check if user is a Barangay Official
+            return user.brgyofficialaccount.barangay.brgy_name
+        return None
+    
     def get(self, request, proposal_id):
         user = request.user
-        barangay = user.barangay.brgy_name  # Assuming barangay name is stored here
+        barangay = self.get_barangay(user)  # Get the barangay name from the helper method
+
+        if not barangay:
+            return Response({"error": "User does not have an associated barangay."}, status=status.HTTP_403_FORBIDDEN)
 
         try:
             proposal = Proposal.objects.get(proposal_id=proposal_id)
@@ -1014,7 +1035,10 @@ class BarangayApprovalView(APIView):
         
     def patch(self, request, proposal_id):
         user = request.user
-        barangay = user.barangay.brgy_name  # Assuming the barangay is stored in the department field
+        barangay = self.get_barangay(user)  # Use the helper method to get the barangay
+
+        if not barangay:
+            return Response({"error": "User does not have an associated barangay."}, status=status.HTTP_403_FORBIDDEN)
 
         try:
             proposal = Proposal.objects.get(proposal_id=proposal_id)

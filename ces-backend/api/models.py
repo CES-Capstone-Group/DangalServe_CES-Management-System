@@ -204,6 +204,12 @@ class Proposal(models.Model):
     is_three_year_plan = models.BooleanField(default=False)
     is_one_year_plan = models.BooleanField(default=False)
 
+    research_agendas = models.ManyToManyField(
+        ResearchAgenda, 
+        blank=True, 
+        related_name='proposals'
+    )
+    
     proposal_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, default="Unknown Title")
@@ -273,12 +279,13 @@ class Proposal(models.Model):
     def __str__(self):
         return self.title
 
-
-from django.db import models
-from django.utils import timezone
-
 class ProposalVersion(models.Model):
     proposal = models.ForeignKey(Proposal, related_name='versions', on_delete=models.CASCADE)
+    research_agendas = models.ManyToManyField(
+        ResearchAgenda, 
+        blank=True, 
+        related_name='proposal_versions'
+    )
     version_number = models.PositiveIntegerField(default=1)
     title = models.CharField(max_length=255, default="Untitled Proposal")
     engagement_date = models.DateField(default=timezone.now)  # Current date as default

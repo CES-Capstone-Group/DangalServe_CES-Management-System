@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 
 const ProposalForm = () => {
   const { proposalId } = useParams(); // Retrieve proposal ID from URL
+  const [researchAgendas, setResearchAgendas] = useState([]);
   const [isResubmission, setIsResubmission] = useState(false); // To track if it's a resubmission
   const [govOrg, setGovOrg] = useState(false);
   const [nonGovOrg, setNonGovOrg] = useState(false);
@@ -40,11 +41,28 @@ const ProposalForm = () => {
         console.error("Error fetching barangays:", error);
       }
     };
+    
+    const fetchResearchAgendas = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/research-agendas/');
+        if (response.ok) {
+          const data = await response.json();
+          setResearchAgendas(data);
+        } else {
+          console.error('Failed to fetch research agendas');
+        }
+      } catch (error) {
+        console.error('Error fetching research agendas:', error);
+      }
+    };
+    
     fetchBarangays();
+    fetchResearchAgendas();
   }, []);
 
   // State to hold the form data
   const [formData, setFormData] = useState({
+    research_agendas: [],
     title: '',
     engagement_date: '',
     disengagement_date: '',
@@ -87,6 +105,16 @@ const ProposalForm = () => {
     setProponent({
       ...proponent,
       [name]: value,
+    });
+  };
+
+  const handleResearchAgendaChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prevData) => {
+      const updatedAgendas = checked
+        ? [...prevData.research_agendas, value] // Add selected agenda
+        : prevData.research_agendas.filter((agenda) => agenda !== value); // Remove unselected agenda
+      return { ...prevData, research_agendas: updatedAgendas };
     });
   };
 
@@ -318,6 +346,14 @@ const ProposalForm = () => {
     const submitData = new FormData();
     const token = localStorage.getItem('access_token');
 
+    Object.keys(formData).forEach((key) => {
+      if (key === 'research_agendas') {
+        formData[key].forEach((agenda) => submitData.append('research_agendas[]', agenda));
+      } else if (formData[key] && key !== 'identified_needs_file' && key !== 'budget_requirement_file') {
+        submitData.append(key, formData[key]);
+      }
+    });
+
     // Append form fields except for proponents, signatories, and files
     Object.keys(formData).forEach(key => {
       if (formData[key] && key !== 'proponents' && key !== 'signatories' && key !== 'identified_needs_file' && key !== 'budget_requirement_file') {
@@ -426,6 +462,23 @@ const ProposalForm = () => {
 
           </Col>
         </Form.Group>
+        
+        <Form.Group as={Row} className="mb-4">
+          <Form.Label column sm={2}>Research Agenda</Form.Label>
+          <Col sm={10}>
+            {researchAgendas.map((agenda) => (
+              <Form.Check
+                key={agenda.id}
+                type="checkbox"
+                label={agenda.label}
+                value={agenda.id}
+                checked={formData.research_agendas.includes(agenda.id)}
+                onChange={handleResearchAgendaChange}
+              />
+            ))}
+          </Col>
+        </Form.Group>
+        
         <h4 className="mb-4">A. Basic Details</h4>
 
         {/* Title Field */}

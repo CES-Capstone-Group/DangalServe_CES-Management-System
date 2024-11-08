@@ -827,8 +827,37 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                 params=[barangay]
             )        
     def post(self, request, *args, **kwargs):
-        # print(request.data)
-        return super().post(request, *args, **kwargs)    
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # Extract validated data and user
+            validated_data = serializer.validated_data
+            user = request.user  # The authenticated user
+            research_agenda_ids = request.data.get('research_agendas', [])
+
+            # Remove research agendas from validated data
+            validated_data.pop('research_agendas', None)
+
+            # Create the proposal instance
+            proposal = Proposal.objects.create(user_id=user, **validated_data)
+
+            # Assign research agendas using .set()
+            if research_agenda_ids:
+                research_agendas = ResearchAgenda.objects.filter(id__in=research_agenda_ids)
+                proposal.research_agendas.set(research_agendas)
+
+            # Save the proposal
+            proposal.save()
+
+            # Return the created proposal data
+            response_serializer = self.get_serializer(proposal)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
 class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
@@ -865,6 +894,12 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             return Response({"detail": "You do not have permission to perform this action."}, status=403)
 
+        research_agenda_ids = request.data.get('research_agendas', [])
+        if research_agenda_ids:
+            research_agendas = ResearchAgenda.objects.filter(id__in=research_agenda_ids)
+            proposal.research_agendas.set(research_agendas)
+            proposal.save()
+            
         # Handle signatories if provided
         if 'signatories' in request.data:
             signatories_data = request.data.get('signatories', [])
@@ -962,6 +997,11 @@ class ProposalResubmissionView(generics.UpdateAPIView):
             version_status='Resubmitted-Pending'
         )
 
+        research_agenda_ids = request.data.get('research_agendas', [])
+        if research_agenda_ids:
+            research_agendas = ResearchAgenda.objects.filter(id__in=research_agenda_ids)
+            proposal.research_agendas.set(research_agendas)
+            
         # Update the main Proposal object with the new data and reset status to Pending
         proposal.title = request.data.get('title', proposal.title)
         proposal.project_description = request.data.get('project_description', proposal.project_description)

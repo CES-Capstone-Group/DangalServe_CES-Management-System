@@ -76,7 +76,6 @@ const App = () => {
           <Route index element={<LoginPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/unauthorized' element={<UnauthorizedPage />} />
-          <Route path='/manage-questions' element={<ManageQuestions />} />
 
           {/* Admin Routes - Only accessible to Admin */}
           <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
@@ -97,6 +96,7 @@ const App = () => {
               <Route path='eval-management' element={<EvalPage />} />
               <Route path='eval-sum' element={<EvalSummary />} />
               <Route path='eval-cards' element={<EvalCards />} />
+              <Route path='manage-questions' element={<ManageQuestions />} />
             </Route>
             <Route path='/admin' element={<UserAdminPage />}>
               <Route path='proposal-form' element={<ProposalForm />} />

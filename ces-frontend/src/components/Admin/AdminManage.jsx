@@ -45,7 +45,7 @@ const AdminManage = () => {
         { title: "Calendar Management", path: "/manage/calendar", icon: faCalendarAlt },
         { title: "Evaluator Management", path: "/manage/evaluators", icon: faPerson},
         { title: "Evaluation Responses Management", path: "/manage/responses", icon: faFile },
-        { title: "Evaluation Form Management", path: "/manage/eval-page", icon: faFileAlt },
+        { title: "Evaluation Form Management", path: "/manage/eval-management", icon: faFileAlt },
         
     ];
 

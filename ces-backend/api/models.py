@@ -29,7 +29,7 @@ class CustomUserManager(BaseUserManager):
 # Department Model
 class Department(models.Model):
     dept_id = models.AutoField(primary_key=True)  # Auto-incrementing ID
-    dept_name = models.CharField(max_length=100)  # Department Name
+    dept_name = models.CharField(max_length=100, default="Unknown Department")  # Department Name
 
     def __str__(self):
         return self.dept_name
@@ -37,14 +37,14 @@ class Department(models.Model):
 #Course Model
 class Course(models.Model):
     course_id = models.AutoField(primary_key=True)  # Auto-incrementing primary key
-    course_name = models.CharField(max_length=100)
+    course_name = models.CharField(max_length=100, default="Unknown Course")
     dept = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='courses')
 
     def __str__(self):
         return self.course_name
 
 class Barangay(models.Model):
-    brgy_name = models.CharField(max_length=100)  # Field for the name of the barangay
+    brgy_name = models.CharField(max_length=100, default="Unknown Barangay")  # Field for the name of the barangay
     moa = models.FileField(upload_to='moa_files/', blank=True, null=True)  # Field for the MOA file/image
 
     def __str__(self):
@@ -58,9 +58,9 @@ class Account(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    accountType = models.CharField(max_length=255)  # 'Admin', 'Brgy. Official', 'Proponent', 'Evaluator'
+    accountType = models.CharField(max_length=255, default="Proponent")  # 'Admin', 'Brgy. Official', 'Proponent', 'Evaluator'
     position = models.CharField(max_length=255, null=True, blank=True)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, default="Active")
     activationDate = models.DateField()
     deactivationDate = models.DateField(null=True, blank=True)
 
@@ -86,62 +86,62 @@ class Account(AbstractBaseUser):
 # Admin account details
 class AdminAccount(models.Model):
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Unknown Admin")
 
 # Barangay Official account details
 class BrgyOfficialAccount(models.Model):
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Unknown Barangay")
     barangay = models.ForeignKey(Barangay, on_delete=models.SET_NULL, null=True)
 
 # Proponent account details
 class ProponentAccount(models.Model):
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Unknown Proponent")
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
 
 # Evaluator account details
 class EvaluatorAccount(models.Model):
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Unknown Evaluator")
     evaluator_type = models.CharField(max_length=50)  # 'Student', 'Faculty', 'External', 'Alumni'
 
 # Specific evaluator types
 class StudentEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
-    student_id = models.CharField(max_length=50)  # Student ID field
-    email = models.EmailField()  # Student Email field
-    contact_number = models.CharField(max_length=15)  # Contact Number field
-    course = models.CharField(max_length=255)  # Course field
-    department = models.CharField(max_length=255)  # Department field
+    student_id = models.CharField(max_length=50, default="000000")
+    email = models.EmailField(default="student@example.com")
+    contact_number = models.CharField(max_length=15, default="0000000000")
+    course = models.CharField(max_length=255, default="Unknown Course")
+    department = models.CharField(max_length=255, default="Unknown Department")
 
 class FacultyEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
-    email = models.EmailField()  # Email field
-    contact_number = models.CharField(max_length=15)  # Contact Number field
-    department = models.CharField(max_length=255)  # Department field
-    position = models.CharField(max_length=255)  # Position field
-    
+    email = models.EmailField(default="faculty@example.com")
+    contact_number = models.CharField(max_length=15, default="0000000000")
+    department = models.CharField(max_length=255, default="Unknown Department")
+    position = models.CharField(max_length=255, default="Unknown Position")
+
 class NonTeachingEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
-    email = models.EmailField()  # Email field
-    contact_number = models.CharField(max_length=15)  # Contact Number field
-    position = models.CharField(max_length=255)  # Position field
-    department = models.CharField(max_length=255)  # Department field
+    email = models.EmailField(default="nonteaching@example.com")
+    contact_number = models.CharField(max_length=15, default="0000000000")
+    position = models.CharField(max_length=255, default="Unknown Position")
+    department = models.CharField(max_length=255, default="Unknown Department")
 
 class AlumniEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
-    email = models.EmailField()  # Email field
-    contact_number = models.CharField(max_length=15)  # Contact Number field
-    course = models.CharField(max_length=255)  # Course field
-    department = models.CharField(max_length=255)  # Department field
+    email = models.EmailField(default="alumni@example.com")
+    contact_number = models.CharField(max_length=15, default="0000000000")
+    course = models.CharField(max_length=255, default="Unknown Course")
+    department = models.CharField(max_length=255, default="Unknown Department")
 
 class ExternalParticipantEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
-    email = models.EmailField()  # Email field
-    contact_number = models.CharField(max_length=15)  # Contact Number field
-    barangay = models.CharField(max_length=255)  # Barangay field
+    email = models.EmailField(default="external@example.com")
+    contact_number = models.CharField(max_length=15, default="0000000000")
+    barangay = models.CharField(max_length=255, default="Unknown Barangay")
 
 
 class ResearchAgenda(models.Model):
@@ -152,18 +152,18 @@ class ResearchAgenda(models.Model):
         return self.label if self.label else 'No Label'
 
 class Achievement(models.Model):
-    award_title = models.CharField(max_length=255)  # The title of the award
-    awardee = models.CharField(max_length=255)  # The person receiving the award
-    awarded_by = models.CharField(max_length=255)  # The person or organization giving the award
-    date_awarded = models.DateField()  # The date the award was given
+    award_title = models.CharField(max_length=255, default="Unknown Award")  # The title of the award
+    awardee = models.CharField(max_length=255, default="Unknown Awardee")  # The person receiving the award
+    awarded_by = models.CharField(max_length=255, default="Unknown Awarded By")  # The person or organization giving the award
+    date_awarded = models.DateField(default="0000-00-00")  # The date the award was given
     image = models.ImageField(upload_to='awards/', max_length=255, null=True, blank=True)  # Image of the award
 
     def __str__(self):
         return self.award_title
 
 class Announcement(models.Model):
-    title = models.CharField(max_length=255)  # Field for the announcement title
-    details = models.TextField()  # Field for the announcement details
+    title = models.CharField(max_length=255, default="Unknown Title")  # Field for the announcement title
+    details = models.TextField(default="Unknown Details")  # Field for the announcement details
     image = models.ImageField(upload_to='announcements/', blank=True, null=True)  # Field for uploading an image
 
     def __str__(self):
@@ -171,7 +171,7 @@ class Announcement(models.Model):
 
 
 class Document(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, default="Unknown Title")
     file = models.FileField(upload_to='documents/')  # Files will be uploaded to the 'documents/' folder
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -183,8 +183,8 @@ class Document(models.Model):
 from django.db import models
 
 class Proponent(models.Model):
-    name = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Unknown Proponent")
+    position = models.CharField(max_length=255, default="Unknown Position")
     proposal = models.ForeignKey('Proposal', related_name='proponents', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -206,33 +206,33 @@ class Proposal(models.Model):
 
     proposal_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Account, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    engagement_date = models.DateField()
-    disengagement_date = models.DateField()
-    department = models.CharField(max_length=255)
-    lead_proponent = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, default="Unknown Title")
+    engagement_date = models.DateField(default="0000-00-00")
+    disengagement_date = models.DateField(default="0000-00-00")
+    department = models.CharField(max_length=255, default="Unknown Department")
+    lead_proponent = models.CharField(max_length=255, default="Unknown Lead Proponent")
     # Remove the ManyToManyField for proponents, as it's already handled in the Proponent model.
-    contact_details = models.CharField(max_length=255)
-    project_description = models.TextField()
-    target_date = models.DateField()
-    location = models.CharField(max_length=255)
-    partner_community = models.CharField(max_length=255)
+    contact_details = models.CharField(max_length=255, default="00000000000")
+    project_description = models.TextField(default="Unknown Porject Descriptiojn")
+    target_date = models.DateField(default="0000-00-00")
+    location = models.CharField(max_length=255, default="Unknown Location")
+    partner_community = models.CharField(max_length=255, default="Unknown Parter Community")
     school = models.BooleanField(default=False)
-    barangay = models.BooleanField(default=False)
+    barangay = models.BooleanField(default=False )
     government_org = models.CharField(max_length=255, blank=True, null=True)
     non_government_org = models.CharField(max_length=255, blank=True, null=True)
     identified_needs_text = models.TextField(null=True, blank=True)
     identified_needs_file = models.FileField(upload_to='Proposals/identified_needs/', null=True, blank=True)
-    general_objectives = models.TextField()
-    specific_objectives = models.TextField()
-    success_indicators = models.TextField()
-    cooperating_agencies = models.TextField()
-    monitoring_mechanics = models.TextField()
-    evaluation_mechanics = models.TextField()
-    timetable = models.TextField()
-    risk_assessment = models.TextField()
-    action_plans = models.TextField()
-    sustainability_approaches = models.TextField()
+    general_objectives = models.TextField(default="Unknown General Objectives")
+    specific_objectives = models.TextField(default="Unknown Specific Objectives")
+    success_indicators = models.TextField(default="Unknown Success Indicators")
+    cooperating_agencies = models.TextField(default="Unknown Cooperating Agencies")
+    monitoring_mechanics = models.TextField( default="Unknown Monitoring Mechanics")
+    evaluation_mechanics = models.TextField(default="Unknown Evaluation Mechanics")
+    timetable = models.TextField(default="Unknown Time Table")
+    risk_assessment = models.TextField(default="Unknown Risk Assessment")
+    action_plans = models.TextField(default="Unknown Action Plans")
+    sustainability_approaches = models.TextField(default="Unknown Sustainability Approaches")
     budget_requirement_text = models.TextField(null=True, blank=True)
     budget_requirement_file = models.FileField(upload_to='Proposals/budget_requirements/', null=True, blank=True)
 
@@ -274,36 +274,39 @@ class Proposal(models.Model):
         return self.title
 
 
+from django.db import models
+from django.utils import timezone
+
 class ProposalVersion(models.Model):
     proposal = models.ForeignKey(Proposal, related_name='versions', on_delete=models.CASCADE)
-    version_number = models.PositiveIntegerField()
-    title = models.CharField(max_length=255)
-    engagement_date = models.DateField()
-    disengagement_date = models.DateField()
-    department = models.CharField(max_length=255)
-    lead_proponent = models.CharField(max_length=255)
-    contact_details = models.CharField(max_length=255)
-    project_description = models.TextField()
-    target_date = models.DateField()
-    location = models.CharField(max_length=255)
-    partner_community = models.CharField(max_length=255)  # Comma-separated list of barangays
+    version_number = models.PositiveIntegerField(default=1)
+    title = models.CharField(max_length=255, default="Untitled Proposal")
+    engagement_date = models.DateField(default=timezone.now)  # Current date as default
+    disengagement_date = models.DateField(default=timezone.now)  # Current date as default
+    department = models.CharField(max_length=255, default="General Department")
+    lead_proponent = models.CharField(max_length=255, default="Lead Proponent")
+    contact_details = models.CharField(max_length=255, default="Contact Details")
+    project_description = models.TextField(default="Project Description")
+    target_date = models.DateField(default=timezone.now)  # Current date as default
+    location = models.CharField(max_length=255, default="Unknown Location")
+    partner_community = models.CharField(max_length=255, default="Community Name")
     school = models.BooleanField(default=False)
     barangay = models.BooleanField(default=False)
-    government_org = models.CharField(max_length=255, blank=True, null=True)
-    non_government_org = models.CharField(max_length=255, blank=True, null=True)
-    identified_needs_text = models.TextField(null=True, blank=True)
+    government_org = models.CharField(max_length=255, blank=True, null=True, default="Unknown Government Org")
+    non_government_org = models.CharField(max_length=255, blank=True, null=True, default="Unknown Non-Government Org")
+    identified_needs_text = models.TextField(null=True, blank=True, default="Needs Description")
     identified_needs_file = models.FileField(upload_to='Proposals/identified_needs/', null=True, blank=True)
-    general_objectives = models.TextField()
-    specific_objectives = models.TextField()
-    success_indicators = models.TextField()
-    cooperating_agencies = models.TextField()
-    monitoring_mechanics = models.TextField()
-    evaluation_mechanics = models.TextField()
-    timetable = models.TextField()
-    risk_assessment = models.TextField()
-    action_plans = models.TextField()
-    sustainability_approaches = models.TextField()
-    budget_requirement_text = models.TextField(null=True, blank=True)
+    general_objectives = models.TextField(default="General Objectives")
+    specific_objectives = models.TextField(default="Specific Objectives")
+    success_indicators = models.TextField(default="Success Indicators")
+    cooperating_agencies = models.TextField(default="Cooperating Agencies")
+    monitoring_mechanics = models.TextField(default="Monitoring Mechanics")
+    evaluation_mechanics = models.TextField(default="Evaluation Mechanics")
+    timetable = models.TextField(default="Timetable")
+    risk_assessment = models.TextField(default="Risk Assessment")
+    action_plans = models.TextField(default="Action Plans")
+    sustainability_approaches = models.TextField(default="Sustainability Approaches")
+    budget_requirement_text = models.TextField(null=True, blank=True, default="Budget Requirements")
     budget_requirement_file = models.FileField(upload_to='Proposals/budget_requirements/', null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -312,20 +315,18 @@ class ProposalVersion(models.Model):
     def __str__(self):
         return f"{self.proposal.title} - Version {self.version_number}"
 
-
 class BarangayApproval(models.Model):
     proposal = models.ForeignKey(Proposal, related_name='barangay_approvals', on_delete=models.CASCADE)
-    barangay_name = models.CharField(max_length=255)
+    barangay_name = models.CharField(max_length=255, default="Unknown Barangay")
     status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected')], default='Pending')
-    sign_date = models.DateField(null=True, blank=True)
-    remarks = models.TextField(blank=True, null=True)
+    sign_date = models.DateField(null=True, blank=True, default=None)
+    remarks = models.TextField(blank=True, null=True, default="No Remarks")
 
     class Meta:
         unique_together = ('proposal', 'barangay_name')
 
     def __str__(self):
         return f"{self.barangay_name} - {self.status}"
-
 
 class Signatory(models.Model):
     PROPOSAL_SECTIONS = [
@@ -334,19 +335,18 @@ class Signatory(models.Model):
         ('concurred', 'Concurred By'),
     ]
     proposal = models.ForeignKey(Proposal, related_name='signatories', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
-    section = models.CharField(max_length=20, choices=PROPOSAL_SECTIONS)
+    name = models.CharField(max_length=255, default="Signatory Name")
+    position = models.CharField(max_length=255, default="Position")
+    section = models.CharField(max_length=20, choices=PROPOSAL_SECTIONS, default='prepared')
 
     def __str__(self):
         return f'{self.name} ({self.position}) - {self.section}'
 
-
 class ActivitySchedule(models.Model):
-    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)  # Foreign key to the Proposal table
-    activity_title = models.CharField(max_length=255)
-    target_date = models.DateField()
-    target_time = models.TimeField(null=True, blank=True)
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    activity_title = models.CharField(max_length=255, default="Activity Title")
+    target_date = models.DateField(default=timezone.now)  # Current date as default
+    target_time = models.TimeField(null=True, blank=True, default=None)
     file = models.FileField(upload_to='activity_files/', max_length=25, null=True, blank=True)
 
     def __str__(self):

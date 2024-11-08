@@ -11,6 +11,7 @@ from .models import (
     EvaluatorAccount,
     StudentEvaluator,
     FacultyEvaluator,
+    NonTeachingEvaluator,
     AlumniEvaluator,
     ExternalParticipantEvaluator,
     BrgyOfficialAccount,
@@ -200,13 +201,21 @@ def create_user(request):
                 StudentEvaluator.objects.create(
                     evaluator=evaluator_account,
                     student_id=data.get("studentId"),
-                    student_email=data.get("email"),
+                    email=data.get("email"),
                     contact_number=data.get("contactNumber"),
                     course=data.get("course"),
                     department=data.get("department"),
                 )
             elif evaluator_type == 'Faculty':
                 FacultyEvaluator.objects.create(
+                    evaluator=evaluator_account,
+                    email=data.get("email"),
+                    contact_number=data.get("contactNumber"),
+                    department=data.get("department"),
+                    position=data.get("position"),
+                )
+            elif evaluator_type == 'Non-Teaching':
+                NonTeachingEvaluator.objects.create(
                     evaluator=evaluator_account,
                     email=data.get("email"),
                     contact_number=data.get("contactNumber"),

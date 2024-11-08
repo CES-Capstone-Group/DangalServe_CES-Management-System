@@ -59,7 +59,7 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
     accountType = models.CharField(max_length=255)  # 'Admin', 'Brgy. Official', 'Proponent', 'Evaluator'
-    position = models.CharField(max_length=255)
+    position = models.CharField(max_length=255, null=True, blank=True)
     status = models.CharField(max_length=50)
     activationDate = models.DateField()
     deactivationDate = models.DateField(null=True, blank=True)
@@ -111,7 +111,7 @@ class EvaluatorAccount(models.Model):
 class StudentEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
     student_id = models.CharField(max_length=50)  # Student ID field
-    student_email = models.EmailField()  # Student Email field
+    email = models.EmailField()  # Student Email field
     contact_number = models.CharField(max_length=15)  # Contact Number field
     course = models.CharField(max_length=255)  # Course field
     department = models.CharField(max_length=255)  # Department field
@@ -122,6 +122,13 @@ class FacultyEvaluator(models.Model):
     contact_number = models.CharField(max_length=15)  # Contact Number field
     department = models.CharField(max_length=255)  # Department field
     position = models.CharField(max_length=255)  # Position field
+    
+class NonTeachingEvaluator(models.Model):
+    evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)
+    email = models.EmailField()  # Email field
+    contact_number = models.CharField(max_length=15)  # Contact Number field
+    position = models.CharField(max_length=255)  # Position field
+    department = models.CharField(max_length=255)  # Department field
 
 class AlumniEvaluator(models.Model):
     evaluator = models.OneToOneField(EvaluatorAccount, on_delete=models.CASCADE)

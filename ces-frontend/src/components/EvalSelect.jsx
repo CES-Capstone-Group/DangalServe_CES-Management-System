@@ -2,49 +2,35 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Container, Button, Modal, Form, Row, Col } from "react-bootstrap";
-import axios from "axios";
-import pncbg from '../assets/pncbg.png'
+import pncbg from '../assets/pncbg.png'; // Ensure this path is correct
 import { useNavigate } from 'react-router-dom';
-
-
+import axios from 'axios'; // Import axios
 
 const EvalSelect = () => {
     const [showModal, setShowModal] = useState(false);
     const [role, setRole] = useState("");
 
     const [courses, setCourses] = useState([]);
-    const [selectedCourse, setSelectedCourse] = useState('');
     const [filteredCourses, setFilteredCourses] = useState([]);
-
     const [barangays, setBarangays] = useState([]);
-    const [selectedBarangays, setSelectedBarangays] = useState('');
-    
     const [departments, setDepartments] = useState([]);
-    const [selectedDepartment, setSelectedDepartment] = useState('');
-    const [userChangedDepartment, setUserChangedDepartment] = useState(false);
-
-    const [isOtherSelected, setIsOtherSelected] = useState(false);
-    const [otherDepartment, setOtherDepartment] = useState('');
-
-    const handleShowModal = () => { setShowModal(true); };
-    const handleCloseModal = () => { setShowModal(false) };
-    const navigate = useNavigate();
-
-    const [errors, setErrors] = useState({}); // Validation error state
-
-    const handleSetRole = (selectedRole) => {
-        setRole(selectedRole);
-        handleShowModal();
-    };
-
-    const handleSubmit = () => {
-        navigate("/eval");
-    }
 
     const [formData, setFormData] = useState({
+        name: '',
+        accountType: 'Evaluator',
+        evaluator_type: '', // Will be set based on role
+        email: '',
+        contactNumber: '',
         department: '',
         course: '',
+        position: '',
+        username: '',
+        password: '',
+        status: "Active",
+        activationDate: new Date().toISOString().slice(0, 10),
     });
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBarangay = async () => {
@@ -67,13 +53,8 @@ const EvalSelect = () => {
 
         const fetchCourses = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/courses/');
-                if (response.ok) {
-                    const data = await response.json();
-                    setCourses(data);
-                } else {
-                    console.error("Failed to fetch courses");
-                }
+                const response = await axios.get('http://127.0.0.1:8000/api/courses/');
+                setCourses(response.data); // Set the courses data in state
             } catch (error) {
                 console.error("Error fetching courses:", error);
             }
@@ -84,424 +65,181 @@ const EvalSelect = () => {
         fetchBarangay();
     }, []);
 
-    // Update filtered courses when department changes
-    useEffect(() => {
-        const filtered = courses.filter(course => course.dept_id === formData.department);
-        // console.log("filtered",filtered);
-        setFilteredCourses(filtered);
-    }, [formData.department, courses]);
-    
-    const handleDepartmentChange = (e) => {
+    const handleDepartmentChange = async (e) => {
         const selectedValue = e.target.value;
-        setSelectedDepartment(selectedValue);
+        setFormData(prevState => ({
+            ...prevState,
+            department: selectedValue,
+            course: '', // Reset course selection when department changes
+        }));
 
+        if (selectedValue) {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/api/departments/${selectedValue}/courses/`);
+                setFilteredCourses(response.data);
+            } catch (error) {
+                console.error("Error fetching courses for department:", error);
+                setFilteredCourses([]);  // Clear courses if there's an error
+            }
+        } else {
+            setFilteredCourses([]);  // Clear courses if no department selected
+        }
+    };
+
+    const handleShowModal = () => { setShowModal(true); };
+    const handleCloseModal = () => { setShowModal(false); };
+
+    const handleSetRole = (selectedRole) => {
+        setRole(selectedRole);
+
+        const evaluatorTypeMap = {
+            'Student': 'Student',
+            'Non-Teaching': 'Non-Teaching',
+            'Faculty': 'Faculty', // Changed from Teaching to Faculty
+            'Alumni': 'Alumni',
+            'Participant': 'External'
+        };
+
+        setFormData(prevState => ({
+            ...prevState,
+            evaluator_type: evaluatorTypeMap[selectedRole],
+            position: selectedRole === 'Student' ? 'Student' : '', // Default position for Student
+        }));
+
+        handleShowModal();
+    };
+
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: value || null
+            [name]: value
         }));
+    };
 
-        if (name === 'department') {
-            setUserChangedDepartment(true);
-            setFormData(prevState => ({
-                ...prevState,
-                course: '', // Reset course selection when department changes
-            }));
-
-            // Fetch courses based on department selection
-            if (value) {
-                fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        setFilteredCourses(data);  // Update the filtered courses state
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching courses:", error);
-                    });
-            } else {
-                setFilteredCourses([]);  // Clear courses if no department selected
-            }
-        }
-
-        // Check if "Other" is selected
-        if (selectedValue === 'Other') {
-            setIsOtherSelected(true);
-        } else {
-            setIsOtherSelected(false);
-            setOtherDepartment(''); // Reset the other department field
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:8000/api/users/create_user/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            console.log(JSON.stringify(formData));
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+            console.log("Account created successfully:", data);
+            navigate("/eval");
+        } catch (error) {
+            console.error("There was an error creating the account:", error);
         }
     };
 
-    const handleOtherDepartmentChange = (e) => {
-        setOtherDepartment(e.target.value);
-    };
-
-    const handleBarangayChange = (e) => {
-        setSelectedBarangays(e.target.value);  // Capture selected department
-    };
-
-    const roles = [{ label: 'Student' },
-    { label: 'Non-Teaching' },
-    { label: 'Teaching' },
-    { label: 'Alumni' },
-    { label: 'Participant' }
-    ];
+    const roles = ['Student', 'Non-Teaching', 'Faculty', 'Alumni', 'Participant'];
 
     return (
-        <div className="vh-100  fluid loginBg">
+        <div className="vh-100 fluid loginBg" style={{ backgroundImage: `url(${pncbg})`, backgroundSize: 'cover' }}>
             <Container className="d-flex flex-column justify-content-center align-items-center evalSel">
                 <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader1'>
                     Account Registration
                 </h2>
-                {roles.map((roles, index) => (
+                {roles.map((roleItem, index) => (
                     <Button key={index} variant="outline-success"
                         className="d-flex align-items-center mb-3 px-4"
                         style={{ borderRadius: "10px", fontSize: "50px", width: "500px" }}
-                        onClick={() => handleSetRole(roles.label)}>
+                        onClick={() => handleSetRole(roleItem)}>
                         <FontAwesomeIcon icon={faUser} className="me-2" />
-                        {roles.label}
+                        {roleItem}
                     </Button>
                 ))}
             </Container>
-
 
             <Modal size="lg" centered show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <h2 className="h2">{role}</h2>
                 </Modal.Header>
                 <Modal.Body>
-                    {role === 'Student' ?
-                        (
+                    <Form onSubmit={handleSubmit}>
+                        <InputField label="Full Name" type="text" name="name" placeholder="eg. Dela Cruz, Juan B." required onChange={handleInputChange} />
+                        <InputField label="Email" type="email" name="email" placeholder="eg. account@gmail.com" required onChange={handleInputChange} /> {/* Changed to general email field */}
+                        {role === 'Student' && (
+                            <InputField label="Student ID" type="text" name="studentId" placeholder="Enter Student ID" required onChange={handleInputChange} />
+                        )}
+                        <InputField label="Contact Number" type="text" name="contactNumber" placeholder="eg. 09123456789" required onChange={handleInputChange} />
 
-                            <Form>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Full Name:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="text" placeholder="eg. Dela Cruz, Juan B." />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Student ID:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="text" placeholder="Enter Student ID" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3} >Student Email:</Form.Label>
-                                    <Col>
-                                        <Form.Control type="email" placeholder="eg. account@gmail.com" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Contact Number:</Form.Label>
-                                    <Col>
-                                        <Form.Control type="text" placeholder="eg. 09123456789" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Department:</Form.Label>
-                                    <Col>
-                                        <Form.Select 
-                                            name="department" 
-                                            value={formData.department}
-                                            onChange={handleDepartmentChange}
-                                            isInvalid={!!errors.department}
-                                        >
-                                            <option value="">Select Department</option>
-                                            {departments.map(dept => (
-                                                <option key={dept.dept_id} value={dept.dept_id}>
-                                                    {dept.dept_name}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.department}
-                                        </Form.Control.Feedback>
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Course:</Form.Label>
-                                    <Col>
-                                    <Form.Select
-                                            name="course"
-                                            value={formData.course}
-                                            onChange={handleDepartmentChange}
-                                            isInvalid={!!errors.course}
-                                        >
-                                            <option value="">Select Course</option>
-                                            {filteredCourses.map(course => (
-                                                <option key={course.course_id} value={course.course_id}>
-                                                    {course.course_name}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.course}
-                                        </Form.Control.Feedback>
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Username:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="text" placeholder="Enter username" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column required sm={3}>Password:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="password" placeholder="Enter password" />
-                                    </Col>
-                                </Form.Group>
-                            </Form>
-                        )
-                        : role === 'Non-Teaching' ? (
-                            <Form>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Full Name:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="text" placeholder="eg. Dela Cruz, Juan B." />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3} >Email:</Form.Label>
-                                    <Col>
-                                        <Form.Control type="email" placeholder="eg. account@gmail.com" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Contact Number:</Form.Label>
-                                    <Col>
-                                        <Form.Control type="text" placeholder="eg. 09123456789" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Department:</Form.Label>
-                                    <Col>
-                                        <Form.Select 
-                                            name="department" 
-                                            value={formData.department}
-                                            onChange={handleDepartmentChange}
-                                            isInvalid={!!errors.department}
-                                        >
-                                            <option value="">Select Department</option>
-                                            {departments.map(dept => (
-                                                <option key={dept.dept_id} value={dept.dept_id}>
-                                                    {dept.dept_name}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                    </Col>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Department:</Form.Label>
+                            <Col>
+                                <Form.Select name="department" onChange={handleDepartmentChange} required>
+                                    <option value="">Select Department</option>
+                                    {departments.map(dept => (
+                                        <option key={dept.dept_id} value={dept.dept_id}>
+                                            {dept.dept_name}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
 
-                                    {/* Conditionally render the "Please specify" input field */}
-                                    {isOtherSelected && (
-                                        <Col sm={6}>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Please specify"
-                                                value={otherDepartment}
-                                                onChange={handleOtherDepartmentChange}
-                                            />
-                                        </Col>
-                                    )}
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Position:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="text" placeholder="Enter Position" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Username:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="text" placeholder="Enter username" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-3">
-                                    <Form.Label column sm={3}>Password:</Form.Label>
-                                    <Col>
-                                        <Form.Control required type="password" placeholder="Enter password" />
-                                    </Col>
-                                </Form.Group>
-                            </Form>
-                        )
+                        {(role === 'Student' || role === 'Alumni') && (
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Course:</Form.Label>
+                                <Col>
+                                    <Form.Select name="course" onChange={handleInputChange} required>
+                                        <option value="">Select Course</option>
+                                        {filteredCourses.map(course => (
+                                            <option key={course.course_id} value={course.course_id}>
+                                                {course.course_name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Form.Group>
+                        )}
 
-                            : role === 'Teaching' ? (
-                                <Form>
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={3}>Full Name:</Form.Label>
-                                        <Col>
-                                            <Form.Control required type="text" placeholder="eg. Dela Cruz, Juan B." />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={3} >Email:</Form.Label>
-                                        <Col>
-                                            <Form.Control type="email" placeholder="eg. account@gmail.com" />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={3}>Contact Number:</Form.Label>
-                                        <Col>
-                                            <Form.Control type="text" placeholder="eg. 09123456789" />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={3}>Department:</Form.Label>
-                                        <Col>
-                                            <Form.Select value={selectedDepartment} onChange={handleDepartmentChange}>
-                                                {departments.map(department => (
-                                                    <option key={department.id} value={department.id}>
-                                                        {department.dept_name}
-                                                    </option>
-                                                ))}
-                                            </Form.Select>
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={3}>Username:</Form.Label>
-                                        <Col>
-                                            <Form.Control required type="text" placeholder="Enter username" />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3">
-                                        <Form.Label column sm={3}>Password:</Form.Label>
-                                        <Col>
-                                            <Form.Control required type="password" placeholder="Enter password" />
-                                        </Col>
-                                    </Form.Group>
-                                </Form>
-                            )
-                                : role === 'Alumni' ? (
-                                    <Form>
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Full Name:</Form.Label>
-                                            <Col>
-                                                <Form.Control required type="text" placeholder="eg. Dela Cruz, Juan B." />
-                                            </Col>
-                                        </Form.Group>
+                        {(role === 'Non-Teaching' || role === 'Faculty') && ( // Changed Teaching to Faculty
+                            <InputField label="Position" type="text" name="position" placeholder="Enter Position" required onChange={handleInputChange} />
+                        )}
 
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3} >Email:</Form.Label>
-                                            <Col>
-                                                <Form.Control type="email" placeholder="eg. account@gmail.com" />
-                                            </Col>
-                                        </Form.Group>
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Contact Number:</Form.Label>
-                                            <Col>
-                                                <Form.Control type="text" placeholder="eg. 09123456789" />
-                                            </Col>
-                                        </Form.Group>
-                                                <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Department:</Form.Label>
-                                            <Col>
-                                                <Form.Select 
-                                                    name="department" 
-                                                    value={formData.department}
-                                                    onChange={handleDepartmentChange}
-                                                    isInvalid={!!errors.department}
-                                                >
-                                                    <option value="">Select Department</option>
-                                                    {departments.map(dept => (
-                                                        <option key={dept.dept_id} value={dept.dept_id}>
-                                                            {dept.dept_name}
-                                                        </option>
-                                                    ))}
-                                                </Form.Select>
-                                                <Form.Control.Feedback type="invalid">
-                                                    {errors.department}
-                                                </Form.Control.Feedback>
-                                            </Col>
-                                        </Form.Group>
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Course:</Form.Label>
-                                            <Col>
-                                            <Form.Select
-                                                    name="course"
-                                                    value={formData.course}
-                                                    onChange={handleDepartmentChange}
-                                                    isInvalid={!!errors.course}
-                                                >
-                                                    <option value="">Select Course</option>
-                                                    {filteredCourses.map(course => (
-                                                        <option key={course.course_id} value={course.course_id}>
-                                                            {course.course_name}
-                                                        </option>
-                                                    ))}
-                                                </Form.Select>
-                                                <Form.Control.Feedback type="invalid">
-                                                    {errors.course}
-                                                </Form.Control.Feedback>
-                                            </Col>
-                                        </Form.Group>
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Username:</Form.Label>
-                                            <Col>
-                                                <Form.Control required type="text" placeholder="Enter username" />
-                                            </Col>
-                                        </Form.Group>
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Form.Label column sm={3}>Password:</Form.Label>
-                                            <Col>
-                                                <Form.Control required type="password" placeholder="Enter password" />
-                                            </Col>
-                                        </Form.Group>
-                                    </Form>
-                                )
-                                    : role === 'Participant' ? (
-                                        <Form>
-                                            <Form.Group as={Row} className="mb-3">
-                                                <Form.Label column sm={3}>Full Name:</Form.Label>
-                                                <Col>
-                                                    <Form.Control required type="text" placeholder="eg. Dela Cruz, Juan B." />
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row} className="mb-3">
-                                                <Form.Label column sm={3} >Email:</Form.Label>
-                                                <Col>
-                                                    <Form.Control type="email" placeholder="eg. account@gmail.com" />
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row} className="mb-3">
-                                                <Form.Label column sm={3}>Contact Number:</Form.Label>
-                                                <Col>
-                                                    <Form.Control type="text" placeholder="eg. 09123456789" />
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row} className="mb-3">
-                                                <Form.Label column sm={3}>Barangay:</Form.Label>
-                                                <Col>
-                                                    <Form.Select value={selectedBarangays} onChange={handleBarangayChange}>
-                                                        {barangays.map(barangay => (
-                                                            <option key={barangay.id} value={barangay.id}>
-                                                                {barangay.brgy_name}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row} className="mb-3">
-                                                <Form.Label column sm={3}>Username:</Form.Label>
-                                                <Col>
-                                                    <Form.Control required type="text" placeholder="Enter username" />
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row} className="mb-3">
-                                                <Form.Label column sm={3}>Password:</Form.Label>
-                                                <Col>
-                                                    <Form.Control required type="password" placeholder="Enter password" />
-                                                </Col>
-                                            </Form.Group>
-                                        </Form>
-                                    )
-                                        : null}
+                        {role === 'Participant' && (
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Barangay:</Form.Label>
+                                <Col>
+                                    <Form.Select name="barangay" onChange={handleInputChange} required>
+                                        <option value="">Select Barangay</option>
+                                        {barangays.map(barangay => (
+                                            <option key={barangay.id} value={barangay.id}>
+                                                {barangay.brgy_name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Form.Group>
+                        )}
+
+                        <InputField label="Username" type="text" name="username" placeholder="Enter username" required onChange={handleInputChange} />
+                        <InputField label="Password" type="password" name="password" placeholder="Enter password" required onChange={handleInputChange} />
+                        <Button type="submit" variant='success' size='lg'>Submit</Button>
+                    </Form>
                 </Modal.Body>
-                <Modal.Footer className="justify-content-center">
-                    <Button onClick={handleSubmit} controlId='button' variant='success' type='submit' size='lg'>Submit</Button>
-                </Modal.Footer>
             </Modal>
         </div>
     );
 };
+
+const InputField = ({ label, type, name, placeholder, required, onChange }) => (
+    <Form.Group as={Row} className="mb-3">
+        <Form.Label column sm={3}>{label}:</Form.Label>
+        <Col>
+            <Form.Control
+                type={type}
+                name={name}
+                placeholder={placeholder}
+                required={required}
+                onChange={onChange}
+            />
+        </Col>
+    </Form.Group>
+);
 
 export default EvalSelect;

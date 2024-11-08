@@ -24,6 +24,30 @@ const ProposalForm = () => {
     concurredByPosition: '',
   });
 
+  const [signatoryNames, setSignatoryNames] = useState([]);
+  const [selectedSignatory, setSelectedSignatory] = useState('');
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/signatory-names/')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Fetched signatory names:', data); // Log fetched data
+        if (Array.isArray(data)) {
+          setSignatoryNames(data);
+        } else {
+          console.error('Unexpected data format:', data);
+        }
+      })
+      .catch(error => console.error('Error fetching signatory names:', error));
+  }, []);
+
+  useEffect(() => {
+    console.log('Updated signatory names:', signatoryNames);
+  }, [signatoryNames]);
 
   const [barangays, setBarangays] = useState([]);
   // Fetch barangays
@@ -986,8 +1010,15 @@ const ProposalForm = () => {
                 value={signatoryInput.preparedByName}
                 onChange={handleSignatoryChange}
                 onBlur={handleBlurSig}
+                list="prepared-signatory-suggestions"
                 placeholder="Enter name"
               />
+              <datalist id="prepared-signatory-suggestions">
+              {signatoryNames.map((name, index) => {
+                
+                return <option key={index} value={name} />;
+              })}
+            </datalist>
             </Form.Group>
             {errors.preparedByName && <p className="text-danger">{errors.preparedByName}</p>}
           </Col>
@@ -1035,8 +1066,14 @@ const ProposalForm = () => {
                 value={signatoryInput.endorsedByName}
                 onChange={handleSignatoryChange}
                 onBlur={handleBlurSig}
+                list='endrosed-by-signatory-suggestions'
                 placeholder="Enter name"
               />
+              <datalist id="endrosed-by-signatory-suggestions">
+              {signatoryNames.map((name, index) => (
+                <option key={index} value={name} />
+              ))}
+            </datalist>
             </Form.Group>
             {errors.endorsedByName && <p className="text-danger">{errors.endorsedByName}</p>}
           </Col>
@@ -1084,8 +1121,14 @@ const ProposalForm = () => {
                 value={signatoryInput.concurredByName}
                 onChange={handleSignatoryChange}
                 onBlur={handleBlurSig}
+                list='concured-by-signatory-suggestions'
                 placeholder="Enter name"
               />
+              <datalist id="concured-by-signatory-suggestions">
+              {signatoryNames.map((name, index) => (
+                <option key={index} value={name} />
+              ))}
+            </datalist>
             </Form.Group>
             {errors.concurredByName && <p className="text-danger">{errors.concurredByName}</p>}
           </Col>

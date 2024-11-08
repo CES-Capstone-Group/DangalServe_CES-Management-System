@@ -17,6 +17,7 @@ from .models import (
     BrgyOfficialAccount,
     ProponentAccount,
     AdminAccount,
+    Signatory
 )
 from .serializer import AchievementSerializer, AnnouncementSerializer, ActivityScheduleSerializer, BarangaySerializer, CourseSerializer, DepartmentSerializer, DocumentSerializer,  TblAccountsSerializer, ResearchAgendaSerializer
 from rest_framework import status as rest_status
@@ -825,7 +826,8 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             return Proposal.objects.extra(
                 where=["FIND_IN_SET(%s, REPLACE(partner_community, ', ', ',')) > 0"],
                 params=[barangay]
-            )        
+            )       
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -833,9 +835,11 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             validated_data = serializer.validated_data
             user = request.user  # The authenticated user
             research_agenda_ids = request.data.get('research_agendas', [])
+            signatories_data = request.data.get('signatories', [])
 
-            # Remove research agendas from validated data
+            # Remove research agendas and signatories from validated data
             validated_data.pop('research_agendas', None)
+            validated_data.pop('signatories', None)
 
             # Create the proposal instance
             proposal = Proposal.objects.create(user_id=user, **validated_data)
@@ -845,6 +849,15 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                 research_agendas = ResearchAgenda.objects.filter(id__in=research_agenda_ids)
                 proposal.research_agendas.set(research_agendas)
 
+            # Create and associate signatories
+            for signatory in signatories_data:
+                Signatory.objects.create(
+                    proposal=proposal,
+                    name=signatory.get('name'),
+                    position=signatory.get('position'),
+                    section=signatory.get('section')
+                )
+
             # Save the proposal
             proposal.save()
 
@@ -853,6 +866,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
@@ -1165,3 +1179,8 @@ class DownloadProposalDoc(APIView):
 
 
 
+class SignatoryNameSuggestionsView(APIView):
+    def get(self, request):
+        # Fetch unique signatory names
+        unique_signatory_names = Signatory.objects.values_list('name', flat=True).distinct()
+        return Response(unique_signatory_names)

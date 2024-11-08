@@ -8,7 +8,8 @@ from .views import (
     ProposalVersionListView,
     ProposalVersionDetailView,
     BarangayApprovalView,
-    BarangayApprovedProposalsView
+    BarangayApprovedProposalsView,
+    SignatoryNameSuggestionsView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializer import CustomTokenObtainPairSerializer
@@ -82,5 +83,7 @@ urlpatterns = [
     path('documents/', views.get_all_documents, name='get_all_documents'),
     path('documents/upload/', views.upload_document, name='upload_document'),
     path('documents/delete/<int:pk>/', views.delete_document, name='delete_document'),
+    
+    path('signatory-names/', views.SignatoryNameSuggestionsView.as_view(), name='signatory-names'),
 ]
 

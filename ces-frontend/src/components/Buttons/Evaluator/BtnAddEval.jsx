@@ -52,35 +52,36 @@ const BtnAddEval = () => {
                     <h2 className="h2">Add Evaluation Form</h2>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={3}>Title of Proposal:</Form.Label>
-                            <Col>
-                                <Form.Control type="text" placeholder="Enter Title of Proposal" />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={3}>Title of Activity:</Form.Label>
-                            <Col>
-                                <Form.Control type="text" placeholder="Enter Title of Activity" />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={3}>Barangay:</Form.Label>
-                            <Col>
-                                <Form.Select value={selectedBarangays} onChange={handleBarangayChange}>
-                                    {barangays.map(barangay => (
-                                        <option key={barangay.id} value={barangay.id}>
-                                            {barangay.brgy_name}
-                                        </option>
-                                    ))}
-                                </Form.Select>
-                            </Col>
-                        </Form.Group>
-                    </Form>
+                        <Form>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Select Proposal</Form.Label>
+                                <Col>
+                                    <Form.Select value={selectedDepartment} onChange={handleDepartmentChange}>
+                                        {departments.map(department => (
+                                            <option key={department.id} value={department.id}>
+                                                {department.dept_name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Select Title of the Activity:</Form.Label>
+                                <Col>
+                                    <Form.Select value={selectedDepartment} onChange={handleDepartmentChange}>
+                                        {departments.map(department => (
+                                            <option key={department.id} value={department.id}>
+                                                {department.dept_name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Form.Group>
+                           
+                        </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => navigate("/manage/eval-create")} style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} variant='success' type="submit">Add Form</Button>
+                    <Button onClick={handleCloseModal} style={{backgroundColor:"#71A872", border: '0px', color: 'white'}} variant='success' type="submit">Submit</Button>
                 </Modal.Footer>
             </Modal>
         </>

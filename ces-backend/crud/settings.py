@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # 'rest_framework.authtoken',
     'corsheaders',
     'api',
+    'evaluation',
     'rest_framework_simplejwt.token_blacklist',
    
 
@@ -103,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ces_db',
         'USER': 'root',
-        'PASSWORD': 'Cloud5024',
+        'PASSWORD': 'Bellosql27!',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
         'PORT': '3306'      # or the port on which your MySQL server is listening
     }

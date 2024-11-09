@@ -9,7 +9,7 @@ import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is installed
 
 import { useUser } from './UserContext';
 
-const TopNav = ({ sidebarOpen, sidebarToggle }) => {
+const TopNav = ({ sidebarOpen, sidebarToggle, isHidden }) => {
   const [accountType, setAccountType] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -57,7 +57,8 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
       <Navbar expand="lg" style={{
         backgroundColor: '#71A872',
         paddingLeft: sidebarOpen ? '250px' : '0px',
-        transition: 'padding-left 0.3s ease'
+        transition: 'padding-left 0.3s ease',
+        display: {isHidden} 
       }}>
         <Container fluid className='d-flex'>
           <Navbar.Brand style={{ color: 'white' }}>
@@ -67,7 +68,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle }) => {
               onClick={sidebarToggle}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              style={{ backgroundColor: "transparent", transition: 'none' }}
+              style={{ backgroundColor: "transparent", transition: 'none'}}
             >
               <FontAwesomeIcon icon={faBars} color='white' />
             </Button>

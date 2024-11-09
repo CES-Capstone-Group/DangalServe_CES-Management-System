@@ -6,6 +6,8 @@ const BtnAddCourse = ({ onCourseAdded }) => {
     const [CourseName, setCourseName] = useState("");  // State for Course name
     const [departments, setDepartments] = useState([]);  // Store departments
     const [selectedDepartment, setSelectedDepartment] = useState("");  // Store selected department ID
+    const [errors, setErrors] = useState({});
+
 
     // **Open the modal**
     const handleShowModal = () => setShowModal(true);
@@ -17,13 +19,28 @@ const BtnAddCourse = ({ onCourseAdded }) => {
         setSelectedDepartment("");  
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!selectedDepartment) newErrors.departmentName = 'Please Select a Department first';
+        if(!CourseName) newErrors.courseName = 'Please enter a Course Name';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+
+
     // **Function to handle form submission and backend integration**
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(!validateForm()) return;
+
         const formData = {  
             course_name: CourseName,
             dept: selectedDepartment  // Send selected department ID
         };
-
+        
         try {
             const response = await fetch("http://127.0.0.1:8000/api/courses/create/", {
                 method: "POST",
@@ -38,11 +55,11 @@ const BtnAddCourse = ({ onCourseAdded }) => {
                 handleCloseModal();  
                 onCourseAdded();  // Notify parent to refresh the table
             } else {
-                const errorData = await response.json();
-                alert(`Failed to add Course: ${JSON.stringify(errorData)}`);
+                // const errorData = await response.json();
+                alert(`Failed to add Course: ${errors}`);
             }
         } catch (error) {
-            console.error("Error adding Course:", error);
+            console.error("Error adding Course:", errors);
         }
     };
 
@@ -89,7 +106,11 @@ const BtnAddCourse = ({ onCourseAdded }) => {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={3}>Department:</Form.Label>
                             <Col>
-                                <Form.Select value={selectedDepartment} onChange={handleDepartmentChange}>
+                                <Form.Select
+                                 name="selectedDepartment"
+                                 value={selectedDepartment} 
+                                 isInvalid={!!errors.departmentName}
+                                 onChange={handleDepartmentChange}>
                                     <option value="">Select Department</option>  
                                     {departments.map(department => (
                                         <option key={department.dept_id} value={department.dept_id}>
@@ -97,6 +118,9 @@ const BtnAddCourse = ({ onCourseAdded }) => {
                                         </option>
                                     ))}
                                 </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.departmentName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -108,8 +132,13 @@ const BtnAddCourse = ({ onCourseAdded }) => {
                                     name="courseName"
                                     placeholder="Enter Course Name"
                                     value={CourseName}  
-                                    onChange={(e) => setCourseName(e.target.value)}  
+                                    onChange={(e) => setCourseName(e.target.value)}
+                                    isInvalid={!!errors.courseName}
+
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.courseName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                     </Form>

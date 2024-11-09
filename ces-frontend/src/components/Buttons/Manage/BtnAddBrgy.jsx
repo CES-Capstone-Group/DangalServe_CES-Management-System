@@ -6,20 +6,32 @@ import bcrypt from 'bcryptjs';  // Import bcryptjs
 const BtnAddBrgy= ({onBrgyAdded }) => {
     const [brgyName, setBrgyName] = useState("");  // <-- Barangay name state
     const [moaFile, setMoaFile] = useState(null);  // <-- File upload state
-
     const [showModal, setShowModal] = useState(false);
-
+    const [errors, setErrors] = useState({});
+    
     const handleShowModal = () => setShowModal(true);
 
     const handleCloseModal = () => {
         setShowModal(false);
         setBrgyName("");  // <-- Reset Name
         setMoaFile(null);  // <-- Reset File
-        
+        setErrors({});
+    }
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!brgyName) newErrors.brgyName = 'Barangay Name is Required'
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     }
 
     // **Function to Handle Form Submission**
-    const handleSubmit = async () => {  
+    const handleSubmit = async (e) => {  
+        e.preventDefault();
+        if(!validateForm()) return;
+
         const formData = new FormData();  
         formData.append("brgy_name", brgyName);  // Append the barangay name
         if (moaFile) {
@@ -60,13 +72,6 @@ const BtnAddBrgy= ({onBrgyAdded }) => {
                 <Modal.Body>
                     <Form>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Account ID:</Form.Label>
-                            <Col sm={8}>
-                                <Form.Control placeholder="#######" disabled />
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>Name:</Form.Label>
                             <Col sm={8}>
                                 {/* **Added onChange to update state** */}
@@ -77,7 +82,11 @@ const BtnAddBrgy= ({onBrgyAdded }) => {
                                     placeholder="Enter Barangay Name"
                                     value={brgyName}  // <-- Link to state
                                     onChange={(e) => setBrgyName(e.target.value)}  // <-- Handle change
+                                    isInvalid={!!errors.brgyName}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.brgyName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 

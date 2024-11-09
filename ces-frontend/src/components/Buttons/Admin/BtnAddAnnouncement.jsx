@@ -6,6 +6,17 @@ const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
     const [title, setTitle] = useState("");
     const [details, setDetails] = useState("");
     const [image, setImage] = useState(null);
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!title) newErrors.title = 'Please enter an Announcement Title';
+        if(!details) newErrors.details = 'Please enter the Announcement Details';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     const handleShowModal = () => setShowModal(true);
 
@@ -21,6 +32,7 @@ const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
 
     const addAnnouncement = async (e) => {
         e.preventDefault();
+        if(!validateForm()) return;
 
         const announcementData = new FormData();
         announcementData.append("title", title);
@@ -73,11 +85,15 @@ const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
                                 <Form.Control 
                                     className='input' 
                                     type='text' 
+                                    name="title"
                                     placeholder='' 
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.title}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.title}
+                                </Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
 
@@ -87,12 +103,16 @@ const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
                                 <Form.Control 
                                     className='input' 
                                     as='textarea' 
+                                    name="details"
                                     rows={4}
                                     placeholder='' 
                                     value={details}
                                     onChange={(e) => setDetails(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.details}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.title}
+                                </Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
 

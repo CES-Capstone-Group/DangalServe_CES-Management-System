@@ -4,26 +4,6 @@ import { Button, Row, Col, Form, Modal } from "react-bootstrap";
 const BtnEditDeleteQuestions = ({tableQuestion ,questionId, question }) => {
     const [showEdit, setShowEdit] = useState(false);  // Controls edit modal visibility
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);  // Controls delete confirmation modal
-    // const [courseName, setCourseName] = useState(initialCourseName);  // Store course name
-    // const [departments, setDepartments] = useState([]);  // Store available departments
-    // const [selectedDept, setSelectedDept] = useState(deptId);  // Store selected department
-
-    // **Fetch Departments from Backend**
-    // const fetchDepartments = async () => {
-    //     try {
-    //         const response = await fetch('http://127.0.0.1:8000/api/departments/');
-    //         if (!response.ok) throw new Error("Failed to fetch departments.");
-    //         const data = await response.json();
-    //         setDepartments(data);  // Store departments in state
-    //     } catch (error) {
-    //         console.error("Error fetching departments:", error);
-    //     }
-    // };
-
-    // // Fetch departments when the component mounts
-    // useEffect(() => {
-    //     fetchDepartments();
-    // }, []);
 
     // Open/Close Edit Modal
     const handleShowEdit = () => setShowEdit(true);
@@ -32,56 +12,6 @@ const BtnEditDeleteQuestions = ({tableQuestion ,questionId, question }) => {
     // Open/Close Delete Confirmation Modal
     const handleShowDeleteConfirm = () => setShowDeleteConfirm(true);
     const handleCloseDeleteConfirm = () => setShowDeleteConfirm(false);
-
-    // // Handle Edit Submission
-    // const handleEditSubmit = async () => {
-    //     const formData = {
-    //         course_name: courseName,
-    //         dept: selectedDept  // Include selected department ID
-    //     };
-
-    //     try {
-    //         const response = await fetch(`http://127.0.0.1:8000/api/courses/${courseId}/`, {
-    //             method: "PUT",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify(formData),
-    //         });
-
-    //         if (response.ok) {
-    //             alert("Course updated successfully!");
-    //             handleCloseEdit();  // Close modal on success
-    //             onCourseUpdated();  // Refresh course list
-    //         } else {
-    //             const data = await response.json();
-    //             alert(`Failed to update course: ${JSON.stringify(data)}`);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error updating course:", error);
-    //     }
-    // };
-
-    // // Handle Delete Functionality
-    // const handleDelete = async () => {
-    //     try {
-    //         const response = await fetch(`http://127.0.0.1:8000/api/courses/${courseId}/`, {
-    //             method: "DELETE",
-    //             headers: { "Content-Type": "application/json" },
-    //         });
-
-    //         if (response.ok) {
-    //             alert("Course deleted successfully!");
-    //             handleCloseDeleteConfirm();  // Close confirmation modal
-    //             onCourseUpdated();  // Refresh course list
-    //         } else {
-    //             const data = await response.json();
-    //             alert(`Failed to delete course: ${JSON.stringify(data)}`);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error deleting course:", error);
-    //     }
-    // };
 
     return (
         <>

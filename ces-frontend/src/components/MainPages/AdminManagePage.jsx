@@ -8,11 +8,11 @@ const AdminManagePage = () => {
   return (
     <div>
       <header>
-        <TopNav/>
+        <TopNav isHidden={'none'}/>
       </header>
       <Row>
         <Col>
-          <Container className="vh-80 d-flex flex-column justify-content-center align-items-center" style={{marginTop: '50px'}}>
+          <Container className="vh-80 d-flex flex-column justify-content-center align-items-center" style={{marginTop: '100px'}}>
             <Outlet/>
           </Container>
         </Col>

@@ -54,7 +54,7 @@ function LoginPage() {
                 redirectToRolePage(accountType);
             } else {
                 const errorData = await response.json();
-                alert('Login failed: ' + (errorData.detail || 'Invalid credentials'));
+                alert('Login failed: ' + ( 'Invalid credentials'));
             }
         } catch (error) {
             console.error('Error during login:', error);

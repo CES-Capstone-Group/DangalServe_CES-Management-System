@@ -5,6 +5,16 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
     const [showEdit, setShowEdit] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [deptName, setDeptName] = useState("");  // State for department name
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!deptName) newErrors.deptName = 'Please enter a Department Name ex: CCS, COE, CHAS';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     // **Open/Close Edit Modal with Prefilled Values**
     const handleShowEdit = () => {
@@ -19,6 +29,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
 
     // **Handle Edit Form Submission**
     const handleEditSubmit = async () => {
+        if(!validateForm()) return;
         const formData = { dept_name: deptName };  // Create form data for department
 
         try {
@@ -102,9 +113,13 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
                                 <Form.Control
                                     type="text"
                                     name="deptName"
+                                    isInvalid={!!errors.deptName}
                                     value={deptName}  // Prefill current name
                                     onChange={(e) => setDeptName(e.target.value)}  // Handle name change
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.deptName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                     </Form>

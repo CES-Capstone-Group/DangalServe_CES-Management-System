@@ -5,6 +5,16 @@ const BtnAddDocument = ({ onDocumentAdded }) => {
     const [showModal, setShowModal] = useState(false);
     const [documentTitle, setDocumentTitle] = useState("");  // <-- Changed to `documentTitle`
     const [documentFile, setDocumentFile] = useState(null);  // <-- Set Document File 
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!documentTitle) newErrors.docTitle = 'Please Enter Document Title';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     // Open the modal
     const handleShowModal = () => setShowModal(true);
@@ -18,6 +28,8 @@ const BtnAddDocument = ({ onDocumentAdded }) => {
 
     // **Function to handle form submission and backend integration**
     const handleSubmit = async () => {
+        if(!validateForm()) return;
+
         if (!documentTitle || !documentFile) {
             alert("Please provide both a document title and a file.");
             return;
@@ -65,10 +77,14 @@ const BtnAddDocument = ({ onDocumentAdded }) => {
                                 <Form.Control 
                                     type="text"
                                     name="docTitle"
+                                    isInvalid={!!errors.docTitle}
                                     placeholder="Enter Document Title"
                                     value={documentTitle}  // Link the state
                                     onChange={(e) => setDocumentTitle(e.target.value)}  // Update state on change
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.docTitle}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group className="mb-3">

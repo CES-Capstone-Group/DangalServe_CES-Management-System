@@ -8,6 +8,19 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
     const [awardedBy, setAwardedBy] = useState("");
     const [dateAwarded, setDateAwarded] = useState("");
     const [image, setImage] = useState(null);
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!awardTitle) newErrors.title = 'Please enter an Award Title';
+        if(!awardee) newErrors.awardee = 'Please indicate the name of the Awardee';
+        if(!awardedBy) newErrors.awardedBy = 'Please indicate the name who gave the award';
+        if(!dateAwarded) newErrors.date = 'Please enter the date of the award';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     const handleShowModal = () => setShowModal(true);
 
@@ -25,6 +38,7 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
 
     const addAchievement = async (e) => {
         e.preventDefault();
+        if(!validateForm()) return;
 
         const achievementData = new FormData();
         achievementData.append("award_title", awardTitle);
@@ -79,11 +93,15 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
                                 <Form.Control 
                                     className='input' 
                                     type='text' 
+                                    name="title"
                                     placeholder='' 
                                     value={awardTitle}
                                     onChange={(e) => setAwardTitle(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.title}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.title}
+                                </Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
 
@@ -92,12 +110,16 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
                             <InputGroup>
                                 <Form.Control 
                                     className='input' 
-                                    type='text' 
+                                    type='text'
+                                    name="awardee" 
                                     placeholder='' 
                                     value={awardee}
                                     onChange={(e) => setAwardee(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.awardee}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.awardee}
+                                </Form.Control.Feedback>                               
                             </InputGroup>
                         </Form.Group>
 
@@ -107,11 +129,15 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
                                 <Form.Control 
                                     className='input' 
                                     type='text' 
+                                    name="awardedBy"
                                     placeholder='' 
                                     value={awardedBy}
                                     onChange={(e) => setAwardedBy(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.awardedBy}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.awardedBy}
+                                </Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
 
@@ -121,11 +147,15 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
                                 <Form.Control 
                                     className='input' 
                                     type='date' 
+                                    name="date"
                                     placeholder='' 
                                     value={dateAwarded}
                                     onChange={(e) => setDateAwarded(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.date}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.date}
+                                </Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
 

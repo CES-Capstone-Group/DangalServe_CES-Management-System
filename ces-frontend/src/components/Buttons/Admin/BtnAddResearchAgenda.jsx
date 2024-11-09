@@ -5,7 +5,7 @@ const BtnAddResearchAgenda = ({ onResearchAgendaAdded }) => {
     const [showModal, setShowModal] = useState(false);
     const [label, setLabel] = useState(""); // Label for the research agenda
     const [image, setImage] = useState(null); // Image for the research agenda
-
+    const [errors, setErrors] = useState({});
     const handleShowModal = () => setShowModal(true);
 
     const handleCloseModal = () => {
@@ -15,10 +15,21 @@ const BtnAddResearchAgenda = ({ onResearchAgendaAdded }) => {
 
         // Close the modal
         setShowModal(false);
+        setErrors({});
     };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!label) newErrors.label = 'Research Agenda Label Name is Required'
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     const addResearchAgenda = async (e) => {
         e.preventDefault();
+        if(!validateForm()) return;
 
         const researchAgendaData = new FormData();
         researchAgendaData.append("label", label); // Add the label field
@@ -70,12 +81,18 @@ const BtnAddResearchAgenda = ({ onResearchAgendaAdded }) => {
                                 <Form.Control 
                                     className='input' 
                                     type='text' 
+                                    name='label'
                                     placeholder='Enter research agenda label' 
                                     value={label}
                                     onChange={(e) => setLabel(e.target.value)}
-                                    required
+                                    isInvalid={!!errors.label}
+                                    
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.label}
+                                </Form.Control.Feedback>
                             </InputGroup>
+
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ResearchImage'>

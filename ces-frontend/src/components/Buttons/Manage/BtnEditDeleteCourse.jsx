@@ -8,6 +8,18 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
     const [departments, setDepartments] = useState([]);  // Store available departments
     const [selectedDept, setSelectedDept] = useState(deptId);  // Store selected department
 
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!selectedDept) newErrors.departmentName = 'Please Select a Department first';
+        if(!courseName) newErrors.courseName = 'Please enter a Course Name';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
     // **Fetch Departments from Backend**
     const fetchDepartments = async () => {
         try {
@@ -34,7 +46,10 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
     const handleCloseDeleteConfirm = () => setShowDeleteConfirm(false);
 
     // Handle Edit Submission
-    const handleEditSubmit = async () => {
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        if(!validateForm()) return;
+        
         const formData = {
             course_name: courseName,
             dept: selectedDept  // Include selected department ID
@@ -127,7 +142,9 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
                             </Form.Label>
                             <Col sm={8}>
                                 <Form.Select
+                                    name="selectedDepartment"
                                     value={selectedDept}
+                                    isInvalid={!!errors.departmentName}
                                     onChange={(e) => setSelectedDept(e.target.value)}
                                 >
                                     <option value="">Select Department</option>
@@ -137,6 +154,9 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
                                         </option>
                                     ))}
                                 </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.departmentName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         
@@ -147,9 +167,14 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
                             <Col sm={8}>
                                 <Form.Control
                                     type="text"
+                                    name="courseName"
                                     value={courseName}
                                     onChange={(e) => setCourseName(e.target.value)}
+                                    isInvalid={!!errors.courseName}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.courseName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         

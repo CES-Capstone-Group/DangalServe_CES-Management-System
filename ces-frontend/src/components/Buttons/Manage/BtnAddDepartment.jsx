@@ -4,6 +4,17 @@ import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 const BtnAddDepartment = ({ onDepartmentAdded }) => {  // <-- Added `onDepartmentAdded` prop
     const [showModal, setShowModal] = useState(false);
     const [departmentName, setDepartmentName] = useState("");  // <-- State for department name
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!departmentName) newErrors.deptName = 'Please enter a Department Name ex: CCS, COE, CHAS';
+
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     // Open the modal
     const handleShowModal = () => setShowModal(true);
@@ -15,7 +26,10 @@ const BtnAddDepartment = ({ onDepartmentAdded }) => {  // <-- Added `onDepartmen
     };
 
     // **Function to handle form submission and backend integration**
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(!validateForm()) return;
+
         const formData = { dept_name: departmentName };  // Prepare data to send to backend
 
         try {
@@ -59,10 +73,14 @@ const BtnAddDepartment = ({ onDepartmentAdded }) => {  // <-- Added `onDepartmen
                                 <Form.Control 
                                     type="text"
                                     name="deptName"
+                                    isInvalid={!!errors.deptName}
                                     placeholder="Enter Department Name"
                                     value={departmentName}  // Link the state
                                     onChange={(e) => setDepartmentName(e.target.value)}  // Update state on change
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.deptName}
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                     </Form>

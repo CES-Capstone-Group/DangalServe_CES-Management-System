@@ -94,6 +94,19 @@ html {
   }
 }
 
+.nav-link.active {
+  background-color: #71A872; /* Active background color */
+  color: white !important; /* Force text color to white */
+  border-radius: 5px; /* Optional: Rounded corners */
+  padding: 10px; /* Optional: Adjust padding */
+}
+
+.nav-link {
+  color: grey; /* Default text color */
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
 .topNav {
   width: 100%;
   position: fixed;

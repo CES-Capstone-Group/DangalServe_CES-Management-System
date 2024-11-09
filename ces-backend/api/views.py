@@ -504,9 +504,9 @@ def create_department(request):
 
 # GET, PUT, DELETE: Retrieve, update, or delete a single department by ID
 @api_view(['GET', 'PUT', 'DELETE'])
-def update_delete_department(request, pk):
+def update_delete_department(request, dept_id):
     try:
-        department = Department.objects.get(pk=pk)
+        department = Department.objects.get(dept_id=dept_id)
     except Department.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -600,11 +600,15 @@ def research_agenda_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
         
     elif request.method == 'PUT':
-        serializedData = ResearchAgendaSerializer(research_agenda, data=request.data)
+        serializedData = ResearchAgendaSerializer(research_agenda, data=request.data, context={'request': request})
         if serializedData.is_valid():
+            # Delete the old image if a new one is uploaded
+            if 'image' in request.data and research_agenda.image:
+                research_agenda.image.delete(save=False)
             serializedData.save()
             return Response(serializedData.data)
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class ResearchAgendaViewSet(viewsets.ModelViewSet):

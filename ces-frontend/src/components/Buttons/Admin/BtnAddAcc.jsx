@@ -218,14 +218,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <Form>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Account ID:</Form.Label>
-                            <Col sm={8}>
-                                <Form.Control placeholder="#######" disabled />
-                            </Col>
-                        </Form.Group>
-
+                    <Form>  
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4}>User Name</Form.Label>
                             <Col sm={8}>

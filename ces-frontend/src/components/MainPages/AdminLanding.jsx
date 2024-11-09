@@ -9,7 +9,7 @@ const AdminLanding = () => {
   return (
     <div>
       <header>
-        <TopNav />
+        <TopNav isHidden={'none'}/>
       </header>
       <Row>
         <Col >

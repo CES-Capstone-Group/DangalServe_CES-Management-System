@@ -67,6 +67,7 @@ import EvalLogIn from './components/EvalLogIn.jsx';
 import ManageQuestions from './components/ManageQuestions.jsx';
 import AdminEventPage from './components/Admin/AdminEventPage.jsx';
 import EvalCreate from './components/Evaluator/EvalCreate.jsx';
+import ImpactEvalForm from './components/Forms/ImpactEvalForm.jsx';
 
 const App = () => {
   return (
@@ -171,6 +172,7 @@ const App = () => {
           <Route path='/funding' element={<FundingProposalForm />} />
           <Route path='/cesEvalForm' element={<CesEvalForm />} />
           <Route path='aarForm' element={<AARForm />} />
+          <Route path='impact-eval' element={<ImpactEvalForm />} />
           <Route path='eval-login' element={<EvalLogIn/>} />
 
         </Routes>

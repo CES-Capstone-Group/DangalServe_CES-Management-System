@@ -21,8 +21,10 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    path('impact/', include('impact.urls')),
+    
     # path('evaluation/', include('evaluation.urls'))
 ]
 

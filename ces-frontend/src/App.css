@@ -18,7 +18,7 @@ html {
   margin: 0 auto;
 }
 
-.welcomeDashboard{
+.welcomeDashboard {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,6 +69,30 @@ html {
   transition: 0.3s;
 }
 
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .topNav .navbar-brand .navbar-text {
+    display: none !important;
+    /* Hide text elements */
+  }
+
+  .topNav .container {
+    justify-content: space-between !important;
+    /* Adjust positioning */
+  }
+
+  .topNav .welcome-message {
+    display: none !important;
+    /* Hide welcome message */
+  }
+
+  .topNav .user-icon {
+    font-size: 24px !important;
+    /* Adjust icon size if needed */
+  }
+}
+
+
 @media screen and (max-width: 430px) {
   .mobileMain {
     margin: 1em;
@@ -105,14 +129,19 @@ html {
 }
 
 .nav-link.active {
-  background-color: #71A872; /* Active background color */
-  color: white !important; /* Force text color to white */
-  border-radius: 5px; /* Optional: Rounded corners */
-  padding: 10px; /* Optional: Adjust padding */
+  background-color: #71A872;
+  /* Active background color */
+  color: white !important;
+  /* Force text color to white */
+  border-radius: 5px;
+  /* Optional: Rounded corners */
+  padding: 10px;
+  /* Optional: Adjust padding */
 }
 
 .nav-link {
-  color: grey; /* Default text color */
+  color: grey;
+  /* Default text color */
   text-decoration: none;
   transition: background-color 0.3s;
 }
@@ -423,8 +452,10 @@ button.fc-Service-button.fc-button.fc-button-primary {
   cursor: pointer;
   border: 2px solid #71A872 !important;
   border-radius: 8px !important;
-  width: 300px !important; /* Set a fixed width */
-  height: 150px !important; /* Set a fixed height */
+  width: 300px !important;
+  /* Set a fixed width */
+  height: 150px !important;
+  /* Set a fixed height */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -436,8 +467,10 @@ button.fc-Service-button.fc-button.fc-button-primary {
   cursor: pointer;
   border: 2px solid #71A872 !important;
   border-radius: 8px !important;
-  width: 500px !important; /* Set a fixed width */
-  height: 50px !important; /* Set a fixed height */
+  width: 500px !important;
+  /* Set a fixed width */
+  height: 50px !important;
+  /* Set a fixed height */
   justify-content: center;
 }
 
@@ -446,8 +479,10 @@ button.fc-Service-button.fc-button.fc-button-primary {
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 600px !important; /* Reduce the max-width to make it narrower */
-  margin: auto; /* Center horizontally */
-  width: 90%; /* Set a width relative to the container for responsiveness */
+  max-width: 600px !important;
+  /* Reduce the max-width to make it narrower */
+  margin: auto;
+  /* Center horizontally */
+  width: 90%;
+  /* Set a width relative to the container for responsiveness */
 }
-

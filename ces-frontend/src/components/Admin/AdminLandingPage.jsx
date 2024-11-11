@@ -23,9 +23,9 @@ const AdminLandingPage = () => {
               cursor: 'pointer',
               border: '2px solid #71A872',
               width: '100%',  // Make width fill the column space
-              maxWidth: '300px',  // Limit max width
+              maxWidth: '250px',  // Limit max width
               height: 'auto',  // Auto-adjust height
-              minHeight: '300px',  // Minimum height for small screens
+              minHeight: '250px',  // Minimum height for small screens
             }}
           >
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
@@ -42,9 +42,9 @@ const AdminLandingPage = () => {
               cursor: 'pointer',
               border: '2px solid #71A872',
               width: '100%',  // Make width fill the column space
-              maxWidth: '300px',  // Limit max width
+              maxWidth: '250px',  // Limit max width
               height: 'auto',  // Auto-adjust height
-              minHeight: '300px',  // Minimum height for small screens
+              minHeight: '250px',  // Minimum height for small screens
             }}
           >
             <Card.Body className="d-flex flex-column justify-content-center align-items-center">

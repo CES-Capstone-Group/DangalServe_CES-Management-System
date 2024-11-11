@@ -5,7 +5,7 @@ import { Navbar, Container, Button, Modal, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCircleUser, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is installed
+import { jwtDecode } from 'jwt-decode'; // Ensure jwt-decode is installed
 
 import { useUser } from './UserContext';
 
@@ -58,7 +58,6 @@ const TopNav = ({ sidebarOpen, sidebarToggle, isHidden }) => {
         backgroundColor: '#71A872',
         paddingLeft: sidebarOpen ? '250px' : '0px',
         transition: 'padding-left 0.3s ease',
-        display: {isHidden} 
       }}>
         <Container fluid className='d-flex'>
           <Navbar.Brand style={{ color: 'white' }}>
@@ -68,16 +67,16 @@ const TopNav = ({ sidebarOpen, sidebarToggle, isHidden }) => {
               onClick={sidebarToggle}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              style={{ backgroundColor: "transparent", transition: 'none'}}
+              style={{ backgroundColor: "transparent", transition: 'none' }}
             >
               <FontAwesomeIcon icon={faBars} color='white' />
             </Button>
-            <Navbar.Text className='ps-4 h3' style={{ color: 'white' }}>
+            <Navbar.Text className='ps-4 h3 navbar-text' style={{ color: 'white' }}>
               {accountType}
             </Navbar.Text>
           </Navbar.Brand>
 
-          <Container className="d-flex justify-content-center">
+          <Container className="d-flex justify-content-center welcome-message">
             <div style={{
               backgroundColor: '#fff',
               color: '#71A872',
@@ -95,7 +94,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle, isHidden }) => {
 
           <Dropdown align='end' onToggle={() => setShowDropdown(!showDropdown)} show={showDropdown}>
             <Dropdown.Toggle style={{ borderWidth: '0px', backgroundColor: '#dddddd00' }}>
-              <FontAwesomeIcon style={{ fontSize: '35px', color: 'white' }} icon={faCircleUser} />
+              <FontAwesomeIcon className="user-icon" style={{ fontSize: '35px', color: 'white' }} icon={faCircleUser} />
             </Dropdown.Toggle>
             <CSSTransition in={showDropdown} timeout={300} classNames="dropdown" unmountOnExit>
               <Dropdown.Menu className='dropDown'>
@@ -130,6 +129,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle, isHidden }) => {
         </Modal.Footer>
       </Modal>
     </div>
+
   );
 };
 

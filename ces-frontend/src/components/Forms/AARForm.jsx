@@ -6,6 +6,7 @@ function AfterActivityReport() {
     const [selectedAttachments, setSelectedAttachments] = useState([]);
     const [files, setFiles] = useState({});
     const [errors, setErrors] = useState("");
+    const [text, setText] = useState("");
 
     const handleCheckboxChange = (isChecked, attachment) => {
         if (isChecked) {
@@ -13,6 +14,12 @@ function AfterActivityReport() {
         } else {
             setSelectedAttachments(selectedAttachments.filter(item => item !== attachment));
         }
+    };
+
+    const handleInputChange = (e) => {
+        setText(e.target.value);
+        e.target.style.height = "auto"; // Reset the height
+        e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
     };
 
     const handleFileUpload = (attachment, files) => {
@@ -39,7 +46,9 @@ function AfterActivityReport() {
                     <Col>
                         <Form.Group controlId="activityTitle">
                             <Form.Label  className='h4'>Title of the Activity</Form.Label>
-                            <Form.Control type="text" placeholder="Enter activity title" />
+                            <Form.Select>
+                                <option value="">select an activity</option>
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -61,7 +70,7 @@ function AfterActivityReport() {
 
                 <Form.Group className="mb-3" controlId="activityObjectives">
                     <Form.Label  className='h4'>Activity Objectives</Form.Label>
-                    <Form.Control as="textarea" rows={3} placeholder="Enter activity objectives" />
+                    <Form.Control as="textarea" rows={3} onChange={handleInputChange} style={{ overflow: "hidden" }} placeholder="Enter activity objectives" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -75,7 +84,7 @@ function AfterActivityReport() {
 
                 <Form.Group className="mb-3" controlId="activityHighlight">
                     <Form.Label  className='h4'>Activity Highlight</Form.Label>
-                    <Form.Control as="textarea" rows={3} placeholder="Enter activity highlights" />
+                    <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={3} placeholder="Enter activity highlights" />
                 </Form.Group>
 
                 <Form.Group controlId="activityHighlightPhotos">
@@ -110,7 +119,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -119,7 +128,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -128,7 +137,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -137,7 +146,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -146,7 +155,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -155,7 +164,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -164,16 +173,16 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
                             <td>Resource Speaker</td>
                             <td>
-                                <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
+                                <Form.Control type="number" onChange={handleInputChange} style={{ overflow: "hidden" }} min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                         <tr>
@@ -182,7 +191,7 @@ function AfterActivityReport() {
                                 <Form.Control type="number" min="1" max="5" placeholder="Rate 1-5" />
                             </td>
                             <td>
-                                <Form.Control as="textarea" rows={1} placeholder="Verbal interpretation" />
+                                <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={1} placeholder="Verbal interpretation" />
                             </td>
                         </tr>
                     </tbody>
@@ -190,7 +199,7 @@ function AfterActivityReport() {
 
                 <Form.Group className="mb-3" controlId="qualiEval">
                     <Form.Label  className='h4'>Qualitative Evaluation</Form.Label>
-                    <Form.Control as="textarea" rows={3} placeholder="This can be culled from comments and suggestions of the Activity Evaluation Form." />
+                    <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={3} placeholder="This can be culled from comments and suggestions of the Activity Evaluation Form." />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="budget">

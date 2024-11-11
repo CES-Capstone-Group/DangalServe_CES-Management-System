@@ -2,12 +2,20 @@ import React from 'react';
 import { Form, Button, Row, Col, Container, Table } from 'react-bootstrap';
 
 const CesEvalForm = () => {
+    const [text, setText] = useState("");
+
+    const handleInputChange = (e) => {
+      setText(e.target.value);
+      e.target.style.height = "auto"; // Reset the height
+      e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
+    };
+
     return (
         <Container>
             <h1 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader'>Community and Extension Periodic Evaluation Form</h1>
             <Form className='form'>
                 <Form.Group as={Row} controlId="formCoveredPeriod" className="mb-3">
-                    <Form.Label column sm={3}><strong>Covred Period</strong></Form.Label>
+                    <Form.Label column sm={3}><strong>Covered Period</strong></Form.Label>
                     <Col sm={9}>
                         <Form.Control type="text" placeholder="Enter Covered Period" />
                     </Col>
@@ -23,7 +31,7 @@ const CesEvalForm = () => {
                 <Form.Group as={Row} controlId="formActivitiesImplemented" className="mb-3">
                     <Form.Label column sm={3}><strong>Activities Implemented</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="Enter Activities Implemented" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={2} placeholder="Enter Activities Implemented" />
                     </Col>
                 </Form.Group>
 
@@ -140,21 +148,21 @@ const CesEvalForm = () => {
                 <Form.Group as={Row} controlId="formExpectedOutcomes" className="mb-3">
                     <Form.Label column sm={3}><strong>Expected Program/Activity Outcomes / Success Indicators</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="Enter Expected Outcomes/Success Indicators" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={2} placeholder="Enter Expected Outcomes/Success Indicators" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formAchievedOutcomes" className="mb-3">
                     <Form.Label column sm={3}><strong>Achieved Program/Activity Outcomes / Success Indicators</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="State the observable development in the behavior/attitude of partner community members" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={2} placeholder="State the observable development in the behavior/attitude of partner community members" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formQuantitativeEvaluation" className="mb-3">
                     <Form.Label column sm={3}><strong>Quantitative Evaluation</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="Enter Quantitative Evaluation" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={2} placeholder="Enter Quantitative Evaluation" />
                     </Col>
                 </Form.Group>
 
@@ -163,14 +171,14 @@ const CesEvalForm = () => {
                 <Form.Group as={Row} controlId="formAreasForImprovement" className="mb-3">
                     <Form.Label column sm={3}><strong>Areas for Improvement</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="Enter Areas for Improvement" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={2} placeholder="Enter Areas for Improvement" />
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formRecommendations" className="mb-3">
                     <Form.Label column sm={3}><strong>Recommendations</strong></Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={2} placeholder="Enter Recommendations" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={2} placeholder="Enter Recommendations" />
                     </Col>
                 </Form.Group>
 

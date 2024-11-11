@@ -3,9 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap';
 
 const ActEvalForm = () => {
-
+    const [text, setText] = useState("");
     const navigate = useNavigate();
     const [showPrompt, setShowPrompt] = useState(false); // State to manage the success prompt
+
+    const handleInputChange = (e) => {
+        setText(e.target.value);
+        e.target.style.height = "auto"; // Reset the height
+        e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -323,7 +329,7 @@ const ActEvalForm = () => {
                 <Form.Group as={Row} controlId="formSuggestions" className="mb-4">
                     <Form.Label column sm={3}>Kindly write your suggestions for improvement</Form.Label>
                     <Col sm={9}>
-                        <Form.Control as="textarea" rows={3} placeholder="Enter your suggestions" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={3} placeholder="Enter your suggestions" />
                     </Col>
                 </Form.Group>
 

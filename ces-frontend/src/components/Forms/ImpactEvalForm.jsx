@@ -7,9 +7,14 @@ import { useEffect } from 'react';
 
 
 const ImpactEvalForm = () => {
-
+    const [text, setText] = useState("");
     const navigate = useNavigate();
 
+    const handleInputChange = (e) => {
+        setText(e.target.value);
+        e.target.style.height = "auto"; // Reset the height
+        e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
+    };
     return (
         <Container className='Formproposal'>
             <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }} id='propHeader' >
@@ -279,7 +284,7 @@ const ImpactEvalForm = () => {
                 <Form.Group as={Row} controlId="formQ12" className="mb-4">
                     <Form.Label column sm={12}>What recommendations do you have for improving future community extension activities?</Form.Label>
                     <Row sm={12}>
-                        <Form.Control as="textarea" rows={3} placeholder="Enter your suggestions" />
+                        <Form.Control as="textarea" onChange={handleInputChange} style={{ overflow: "hidden" }} rows={3} placeholder="Enter your suggestions" />
                     </Row>
                 </Form.Group>
 

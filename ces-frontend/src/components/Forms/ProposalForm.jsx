@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const ProposalForm = () => {
+  const [text, setText] = useState("");
   const { proposalId } = useParams(); // Retrieve proposal ID from URL
   const [researchAgendas, setResearchAgendas] = useState([]);
   const [isResubmission, setIsResubmission] = useState(false); // To track if it's a resubmission
@@ -316,6 +317,12 @@ const ProposalForm = () => {
   }, [proposalId]);
 
   const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    setText(e.target.value);
+    e.target.style.height = "auto"; // Reset the height
+    e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
+  };
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -641,7 +648,8 @@ const ProposalForm = () => {
               name="project_description"
               value={formData.project_description}
               required={true}
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.project_description && <p className="text-danger">{errors.project_description}</p>}
@@ -768,7 +776,8 @@ const ProposalForm = () => {
               placeholder="Enter identified needs"
               name="identified_needs_text"
               value={formData.identified_needs_text}
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={validateIdentifiedNeeds}  // Validate when user leaves field
             />
             <div className="mt-3">or upload a file:</div>
@@ -797,7 +806,8 @@ const ProposalForm = () => {
               name="general_objectives"
               value={formData.general_objectives}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.general_objectives && <p className="text-danger">{errors.general_objectives}</p>}
@@ -814,7 +824,8 @@ const ProposalForm = () => {
               name="specific_objectives"
               value={formData.specific_objectives}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.specific_objectives && <p className="text-danger">{errors.specific_objectives}</p>}
@@ -831,7 +842,8 @@ const ProposalForm = () => {
               name="success_indicators"
               value={formData.success_indicators}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.success_indicators && <p className="text-danger">{errors.success_indicators}</p>}
@@ -848,7 +860,8 @@ const ProposalForm = () => {
               name="cooperating_agencies"
               value={formData.cooperating_agencies}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.cooperating_agencies && <p className="text-danger">{errors.cooperating_agencies}</p>}
@@ -865,7 +878,8 @@ const ProposalForm = () => {
               name="monitoring_mechanics"
               value={formData.monitoring_mechanics}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.monitoring_mechanics && <p className="text-danger">{errors.monitoring_mechanics}</p>}
@@ -882,7 +896,8 @@ const ProposalForm = () => {
               required
               name="evaluation_mechanics"
               value={formData.evaluation_mechanics}
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.evaluation_mechanics && <p className="text-danger">{errors.evaluation_mechanics}</p>}
@@ -899,7 +914,8 @@ const ProposalForm = () => {
               name="timetable"
               value={formData.timetable}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.timetable && <p className="text-danger">{errors.timetable}</p>}
@@ -916,7 +932,8 @@ const ProposalForm = () => {
               name="risk_assessment"
               value={formData.risk_assessment}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.risk_assessment && <p className="text-danger">{errors.risk_assessment}</p>}
@@ -933,7 +950,8 @@ const ProposalForm = () => {
               name="action_plans"
               value={formData.action_plans}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.action_plans && <p className="text-danger">{errors.action_plans}</p>}
@@ -950,7 +968,8 @@ const ProposalForm = () => {
               name="sustainability_approaches"
               value={formData.sustainability_approaches}
               required
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={handleBlur} // Validate onBlur
             />
             {errors.sustainability_approaches && <p className="text-danger">{errors.sustainability_approaches}</p>}
@@ -967,7 +986,8 @@ const ProposalForm = () => {
               placeholder="Enter budget requirement"
               name="budget_requirement_text"
               value={formData.budget_requirement_text}
-              onChange={handleChange}
+              onChange={handleChange || handleInputChange}
+              style={{ overflow: "hidden" }}
               onBlur={validateBudgetRequirement}  // Validate when user leaves field
             />
             <div className="mt-3">or upload a file:</div>

@@ -12,35 +12,41 @@ const UserAdminPage = () => {
   };
   return (
     <div>
-      <header >
-        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
+      <header>
+        <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar} />
       </header>
-      <Row>
+      <Row style={{ marginRight: '0', marginLeft: '0' }}> {/* Make sure there are no extra margins on the Row */}
         <Col
-          xs={'0'}
-          sm={sidebarOpen ? '4' : '2'}
-          md={sidebarOpen ? '4' : '1'} 
-          lg={sidebarOpen ? '3' : '1'} 
-          xl={sidebarOpen ? '2' : '1'}
-          xxl={sidebarOpen ? '2' : '1'} 
-          >
-          <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />    
+          xs={"0"}
+          sm={sidebarOpen ? "4" : "2"}
+          md={sidebarOpen ? "4" : "1"}
+          lg={sidebarOpen ? "3" : "1"}
+          xl={sidebarOpen ? "2" : "1"}
+          xxl={sidebarOpen ? "2" : "1"}
+          style={{ paddingLeft: '0' }} 
+        >
+          <AdminSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
-        <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start mobileMain`}
-             style={{marginTop: '10rem', paddingLeft:'20px', paddingRight: '20px'}}
-             xs={'10'}
-             sm={sidebarOpen ? '8' : '10'} 
-             md={sidebarOpen ? '8' : '11'} 
-             lg={sidebarOpen ? '9' : '11'}
-             xl={sidebarOpen ? '10' : '11'}
-             xxl={sidebarOpen ? '10' : '11'} >
-            <Container className="p-0">
-              <Outlet/>
-            </Container>
+        <Col
+          className={`d-flex justify-content-${sidebarOpen ? "start" : "center"} align-items-start mobileMain`}
+          style={{
+            marginTop: "10rem",
+            paddingLeft: "20px",
+            paddingRight: "5rem",
+            paddingBottom: "20px", // Adjust padding as needed
+          }}
+          xs={"10"}
+          sm={sidebarOpen ? "8" : "10"}
+          md={sidebarOpen ? "8" : "11"}
+          lg={sidebarOpen ? "9" : "11"}
+          xl={sidebarOpen ? "10" : "11"}
+          xxl={sidebarOpen ? "10" : "11"}
+        >
+          <Outlet />
         </Col>
       </Row>
     </div>
   );
-}
+};
 
 export default UserAdminPage;

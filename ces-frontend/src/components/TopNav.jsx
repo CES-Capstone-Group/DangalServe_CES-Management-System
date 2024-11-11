@@ -87,7 +87,7 @@ const TopNav = ({ sidebarOpen, sidebarToggle, isHidden }) => {
               fontWeight: 'bold',
               fontSize: '1.2rem',
               textAlign: 'center',
-              maxWidth: '300px'
+              maxWidth: '20rem'
             }}>
               Welcome, {loggedUser}!
             </div>

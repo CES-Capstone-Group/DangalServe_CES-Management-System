@@ -16,7 +16,18 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+
+    const validateLogin = () => {
+        const newErrors = {};
+
+        if(!username) newErrors.txtUsername = "Enter your username";
+        if (!password) newErrors.txtPassword = "Enter your password";
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
     useEffect(() => {
         const rememberedUsername = localStorage.getItem('rememberedUsername');
@@ -28,6 +39,8 @@ function LoginPage() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        if(!validateLogin()) return;
+
         const loginData = { username, password };
 
         try {
@@ -54,7 +67,14 @@ function LoginPage() {
                 redirectToRolePage(accountType);
             } else {
                 const errorData = await response.json();
-                alert('Login failed: ' + ( 'Invalid credentials'));
+                setErrors({
+                    txtUsername: 'Incorrect user login details',
+                    txtPassword: 'Incorrect user login details',
+                });
+                // Optionally, display the error details for debugging
+                console.error('Login error details:', errorData);
+                
+
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -95,11 +115,16 @@ function LoginPage() {
                                         <InputGroup>
                                             <Form.Control
                                                 controlId="txtUsername"
+                                                name='txtUsername'
                                                 className='input'
                                                 type='text'
                                                 placeholder='Insert your username here'
                                                 value={username}
-                                                onChange={(e) => setUsername(e.target.value)} />
+                                                onChange={(e) => setUsername(e.target.value)} 
+                                                isInvalid={!!errors.txtUsername}/>
+                                            <Form.Control.Feedback type="invalid">
+                                                {errors.txtUsername}
+                                            </Form.Control.Feedback>
                                         </InputGroup>
                                     </Form.Group>
                                 </Row>
@@ -110,14 +135,20 @@ function LoginPage() {
                                         <InputGroup>
                                             <Form.Control
                                                 controlId="txtPassword"
+                                                name='txtPassword'
                                                 className='input '
+                                                isInvalid={!!errors.txtPassword}
                                                 type={showPassword ? 'text' : 'password'}
                                                 placeholder='Insert your Password here'
                                                 value={password}
-                                                onChange={(e) => setPassword(e.target.value)} />
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                />
                                             <Button variant='success' onClick={togglePasswordVisibility}>
                                                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                                             </Button>
+                                            <Form.Control.Feedback type="invalid">
+                                                {errors.txtPassword}
+                                            </Form.Control.Feedback>
                                         </InputGroup>
                                     </Form.Group>
                                 </Row>

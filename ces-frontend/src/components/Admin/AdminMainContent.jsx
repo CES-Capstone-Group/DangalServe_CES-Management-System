@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '/src/App.css';
-import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
-import BtnAddAnnouncement from '../Buttons/Admin/BtnAddAnnouncement'; // Add Announcement Button
-import BtnAddAchievement from '../Buttons/Admin/BtnAddAchievement'; // Add Achievement Button
-import BtnAddResearchAgenda from '../Buttons/Admin/BtnAddResearchAgenda'; // Add Research Agenda Button
-import BtnEditAchievement from '../Buttons/Admin/BtnEditDeleteAchievement'; // Edit Achievement Modal
-import BtnEditAnnouncement from '../Buttons/Admin/BtnEditDeleteAnnouncement'; // Edit Announcement Modal
+import pncHeader from '../../assets/pnc-header-2.png';
+import { Container, Row, Col, Card, Modal } from 'react-bootstrap';
 import BtnEditResearchAgenda from '../Buttons/Admin/BtnEditDeleteResearchAgenda'; // Edit Research Agenda Modal
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
@@ -31,10 +25,8 @@ const AdminMainContent = () => {
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
   const [loadingResearchAgendas, setLoadingResearchAgendas] = useState(true); // Loading state for research agendas
 
-  const [showEditModalAch, setShowEditModalAch] = useState(false);
   const [selectedAchievement, setSelectedAchievement] = useState(null);
 
-  const [showEditModalAnn, setShowEditModalAnn] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
 
   const [showEditModalAgenda, setShowEditModalAgenda] = useState(false); // Modal state for research agenda
@@ -120,49 +112,6 @@ const AdminMainContent = () => {
     fetchResearchAgendas();
   }, []);
 
-  // Handle when a new research agenda is added
-  const handleResearchAgendaAdded = () => {
-    fetchResearchAgendas();
-  };
-
-  // Handle when a new achievement is added
-  const handleAchievementAdded = () => {
-    fetchAchievements();
-  };
-
-  // Handle when the Edit icon is clicked for Achievement
-  const editAchievement = (achievement) => {
-    setSelectedAchievement(achievement);  // Set the achievement to be edited
-    setShowEditModalAch(true);               // Show the edit modal
-  };
-
-  // Handle Achievement update and close the modal
-  const handleAchievementUpdated = () => {
-    fetchAchievements();                  // Reload achievements
-    setShowEditModalAch(false);              // Close the modal
-  };
-
-  // Delete Achievement
-  const deleteAchievement = async (achievementId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this achievement?");
-    if (!confirmDelete) return; // Exit if the user does not confirm the deletion
-
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievementId}/`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        alert("Achievement deleted successfully!");
-        fetchAchievements();  // Reload the achievements list after successful deletion
-      } else {
-        alert("There was an error deleting the achievement.");
-      }
-    } catch (error) {
-      alert("There was an error deleting the achievement.");
-    }
-  };
-
   // Fetch announcements data
   const fetchAnnouncements = async () => {
     try {
@@ -183,76 +132,12 @@ const AdminMainContent = () => {
     fetchAnnouncements();
   }, []);
 
-  // Handle when a new announcement is added
-  const handleAnnouncementAdded = () => {
-    fetchAnnouncements();
-  };
 
-  // Handle when the Edit icon is clicked for Announcement
-  const editAnnouncement = (announcement) => {
-    setSelectedAnnouncement(announcement);  // Set the announcement to be edited
-    setShowEditModalAnn(true);              // Show the edit modal for announcement
-  };
-
-  // Handle Announcement update and close the modal
-  const handleAnnouncementUpdated = () => {
-    fetchAnnouncements();                  // Reload announcements
-    setShowEditModalAnn(false);             // Close the modal
-  };
-
-  // Delete Announcement
-  const deleteAnnouncement = async (announcementId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this announcement?");
-    if (!confirmDelete) return; // Exit if the user does not confirm the deletion
-
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcementId}/`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        alert("Announcement deleted successfully!");
-        fetchAnnouncements();  // Reload the announcements list after successful deletion
-      } else {
-        alert("There was an error deleting the announcement.");
-      }
-    } catch (error) {
-      alert("There was an error deleting the announcement.");
-    }
-  };
-
-  // Edit Research Agenda
-  const editResearchAgenda = (agenda) => {
-    setSelectedResearchAgenda(agenda);
-    setShowEditModalAgenda(true);
-  };
 
   // Handle Research Agenda update and close the modal
   const handleResearchAgendaUpdated = () => {
     fetchResearchAgendas();                  // Reload research agendas
     setShowEditModalAgenda(false);           // Close the modal
-  };
-
-  // Delete Research Agenda
-  const deleteResearchAgenda = async (agendaId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this research agenda?");
-    if (!confirmDelete) return;
-
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/research-agendas/${agendaId}/`, {
-        method: "DELETE",
-      });
-      // console.log(agendaId)
-      if (response.ok) {
-        alert("Research agenda deleted successfully!");
-        fetchResearchAgendas(); // Reload the research agendas list after deletion
-        window.location.reload();
-      } else {
-        alert("There was an error deleting the research agenda.");
-      }
-    } catch (error) {
-      alert("There was an error deleting the research agenda.");
-    }
   };
 
   // Loading and Error Handling
@@ -267,10 +152,17 @@ const AdminMainContent = () => {
   return (
     <Container fluid className='custom-container'>
       <Row>
+        <img src={pncHeader} alt="pnc header" />
+      </Row>
+      <Row>
+        <Container className='welcomeDashboard'>
+          <h1 className='h1'>Welcome to University of Cabuyao</h1>
+          <h1>Community Extension Services</h1>
+        </Container>
+      </Row>
+      <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
-          <h2>UC(PnC) Extension Agenda 2023-2030</h2>
-          <br />
-
+          <span className='h3'>UC(PnC) Extension Agenda 2023-2030</span><br />
           {/* Carousel Section */}
           <div className="carousel slide mb-4" id="carouselExampleControls" data-bs-ride="carousel">
             <div className="carousel-inner">

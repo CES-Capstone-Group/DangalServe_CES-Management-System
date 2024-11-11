@@ -24,16 +24,21 @@ const UserEvalPage = () => {
           <EvalSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
         <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start mobileMain`}
-             style={{marginTop: '10rem', padding: '0px'}}
+             style={{
+              marginTop: "10rem",
+              paddingLeft: "20px",
+              paddingRight: "5rem",
+              paddingBottom: "20px",
+            }}
              xs={'12'}
              sm={sidebarOpen ? '8' : '10'} 
              md={sidebarOpen ? '8' : '11'} 
              lg={sidebarOpen ? '10' : '11'}
              xl={sidebarOpen ? '10' : '11'}
              xxl={sidebarOpen ? '10' : '11'} >
-          <Container className="mobileMain">
+          <div className="mobileMain">
             <Outlet/>
-          </Container>
+          </div>
         </Col>
       </Row>
     </div>

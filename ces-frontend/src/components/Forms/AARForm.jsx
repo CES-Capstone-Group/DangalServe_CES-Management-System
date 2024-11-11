@@ -5,6 +5,7 @@ import { Form, Button, Container, Row, Col, Table } from 'react-bootstrap';
 function AfterActivityReport() {
     const [selectedAttachments, setSelectedAttachments] = useState([]);
     const [files, setFiles] = useState({});
+    const [errors, setErrors] = useState("");
 
     const handleCheckboxChange = (isChecked, attachment) => {
         if (isChecked) {
@@ -15,7 +16,13 @@ function AfterActivityReport() {
     };
 
     const handleFileUpload = (attachment, files) => {
-        setFiles({ ...files, [attachment]: files });
+        if(files.length >= 5){
+            setFiles({ ...files, [attachment]: files });
+        }
+        else{
+            setErrors("Activity Highlight should atleast contain 5 Photos");
+            alert("Activity Highlight should atleast contain 5 Photos");
+        }
     };
 
     return (
@@ -72,13 +79,18 @@ function AfterActivityReport() {
                 </Form.Group>
 
                 <Form.Group controlId="activityHighlightPhotos">
-                    <Form.Label className='h6'>Activity Highlight (Please attach at least 5 photos)</Form.Label>
-                    <Form.Control
+                    <Form.Label className='h6'>Activity Highlight (Please attach minimum of 5 photos)</Form.Label>
+                    <Form.Control                  
+                        name='files'
+                        isInvalid={!!errors.files}
                         type="file"
                         multiple
                         accept="image/*"
                         onChange={(e) => handleFileUpload(e.target.files)}
                     />
+                    <Form.Control.Feedback>
+                        {errors.files}
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <h3 className="mt-5">Quantitative Evaluation Parameters</h3>

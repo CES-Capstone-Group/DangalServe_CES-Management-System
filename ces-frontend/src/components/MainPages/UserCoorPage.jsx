@@ -15,7 +15,7 @@ const UserCoorPage = () => {
       <header>
         <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar}/>
       </header>
-      <Row>
+      <Row style={{ marginRight: '0', marginLeft: '0' }}>
         <Col style={{ padding: '0px' }} 
         xs={'2'}
         sm={sidebarOpen ? '4' : '2'}
@@ -24,16 +24,20 @@ const UserCoorPage = () => {
           <CoorSidebar sidebarOpen={sidebarOpen} toggleSidebar={showSidebar} />
         </Col>
         <Col className={`d-flex justify-content-${sidebarOpen ? 'start' : 'center'} align-items-start mobileMain`}
-             style={{marginTop: '10rem', padding: '0px'}}
+             style={{
+              marginTop: "10rem",
+              paddingLeft: "20px",
+              paddingRight: "5rem",
+              paddingBottom: "20px",
+            }}
              xs={'10'}
              sm={sidebarOpen ? '8' : '10'} 
              md={sidebarOpen ? '8' : '11'} 
              lg={sidebarOpen ? '10' : '11'}
              xl={sidebarOpen ? '10' : '11'}
              xxl={sidebarOpen ? '10' : '11'} >
-          <Container>
+          
             <Outlet/>
-          </Container>
         </Col>
       </Row>
     </div>

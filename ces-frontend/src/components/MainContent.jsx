@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
+import pncHeader from '../assets/pnc-header-2.png';
+import { Container, Row, Col, Card, Modal } from 'react-bootstrap';
 
 const MainContent = () => {
   const [achievements, setAchievements] = useState([]);
@@ -118,6 +119,15 @@ const handleCloseModal = () => {
 
   return (
     <Container fluid className='custom-container'>
+      <Row>
+        <img src={pncHeader} alt="pnc header" />
+      </Row>
+      <Row>
+        <Container className='welcomeDashboard'>
+          <h1 className='h1'>Welcome to University of Cabuyao</h1>
+          <h1>Community Extension Services</h1>
+        </Container>
+      </Row>
       <Row>
         <Col md={12} className="ms-sm-auto px-md-4">
           <h2>UC(PnC) Extension Agenda 2023-2030</h2>

@@ -18,6 +18,16 @@ html {
   margin: 0 auto;
 }
 
+.welcomeDashboard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #a5dfa6;
+  color: #1f6119;
+  padding: 2rem;
+  margin: 2rem;
+}
+
 .side {
   box-sizing: border-box;
   display: flex;

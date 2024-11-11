@@ -70,41 +70,41 @@ const AdminApprovedPro = () => {
             (proposal) => proposal.user_department_id === department.dept_id
         );
         setDepartmentProposals(filteredProposals);
-    
+
         // Pass departmentProposals to AdminDeptApprovedPro using state
-        navigate(`/admin/approved-proposal/${department.dept_id}`, { state: { departmentProposals: filteredProposals, departmentName : department.dept_name } });
+        navigate(`/admin/approved-proposal/${department.dept_id}`, { state: { departmentProposals: filteredProposals, departmentName: department.dept_name } });
     };
 
     return (
         <Container className="container-fluid">
-            <div className="container">
+            <div className="container mb-4">
                 <h1>APPROVED PROPOSALS</h1>
             </div>
 
 
-            <Row className="mb-4">
+            <Row className="gy-4 g-4 mb-5">
                 {departments.map((department, index) => (
-                    <Col key={index} md={3} lg={2} className="mb-3">
+                    <Col key={index} xs={12} sm={6} md={2} lg={3}>
                         <Card
-                            className="department-card clickable-card"
+                            className="department-card clickable-card shadow-sm"
                             onClick={() => handleDepartmentClick(department)}
                         >
                             <Card.Body>
-                                <Card.Title style={{fontSize: "medium"}}>{department.dept_name}</Card.Title>
-                                <Card.Text style={{fontSize: "small"}}>
-                                       No. of Approved Proposals:{" "}
-                                    {
-                                        proposals.filter(
+                                <Card.Title style={{ fontSize: "medium" }}>
+                                    {department.dept_name}
+                                </Card.Title>
+                                <Card.Text>
+                                    No. of Approved Proposals:{" "}
+                                    {proposals.filter(
                                         (proposal) => proposal.user_department_id === department.dept_id
-                                        ).length
-                                    }
+                                    ).length}
                                 </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                 ))}
             </Row>
-            
+
 
             {loading ? (
                 <p>Loading...</p>

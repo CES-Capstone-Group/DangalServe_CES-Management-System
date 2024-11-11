@@ -168,8 +168,7 @@ const App = () => {
           {/* </Route> */}
 
           {/* Other Routes */}
-          <Route path='/eval-select' element={<EvalSelect />} />
-          <Route path='/propForm' element={<ProposalForm />} />
+          <Route path='/eval-select' element={<EvalSelect />} />         
           <Route path='/actEvalForm' element={<ActEvalForm />} />
           <Route path='/funding' element={<FundingProposalForm />} />
           <Route path='/cesEvalForm' element={<CesEvalForm />} />

@@ -84,14 +84,14 @@ const AdminApprovedPro = () => {
 
             <Row className="mb-4">
                 {departments.map((department, index) => (
-                    <Col key={index} md={3} className="mb-3">
+                    <Col key={index} md={3} lg={2} className="mb-3">
                         <Card
                             className="department-card clickable-card"
                             onClick={() => handleDepartmentClick(department)}
                         >
                             <Card.Body>
-                                <Card.Title>{department.dept_name}</Card.Title>
-                                <Card.Text>
+                                <Card.Title style={{fontSize: "medium"}}>{department.dept_name}</Card.Title>
+                                <Card.Text style={{fontSize: "small"}}>
                                        No. of Approved Proposals:{" "}
                                     {
                                         proposals.filter(

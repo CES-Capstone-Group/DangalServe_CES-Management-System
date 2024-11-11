@@ -103,8 +103,8 @@ const ManageAchievements = () => {
     };
 
     return (
-        <Container fluid style={{width: '100rem'}}
-        className="vh-100 d-flex flex-column justify-content-center me-0 ms-0" >
+        <Container fluid
+        className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0" >
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />

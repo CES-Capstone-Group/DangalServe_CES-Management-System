@@ -1,46 +1,78 @@
 /* Custom table styling with increased specificity */
 .tableStyle {
-    background-color: #eaf3e8 !important;
-    color: #333 !important;
-    border: 2px solid #b9b9b9 !important;
-    font-size: x-large;
+  background-color: #eaf3e8 !important;
+  color: #333 !important;
+  border: 2px solid #b9b9b9 !important;
+  font-size: large;
+  width: 100%; /* Ensure the table takes up the full width */
+  overflow-x: auto; /* Add horizontal scroll for smaller screens */
+}
+
+/* Adjust font size and padding for smaller screens */
+@media (max-width: 768px) {
+  .tableStyle {
+      font-size: medium; /* Decrease font size for smaller screens */
   }
-  
+
+  .tableStyle th, .tableStyle td {
+      padding: 8px; /* Reduce padding for better fit */
+  }
+
   .tableStyle th {
-    background-color: #045c2a !important;
-    color: rgb(253, 253, 253) !important;
-    font-weight: bold;
-    padding: 12px;
-    text-align: center;
-    vertical-align: middle;
+      font-size: medium; /* Adjust header font size */
   }
-  
-  .tableStyle td {
-    padding: 12px;
-    text-align: center;
-    vertical-align: middle;
+}
+
+/* Adjustments for very small screens */
+@media (max-width: 480px) {
+  .tableStyle {
+      font-size: small; /* Further decrease font size */
   }
-  
-  .table-striped tbody tr:nth-of-type(odd)>* {
-    background-color: #c0fcc0 !important; /* Alternating row background color */
+
+  .tableStyle th, .tableStyle td {
+      padding: 6px; /* Further reduce padding */
   }
-  
-  .tableStyle  tbody tr:hover>* {
-    background-color: #99da7f !important; /* Highlight row on hover */
-  }
-  
-  /* Style for buttons in the Actions column */
-  .tableStyle .btn-success {
-    background-color: #71A872 !important;
-    border: none !important;
-  }
-  
-  .tableStylee .btn-danger {
-    background-color: #FF5252 !important;
-    border: none !important;
-  }
-  
-  .tableStyle .btn-success:hover, 
-  .tableStyle .btn-danger:hover {
-    opacity: 0.8 !important;
-  }
+}
+
+/* Styles for table header */
+.tableStyle th {
+  background-color: #045c2a !important;
+  color: rgb(253, 253, 253) !important;
+  font-weight: bold;
+  padding: 8px !important;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Styles for table cells */
+.tableStyle td {
+  padding: 8px !important;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Alternating row background color */
+.table-striped tbody tr:nth-of-type(odd) > * {
+  background-color: #c0fcc0 !important;
+}
+
+/* Highlight row on hover */
+.tableStyle tbody tr:hover > * {
+  background-color: #99da7f !important;
+}
+
+/* Style for buttons in the Actions column */
+.tableStyle .btn-success {
+  background-color: #71A872 !important;
+  border: none !important;
+}
+
+.tableStyle .btn-danger {
+  background-color: #FF5252 !important;
+  border: none !important;
+}
+
+.tableStyle .btn-success:hover,
+.tableStyle .btn-danger:hover {
+  opacity: 0.8 !important;
+}

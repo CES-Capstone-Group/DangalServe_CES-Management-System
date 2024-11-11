@@ -53,7 +53,7 @@ const AdminManage = () => {
     ];
 
     return (
-        <Container fluid className="vh-100 d-flex flex-column justify-content-center align-items-center position-relative">
+        <Container fluid className="py-4 mt-5 d-flex flex-column justify-content-center align-items-center position-relative">
 
             {/* Row containing Back button and Management heading */}
             <Row className="d-flex align-items-center justify-content-center mb-4">
@@ -78,14 +78,14 @@ const AdminManage = () => {
                             style={{
                                 cursor: 'pointer',
                                 width: '90%',
-                                maxWidth: '300px',
+                                maxWidth: '250px',
                                 height: 'auto',
                                 minHeight: '100px',
                             }}
                         >
                             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                                <FontAwesomeIcon icon={section.icon} size="4x" className="mb-3" style={{ color: '#71A872' }} />
-                                <Card.Title className="mt-auto text-success">{section.title}</Card.Title>
+                                <FontAwesomeIcon icon={section.icon} size="3x" className="mb-3" style={{ color: '#71A872' }} />
+                                <Card.Title style={{fontSize: '15px'}} className="mt-auto text-success">{section.title}</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>

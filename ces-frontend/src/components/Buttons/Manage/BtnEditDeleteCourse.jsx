@@ -104,14 +104,14 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
             <Button 
                 className="shadow" 
                 onClick={handleShowEdit} 
-                style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '15px', fontSize: '20px' }}
+                style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '8px', fontSize: '15px' }}
             >
                 Edit
             </Button>
             <Button 
                 className="shadow" 
                 onClick={handleShowDeleteConfirm} 
-                style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '20px' }}
+                style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '15px' }}
             >
                 Delete
             </Button>

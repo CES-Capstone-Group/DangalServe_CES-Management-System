@@ -13,7 +13,7 @@ const AdminLandingPage = () => {
   };
 
   return (
-    <Container fluid className="vh-100 d-flex flex-column justify-content-center align-items-center">
+    <Container fluid className="py-4 d-flex flex-column justify-content-center align-items-center vh-100">
       <Row className="w-100 d-flex justify-content-center align-items-center">
         <Col xs={12} sm={6} md={4} className="d-flex justify-content-center">
           <Card

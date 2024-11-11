@@ -112,8 +112,7 @@ const ManageAgenda = () => {
 
     return (
         <Container fluid 
-        style={{width: '100rem'}} 
-        className="vh-100 d-flex flex-column justify-content-center me-0 ms-0">
+        className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0">
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success me-3">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />

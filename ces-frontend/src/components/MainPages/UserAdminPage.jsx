@@ -31,7 +31,7 @@ const UserAdminPage = () => {
           className={`d-flex justify-content-${sidebarOpen ? "start" : "center"} align-items-start mobileMain`}
           style={{
             marginTop: "10rem",
-            paddingLeft: "20px",
+            paddingLeft: "80px",
             paddingRight: "5rem",
             paddingBottom: "20px", // Adjust padding as needed
           }}
@@ -40,7 +40,7 @@ const UserAdminPage = () => {
           md={sidebarOpen ? "8" : "11"}
           lg={sidebarOpen ? "9" : "11"}
           xl={sidebarOpen ? "10" : "11"}
-          xxl={sidebarOpen ? "10" : "11"}
+          xxl={sidebarOpen ? "9" : "10"}
         >
           <Outlet />
         </Col>

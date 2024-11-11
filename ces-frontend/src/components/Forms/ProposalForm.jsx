@@ -135,13 +135,22 @@ const ProposalForm = () => {
 
   const handleResearchAgendaChange = (e) => {
     const { value, checked } = e.target;
+    const agendaId = Number(value); // Or use `String(value)` if agenda.id is a string
     setFormData((prevData) => {
-      const updatedAgendas = checked
-        ? [...prevData.research_agendas, value] // Add selected agenda
-        : prevData.research_agendas.filter((agenda) => agenda !== value); // Remove unselected agenda
+      let updatedAgendas;
+      if (checked) {
+        // Add the value only if it doesn't already exist in the array
+        updatedAgendas = prevData.research_agendas.includes(agendaId)
+          ? prevData.research_agendas
+          : [...prevData.research_agendas, agendaId];
+      } else {
+        // Remove the value
+        updatedAgendas = prevData.research_agendas.filter((agenda) => agenda !== agendaId);
+      }
       return { ...prevData, research_agendas: updatedAgendas };
     });
   };
+  
 
   // Handle validation when the user leaves a field
   const handleBlur = (e) => {
@@ -333,7 +342,6 @@ const ProposalForm = () => {
     }));
   };
 
-  // Handle partner community checkboxes
   const handleCommunityChange = (e) => {
     const { value, checked } = e.target;
     setFormData((prevData) => {
@@ -435,7 +443,7 @@ const ProposalForm = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      console.log(JSON.stringify(formData));
       if (response.ok) {
         navigate('/coor/pending-proposal');
       } else {
@@ -446,9 +454,6 @@ const ProposalForm = () => {
       console.error('Error submitting proposal:', error);
     }
   };
-
-
-
 
   return (
     <Container className='Formproposal'>

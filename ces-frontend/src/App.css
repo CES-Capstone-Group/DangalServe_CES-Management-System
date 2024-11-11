@@ -22,7 +22,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #a5dfa6;
+  background-color: #b8ebb9;
   color: #1f6119;
   padding: 2rem;
   margin: 2rem;
@@ -90,12 +90,20 @@ html {
     font-size: 24px !important;
     /* Adjust icon size if needed */
   }
+
+  .welcomeDashboard h1{
+    font-size: 20px;
+  }
 }
 
 
 @media screen and (max-width: 430px) {
   .mobileMain {
     margin: 1em;
+  }
+
+  .welcomeDashboard h1{
+    font-size: 15px;
   }
 
   .side {

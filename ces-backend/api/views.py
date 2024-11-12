@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from datetime import datetime
+import json
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Achievement, Announcement, ActivitySchedule, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
 from .models import (
@@ -781,11 +782,17 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         # Initialize barangay
         barangay = None
 
-        # Accessing barangay based on account type
         if user.accountType == 'Brgy. Official':
             brgy_account = BrgyOfficialAccount.objects.get(account=user)
             barangay = brgy_account.barangay.brgy_name if brgy_account.barangay else None
             
+            # Only filter proposals if the status is 'Barangay-Pending'
+            if status == 'BarangayPending':
+                print("it is true")
+                return Proposal.objects.filter(
+                    status__in=['Approved by President'],
+                    partner_community__icontains=barangay  # Adjust this if your partner_community is a comma-separated list
+                )
         # Check if the user is an admin
         if user.accountType == 'Admin':
             # Start with a base queryset for admins
@@ -798,6 +805,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
                     queryset = queryset.exclude(status='Approved by Barangay').filter(
                         status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay']
                     )
+                
                 else:
                     queryset = queryset.filter(status=status)
             
@@ -840,6 +848,11 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             user = request.user  # The authenticated user
             research_agenda_ids = request.data.get('research_agendas', [])
             signatories_data = request.data.get('signatories', [])
+            if isinstance(signatories_data, str):
+                try:
+                    signatories_data = json.loads(signatories_data)
+                except json.JSONDecodeError:
+                    signatories_data = []
 
             # Remove research agendas and signatories from validated data
             validated_data.pop('research_agendas', None)

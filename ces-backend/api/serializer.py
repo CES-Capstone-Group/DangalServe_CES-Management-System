@@ -233,8 +233,9 @@ class SignatorySerializer(serializers.ModelSerializer):
 class ProposalSerializer(serializers.ModelSerializer):
     proponents = ProponentSerializer(many=True, required=False)
     signatories = SignatorySerializer(many=True, required=False)
-    user_department_id = serializers.IntegerField(source='user_id.department_id', read_only=True)
+    user_department_id = serializers.IntegerField(source='user_id.proponentaccount.department_id', read_only=True)
 
+  
     class Meta:
         model = Proposal
         exclude = ['user_id']
@@ -242,7 +243,7 @@ class ProposalSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         proponents_data = json.loads(self.context['request'].data.get('proponents', '[]'))
         signatories_data = json.loads(self.context['request'].data.get('signatories', '[]'))
-
+        
         # Create the proposal
         user = self.context['request'].user
         proposal = Proposal.objects.create(user_id=user, **validated_data)

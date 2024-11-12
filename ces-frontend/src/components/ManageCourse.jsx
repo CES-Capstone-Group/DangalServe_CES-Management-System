@@ -10,6 +10,8 @@ import "./table.css";
 const CourseManagement = () => {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]); // State to store courses
+    const [searchQuery, setSearchQuery] = useState("");
+
 
     // **Function to Fetch Courses from Backend**
     const fetchCourses = async () => {
@@ -29,6 +31,21 @@ const CourseManagement = () => {
     useEffect(() => {
         fetchCourses();
     }, []);
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredCourses = courses.filter(course => {
+        if (!course || typeof course !== 'object') return false; // Safeguard against unexpected data
+        return (
+            (course.course_name && course.course_name.toLowerCase().includes(searchQuery.toLowerCase()))||
+            (course.dept_name && course.dept_name.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+    //end of search function
 
     // **Handle Back Navigation**
     const handleBack = () => {
@@ -114,12 +131,13 @@ const CourseManagement = () => {
                         className="form-control" 
                         placeholder="Search" 
                         style={{ width: "300px" }} 
+                        onChange={handleSearch}
                     />
                 </Col>
             </Row>
 
             {/* Render Table with Fetched Courses */}
-            <NewTable data={courses} />
+            <NewTable data={filteredCourses} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

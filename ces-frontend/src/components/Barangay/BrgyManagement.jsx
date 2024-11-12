@@ -8,12 +8,11 @@ import "../table.css";
 import BtnEditDelete from "../Buttons/Manage/BtnEditDelete";  // <-- Import BtnEditDelete
 
 const BrgyManagement = () => {
+    const [barangays, setBarangays] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedContent, setSelectedContent] = useState(null);
     const [contentType, setContentType] = useState("");
-
-    // State to hold the barangay data fetched from the backend
-    const [barangays, setBarangays] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Function to fetch barangay data from the backend
     const fetchBarangays = async () => {
@@ -57,6 +56,20 @@ const BrgyManagement = () => {
     const handleBack = () => {
         navigate(-1);
     };
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredBrgy = barangays.filter(barangay => {
+        if (!barangay || typeof barangay !== 'object') return false; // Safeguard against unexpected data
+        return (
+          barangay.brgy_name && barangay.brgy_name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+    //end of search function
 
     // Updated `Rows` component to pass all required props to `BtnEditDelete`
     const Rows = (props) => {
@@ -121,7 +134,7 @@ const BrgyManagement = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
                     <Modal.Header closeButton></Modal.Header>
@@ -137,7 +150,7 @@ const BrgyManagement = () => {
             </Row>
 
             {/* Render the table with the fetched data */}
-            <NewTable data={barangays} />
+            <NewTable data={filteredBrgy} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

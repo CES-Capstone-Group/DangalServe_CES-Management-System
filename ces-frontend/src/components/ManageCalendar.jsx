@@ -11,7 +11,8 @@ const ManageCalendar = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedContent, setSelectedContent] = useState(null);
     const [contentType, setContentType] = useState("");
-    // const [achievements, setAchievements] = useState([]);  // <-- Store achievements data
+    const [searchQuery, setSearchQuery] = useState("");
+    const [calendars, setCalendar] = useState([]);
     const navigate = useNavigate();
 
     // Fetch Achievements from Backend
@@ -53,6 +54,22 @@ const ManageCalendar = () => {
         {proposal:'Tree Planting', activity_title:'Tree Planting in Bigaa Court', date:'22-Oct-2024', time:'05:30 am', calendar_file: samplepdf},
         {proposal:'Community Cleanup Drive', activity_title:'Clean Up Drive in NIA Road', date:'26-Oct-2024', time:'06:00 am', calendar_file: samplepdf},
     ];
+    setCalendar(array);
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredCal = calendars.filter(calendar => {
+        if (!calendar || typeof calendar !== 'object') return false; // Safeguard against unexpected data
+        return (
+            (calendar.proposal && calendar.proposal.toLowerCase().includes(searchQuery.toLowerCase()))||
+            (calendar.activity_title && calendar.activity_title.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+    //end of search function
 
     // Table row component
     const Rows = (props) => {
@@ -86,7 +103,7 @@ const ManageCalendar = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {array.map((array, index) => (
+                    {data.map((array, index) => (
                         <Rows 
                         key={index} 
                         proposal={array.proposal}
@@ -121,7 +138,7 @@ const ManageCalendar = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
                 {/* Modal for viewing full image */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
@@ -137,7 +154,7 @@ const ManageCalendar = () => {
                 </Modal>
             </Row>
 
-            <NewTable data={array} />
+            <NewTable data={filteredCal} />
         </Container>
     );
 };

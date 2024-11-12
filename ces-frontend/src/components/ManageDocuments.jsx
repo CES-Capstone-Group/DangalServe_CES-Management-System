@@ -11,6 +11,7 @@ const ManageDocuments = () => {
     const [contentType, setContentType] = useState("");
     const [documents, setDocuments] = useState([]);  // <-- Store documents data
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Fetch documents from the backend
     const fetchDocuments = async () => {
@@ -28,6 +29,21 @@ const ManageDocuments = () => {
     useEffect(() => {
         fetchDocuments();  // Initial data load
     }, []);
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredDocs = documents.filter(document => {
+        if (!document || typeof document !== 'object') return false; // Safeguard against unexpected data
+        return (
+            (document.title && document.title.toLowerCase().includes(searchQuery.toLowerCase()))||
+            (document.id && document.id.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+    //end of search function
 
     // Handle content view modal
     const handleContentClick = (contentUrl) => {
@@ -149,7 +165,7 @@ const ManageDocuments = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
                 {/* Modal for viewing full image */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
@@ -169,7 +185,7 @@ const ManageDocuments = () => {
             </Row>
 
             {/* Render the documents table */}
-            <NewTable data={documents} className="tableStyle"/>
+            <NewTable data={filteredDocs} className="tableStyle"/>
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

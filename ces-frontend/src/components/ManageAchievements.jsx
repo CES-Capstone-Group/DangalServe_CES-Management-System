@@ -12,6 +12,7 @@ const ManageAchievements = () => {
     const [selectedContent, setSelectedContent] = useState(null);
     const [contentType, setContentType] = useState("");
     const [achievements, setAchievements] = useState([]);  // <-- Store achievements data
+    const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
     // Fetch Achievements from Backend
@@ -79,6 +80,22 @@ const ManageAchievements = () => {
         );
     };
 
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredAch = achievements.filter(achievement => {
+        if (!achievement || typeof achievement !== 'object') return false; // Safeguard against unexpected data
+        return (
+            (achievement.award_title && achievement.award_title.toLowerCase().includes(searchQuery.toLowerCase()))||
+            (achievement.awardee && achievement.awardee.toLowerCase().includes(searchQuery.toLowerCase()))||
+            (achievement.awarded_by && achievement.awarded_by.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+    //end of search function
+
     // Table component
     const NewTable = ({ data }) => {
         return (
@@ -123,7 +140,7 @@ const ManageAchievements = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
                 {/* Modal for viewing full image */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
@@ -140,7 +157,7 @@ const ManageAchievements = () => {
             </Row>
 
             {/* Render the achievements table */}
-            <NewTable data={achievements} />
+            <NewTable data={filteredAch} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

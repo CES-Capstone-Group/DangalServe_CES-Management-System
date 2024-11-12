@@ -9,6 +9,7 @@ import BtnEditDeleteDept from "../Buttons/Manage/BtnEditDeleteDept";  // Import 
 
 const DepartmentManagement = () => {
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState("");
 
     // **State for Department Data**
     const [departments, setDepartments] = useState([]);  // State to store departments
@@ -31,6 +32,20 @@ const DepartmentManagement = () => {
     useEffect(() => {
         fetchDepartments();  // Load departments initially
     }, []);
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredDept = departments.filter(department => {
+        if (!department || typeof department !== 'object') return false; // Safeguard against unexpected data
+        return (
+            department.dept_name && department.dept_name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+    //end of search function
 
     // Handle navigation to the previous page
     const handleBack = () => {
@@ -95,12 +110,12 @@ const DepartmentManagement = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
             </Row>
 
             {/* Render the table with the fetched data */}
-            <NewTable data={departments} />
+            <NewTable data={filteredDept} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

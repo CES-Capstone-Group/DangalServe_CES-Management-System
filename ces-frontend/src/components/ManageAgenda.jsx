@@ -14,6 +14,7 @@ const ManageAgenda = () => {
     const [agendas, setAgendas] = useState([]);
     const [loadingAgendas, setLoadingAgendas] = useState(true);
     const [error, setError] = useState(null);
+    const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
     // Fetch Research Agendas from Backend
@@ -33,6 +34,20 @@ const ManageAgenda = () => {
     useEffect(() => {
         fetchAgendas();
     }, []);
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredAgenda = agendas.filter(agenda => {
+        if (!agenda || typeof agenda !== 'object') return false; // Safeguard against unexpected data
+        return (
+            agenda.label && agenda.label.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+    //end of search function
 
     const handleContentClick = (contentUrl) => {
         setContentType(contentUrl.endsWith(".pdf") ? "pdf" : "image");
@@ -130,7 +145,7 @@ const ManageAgenda = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
                 {/* Modal for viewing full image */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
@@ -147,7 +162,7 @@ const ManageAgenda = () => {
             </Row>
 
             {/* Render the agendas table */}
-            <NewTable data={agendas} />
+            <NewTable data={filteredAgenda} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

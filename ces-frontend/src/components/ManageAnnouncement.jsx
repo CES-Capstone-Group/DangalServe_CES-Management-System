@@ -14,6 +14,8 @@ const ManageAnnouncement = () => {
     const [announcements, setAnnouncements] = useState([]); // State for announcements
     const [loading, setLoading] = useState(true); // Loading state
     const [error, setError] = useState(null); // Error state
+    const [searchQuery, setSearchQuery] = useState("");
+
     const navigate = useNavigate();
 
     // Fetch announcements from the backend
@@ -57,6 +59,20 @@ const ManageAnnouncement = () => {
     const handleBack = () => {
         navigate(-1); // Navigate to the previous page in the history
     };
+
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter barangays based on the search query
+      const filteredAnn = announcements.filter(announcement => {
+        if (!announcement || typeof announcement !== 'object') return false; // Safeguard against unexpected data
+        return (
+            (announcement.title && announcement.title.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+    //end of search function
 
     // Handle announcement updates
     const handleAnnouncementUpdated = () => {
@@ -133,7 +149,7 @@ const ManageAnnouncement = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
                 </Col>
                 {/* Modal for viewing full image or PDF */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>
@@ -150,7 +166,7 @@ const ManageAnnouncement = () => {
             </Row>
 
             {/* Render the announcements table */}
-            <NewTable data={announcements} />
+            <NewTable data={filteredAnn} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

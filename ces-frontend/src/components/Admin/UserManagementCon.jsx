@@ -129,6 +129,7 @@ const NewTable = ({ data, fetchUsers }) => {
 
 const UserManagementCon = () => {
     const [users, setUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const fetchUsers = async () => {
         try {
@@ -175,6 +176,26 @@ const UserManagementCon = () => {
         navigate(-1); // This will navigate to the previous page in the history
     };
 
+    //search function
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+      };
+      
+      // Filter users based on the search query
+      const filteredUsers = users.filter(user => {
+        if (!user || typeof user !== 'object') return false; // Safeguard against unexpected data
+        return (
+          (user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.accountType && user.accountType.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.department_name && user.department_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.course_name && user.course_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.barangay_name && user.barangay_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.position && user.position.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.status && user.status.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+    //end of search function
+
     return (
         <Container fluid
         className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0">
@@ -204,12 +225,12 @@ const UserManagementCon = () => {
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} />
+                    <input type="search" onChange={handleSearch} className="form-control" placeholder='Search' style={{ width: '300px' }} />
                 </Col>
             </Row>
 
             {/* Render the table with the latest data */}
-            <NewTable data={users} fetchUsers={fetchUsers} />
+            <NewTable data={filteredUsers} fetchUsers={fetchUsers} />
 
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">

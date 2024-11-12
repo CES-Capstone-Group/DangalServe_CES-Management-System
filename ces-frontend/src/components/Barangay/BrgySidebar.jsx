@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 
 const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
   return(
-    <SidebarMenu expand="lg"  className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active' : 'side collapsed'}`} style={{  width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 10px', marginTop: sidebarOpen ? '0' : '50px' }}>
+    <SidebarMenu expand="lg" className={`d-md-block bg-light flex-column ${sidebarOpen ? 'side active justify-content-center align-items-center' : 'side collapsed '}`} style={{ width: sidebarOpen ? '250px' : '80px', boxShadow: '0px 3px 10px', marginTop: sidebarOpen ? '0px' : '50px' }}>
     {/*SidebarMenu Header*/}
     <SidebarMenu.Toggle onClick={toggleSidebar}>
       <SidebarMenu.Brand>
@@ -28,7 +28,7 @@ const BrgySidebar = ({ sidebarOpen, toggleSidebar }) => {
         <SidebarMenu.Nav>
           <NavLink to={'/barangay/dashboard'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
             <SidebarMenu.Nav.Icon>
-              <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px', marginTop: sidebarOpen ? '0px' : '100px'}} />
+              <FontAwesomeIcon icon={faTableColumns} style={{ color: 'grey' , fontSize: sidebarOpen ? '20px' : '22px', marginBottom: sidebarOpen ? '0px' : '10px', padding: '0px'}} />
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title> Dashboard </SidebarMenu.Nav.Title>
           </NavLink>

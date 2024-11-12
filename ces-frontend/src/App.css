@@ -47,11 +47,35 @@ html {
 }
 
 .side.collapsed {
+  padding-top: 5rem;
+  padding-bottom: 10rem;
   width: 70px;
   /* Narrow width when sidebar is collapsed */
   z-index: 1020;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+}
+.side.collapsed .sidebar-menu-body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  flex-wrap: wrap;
+}
+.side.collapsed .nav-link {
+  margin-bottom: 20px; /* Increase spacing between sidebar items */
 }
 
+.side.collapsed .nav-link.active{
+  background-color: #ffffff00;
+  padding: 0px;
+}
+.sidebar-menu.collapsed .nav-link.active .sidebar-menu-nav-icon svg path{
+  color: #76a577;
+}
 .sidebar-menu.collapsed .sidebar-menu-nav-title {
   display: none;
   /* Hide text labels when sidebar is collapsed */
@@ -60,7 +84,6 @@ html {
 .sidebar-menu-sub-toggle {
   border: 0px;
   background-color: rgba(255, 255, 255, 0);
-
   padding: 0px;
 }
 
@@ -137,14 +160,16 @@ html {
 }
 
 .nav-link.active {
-  background-color: #71A872;
-  /* Active background color */
-  color: white !important;
-  /* Force text color to white */
+  background-color: #76a577;
   border-radius: 5px;
-  /* Optional: Rounded corners */
   padding: 10px;
-  /* Optional: Adjust padding */
+}
+
+.nav-link.active  .sidebar-menu-nav-title{
+  color: white !important;
+}
+.nav-link.active  .sidebar-menu-nav-icon svg{
+  color: white !important;
 }
 
 .nav-link {

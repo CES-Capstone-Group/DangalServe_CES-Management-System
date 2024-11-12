@@ -6,9 +6,9 @@ const CesEvalForm = () => {
     const [text, setText] = useState("");
 
     const handleInputChange = (e) => {
-      setText(e.target.value);
-      e.target.style.height = "auto"; // Reset the height
-      e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
+        setText(e.target.value);
+        e.target.style.height = "auto"; // Reset the height
+        e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
     };
 
     return (
@@ -185,7 +185,8 @@ const CesEvalForm = () => {
 
                 <h2>Evaluation Criteria</h2>
 
-                <Table bordered>
+
+                <Table bordered responsive>
                     <thead>
                         <tr>
                             <th>Key Area</th>
@@ -335,15 +336,17 @@ const CesEvalForm = () => {
                         </tr>
                     </tbody>
                 </Table>
+
+
                 <b>Scoring Interpretation:
                     (3.50-4=Strong Impact, 2.50-3.49=Good Impact, 1.50-2.49=Some Impact, 1-1.49=Minimal Impact)
                 </b>
                 <div className="d-flex justify-content-end">
-                    <Button variant="success" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em' }}>
+                    <Button variant="success" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem' }}>
                         Submit
                     </Button>
 
-                    <Button onClick={() => navigate("/")} variant="danger" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem', fontSize: '1.5em' }}>
+                    <Button onClick={() => navigate("/")} variant="danger" type="submit" className="mt-4 ps-4 pe-4" id='formbtn' style={{ margin: '.5rem' }}>
                         Cancel
                     </Button>
                 </div>

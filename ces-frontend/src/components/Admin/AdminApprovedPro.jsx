@@ -82,9 +82,9 @@ const AdminApprovedPro = () => {
             </div>
 
 
-            <Row className="gy-4 g-4 mb-5">
+            <Row className="gy-1 g-4 mb-4">
                 {departments.map((department, index) => (
-                    <Col key={index} xs={12} sm={6} md={2} lg={3}>
+                    <Col key={index} xs={12} sm={6} md={4} lg={4}>
                         <Card
                             className="department-card clickable-card shadow-sm"
                             onClick={() => handleDepartmentClick(department)}
@@ -93,7 +93,7 @@ const AdminApprovedPro = () => {
                                 <Card.Title style={{ fontSize: "medium" }}>
                                     {department.dept_name}
                                 </Card.Title>
-                                <Card.Text>
+                                <Card.Text style={{fontSize: '12px'}}>
                                     No. of Approved Proposals:{" "}
                                     {proposals.filter(
                                         (proposal) => proposal.user_department_id === department.dept_id

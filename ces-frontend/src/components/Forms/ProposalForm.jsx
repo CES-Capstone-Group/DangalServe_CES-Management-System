@@ -66,7 +66,7 @@ const ProposalForm = () => {
         console.error("Error fetching barangays:", error);
       }
     };
-    
+
     const fetchResearchAgendas = async () => {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/research-agendas/');
@@ -80,7 +80,7 @@ const ProposalForm = () => {
         console.error('Error fetching research agendas:', error);
       }
     };
-    
+
     fetchBarangays();
     fetchResearchAgendas();
   }, []);
@@ -150,7 +150,7 @@ const ProposalForm = () => {
       return { ...prevData, research_agendas: updatedAgendas };
     });
   };
-  
+
 
   // Handle validation when the user leaves a field
   const handleBlur = (e) => {
@@ -463,49 +463,60 @@ const ProposalForm = () => {
 
       <Form className='form' onSubmit={handleSubmit}>
         <Form.Group as={Row} controlId="formPlan" className="mb-4">
-          <Col sm={5}>
+          <Col sm={12}>
             <h4 className="mb-4">Please Check</h4>
-            <Form.Check
-              type="radio"
-              label="Three-Year-Medium-Term Plan for Community Extension¹"
-              value="Three-Year"
-              name='plan'
-              checked={formData.is_three_year_plan}
-              onChange={(e) => {
-                setIsThreeYearPlan(e.target.checked);
-                setFormData((prevData) => ({
-                  ...prevData,
-                  is_three_year_plan: e.target.checked, // Update formData with this value
-                }));
-              }}
-              required={true}
-            />
-            <Form.Check
-              type="radio"
-              label="Less than a Year-One-Year Plan for Community Service²"
-              value="LessThanYear"
-              name='plan'
-              checked={formData.is_one_year_plan}
-              onChange={(e) => {
-                setIsOneYearPlan(e.target.checked);
-                setFormData((prevData) => ({
-                  ...prevData,
-                  is_one_year_plan: e.target.checked, // Update formData with this value
-                }));
-              }}
-              required={true}
-            />
+            <Form.Check>
+              <label>
+                <input
+                  type="radio"
+                  name="plan"
+                  value="Three-Year"
+                  checked={formData.is_three_year_plan}
+                  onChange={(e) => {
+                    setIsThreeYearPlan(e.target.checked);
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      is_three_year_plan: e.target.checked, // Update formData with this value
+                    }));
+                  }}
+                  required={true}
+                />
+                Three-Year-Medium-Term Plan for Community Extension¹
+              </label>
+            </Form.Check>
+
+            {/* Second radio button with label */}
+            <Form.Check>
+              <label>
+                <input
+                  type="radio"
+                  name="plan"
+                  value="LessThanYear"
+                  checked={formData.is_one_year_plan}
+                  onChange={(e) => {
+                    setIsOneYearPlan(e.target.checked);
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      is_one_year_plan: e.target.checked, // Update formData with this value
+                    }));
+                  }}
+                  required={true}
+                />
+                Less than a Year-One-Year Plan for Community Service²
+              </label>
+            </Form.Check>
 
           </Col>
         </Form.Group>
-        
+
         <Form.Group as={Row} className="mb-4">
-          <Form.Label column sm={2}>Research Agenda</Form.Label>
-          <Col sm={10}>
+          <Form.Label id='formlabel' column sm={12}>Research Agenda</Form.Label>
+          <Col sm={12}>
             {researchAgendas.map((agenda) => (
               <Form.Check
                 key={agenda.id}
                 type="checkbox"
+                id={`agenda-${agenda.id}`}
                 label={agenda.label}
                 value={agenda.id}
                 checked={formData.research_agendas.includes(agenda.id)}
@@ -514,7 +525,7 @@ const ProposalForm = () => {
             ))}
           </Col>
         </Form.Group>
-        
+
         <h4 className="mb-4">A. Basic Details</h4>
 
         {/* Title Field */}
@@ -535,7 +546,8 @@ const ProposalForm = () => {
         </Form.Group>
 
         <Form.Group as={Row} controlId="formDepartment" className="mb-4">
-          <Form.Label column sm={2} id='formlabel'>Department/Program /Organization </Form.Label>
+          <Form.Label column sm={2} id='formlabel'>Department
+            /Program /Organization </Form.Label>
           <Col sm={10}>
             <Form.Control
               type="text"
@@ -701,6 +713,7 @@ const ProposalForm = () => {
               <Form.Check
                 key={barangay.id}
                 type="checkbox"
+                id={`barangay-${barangay.id}`} // Unique id for each checkbox
                 label={barangay.brgy_name}
                 value={barangay.brgy_name}
                 checked={formData.partner_community.includes(barangay.brgy_name)}
@@ -709,6 +722,7 @@ const ProposalForm = () => {
             ))}
             <Form.Check
               type="checkbox"
+              id="other-community" // Unique id for "Others" checkbox
               label="Others"
               onChange={handleOtherCommunityChange}
             />
@@ -727,6 +741,7 @@ const ProposalForm = () => {
             <h6 className="mb-4">Typology</h6>
             <Form.Check
               type="checkbox"
+              id="typology-school" // Unique id for "School"
               label="School"
               name="school"
               onChange={handleChange}
@@ -734,6 +749,7 @@ const ProposalForm = () => {
             />
             <Form.Check
               type="checkbox"
+              id="typology-barangay" // Unique id for "Barangay"
               label="Barangay"
               name="barangay"
               onChange={handleChange}
@@ -741,6 +757,7 @@ const ProposalForm = () => {
             />
             <Form.Check
               type="checkbox"
+              id="typology-government-org" // Unique id for "Government Organization"
               label="Government Organization"
               name="government_org"
               onChange={(e) => handleChange({ target: { name: 'government_org', value: e.target.checked ? 'Yes' : '' } })}
@@ -748,6 +765,7 @@ const ProposalForm = () => {
             />
             <Form.Check
               type="checkbox"
+              id="typology-non-government-org" // Unique id for "Non-Government Organization"
               label="Non-Government Organization"
               name="non_government_org"
               onChange={(e) => handleChange({ target: { name: 'non_government_org', value: e.target.checked ? 'Yes' : '' } })}
@@ -755,6 +773,7 @@ const ProposalForm = () => {
             />
             <Form.Check
               type="checkbox"
+              id="typology-others" // Unique id for "Others"
               label="Others"
               // checked={formData.partner_community.includes('Others')}
               onChange={handleOtherTypologyChange}
@@ -770,6 +789,7 @@ const ProposalForm = () => {
             )}
           </Col>
         </Form.Group>
+
 
         {/* Identified Needs of the Partner Community */}
         <Form.Group as={Row} controlId="formNeeds" className="mb-4">
@@ -1039,11 +1059,11 @@ const ProposalForm = () => {
                 placeholder="Enter name"
               />
               <datalist id="prepared-signatory-suggestions">
-              {signatoryNames.map((name, index) => {
-                
-                return <option key={index} value={name} />;
-              })}
-            </datalist>
+                {signatoryNames.map((name, index) => {
+
+                  return <option key={index} value={name} />;
+                })}
+              </datalist>
             </Form.Group>
             {errors.preparedByName && <p className="text-danger">{errors.preparedByName}</p>}
           </Col>
@@ -1095,10 +1115,10 @@ const ProposalForm = () => {
                 placeholder="Enter name"
               />
               <datalist id="endrosed-by-signatory-suggestions">
-              {signatoryNames.map((name, index) => (
-                <option key={index} value={name} />
-              ))}
-            </datalist>
+                {signatoryNames.map((name, index) => (
+                  <option key={index} value={name} />
+                ))}
+              </datalist>
             </Form.Group>
             {errors.endorsedByName && <p className="text-danger">{errors.endorsedByName}</p>}
           </Col>
@@ -1150,10 +1170,10 @@ const ProposalForm = () => {
                 placeholder="Enter name"
               />
               <datalist id="concured-by-signatory-suggestions">
-              {signatoryNames.map((name, index) => (
-                <option key={index} value={name} />
-              ))}
-            </datalist>
+                {signatoryNames.map((name, index) => (
+                  <option key={index} value={name} />
+                ))}
+              </datalist>
             </Form.Group>
             {errors.concurredByName && <p className="text-danger">{errors.concurredByName}</p>}
           </Col>

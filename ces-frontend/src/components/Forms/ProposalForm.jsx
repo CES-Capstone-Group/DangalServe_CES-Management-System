@@ -388,7 +388,13 @@ const ProposalForm = () => {
     Object.keys(formData).forEach((key) => {
       if (key === 'research_agendas') {
         formData[key].forEach((agenda) => submitData.append('research_agendas[]', agenda));
-      } else if (formData[key] && key !== 'identified_needs_file' && key !== 'budget_requirement_file') {
+      } 
+      else if (key === 'partner_community') {
+        // Convert partner_community array to a comma-separated string
+        const partnerCommunityString = formData[key].join(', ');
+        submitData.append(key, partnerCommunityString);
+      } 
+      else if (formData[key] && key !== 'identified_needs_file' && key !== 'budget_requirement_file') {
         submitData.append(key, formData[key]);
       }
     });
@@ -443,7 +449,7 @@ const ProposalForm = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(JSON.stringify(formData));
+
       if (response.ok) {
         navigate('/coor/pending-proposal');
       } else {

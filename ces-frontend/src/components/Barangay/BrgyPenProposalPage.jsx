@@ -1,131 +1,78 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import {jwtDecode} from "jwt-decode"; // To decode JWT and get user info
+import {jwtDecode} from "jwt-decode"; // Corrected the import for jwtDecode
 import "../table.css";
 import BtnViewApproveProposal from "../Buttons/BtnViewApproveProposal";
 
 const BrgyPenProposalPage = () => {
     const [proposals, setProposals] = useState([]);
-    const [loading, setLoading] = useState(true); // Start with loading = true
+    const [loading, setLoading] = useState(true);
     const [department, setDepartment] = useState("");
 
-    const fetchProposals = async (status) => {
-        const token = localStorage.getItem('access_token');
+    // Function to fetch all proposals
+    const fetchProposals = async () => {
+        const token = localStorage.getItem("access_token");
         if (!token) {
             console.error("No token found.");
             setLoading(false);
             return;
         }
-        
+    
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${filter}`, {
-                method: 'GET',
+            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=BarangayPending`, {
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
             });
-
+    
             if (response.ok) {
                 const data = await response.json();
-                setProposals(data);
+                setProposals(data); // Use the data as is, without filtering
             } else if (response.status === 401) {
-                console.error('Unauthorized: Check if the token is valid.');
+                console.error("Unauthorized: Check if the token is valid.");
             } else {
-                console.error('Error fetching proposals:', response.statusText);
+                console.error("Error fetching proposals:", response.statusText);
             }
         } catch (error) {
-            console.error('Error fetching proposals:', error);
+            console.error("Error fetching proposals:", error);
         } finally {
             setLoading(false);
         }
     };
 
-    useEffect(() => {
-        setLoading(true);
-        fetchProposals();
-    }, []);
-
-    const handleProposalApproved = () => {
-        setLoading(true);
-        fetchProposals();
-    };
-    // Fetch the current user's department from JWT token (or from API)
+    // Effect to fetch department from JWT and set it
     useEffect(() => {
         const token = localStorage.getItem("access_token");
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
-                // console.log(decodedToken)
-                const departmentFromToken = decodedToken.barangay; // Check if department is present in the token
+                console.log("Decoded token:", decodedToken); // Add logging
+                const departmentFromToken = decodedToken.barangay;
                 if (departmentFromToken) {
                     setDepartment(departmentFromToken);
                 } else {
                     console.error("Department not found in token.");
-                    setLoading(false);
+                    setLoading(false); // Ensure loading is set to false
                 }
             } catch (error) {
                 console.error("Error decoding token:", error);
-                setLoading(false);
+                setLoading(false); // Ensure loading is set to false
             }
         } else {
             console.error("No token found.");
-            setLoading(false); // If no token, stop loading
+            setLoading(false); // Ensure loading is set to false
         }
     }, []);
-
-    // Fetch all proposals where the status is 'Approved by President' and partner community matches department
+    
+    // Effect to fetch proposals when the department is set
     useEffect(() => {
-        const fetchProposals = async () => {
-            if (!department) {
-                console.log("Department is not set. Cannot fetch proposals.");
-                setLoading(false);
-                return;
-            }
-        
-            const token = localStorage.getItem("access_token");
-            if (!token) {
-                console.error("No token found.");
-                setLoading(false);
-                return;
-            }
-        
-            try {
-                const queryParams = new URLSearchParams({
-                    status__in: ["Approved by President", "Partly Approved by Barangay"].join(','),
-                    partner_community: department,
-                });
-        
-                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${queryParams.toString()}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-        
-                if (response.ok) {
-                    const data = await response.json();
-                    // Add an additional safeguard to filter exactly by "Approved by Barangay"
-                    const filteredProposals = data.filter(proposal => proposal.status === "Approved by President" || proposal.status === "Partly Approved by Barangay");
-                    setProposals(filteredProposals); // Set the proposals after filtering
-                } else if (response.status === 401) {
-                    console.error("Unauthorized: Check if the token is valid.");
-                } else {
-                    console.error("Error fetching proposals:", response.statusText);
-                }
-            } catch (error) {
-                console.error("Error fetching proposals:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        
-
         if (department) {
+            setLoading(true); // Start loading when fetching proposals
             fetchProposals();
         }
-    }, [department]); // Re-fetch when department is set
+    }, [department]);
 
     return (
         <Container className="container-fluid">
@@ -154,10 +101,12 @@ const BrgyPenProposalPage = () => {
                                     <td>{proposal.location}</td>
                                     <td>{new Date(proposal.target_date).toLocaleDateString()}</td>
                                     <td>{proposal.status}</td>
-                                    <td><BtnViewApproveProposal 
-                                        proposal={proposal} 
-                                        onApprove={handleProposalApproved} 
-                                     /></td>
+                                    <td>
+                                        <BtnViewApproveProposal
+                                            proposal={proposal}
+                                            onApprove={fetchProposals} // Use fetchProposals to refresh data
+                                        />
+                                    </td>
                                 </tr>
                             ))
                         ) : (

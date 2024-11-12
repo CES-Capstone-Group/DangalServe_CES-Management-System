@@ -789,10 +789,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             # Only filter proposals if the status is 'Barangay-Pending'
             if status == 'BarangayPending':
                 print("it is true")
-                return Proposal.objects.filter(
-                    status__in=['Approved by President'],
-                    partner_community__icontains=barangay  # Adjust this if your partner_community is a comma-separated list
-                )
+                return Proposal.objects.filter(status__in=['Approved by President', 'Partly Approved by Barangay'])
         # Check if the user is an admin
         if user.accountType == 'Admin':
             # Start with a base queryset for admins

@@ -119,8 +119,8 @@ const handleCloseModal = () => {
 
   return (
     <Container fluid className='custom-container'>
-      <Row>
-        <img src={pncHeader} alt="pnc header" />
+      <Row className='justify-content-center'>
+        <img src={pncHeader} alt="pnc header"  style={{maxWidth: '50rem'}}/>
       </Row>
       <Row>
         <Container className='welcomeDashboard'>

@@ -21,7 +21,7 @@ const UnauthorizedPage = () => {
                     <p className="unauthorized-message">
                         Sorry, you do not have permission to access this page.
                     </p>
-                    <Button variant="success" onClick={handleGoBack} className="back-button">
+                    <Button variant="success" onClick={() => navigate("/login")} className="back-button">
                         Go Back
                     </Button>
                 </Col>

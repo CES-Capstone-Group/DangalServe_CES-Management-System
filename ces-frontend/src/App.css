@@ -114,7 +114,7 @@ html {
     /* Adjust icon size if needed */
   }
 
-  .welcomeDashboard h1{
+  .welcomeDashboard h1 {
     font-size: 20px;
   }
 }
@@ -125,7 +125,7 @@ html {
     margin: 1em;
   }
 
-  .welcomeDashboard h1{
+  .welcomeDashboard h1 {
     font-size: 15px;
   }
 
@@ -158,6 +158,30 @@ html {
     transition: 0.3s;
   }
 }
+
+@media (max-width: 768px) {
+
+  .table th,
+  .table td {
+    font-size: 0.8rem;
+    /* Adjust font size */
+    padding: 5px;
+    /* Reduce padding */
+  }
+}
+
+@media (max-width: 768px) {
+  .form-check-label {
+    font-size: 0.8rem;
+    /* Smaller labels */
+  }
+
+  .form-control {
+    font-size: 0.8rem;
+    /* Smaller input fields */
+  }
+}
+
 
 .nav-link.active {
   background-color: #76a577;
@@ -482,13 +506,14 @@ button.fc-Service-button.fc-button.fc-button-primary {
 }
 
 .department-card {
+  padding-left: 0;
+  padding-right: 0;
   cursor: pointer;
   border: 2px solid #71A872 !important;
   border-radius: 8px !important;
-  font-size: x-small;
-  width: 200px !important;
+  width: 225px !important;
   /* Set a fixed width */
-  height: 130px !important;
+  height: 100px !important;
   /* Set a fixed height */
   display: flex;
   flex-direction: column;

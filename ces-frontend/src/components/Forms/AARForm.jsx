@@ -104,7 +104,7 @@ function AfterActivityReport() {
 
                 <h3 className="mt-5">Quantitative Evaluation Parameters</h3>
 
-                <Table bordered>
+                <Table bordered className='tableStyle'>
                     <thead>
                         <tr>
                             <th>Parameters</th>

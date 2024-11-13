@@ -1,3 +1,5 @@
+import { faPenToSquare, faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Row, Col, Form, Modal } from "react-bootstrap";
 
@@ -74,11 +76,11 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
     return (
         <>
             {/* Edit and Delete Buttons */}
-            <Button className="shadow" onClick={handleShowEdit} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '8px', fontSize: '15px' }}>
-                Edit
+            <Button className="shadow" onClick={handleShowEdit} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', marginRight: '10px', fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
-            <Button className="shadow" onClick={handleShowDeleteConfirm} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '15px' }}>
-                Delete
+            <Button className="shadow" onClick={handleShowDeleteConfirm} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white' , fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faTrashAlt} />
             </Button>
 
             {/* **Edit Barangay Modal with Prefilled Values** */}

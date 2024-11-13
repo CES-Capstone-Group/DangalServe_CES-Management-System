@@ -93,7 +93,7 @@ const ManageAnnouncement = () => {
             <td>{announcement.title}</td>
             <td>{announcement.details}</td>
             <td>
-                <Button variant="success link" onClick={() => handleContentClick(announcement.image_url)}>
+                <Button style={{fontSize: '13px'}} variant="success link" onClick={() => handleContentClick(announcement.image_url)}>
                     <FontAwesomeIcon icon={faEye} />
                 </Button>
             </td>
@@ -108,7 +108,7 @@ const ManageAnnouncement = () => {
 
     // Table component
     const NewTable = ({ data }) => (
-        <Table responsive striped hover className="tableStyle">
+        <Table responsive bordered striped hover className="tableStyle">
             <thead>
                 <tr style={{ backgroundColor: "#007200", color: "white" }}>
                     <th>Announcement Title</th>

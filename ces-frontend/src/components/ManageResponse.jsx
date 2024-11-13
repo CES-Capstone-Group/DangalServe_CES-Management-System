@@ -79,7 +79,7 @@ const ManageResponses = () => {
                         <th>J2</th>
                         <th>Suggestions</th>
                     </tr> */}
-                    <tr style={{fontSize: '20px'}}>
+                    <tr>
                         <th rowSpan={2}>ID</th>
                         <th rowSpan={2}>Evaluator Name</th>
                         <th rowSpan={2}>Division/ Department/ Organizing Team</th>
@@ -95,7 +95,7 @@ const ManageResponses = () => {
                         <th colSpan={2}>Organazing Team</th>
                         <th rowSpan={2}>Suggestions</th>
                     </tr>
-                    <tr style={{fontSize: '20px'}}>
+                    <tr>
                         <th>A1</th>
                         <th>A2</th>
                         <th>A3</th>

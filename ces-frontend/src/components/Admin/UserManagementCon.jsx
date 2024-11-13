@@ -68,15 +68,27 @@ const Rows = ({ user_id, username, name, type, department_name, course_name, bar
     return (
         <tr>
             <td>{user_id}</td>
+            <td>{username}</td>
             <td>{name}</td>
             <td>{type}</td>
-            <td>{displayField(department_name, "Not Applicable")}</td>
-            <td>{displayField(course_name, "Not Applicable")}</td>
-            <td>{displayField(barangay_name, "Not Applicable")}</td>
+            {/* <td>{displayField(department_name, "Not Applicable")}</td> */}
+            {/* <td>{displayField(course_name, "Not Applicable")}</td> */}
+            {/* <td>{displayField(barangay_name, "Not Applicable")}</td> */}
             <td>{position}</td>
             <td>{actDate}</td>
             <td>{deacDate}</td>
-            <td>{status}</td>
+            <td>
+                <span
+                    style={{
+                        backgroundColor: status === "Active" ? "green" : "red",
+                        color: 'white',
+                        padding: '6px',
+                        borderRadius: '3px',
+                    }}
+                >
+                    {status}
+                </span>
+            </td>
             <td>
                 <BtnEditDeac
                     account={account}
@@ -92,12 +104,13 @@ const NewTable = ({ data, fetchUsers }) => {
     return (
         <Table responsive striped bordered hover className="tableStyle">
             <thead>
-                <th>Account ID</th>
+                <th>ID</th>
+                <th>Username</th>
                 <th>Name</th>
-                <th>Type of Account</th>
-                <th>Department</th>
-                <th>Course</th>
-                <th>Barangay</th>
+                <th>Account Type</th>
+                {/* <th>Department</th> */}
+                {/* <th>Course</th> */}
+                {/* <th>Barangay</th> */}
                 <th>Position</th>
                 <th>Activation Date</th>
                 <th>Deactivation Date</th>
@@ -143,8 +156,8 @@ const UserManagementCon = () => {
                 username: user.username,
                 name: user.accountType === 'Admin' ? user.adminaccount?.name || 'No Name' :
                     user.accountType === 'Proponent' ? user.proponentaccount?.name || 'No Name' :
-                    user.accountType === 'Brgy. Official' ? user.brgyofficialaccount?.name || 'No Name' :
-                    user.accountType === 'Evaluator' ? user.evaluatoraccount?.name || 'No Name' : 'No Name',
+                        user.accountType === 'Brgy. Official' ? user.brgyofficialaccount?.name || 'No Name' :
+                            user.accountType === 'Evaluator' ? user.evaluatoraccount?.name || 'No Name' : 'No Name',
                 accountType: user.accountType,
                 department_name: user.department_name,
                 course_name: user.course_name,
@@ -179,26 +192,26 @@ const UserManagementCon = () => {
     //search function
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
-      };
-      
-      // Filter users based on the search query
-      const filteredUsers = users.filter(user => {
+    };
+
+    // Filter users based on the search query
+    const filteredUsers = users.filter(user => {
         if (!user || typeof user !== 'object') return false; // Safeguard against unexpected data
         return (
-          (user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.accountType && user.accountType.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.department_name && user.department_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.course_name && user.course_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.barangay_name && user.barangay_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.position && user.position.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.status && user.status.toLowerCase().includes(searchQuery.toLowerCase()))
+            (user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user.accountType && user.accountType.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user.department_name && user.department_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user.course_name && user.course_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user.barangay_name && user.barangay_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user.position && user.position.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user.status && user.status.toLowerCase().includes(searchQuery.toLowerCase()))
         );
-      });
+    });
     //end of search function
 
     return (
         <Container fluid
-        className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0">
+            className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0">
             {/* Row for the Back Button */}
             <Row>
                 <Col xs="auto">

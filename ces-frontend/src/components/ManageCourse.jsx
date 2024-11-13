@@ -80,7 +80,7 @@ const CourseManagement = () => {
             <Table responsive striped bordered hover className="tableStyle">
                 <thead>
                     <tr>
-                        <th>Course ID</th>
+                        <th style={{width: '5%'}}>ID</th>
                         <th>Course Name</th>
                         <th>Department Name</th>
                         <th>Actions</th>

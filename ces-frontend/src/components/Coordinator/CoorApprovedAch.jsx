@@ -25,7 +25,7 @@ const NewTable = (props) => {
     const{data} = props
     return (
         <Table responsive bordered striped hover className="tableStyle">
-            <thead style={{backgroundColor: '#F0F1F0'}}>                
+            <thead>                
                 <th>Award Title</th>
                 <th>Awardee</th>
                 <th>Awarded By</th>

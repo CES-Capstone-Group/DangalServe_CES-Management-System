@@ -1,3 +1,5 @@
+import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Button, Row, Col, Form, Modal } from "react-bootstrap";
 
@@ -10,7 +12,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
     const validateForm = () => {
         const newErrors = {};
 
-        if(!deptName) newErrors.deptName = 'Please enter a Department Name ex: CCS, COE, CHAS';
+        if (!deptName) newErrors.deptName = 'Please enter a Department Name ex: CCS, COE, CHAS';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -29,7 +31,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
 
     // **Handle Edit Form Submission**
     const handleEditSubmit = async () => {
-        if(!validateForm()) return;
+        if (!validateForm()) return;
         const formData = { dept_name: deptName };  // Create form data for department
 
         try {
@@ -83,11 +85,11 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
     return (
         <>
             {/* Edit and Delete Buttons */}
-            <Button className="shadow" onClick={handleShowEdit} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '8px', fontSize: '15px' }}>
-                Edit
+            <Button className="shadow" onClick={handleShowEdit} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', marginRight: '10px', fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
-            <Button className="shadow" onClick={handleShowDeleteConfirm} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '15px' }}>
-                Delete
+            <Button className="shadow" onClick={handleShowDeleteConfirm} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faTrashAlt} />
             </Button>
 
             {/* **Edit Department Modal with Prefilled Values** */}

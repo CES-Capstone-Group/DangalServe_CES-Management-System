@@ -79,7 +79,7 @@ const BrgyManagement = () => {
                 <td>{brgy_id}</td>
                 <td>{brgyName}</td>
                 <td>
-                    <Button variant="success link" onClick={() => handleContentClick(moa)}>
+                    <Button variant="success link" style={{fontSize: '13px'}} onClick={() => handleContentClick(moa)}>
                         <FontAwesomeIcon  icon={faEye} />
                     </Button>
                 </td>
@@ -94,7 +94,7 @@ const BrgyManagement = () => {
             <Table responsive striped bordered hover className="tableStyle">
                 <thead>
                     <tr>
-                        <th>Barangay ID</th>
+                        <th style={{width: '5%'}}>ID</th>
                         <th>Barangay Name</th>
                         <th>MOA</th>
                         <th>Actions</th>

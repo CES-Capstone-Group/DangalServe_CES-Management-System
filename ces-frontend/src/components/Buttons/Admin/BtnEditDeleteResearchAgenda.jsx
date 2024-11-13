@@ -1,3 +1,5 @@
+import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 
@@ -68,11 +70,11 @@ const BtnEditDeleteResearchAgenda = ({ researchAgenda, onResearchAgendaUpdated }
   return (
     <>
       {/* Edit and Delete Buttons */}
-      <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '15px', fontSize: '20px' }}>
-        Edit
+      <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', marginRight: '10px', fontSize: '13px' }}>
+        <FontAwesomeIcon icon={faPenToSquare} />
       </Button>
-      <Button className="shadow" onClick={() => setShowDeleteConfirm(true)} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '20px' }}>
-        Delete
+      <Button className="shadow" onClick={() => setShowDeleteConfirm(true)} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '13px' }}>
+        <FontAwesomeIcon icon={faTrashAlt} />
       </Button>
 
       {/* Edit Research Agenda Modal */}
@@ -85,8 +87,8 @@ const BtnEditDeleteResearchAgenda = ({ researchAgenda, onResearchAgendaUpdated }
             <Form.Group className='mb-3' controlId='Label'>
               <Form.Label className='h5'>Label</Form.Label>
               <InputGroup>
-                <Form.Control 
-                  type='text' 
+                <Form.Control
+                  type='text'
                   value={label}
                   onChange={(e) => setLabel(e.target.value)}
                   required
@@ -97,10 +99,10 @@ const BtnEditDeleteResearchAgenda = ({ researchAgenda, onResearchAgendaUpdated }
             <Form.Group className='mb-3' controlId='AchvImage'>
               <Form.Label className='h5'>Upload your Image (Optional)</Form.Label>
               <InputGroup>
-                <Form.Control 
-                  className="inputFile" 
-                  type="file" 
-                  onChange={(e) => setImage(e.target.files[0])} 
+                <Form.Control
+                  className="inputFile"
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
                   accept="image/*"
                 />
               </InputGroup>

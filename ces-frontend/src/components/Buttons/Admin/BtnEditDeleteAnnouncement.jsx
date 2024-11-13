@@ -1,3 +1,5 @@
+import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 
@@ -12,8 +14,8 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
     const validateForm = () => {
         const newErrors = {};
 
-        if(!title) newErrors.title = 'Please enter an Announcement Title';
-        if(!details) newErrors.details = 'Please enter the Announcement Details';
+        if (!title) newErrors.title = 'Please enter an Announcement Title';
+        if (!details) newErrors.details = 'Please enter the Announcement Details';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -30,7 +32,7 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
     // **Update Announcement Functionality**
     const updateAnnouncement = async (e) => {
         e.preventDefault();
-        if(!validateForm()) return;
+        if (!validateForm()) return;
 
         const announcementData = new FormData();
         announcementData.append("title", title);
@@ -80,11 +82,11 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
     return (
         <>
             {/* Edit and Delete Buttons */}
-            <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '15px', fontSize: '20px' }}>
-                Edit
+            <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', marginRight: '10px', fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
-            <Button className="shadow" onClick={() => setShowDeleteConfirm(true)} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '20px' }}>
-                Delete
+            <Button className="shadow" onClick={() => setShowDeleteConfirm(true)} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faTrashAlt} />
             </Button>
 
             {/* Edit Announcement Modal */}
@@ -97,11 +99,11 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
                         <Form.Group className='mb-3' controlId='AnnouncementTitle'>
                             <Form.Label className='h5'>Announcement Title</Form.Label>
                             <InputGroup>
-                                <Form.Control 
-                                    className='input' 
-                                    type='text' 
+                                <Form.Control
+                                    className='input'
+                                    type='text'
                                     name="title"
-                                    placeholder='' 
+                                    placeholder=''
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     isInvalid={!!errors.title}
@@ -115,12 +117,12 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
                         <Form.Group className='mb-3' controlId='AnnouncementDetails'>
                             <Form.Label className='h5'>Announcement Details</Form.Label>
                             <InputGroup>
-                            <Form.Control 
-                                    className='input' 
-                                    as='textarea' 
+                                <Form.Control
+                                    className='input'
+                                    as='textarea'
                                     name="details"
                                     rows={4}
-                                    placeholder='' 
+                                    placeholder=''
                                     value={details}
                                     onChange={(e) => setDetails(e.target.value)}
                                     isInvalid={!!errors.details}
@@ -134,10 +136,10 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
                         <Form.Group className='mb-3' controlId='AnnouncementImage'>
                             <Form.Label className='h5'>Upload your Image (Optional)</Form.Label>
                             <InputGroup>
-                                <Form.Control 
-                                    className="inputFile" 
-                                    type="file" 
-                                    onChange={(e) => setImage(e.target.files[0])} 
+                                <Form.Control
+                                    className="inputFile"
+                                    type="file"
+                                    onChange={(e) => setImage(e.target.files[0])}
                                     accept="image/*"
                                 />
                             </InputGroup>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faChevronLeft, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faChevronLeft, faEye, faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BtnAddDocument from "./Buttons/Manage/BtnAddDocument";
 
 const ManageDocuments = () => {
@@ -104,14 +104,14 @@ const ManageDocuments = () => {
                 <td>{id}</td>
                 <td>{title}</td>
                 <td>
-                    <Button variant="success link" onClick={() => handleContentClick(file)}> View Document 
-                            {/* <FontAwesomeIcon icon={faEye} /> */}
+                    <Button style={{fontSize: '13px'}} variant="success link" onClick={() => handleContentClick(file)}> 
+                            <FontAwesomeIcon icon={faEye} />
                     </Button>
                 </td>
                 <td>
                     
-                    <Button variant="danger link" onClick={() => handleDeleteDocument(id)}>
-                        <FontAwesomeIcon icon={faTrash} />
+                    <Button style={{fontSize: '13px'}} variant="danger link" onClick={() => handleDeleteDocument(id)}>
+                        <FontAwesomeIcon icon={faTrashAlt} />
                     </Button>
                 </td>
             </tr>
@@ -124,7 +124,7 @@ const ManageDocuments = () => {
             <Table responsive bordered striped hover className="tableStyle">
                 <thead>
                     <tr>
-                        <th>Document ID</th>
+                        <th style={{width: '5%'}}>ID</th>
                         <th>Document Title</th>
                         <th>Document File</th>
                         <th>Actions</th>

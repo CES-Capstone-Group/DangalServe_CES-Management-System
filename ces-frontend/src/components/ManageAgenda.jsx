@@ -78,7 +78,7 @@ const ManageAgenda = () => {
                     variant="link"
                     className="viewBtn"
                     onClick={() => handleContentClick(agenda.image_url)}
-                    style={{ backgroundColor: '#71A872', color: 'white' }}
+                    style={{ backgroundColor: '#71A872', color: 'white', fontSize: '13px' }}
                 >
                     <FontAwesomeIcon icon={faEye} />
                 </Button>
@@ -95,7 +95,7 @@ const ManageAgenda = () => {
 
     // Table component
     const NewTable = ({ data }) => (
-        <Table responsive striped hover className="tableStyle">
+        <Table responsive bordered striped hover className="tableStyle">
             <thead>
                 <tr> {/* Dark green header */}
                     <th>Research Agenda Label</th>

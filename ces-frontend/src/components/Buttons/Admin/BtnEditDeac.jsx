@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
-const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
+import { jwtDecode } from "jwt-decode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(account); // Initialize formData with account details
     // console.log("account is", account);
@@ -100,7 +102,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
     useEffect(() => {
         // console.log(account)
         if (account) {
-            if(account.accountType === "Proponent"){
+            if (account.accountType === "Proponent") {
                 const matchedDepartment = departments.find(dept => dept.dept_name === account.department);
                 const matchedCourse = courses.find(course => course.course_name === account.course);
                 // console.log("matched course: ", matchedCourse)
@@ -110,7 +112,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
                     course: matchedCourse ? matchedCourse.course_id : ""  // Set course_id if found
                 });
             }
-            else if(account.accountType === "Brgy. Official"){
+            else if (account.accountType === "Brgy. Official") {
                 const matchedBarangay = barangays.find(b => b.brgy_name === account.barangay);
                 setFormData({
                     ...account,
@@ -120,7 +122,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
                 // console.log("brgy :", formData.barangay)
             }
         }
-    },  [account, departments, courses]);
+    }, [account, departments, courses]);
 
     // Pre-fill department and courses based on the account data when modal is shown
     useEffect(() => {
@@ -136,7 +138,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
             ...prevState,
             [name]: value,
         }));
-    
+
         // Filter courses when department changes
         if (name === "department") {
             setUserChangedDepartment(true);
@@ -173,7 +175,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
                 },
                 body: JSON.stringify(formData), // Send the updated form data
             });
-    
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -184,11 +186,11 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
             console.error("Failed to update account:", error);
         }
     };
-    
+
 
     const handleDeactivate = async () => {
         const newStatus = formData.status === "Active" ? "Inactive" : "Active";
-    
+
         // Send only the status in the request
         const updatedData = {
             status: newStatus,
@@ -202,11 +204,11 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
                 },
                 body: JSON.stringify(updatedData), // Only send status change
             });
-    
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-    
+
             const data = await response.json();
             onSave();  // Notify the parent to refresh data
             setFormData((prev) => ({ ...prev, status: newStatus })); // Update status locally
@@ -218,15 +220,28 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
 
     return (
         <>
-            <Button style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} className="mb-2" onClick={handleShow}>
-                View/Edit
+            <Button style={{ backgroundColor: "#71A872", border: '0px', color: 'white', marginRight: '10px', fontSize: '12px' }} onClick={handleShow}>
+                <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
 
             {currentUser?.user_id !== account.user_id && (
-            <Button style={{ backgroundColor: formData.status === "Active" ? "#ff3232" : "#71A872", color: "white", border: '0px' }} onClick={handleDeactivate}>
-                {formData.status === "Active" ? "Deactivate" : "Activate"}
-            </Button>
+                <Button
+                    style={{
+                        backgroundColor: formData.status === "Active" ? "#ff2322" : "#71A872",
+                        color: "white",
+                        border: "0px",
+                        fontSize: '12px'
+                    }}
+                    onClick={handleDeactivate}
+                >
+                    {/* Include FontAwesomeIcon inside the button */}
+                    <FontAwesomeIcon
+                        icon={formData.status === "Active" ? faTimes : faCheck}
+                       
+                    />
+                </Button>
             )}
+
 
             <Modal show={show} onHide={handleClose} backdrop="static" centered size="lg">
                 <Modal.Header closeButton>
@@ -289,8 +304,8 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
                                 <Form.Group as={Row} className="mb-3">
                                     <Form.Label column sm={4}>Department</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Select 
-                                            name="department" 
+                                        <Form.Select
+                                            name="department"
                                             value={formData.department}
                                             onChange={handleChange}
                                         >
@@ -330,9 +345,9 @@ const BtnEditDeac = ({ account, onDeactivate, onSave}) => {
                         {formData.accountType === "Brgy. Official" && (
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={4}>Barangay</Form.Label>
-                                <Col sm={8}>                                        
-                                    <Form.Select 
-                                        name="barangay" 
+                                <Col sm={8}>
+                                    <Form.Select
+                                        name="barangay"
                                         value={formData.barangay}
                                         onChange={handleChange}
                                     >

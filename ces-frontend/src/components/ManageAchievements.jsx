@@ -65,7 +65,7 @@ const ManageAchievements = () => {
                 <td>{achievement.awarded_by}</td>
                 <td>{achievement.date_awarded}</td>
                 <td>
-                    <Button variant="success link" onClick={() => handleContentClick(achievement.image_url)}>
+                    <Button style={{fontSize: '13px'}} variant="success link" onClick={() => handleContentClick(achievement.image_url)}>
                         <FontAwesomeIcon icon={faEye} />
                     </Button>
                 </td>

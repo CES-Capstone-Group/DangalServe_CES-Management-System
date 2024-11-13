@@ -35,7 +35,7 @@ const UserAdminPage = () => {
             paddingRight: "5rem",
             paddingBottom: "20px", // Adjust padding as needed
           }}
-          xs={"10"}
+          xs={"12"}
           sm={sidebarOpen ? "8" : "10"}
           md={sidebarOpen ? "8" : "11"}
           lg={sidebarOpen ? "9" : "11"}

@@ -3,7 +3,6 @@
   background-color: #eaf3e8 !important;
   color: #333 !important;
   border: 2px solid #b9b9b9 !important;
-  font-size: large;
   width: 100%; /* Ensure the table takes up the full width */
   overflow-x: auto; /* Add horizontal scroll for smaller screens */
 }
@@ -15,7 +14,7 @@
   }
 
   .tableStyle th, .tableStyle td {
-      padding: 8px; /* Reduce padding for better fit */
+      padding: 6px; /* Reduce padding for better fit */
   }
 
   .tableStyle th {
@@ -30,7 +29,7 @@
   }
 
   .tableStyle th, .tableStyle td {
-      padding: 6px; /* Further reduce padding */
+      padding: 4px; /* Further reduce padding */
   }
 }
 
@@ -39,26 +38,24 @@
   background-color: #045c2a !important;
   color: rgb(253, 253, 253) !important;
   font-weight: bold;
-  padding: 8px !important;
-  text-align: center;
-  vertical-align: middle;
+  padding: 8px;
+  text-align: center; /* Center text */
+  vertical-align: middle; /* Align text vertically in the middle */
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 /* Styles for table cells */
 .tableStyle td {
-  padding: 8px !important;
-  text-align: center;
-  vertical-align: middle;
+  text-align: center; /* Center the text */
+  vertical-align: middle; /* Align text in the middle vertically */
+  font-size: 14px !important; /* Smaller font size for a sleeker look */
+  line-height: 1 !important; /* Tighter line height */
 }
+
 
 /* Alternating row background color */
 .table-striped tbody tr:nth-of-type(odd) > * {
-  background-color: #c0fcc0 !important;
-}
-
-/* Highlight row on hover */
-.tableStyle tbody tr:hover > * {
-  background-color: #99da7f !important;
+  background-color: #f1f1f1 !important;
 }
 
 /* Style for buttons in the Actions column */

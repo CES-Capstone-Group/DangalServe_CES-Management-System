@@ -152,7 +152,7 @@ const AdminMainContent = () => {
   return (
     <Container fluid className='custom-container'>
       <Row className='justify-content-center'>
-        <img src={pncHeader} alt="pnc header" style={{maxWidth: '50rem'}}/>
+        <img src={pncHeader} alt="pnc header" style={{ maxWidth: '50rem' }} />
       </Row>
       <Row>
         <Container className='welcomeDashboard'>
@@ -223,29 +223,56 @@ const AdminMainContent = () => {
           <br />
 
           {/* List of Achievements */}
-          <Row>
+          <Row className='g-3'>
             {achievements.length > 0 ? (
               achievements.map((achievement) => (
-                <Col md={4} key={achievement.id}>
-                  <Card className="position-relative mb-3" style={{ height: "27rem", msOverflowY: "auto"  }} id='conCard'>
-                    <Card.Img variant="top" className='conImg ' src={achievement.image_url || "/placeholder.png"} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}
-                      style={{ cursor: 'pointer' }} />
-
-                    <Card.Body>
-                      <Card.Title style={{ fontStyle: 'bold' }}>{achievement.award_title}</Card.Title>
-                      <Card.Text fluid>
-                        <strong>Awardee:</strong> {achievement.awardee}<br />
-                        <strong>Date:</strong> {achievement.date_awarded}<br />
-                        <strong>Awarded by:</strong> {achievement.awarded_by}
-                      </Card.Text>
-                      <h4 role="button" className="text-success" onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement)}>See more</h4>
-                    </Card.Body>
+                <Col xs={12} className='mb-3' key={achievement.id}>
+                  <Card className="h-100" id='conCard'>
+                    <Row className="g-0 flex-lg-row flex-column"> {/* Responsive row */}
+                      <Col lg={4} className="d-flex justify-content-center align-items-center"> {/* Image column */}
+                        <Card.Img
+                          variant="top"
+                          className="conImg"
+                          src={achievement.image_url || "/placeholder.png"}
+                          onClick={() => handleAchImageClick(
+                            achievement.image_url || "/placeholder.png",
+                            achievement
+                          )}
+                        />
+                      </Col>
+                      <Col lg={8}> {/* Content column */}
+                        <Card.Body className="d-flex flex-column justify-content-between">
+                          <div>
+                            <Card.Title style={{ fontStyle: 'bold' }}>
+                              {achievement.award_title}
+                            </Card.Title>
+                            <Card.Text className='mb-3'>
+                              <strong>Awardee:</strong> {achievement.awardee} <br />
+                              <strong>Date:</strong> {achievement.date_awarded} <br />
+                              <strong>Awarded by:</strong> {achievement.awarded_by}
+                            </Card.Text>
+                          </div>
+                          <div className="">
+                            <h6
+                              role="button"
+                              className="text-success"
+                              onClick={() => handleAchImageClick(
+                                achievement.image_url || "/placeholder.png",
+                                achievement
+                              )}
+                            >
+                              See more
+                            </h6>
+                          </div>
+                        </Card.Body>
+                      </Col>
+                    </Row>
                   </Card>
                 </Col>
               ))
             ) : (
               <Col>
-                <p className='text-muted'>No achievements found.</p>
+                <p className="text-muted">No achievements found.</p>
               </Col>
             )}
 
@@ -263,7 +290,7 @@ const AdminMainContent = () => {
                 <strong>Date:</strong> {selectedAchievement?.date_awarded}<br />
                 <strong>Awarded by:</strong> {selectedAchievement?.awarded_by}
 
-                 
+
               </Modal.Body>
             </Modal>
           </Row>
@@ -283,26 +310,51 @@ const AdminMainContent = () => {
           <Row>
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
-                <Col md={4} key={announcement.id}>
-                  <Card className="position-relative mb-3" style={{ height: "27rem", msOverflowY: "auto"  }} id='conCard'>
-                    <Card.Img
-                      className='conImg'
-                      variant="top"
-                      src={announcement.image || "/placeholder.png"}
-                      onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}
-                      style={{ cursor: 'pointer' }} />
-
-                    <Card.Body>
-                      <Card.Title>{announcement.title}</Card.Title>
-                      <Card.Text className='truncate-text'>{announcement.details}</Card.Text>
-                      <h4 role="button" className="text-success" onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement )} >See more</h4>
-                    </Card.Body>
+                <Col xs={12} className='mb-3' key={announcement.id}>
+                  <Card className="h-100" id='conCard'>
+                    <Row className="g-0 flex-lg-row flex-column"> {/* Responsive row */}
+                      <Col lg={4} className="d-flex justify-content-center align-items-center"> {/* Image column */}
+                        <Card.Img
+                          variant="top"
+                          className="conImg"
+                          src={announcement.image || "/placeholder.png"}
+                          onClick={() => handleAnnImageClick(
+                            announcement.image_url || "/placeholder.png",
+                            announcement
+                          )}
+                        />
+                      </Col>
+                      <Col lg={8}> {/* Content column */}
+                        <Card.Body className="d-flex flex-column justify-content-between">
+                          <div>
+                            <Card.Title className='mb-3' style={{ fontStyle: 'bold' }}>
+                              {announcement.title}
+                            </Card.Title>
+                            <Card.Text className="truncate-text mb-5">
+                              {announcement.details}
+                            </Card.Text>
+                          </div>
+                          <div className="mt-auto">
+                            <h6
+                              role="button"
+                              className="text-success"
+                              onClick={() => handleAnnImageClick(
+                                announcement.image_url || "/placeholder.png",
+                                announcement
+                              )}
+                            >
+                              See more
+                            </h6>
+                          </div>
+                        </Card.Body>
+                      </Col>
+                    </Row>
                   </Card>
                 </Col>
               ))
             ) : (
               <Col>
-                <p className='text-muted'>No announcements found.</p>
+                <p className="text-muted">No announcements found.</p>
               </Col>
             )}
 

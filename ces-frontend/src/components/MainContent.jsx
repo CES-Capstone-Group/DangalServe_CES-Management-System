@@ -45,38 +45,38 @@ const MainContent = () => {
     fetchResearchAgendas();
   }, []);
 
- // Function to handle opening the modal with the clicked image
- const handleAgendaImageClick = (imageUrl, agenda = null) => {
-  setSelectedAgendaImage(imageUrl);
-  setShowAgendaImageModal(true);
-  setSelectedResearchAgenda(agenda);
-};
+  // Function to handle opening the modal with the clicked image
+  const handleAgendaImageClick = (imageUrl, agenda = null) => {
+    setSelectedAgendaImage(imageUrl);
+    setShowAgendaImageModal(true);
+    setSelectedResearchAgenda(agenda);
+  };
 
-const handleAnnImageClick = (imageUrl, announcement = null) => {
-  setSelectedAnnImage(imageUrl);
-  setShowAnnImageModal(true);
-  setSelectedAnnouncement(announcement);
-};
+  const handleAnnImageClick = (imageUrl, announcement = null) => {
+    setSelectedAnnImage(imageUrl);
+    setShowAnnImageModal(true);
+    setSelectedAnnouncement(announcement);
+  };
 
-const handleAchImageClick = (imageUrl, achievement = null) => {
-  setSelectedAchImage(imageUrl);
-  setShowAchImageModal(true);
-  setSelectedAchievement(achievement); 
-};
+  const handleAchImageClick = (imageUrl, achievement = null) => {
+    setSelectedAchImage(imageUrl);
+    setShowAchImageModal(true);
+    setSelectedAchievement(achievement);
+  };
 
-const handleCloseModal = () => {
-  setShowAgendaImageModal(false);
-  setShowAchImageModal(false);
-  setShowAnnImageModal(false);
+  const handleCloseModal = () => {
+    setShowAgendaImageModal(false);
+    setShowAchImageModal(false);
+    setShowAnnImageModal(false);
 
-  setSelectedAgendaImage(null);
-  setSelectedAchImage(null);
-  setSelectedAnnImage(null);
+    setSelectedAgendaImage(null);
+    setSelectedAchImage(null);
+    setSelectedAnnImage(null);
 
-  setSelectedResearchAgenda(null);
-  setSelectedAnnouncement(null);
-  setSelectedAchievement(null); 
-};
+    setSelectedResearchAgenda(null);
+    setSelectedAnnouncement(null);
+    setSelectedAchievement(null);
+  };
 
   // Fetch achievements data from the server
   const fetchAchievements = async () => {
@@ -120,7 +120,7 @@ const handleCloseModal = () => {
   return (
     <Container fluid className='custom-container'>
       <Row className='justify-content-center'>
-        <img src={pncHeader} alt="pnc header"  style={{maxWidth: '50rem'}}/>
+        <img src={pncHeader} alt="pnc header" style={{ maxWidth: '50rem' }} />
       </Row>
       <Row>
         <Container className='welcomeDashboard'>
@@ -138,10 +138,10 @@ const handleCloseModal = () => {
               {researchAgendas.length > 0 ? (
                 researchAgendas.map((agenda, index) => (
                   <div key={agenda.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                    <img onClick={() => handleAgendaImageClick(agenda.image_url || "/placeholder.png", agenda)} 
-                    id='research-agenda-img' 
-                    src={agenda.image_url || '/placeholder.png'} className="d-block w-100" 
-                    alt={agenda.label} />
+                    <img onClick={() => handleAgendaImageClick(agenda.image_url || "/placeholder.png", agenda)}
+                      id='research-agenda-img'
+                      src={agenda.image_url || '/placeholder.png'} className="d-block w-100"
+                      alt={agenda.label} />
                   </div>
                 ))
               ) : (
@@ -178,45 +178,75 @@ const handleCloseModal = () => {
           </Row>
           <br />
 
-          <Row>
+          <Row className='g-3 mb-4'>
             {achievements.length > 0 ? (
               achievements.map((achievement) => (
-                <Col md={4} key={achievement.id}>
-                  <Card className="position-relative mb-3" id='conCard'>
-                    <Card.Img variant="top" className='conImg' src={achievement.image || 'placeholder.png'} onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )}
-                      style={{ cursor: 'pointer' }} />
-                    <Card.Body>
-                      <Card.Title className='h1'>{achievement.award_title}</Card.Title>
-                      <Card.Text fluid>
-                        <strong>Awardee:</strong> {achievement.awardee}<br />
-                        <strong>Date:</strong> {achievement.date_awarded}<br />
-                        <strong>Awarded by:</strong> {achievement.awarded_by}
-                      </Card.Text>
-                      <h4 role="button" className="text-success" onClick={() => handleAchImageClick(achievement.image_url || "/placeholder.png", achievement )}>See more</h4>
-                    </Card.Body>
+                <Col xs={12} className='mb-3'  key={achievement.id}>
+                  <Card className="h-100" id='conCard'>
+                    <Row className="g-0 flex-lg-row flex-column"> {/* Responsive row */}
+                      <Col lg={4} className="d-flex justify-content-center align-items-center"> {/* Image column */}
+                        <Card.Img
+                          variant="top"
+                          className="conImg"
+                          src={achievement.image_url || "/placeholder.png"}
+                          onClick={() => handleAchImageClick(
+                            achievement.image_url || "/placeholder.png",
+                            achievement
+                          )}
+                        />
+                      </Col>
+                      <Col lg={8}> {/* Content column */}
+                        <Card.Body className="d-flex flex-column justify-content-between">
+                          <div>
+                            <Card.Title style={{ fontStyle: 'bold' }}>
+                              {achievement.award_title}
+                            </Card.Title>
+                            <Card.Text className='mb-3'>
+                              <strong>Awardee:</strong> {achievement.awardee} <br />
+                              <strong>Date:</strong> {achievement.date_awarded} <br />
+                              <strong>Awarded by:</strong> {achievement.awarded_by}
+                            </Card.Text>
+                          </div>
+                          <div className="">
+                            <h6
+                              role="button"
+                              className="text-success"
+                              onClick={() => handleAchImageClick(
+                                achievement.image_url || "/placeholder.png",
+                                achievement
+                              )}
+                            >
+                              See more
+                            </h6>
+                          </div>
+                        </Card.Body>
+                      </Col>
+                    </Row>
                   </Card>
                 </Col>
               ))
             ) : (
-              <p className='text-muted'>No achievements found</p>
+              <Col>
+                <p className="text-muted">No achievements found.</p>
+              </Col>
             )}
           </Row>
 
-           {/* Modal for viewing full image */}
-           <Modal size='lg' show={showAchImageModal} onHide={handleCloseModal} centered>
-              <Modal.Header closeButton>
+          {/* Modal for viewing full image */}
+          <Modal size='lg' show={showAchImageModal} onHide={handleCloseModal} centered>
+            <Modal.Header closeButton>
 
-              </Modal.Header>
-              <Modal.Body className="text-center">
-                {selectedAchImage && (
-                  <img src={selectedAchImage} alt="Full Size" style={{ width: '100%' }} />
-                )}
-                <h1>{selectedAchievement?. award_title}</h1>
-                <strong>Awardee:</strong> {selectedAchievement?.awardee}<br />
-                <strong>Date:</strong> {selectedAchievement?.date_awarded}<br />
-                <strong>Awarded by:</strong> {selectedAchievement?.awarded_by}
-              </Modal.Body>
-            </Modal>
+            </Modal.Header>
+            <Modal.Body className="text-center">
+              {selectedAchImage && (
+                <img src={selectedAchImage} alt="Full Size" style={{ width: '100%' }} />
+              )}
+              <h1>{selectedAchievement?.award_title}</h1>
+              <strong>Awardee:</strong> {selectedAchievement?.awardee}<br />
+              <strong>Date:</strong> {selectedAchievement?.date_awarded}<br />
+              <strong>Awarded by:</strong> {selectedAchievement?.awarded_by}
+            </Modal.Body>
+          </Modal>
 
           {/* Announcements Section */}
           <Row>
@@ -229,26 +259,54 @@ const handleCloseModal = () => {
           <Row>
             {announcements.length > 0 ? (
               announcements.map((announcement) => (
-                <Col md={4} key={announcement.id}>
-                  <Card scrollable className="position-relative mb-3" style={{height: "27rem", msOverflowY: "auto"}} id='conCard'>
-                  <Card.Img 
-                    className='conImg' 
-                    variant="top" 
-                    src={announcement.image || "/placeholder.png"} 
-                    onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement)}                      
-                    style={{ cursor: 'pointer' }} />
-                    <Card.Body>
-                      <Card.Title>{announcement.title}</Card.Title>
-                      <Card.Text className='truncate-text'>{announcement.details}</Card.Text>
-                      <h4 role="button" className="text-success " onClick={() => handleAnnImageClick(announcement.image_url || "/placeholder.png", announcement )} >See more</h4>
-                    </Card.Body>
+                <Col xs={12} className='mb-3' key={announcement.id}>
+                  <Card className="h-100" id='conCard'>
+                    <Row className="g-0 flex-lg-row flex-column"> {/* Responsive row */}
+                      <Col lg={4} className="d-flex justify-content-center align-items-center"> {/* Image column */}
+                        <Card.Img
+                          variant="top"
+                          className="conImg"
+                          src={announcement.image || "/placeholder.png"}
+                          onClick={() => handleAnnImageClick(
+                            announcement.image_url || "/placeholder.png",
+                            announcement
+                          )}
+                        />
+                      </Col>
+                      <Col lg={8}> {/* Content column */}
+                        <Card.Body className="d-flex flex-column justify-content-between">
+                          <div>
+                            <Card.Title className='mb-3' style={{ fontStyle: 'bold' }}>
+                              {announcement.title}
+                            </Card.Title>
+                            <Card.Text className="truncate-text mb-5">
+                              {announcement.details}
+                            </Card.Text>
+                          </div>
+                          <div className="mt-auto">
+                            <h6
+                              role="button"
+                              className="text-success"
+                              onClick={() => handleAnnImageClick(
+                                announcement.image_url || "/placeholder.png",
+                                announcement
+                              )}
+                            >
+                              See more
+                            </h6>
+                          </div>
+                        </Card.Body>
+                      </Col>
+                    </Row>
                   </Card>
                 </Col>
               ))
             ) : (
-              <p className='text-muted'>No announcements found</p>
+              <Col>
+                <p className="text-muted">No announcements found.</p>
+              </Col>
             )}
-            
+
 
             {/* Modal for viewing full image */}
             <Modal size='lg' show={showAnnImageModal} onHide={handleCloseModal} centered>

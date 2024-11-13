@@ -72,7 +72,7 @@ const DepartmentManagement = () => {
             <Table responsive striped bordered hover className="tableStyle">
                 <thead>
                     <tr>
-                        <th>Department ID</th>
+                        <th style={{width: '5%'}}>ID</th>
                         <th>Department Name</th>
                         <th>Actions</th>
                     </tr>

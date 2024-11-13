@@ -8,7 +8,6 @@ const AdminDeptApprovedPro = () => {
     const { departmentId } = useParams(); // Retrieve the department ID from the URL
     const [departmentProposals, setDepartmentProposals] = useState([]);
     const [departmentName, setDepartmentName] = useState("");
-    const [events, setEvents] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -19,7 +18,6 @@ const AdminDeptApprovedPro = () => {
             setDepartmentName(location.state.departmentName);
         } else {
             // Fetch data if not available in location state
-            // Fetch proposals for the departmentId here as a fallback
             const fetchDepartmentProposals = async () => {
                 const token = localStorage.getItem("access_token");
                 if (!token) {
@@ -65,17 +63,29 @@ const AdminDeptApprovedPro = () => {
     }, [departmentId, location.state]);
 
     const handleProposalClick = (proposal) => {
-        const filteredEvents = events.filter(
-            (event) => event.proposal_id === proposal.proposal_id
-        );
-        setEvents(filteredEvents);
+        // Fetch the events related to the clicked proposal from your backend
+        const fetchProposalEvents = async () => {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/activity-schedules/?proposal=${proposal.proposal_id}`);
+                if (response.ok) {
+                    const eventData = await response.json();
+                    navigate(`/admin/event-page`, { 
+                        state: { 
+                            proposalEvents: eventData, 
+                            proposalName: proposal.title 
+                        } 
+                    });
+                } else {
+                    console.error("Error fetching proposal events:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error fetching proposal events:", error);
+            }
+        };
 
-        navigate(`/admin/approved-proposal/${proposal.proposal_id}`, { state: { proposalEvents: filteredEvents, proposalName : proposal.title } });
+        fetchProposalEvents();
     };
 
-
-
-    
     return (
         <Container>
             <Row>

@@ -68,6 +68,7 @@ import ManageQuestions from './components/ManageQuestions.jsx';
 import AdminEventPage from './components/Admin/AdminEventPage.jsx';
 import EvalCreate from './components/Evaluator/EvalCreate.jsx';
 import ImpactEvalForm from './components/Forms/ImpactEvalForm.jsx';
+import AdminEventDetailsPage from './components/Admin/AdminEventDetailsPage.jsx';
 // import EvalFormManagement from './components/EvalFormManagement.jsx';
 
 const App = () => {
@@ -111,7 +112,8 @@ const App = () => {
               <Route path='pending-proposal' element={<AdminPenProposal />} />
               <Route path='approved-proposal' element={<AdminApprovedPro />} />
               <Route path='/admin/approved-proposal/:departmentId' element={<AdminDeptApprovedPro />} />
-              <Route path='/admin/approved-proposal/:proposalId' element={<AdminEventPage />} />
+              <Route path='/admin/event-page' element={<AdminEventPage />} />
+              <Route path="/admin/event-detail" element={<AdminEventDetailsPage />} />
               <Route path='pending-achievements' element={<AdminPenAchievements />} />
               <Route path='approved-achievements' element={<AdminApprovedAch />} />
               <Route path='resched' element={<AdminEventRequest />} />

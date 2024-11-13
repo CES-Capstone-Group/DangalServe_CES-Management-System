@@ -33,7 +33,8 @@ function AdminCalendar() {
                     title: event.activity_title,
                     start: `${event.target_date}T${event.target_time}`,
                     extendedProps: {
-                        proposal: event.proposal_title // Assume you have 'proposal_title' in your backend
+                        proposal: event.proposal_title, // Assume you have 'proposal_title' in your backend
+                        file: event.file,
                     }
                 }));
                 setEvents(formattedEvents);  // Set the events into state
@@ -91,7 +92,7 @@ function AdminCalendar() {
                 },
             });
     
-            if (response.ok) {
+            if (responsse.ok) {
                 const data = await response.json();
                 setProposals(data);
                 console.log("Proposals:", data); 
@@ -117,35 +118,9 @@ function AdminCalendar() {
 
     const addNewEvent = (eventData) => {
         const calendarApi = calendarRef.current.getApi();
-        calendarApi.addEvent(eventData);  // Add the new event to the calendar
-    
-        const newEvent = {
-            activity_title: eventData.title,
-            target_date: eventData.start.split('T')[0],
-            target_time: eventData.start.split('T')[1],
-            proposal: eventData.extendedProps.proposal  // Using proposal ID directly
-        };
-    
-        fetch('http://127.0.0.1:8000/api/activity-schedules/create/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newEvent),
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text) });
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('New event added to backend:', data);
-        })
-        .catch(error => {
-            console.error('Error adding event to backend:', error.message);
-        });
+        calendarApi.addEvent(eventData); // Add the new event to the calendar
     };
+    
     
     
     // Handle year change from the combo box

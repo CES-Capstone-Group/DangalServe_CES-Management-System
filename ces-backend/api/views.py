@@ -698,23 +698,14 @@ def announcement_detail(request, pk):
             serializedData.save()
             return Response(serializedData.data)
         return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-# POST view for creating a new ActivitySchedule
-# @api_view(['POST'])
-# def create_activity_schedule(request):
-#     serializedData = ActivityScheduleSerializer(data=request.data, context={'request': request})
-#     if serializedData.is_valid():
-#         serializedData.save()
-#         return Response(serializedData.data, status=status.HTTP_201_CREATED)
-#     return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_activity_schedule(request):
-    serializedData = ActivityScheduleSerializer(data=request.data)
-    if serializedData.is_valid():
-        serializedData.save()
-        return Response(serializedData.data, status=status.HTTP_201_CREATED)
-    return Response(serializedData.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = ActivityScheduleSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # GET view for retrieving all ActivitySchedules
 @api_view(['GET'])
@@ -733,7 +724,6 @@ def get_activity_schedule_detail(request, pk):
 
     serializedData = ActivityScheduleSerializer(activity_schedule, context={'request': request})
     return Response(serializedData.data)
-
 
 
 # GET: Retrieve all documents

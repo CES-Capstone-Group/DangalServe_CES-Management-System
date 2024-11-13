@@ -5,11 +5,12 @@ import { Button, Modal, Row, Col, Form, InputGroup, Container } from "react-boot
 
 const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selectedDate, addNewEvent }) => {
     const [fileInputs, setFileInputs] = useState([{ id: 1 }]);
-    const [activityTitle, setActivityTitle] = useState(""); // For capturing activity title
-    const [targetTime, setTargetTime] = useState(""); // For capturing target time  
-    const [manualDate, setManualDate] = useState(selectedDate || new Date().toISOString().split('T')[0]); // Default to today's date if not selected
-    const [proposalTitle, setProposalTitle] = useState("");  // For capturing proposal title
-    const [proposals, setProposals] = useState([]);//for drop down menu
+    const [files, setFiles] = useState([]); // Changed to an array to handle multiple files
+    const [activityTitle, setActivityTitle] = useState(""); 
+    const [targetTime, setTargetTime] = useState("");  
+    const [manualDate, setManualDate] = useState(selectedDate || new Date().toISOString().split('T')[0]);
+    const [proposalTitle, setProposalTitle] = useState(""); 
+    const [proposals, setProposals] = useState([]);
     const [error, setError] = useState(null);
     const [loadingProposals, setLoadingProposals] = useState(true);
     
@@ -19,10 +20,11 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
             return;
         }
     
-        const eventStart = `${manualDate}T${targetTime}`;
+        // Format date and time correctly
+        const formattedDate = new Date(manualDate).toISOString().split('T')[0];
+        const formattedTime = targetTime.length === 5 ? `${targetTime}:00` : targetTime;
     
-        console.log("Selected proposal title:", proposalTitle);
-        const selectedProposal = proposals.find(proposal => 
+        const selectedProposal = proposals.find(proposal =>
             proposal.title.trim().toLowerCase() === proposalTitle.trim().toLowerCase()
         );
     
@@ -33,58 +35,58 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     
         const proposalId = selectedProposal.proposal_id;
     
-        const newEvent = {
-            title: activityTitle,
-            start: eventStart,
-            extendedProps: {
-                proposal: proposalId  // Correctly setting proposal ID here
+        // Create FormData for API request
+        const formData = new FormData();
+        formData.append("activity_title", activityTitle);
+        formData.append("target_date", formattedDate);
+        formData.append("target_time", formattedTime);
+        formData.append("proposal", proposalId);
+    
+        // Append each file to FormData
+        if (files.length > 0) {
+            files.forEach((file, index) => {
+                formData.append(`file_${index}`, file); // Use unique keys for each file
+            });
+        } else {
+            console.warn("No files to upload.");
+        }
+    
+        // Debug: Log FormData content
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+    
+        // Send the formData to the backend
+        fetch('http://127.0.0.1:8000/api/activity-schedules/create/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`
+                // Note: Do NOT set 'Content-Type'; the browser will handle it
             }
-        };
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('New event added to backend:', data);
+        })
+        .catch(error => {
+            console.error('Error adding event to backend:', error.message);
+        });
     
-        addNewEvent(newEvent);
+        // Close the modal and reset fields
         handleCloseModal();
-    
         setActivityTitle("");
         setTargetTime("");
-        setManualDate(new Date().toISOString().split('T')[0]);
+        setManualDate(new Date().toISOString().split("T")[0]);
         setProposalTitle("");
+        setFiles([]); // Reset files
     };
     
-     // Fetch proposals from API
-     const fetchProposals = async () => {
-        const token = localStorage.getItem("access_token");
-        if (!token) {
-            console.error("No token found.");
-            setLoadingProposals(false);
-            return;
-        }
-
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved%20by%20Barangay", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setProposals(data); // Use correct state setter here
-            } else {
-                console.error("Error fetching approved proposals:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error fetching approved proposals:", error);
-            setError("Failed to load proposals");
-        } finally {
-            setLoadingProposals(false);
-        }
-    };
-    
-    useEffect(() => {
-        fetchProposals();
-    }, []);
 
     // Handle adding a new file input field
     const handleAddMoreFile = () => {
@@ -98,9 +100,46 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
 
     // Handle file input change
     const handleFileChange = (e, id) => {
-        const files = e.target.files;
-        console.log(`Files for input ${id}:`, files);
+        const selectedFiles = Array.from(e.target.files); // Convert FileList to an array
+        setFiles(prevFiles => [...prevFiles, ...selectedFiles]); // Add new files to state
+        console.log(`Files for input ${id}:`, selectedFiles);
     };
+
+    useEffect(() => {
+        // Fetch proposals from API
+        const fetchProposals = async () => {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                console.error("No token found.");
+                setLoadingProposals(false);
+                return;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved%20by%20Barangay", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setProposals(data);
+                } else {
+                    console.error("Error fetching approved proposals:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error fetching approved proposals:", error);
+                setError("Failed to load proposals");
+            } finally {
+                setLoadingProposals(false);
+            }
+        };
+
+        fetchProposals();
+    }, []);
 
     // Format target time for HTML input
     const handleTimeChange = (e) => {
@@ -113,13 +152,12 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
             <div>
                 <Button
                     style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }}
-                    onClick={handleShowModal} // Show the modal when clicked
+                    onClick={handleShowModal}
                 >
                     Add Schedule
                 </Button>
             </div>
 
-            {/* Modal for Activity Details */}
             <Modal backdrop="static" centered size="lg" show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Button onClick={handleCloseModal} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
@@ -130,17 +168,17 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                         <Form.Group className="mb-3" as={Row} controlId="proposalTitle">
                             <Form.Label column sm={2}>Proposal:</Form.Label>
                             <Col>
-                            <Form.Select
-                                value={proposalTitle}
-                                onChange={(e) => setProposalTitle(e.target.value)}  // Bind to state
-                            >
-                                <option value="" disabled>Select Proposal</option>
-                                {proposals.map((proposal) => (
-                                    <option key={proposal.id} value={proposal.title}> {/* Use proposal.id here */}
-                                        {proposal.title} {/* Display proposal title */}
-                                    </option>
-                                ))}
-                            </Form.Select>
+                                <Form.Select
+                                    value={proposalTitle}
+                                    onChange={(e) => setProposalTitle(e.target.value)}
+                                >
+                                    <option value="" disabled>Select Proposal</option>
+                                    {proposals.map((proposal) => (
+                                        <option key={proposal.id} value={proposal.title}>
+                                            {proposal.title}
+                                        </option>
+                                    ))}
+                                </Form.Select>
                             </Col>
                         </Form.Group>
 
@@ -153,7 +191,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                                         type="text"
                                         placeholder="Enter activity title"
                                         value={activityTitle}
-                                        onChange={(e) => setActivityTitle(e.target.value)} // Bind to state
+                                        onChange={(e) => setActivityTitle(e.target.value)}
                                     />
                                 </InputGroup>
                             </Col>
@@ -177,7 +215,6 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                                     <Form.Control
                                         className="input"
                                         type="time"
-                                        placeholder="Enter time"
                                         value={targetTime}
                                         onChange={handleTimeChange}
                                     />
@@ -187,15 +224,13 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
 
                         {fileInputs.map((input, index) => (
                             <Form.Group as={Row} className="mb-3 align-items-center" controlId={`file-${input.id}`} key={input.id}>
-                                <Form.Label column sm={2} className="h5">
-                                    File {index + 1}
-                                </Form.Label>
+                                <Form.Label column sm={2} className="h5">File {index + 1}</Form.Label>
                                 <Col className="d-flex align-items-center">
                                     <InputGroup>
                                         <Form.Control
                                             className="inputFile"
                                             type="file"
-                                            name={`file-${input.id}`}
+                                            accept="image/*, application/pdf, .docx"
                                             onChange={(e) => handleFileChange(e, input.id)}
                                             style={{ height: '38px' }}
                                         />
@@ -204,7 +239,8 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                                                 onClick={() => handleRemoveFile(input.id)}
                                                 variant="danger"
                                                 className="d-flex align-items-center"
-                                                style={{ height: '38px' }}>
+                                                style={{ height: '38px' }}
+                                            >
                                                 <FontAwesomeIcon icon={faMinus} />
                                             </Button>
                                         )}
@@ -214,7 +250,6 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
                             </Form.Group>
                         ))}
 
-                        {/* Button to add a new file input */}
                         <Container fluid className="d-flex justify-content-center align-items-center">
                             <Button onClick={handleAddMoreFile} variant="success" className="mt-2">
                                 <FontAwesomeIcon icon={faPlus} />

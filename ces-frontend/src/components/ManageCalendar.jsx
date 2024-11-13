@@ -4,8 +4,6 @@ import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
-import samplepdf from "../assets/samplepdf.pdf";
-
 
 const ManageCalendar = () => {
     const [showModal, setShowModal] = useState(false);
@@ -15,22 +13,24 @@ const ManageCalendar = () => {
     const [calendars, setCalendar] = useState([]);
     const navigate = useNavigate();
 
-    // Fetch Achievements from Backend
-    // const fetchAchievements = async () => {
-    //     try {
-    //         const response = await fetch("http://127.0.0.1:8000/api/achievements/");  // Adjust your backend URL
-    //         if (!response.ok) throw new Error("Failed to fetch achievements.");
-    //         const data = await response.json();
-    //         setAchievements(data);  // Update state with fetched data
-    //     } catch (error) {
-    //         console.error("Error fetching achievements:", error);
-    //     }
-    // };
+    // Fetch activities from the backend
+    const fetchCalendar = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/activity-schedules/");
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setCalendar(data);  // Update state with fetched data
+        } catch (error) {
+            console.error("Error fetching calendar:", error);
+        }
+    };
 
-    // Fetch achievements on component mount
-    // useEffect(() => {
-    //     fetchAchievements();
-    // }, []);
+    // Fetch activities on component mount
+    useEffect(() => {
+        fetchCalendar();
+    }, []);
 
     // Handle content view modal
     const handleContentClick = (contentUrl) => {
@@ -50,41 +50,36 @@ const ManageCalendar = () => {
         navigate(-1);  // Navigate to the previous page
     };
 
-    const array = [
-        {proposal:'Tree Planting', activity_title:'Tree Planting in Bigaa Court', date:'22-Oct-2024', time:'05:30 am', calendar_file: samplepdf},
-        {proposal:'Community Cleanup Drive', activity_title:'Clean Up Drive in NIA Road', date:'26-Oct-2024', time:'06:00 am', calendar_file: samplepdf},
-    ];
-    setCalendar(array);
-
-    //search function
+    // Search function
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
-      };
-      
-      // Filter barangays based on the search query
-      const filteredCal = calendars.filter(calendar => {
+    };
+
+    // Filter calendar activities based on the search query
+    const filteredCal = calendars.filter(calendar => {
         if (!calendar || typeof calendar !== 'object') return false; // Safeguard against unexpected data
         return (
-            (calendar.proposal && calendar.proposal.toLowerCase().includes(searchQuery.toLowerCase()))||
-            (calendar.activity_title && calendar.activity_title.toLowerCase().includes(searchQuery.toLowerCase()))
+            (calendar.proposal_title && calendar.proposal_title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (calendar.activity_title && calendar.activity_title.toLowerCase().includes(searchQuery.toLowerCase()))||
+            (calendar.status && calendar.status.toLowerCase().includes(searchQuery.toLowerCase()))
         );
-      });
-    //end of search function
+    });
 
     // Table row component
     const Rows = (props) => {
-        const { proposal, activity_title, date, time, calendar_file} = props;
+        const { proposal_title, activity_title, target_date, target_time, file, status } = props;
         return (
             <tr>
-                <td>{proposal}</td>
+                <td>{proposal_title}</td>
                 <td>{activity_title}</td>
-                <td>{date}</td>
-                <td>{time}</td>
+                <td>{target_date}</td>
+                <td>{target_time}</td>
                 <td>
-                    <Button variant="success link" onClick={() => handleContentClick(calendar_file)}>
+                    <Button variant="success link" onClick={() => handleContentClick(file)}>
                         <FontAwesomeIcon icon={faEye} />
                     </Button>
                 </td>
+                <td>{status}</td>
             </tr>
         );
     };
@@ -95,22 +90,25 @@ const ManageCalendar = () => {
             <Table responsive bordered striped hover className="tableStyle">
                 <thead>
                     <tr>
-                        <th>Proposal</th>
+                        <th>Proposal Title</th>
                         <th>Activity Title</th>
                         <th>Target Date</th>
                         <th>Target Time</th>
                         <th>File</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((array, index) => (
-                        <Rows 
-                        key={index} 
-                        proposal={array.proposal}
-                        activity_title={array.activity_title}
-                        date={array.date}
-                        time={array.time}
-                        calendar_file={array.calendar_file} />
+                    {data.map((calendar, index) => (
+                        <Rows
+                            key={index}
+                            proposal_title={calendar.proposal_title}
+                            activity_title={calendar.activity_title}
+                            target_date={calendar.target_date}
+                            target_time={calendar.target_time}
+                            file={calendar.file}
+                            status={calendar.status}
+                        />
                     ))}
                 </tbody>
             </Table>
@@ -118,8 +116,7 @@ const ManageCalendar = () => {
     };
 
     return (
-        <Container fluid 
-        className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0" >
+        <Container fluid className="py-4 mt-5 d-flex flex-column justify-content-center me-0 ms-0">
             <Row>
                 <Button variant="link" onClick={handleBack} className="backBtn d-flex align-items-center text-success">
                     <FontAwesomeIcon icon={faChevronLeft} size="lg" />
@@ -138,7 +135,13 @@ const ManageCalendar = () => {
             </Row>
             <Row>
                 <Col className="mb-3 d-flex justify-content-end">
-                    <input type="search" className="form-control" placeholder='Search' style={{ width: '300px' }} onChange={handleSearch}/>
+                    <input
+                        type="search"
+                        className="form-control"
+                        placeholder='Search'
+                        style={{ width: '300px' }}
+                        onChange={handleSearch}
+                    />
                 </Col>
                 {/* Modal for viewing full image */}
                 <Modal size="lg" show={showModal} onHide={handleCloseModal} centered>

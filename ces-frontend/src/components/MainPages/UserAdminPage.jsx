@@ -11,7 +11,7 @@ const UserAdminPage = () => {
     // console.log(sidebarOpen);
   };
   return (
-    <div>
+    <div style={{backgroundColor: 'white'}}>
       <header>
         <TopNav sidebarOpen={sidebarOpen} sidebarToggle={showSidebar} />
       </header>

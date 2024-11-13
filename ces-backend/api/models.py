@@ -355,6 +355,7 @@ class ActivitySchedule(models.Model):
     target_date = models.DateField(default=timezone.now)  # Current date as default
     target_time = models.TimeField(null=True, blank=True, default=None)
     file = models.FileField(upload_to='activity_files/', max_length=25, null=True, blank=True)
+    status = models.CharField(max_length=50, default="In Progress")
 
     def __str__(self):
         return self.activity_title

@@ -505,6 +505,11 @@ button.fc-Service-button.fc-button.fc-button-primary {
   justify-content: flex-end;
   margin-bottom: 10px;
 }
+.event-card{
+  border-radius: 10%; 
+  border: 'none';
+  overflow: "hidden";
+}
 
 .department-card {
   padding-left: 0;

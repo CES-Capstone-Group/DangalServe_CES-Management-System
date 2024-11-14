@@ -13,45 +13,62 @@ class EvaluationType(models.Model):
     def __str__(self):
         return self.name
 
+
+# Sections model
 class Section(models.Model):
+    SECTION_TYPE_CHOICES = [
+        ('question', 'Question'),
+        ('info', 'Info'),
+    ]
+    QUESTION_TYPE_CHOICES = [
+        ('rating', 'Rating'),
+        ('multiple_choice', 'Multiple Choice'),
+    ]
+
     section_id = models.AutoField(primary_key=True)
     evaluation_type = models.ForeignKey(EvaluationType, on_delete=models.CASCADE, related_name='sections')
     title = models.CharField(max_length=255)
+    section_type = models.CharField(max_length=10, choices=SECTION_TYPE_CHOICES, default='question')
+    question_type = models.CharField(max_length=20, choices=QUESTION_TYPE_CHOICES, null=True, blank=True)
+    content = models.TextField(null=True, blank=True)
     is_fixed = models.BooleanField(default=False)
-    created_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='created_sections')
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='updated_sections')
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
 
+# Questions model
 class Question(models.Model):
-    QUESTION_TYPE_CHOICES = [
-        ('rating', 'Rating'),
-        ('text', 'Text'),
-        ('yes_no', 'Yes/No'),
-        ('multiple_choice', 'Multiple Choice'),
-        ('checkbox', 'Checkbox'),
-        ('dropdown', 'Dropdown'),
-        ('file_upload', 'File Upload'),
-        ('date', 'Date'),
-        ('number', 'Number'),
-        ('email', 'Email'),
-    ]
-
     question_id = models.AutoField(primary_key=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='questions')
     text = models.CharField(max_length=255)
-    question_type = models.CharField(max_length=20, choices=QUESTION_TYPE_CHOICES)
     is_fixed = models.BooleanField(default=False)
-    created_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='created_questions')
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='updated_questions')
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.text
+
+# SectionOptions model for shared rating options within a section
+class RatingOpt(models.Model):
+    option_id = models.AutoField(primary_key=True)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='section_options')
+    value = models.IntegerField()
+    label = models.CharField(max_length=50)
+    option_order = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.label} (Value: {self.value})"
+
+# QuestionOptions model for unique options within each question in a multiple-choice section
+class MultipleChoiceOpt(models.Model):
+    option_id = models.AutoField(primary_key=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_options')
+    value = models.IntegerField()
+    label = models.CharField(max_length=50)
+    option_order = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.label} (Value: {self.value})"
 
 class EvaluationForm(models.Model):
     form_id = models.AutoField(primary_key=True)

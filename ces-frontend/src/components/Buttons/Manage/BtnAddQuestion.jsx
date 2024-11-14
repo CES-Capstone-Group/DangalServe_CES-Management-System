@@ -1,59 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Row, Col, Form } from "react-bootstrap";
+// AddQuestionModal.jsx
+import React from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 
-const BtnAddQuestion = ({ onQuestionAdded }) => {  
-    const [showModal, setShowModal] = useState(false);
-    const [questionName, setQuestionName] = useState("");  // State for Course name
-    const [question, setDepartments] = useState([]);  // Store departments
-
-    // **Open the modal**
-    const handleShowModal = () => setShowModal(true);
-
-    // **Close the modal and reset form fields**
-    const handleCloseModal = () => {
-        setShowModal(false);
+const BtnAddQuestion = ({ show, onHide, questionType, onSubmit }) => {
+    const handleFormSubmit = () => {
+        // Logic to collect data and submit the question
+        onSubmit();
+        onHide();
     };
 
-    
     return (
-        <div className="d-flex justify-content-end m-3">
-            <Button 
-                className="shadow" 
-                style={{ backgroundColor: "#71A872", border: '0px', color: 'white' }} 
-                onClick={handleShowModal}>
-                Add Question 
-            </Button>
-
-            <Modal backdrop='static' centered size="lg" show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Button onClick={handleCloseModal} className="me-5 mb-5 p-0 ps-2 pe-2" variant="success">Back</Button>
-                    <Modal.Title> Add New Question </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        {/* Combo box for department */}
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={3}>Question:</Form.Label>
-                            <Col>
-                                <Form.Control 
-                                    type="text"
-                                    placeholder="Enter Question" 
-                                />
-                            </Col>
+        <Modal show={show} onHide={onHide}>
+            <Modal.Header closeButton>
+                <Modal.Title>Add {questionType === "rating" ? "Rating" : "Multiple Choice"} Question</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group controlId="formQuestion">
+                        <Form.Label>Question</Form.Label>
+                        <Form.Control type="text" placeholder="Enter the question" />
+                    </Form.Group>
+                    {questionType === "rating" && (
+                        <Form.Group controlId="formRatingScale" className="mt-3">
+                            <Form.Label>Rating Scale</Form.Label>
+                            <Form.Control type="number" placeholder="Enter the maximum rating scale (e.g., 5)" />
                         </Form.Group>
-                    </Form>
-                </Modal.Body>
-
-                <Modal.Footer className="d-flex justify-content-center">
-                    <Button variant='success'>  
-                        Add Question
-                    </Button>
-                    <Button onClick={handleCloseModal} variant="danger">
-                        Cancel
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+                    )}
+                    {questionType === "multiple choice" && (
+                        <Form.Group controlId="formChoices" className="mt-3">
+                            <Form.Label>Choices</Form.Label>
+                            <Form.Control type="text" placeholder="Enter choices separated by commas (e.g., Yes, No)" />
+                        </Form.Group>
+                    )}
+                    <Form.Group controlId="formFixed" className="mt-3">
+                        <Form.Check type="checkbox" label="Is this question fixed?" />
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onHide}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={handleFormSubmit}>
+                    Add Question
+                </Button>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

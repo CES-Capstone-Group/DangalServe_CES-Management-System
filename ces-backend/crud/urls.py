@@ -26,6 +26,7 @@ urlpatterns = [
     path('impact/', include('impact.urls')),
     
     # path('evaluation/', include('evaluation.urls'))
+    path('evaluation/', include('evaluation.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

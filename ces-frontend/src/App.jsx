@@ -68,6 +68,7 @@ import ManageEvaluationForm from './components/ManageEvaluationForm.jsx';
 import AdminEventPage from './components/Admin/AdminEventPage.jsx';
 import EvalCreate from './components/Evaluator/EvalCreate.jsx';
 import ImpactEvalForm from './components/Forms/ImpactEvalForm.jsx';
+
 import AdminEventDetailsPage from './components/Admin/AdminEventDetailsPage.jsx';
 // import EvalFormManagement from './components/EvalFormManagement.jsx';
 import EvalTypeManagement from './components/EvalTypeManagement.jsx';
@@ -101,7 +102,7 @@ const App = () => {
               <Route path='eval-management' element={<EvalPage />} />
               <Route path='eval-sum' element={<EvalSummary />} />
               <Route path='eval-cards' element={<EvalCards />} />
-              <Route path='manage-questions' element={<ManageQuestions />} />
+              {/* <Route path='manage-questions' element={<ManageQuestions />} /> */}
               {/* <Route path="evaluation-form-management" element={<EvalFormManagement />} /> */}
               <Route path='manage-eval-form' element={<ManageEvaluationForm />} />
               <Route path="eval-type-management" element={<EvalTypeManagement />} />

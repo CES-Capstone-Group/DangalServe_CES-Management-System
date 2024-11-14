@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'api',
     'impact',
-    # 'evaluation',
+    'evaluation',
     'rest_framework_simplejwt.token_blacklist',
    
 

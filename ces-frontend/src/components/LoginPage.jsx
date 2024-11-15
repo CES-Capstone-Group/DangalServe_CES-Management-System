@@ -24,7 +24,7 @@ function LoginPage() {
 
         if(!username) newErrors.txtUsername = "Enter your username";
         if (!password) newErrors.txtPassword = "Enter your password";
-        
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     }
@@ -73,7 +73,7 @@ function LoginPage() {
                 });
                 // Optionally, display the error details for debugging
                 console.error('Login error details:', errorData);
-                
+
 
             }
         } catch (error) {
@@ -120,7 +120,7 @@ function LoginPage() {
                                                 type='text'
                                                 placeholder='Insert your username here'
                                                 value={username}
-                                                onChange={(e) => setUsername(e.target.value)} 
+                                                onChange={(e) => setUsername(e.target.value)}
                                                 isInvalid={!!errors.txtUsername}/>
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.txtUsername}

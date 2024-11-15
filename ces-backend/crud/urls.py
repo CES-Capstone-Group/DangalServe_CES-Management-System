@@ -10,14 +10,12 @@ from django.views.generic import TemplateView
 def home_view(request):
     return HttpResponse("Welcome to the Homepage!")
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('impact/', include('impact.urls')),
     path('evaluation/', include('evaluation.urls')),
-    path('', TemplateView.as_view(template_name='index.html'), name='home'),  # Serve the frontend
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
 ]
 
 # Serve media files during development (only if DEBUG=True)

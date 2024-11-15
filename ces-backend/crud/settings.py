@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-dnw*zxj-bb5z!u*$p&wnd8%s+u5i09)gr44a2+-n@2o-ns&&k_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['156.67.216.44', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['156.67.216.44', 'localhost', '127.0.0.1', 'PamantasanCES.pythonanywhere.com']
 
 
 # Application definition
@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'impact',
     'evaluation',
     'rest_framework_simplejwt.token_blacklist',
-   
+
 
 ]
 
@@ -74,8 +74,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
+    "https://pamantasances.pythonanywhere.com",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = 'crud.urls'
 
 TEMPLATES = [
@@ -103,10 +106,10 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ces_db',
-        'USER': 'root',
+        'NAME': 'PamantasanCES$ces_db',
+        'USER': 'PamantasanCES',
         'PASSWORD': 'Cloud5024',
-        'HOST': 'localhost',  # or the hostname where your MySQL server is running
+        'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
         'PORT': '3306'      # or the port on which your MySQL server is listening
     }
 }
@@ -153,8 +156,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 from datetime import timedelta
 

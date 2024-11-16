@@ -111,27 +111,27 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Local Database for Debugging locally
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ces_db',
-#         'USER': 'root',
-#         'PASSWORD': 'Cloud5024',
-#         'HOST': 'localhost',  # or the hostname where your MySQL server is running
-#         'PORT': '3306'      # or the port on which your MySQL server is listening
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'PamantasanCES$ces_db',
-        'USER': 'PamantasanCES',
+        'NAME': 'ces_db',
+        'USER': 'root',
         'PASSWORD': 'Cloud5024',
-        'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
+        'HOST': 'localhost',  # or the hostname where your MySQL server is running
         'PORT': '3306'      # or the port on which your MySQL server is listening
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'PamantasanCES$ces_db',
+#         'USER': 'PamantasanCES',
+#         'PASSWORD': 'Cloud5024',
+#         'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
+#         'PORT': '3306'      # or the port on which your MySQL server is listening
+#     }
+# }
 
 
 # Password validation
@@ -170,7 +170,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join('home/root/DangalServe_CES-Management-System/ces-frontend', 'dist', 'assets'),
+    os.path.join('home/PamantasanCES/DangalServe_CES-Management-System/ces-frontend', 'dist', 'assets'),
 ]
 
 # Default primary key field type

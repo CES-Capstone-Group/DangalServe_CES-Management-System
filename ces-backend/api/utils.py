@@ -1,8 +1,10 @@
 from docx import Document
 from django.conf import settings
 import os
-import pythoncom
 from docx2pdf import convert
+import platform
+if platform.system() == 'Windows':
+    import pythoncom
 
 def convert_docx_to_pdf(docx_path):
     pythoncom.CoInitialize()

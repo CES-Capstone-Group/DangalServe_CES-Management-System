@@ -10,6 +10,7 @@ import Logo from '../assets/pnclogo.png';
 import './Login.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import { jwtDecode } from "jwt-decode";
+import { API_ENDPOINTS } from '../config';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
@@ -24,7 +25,7 @@ function LoginPage() {
 
         if(!username) newErrors.txtUsername = "Enter your username";
         if (!password) newErrors.txtPassword = "Enter your password";
-
+        
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     }
@@ -44,7 +45,7 @@ function LoginPage() {
         const loginData = { username, password };
 
         try {
-            const response = await fetch('https://pamantasances.pythonanywhere.com/api/token/', {
+            const response = await fetch(API_ENDPOINTS.TOKEN, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(loginData),
@@ -73,7 +74,7 @@ function LoginPage() {
                 });
                 // Optionally, display the error details for debugging
                 console.error('Login error details:', errorData);
-
+                
 
             }
         } catch (error) {
@@ -120,7 +121,7 @@ function LoginPage() {
                                                 type='text'
                                                 placeholder='Insert your username here'
                                                 value={username}
-                                                onChange={(e) => setUsername(e.target.value)}
+                                                onChange={(e) => setUsername(e.target.value)} 
                                                 isInvalid={!!errors.txtUsername}/>
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.txtUsername}

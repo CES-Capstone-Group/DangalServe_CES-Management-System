@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from datetime import datetime
 import json
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Achievement, Announcement, ActivitySchedule, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
+from .models import Achievement, Announcement, ActivitySchedule, FileUpload, Barangay, Course, Department, Document, ResearchAgenda, BarangayApproval
 from .models import (
     Account,
     EvaluatorAccount,
@@ -701,20 +701,37 @@ def announcement_detail(request, pk):
 
 @api_view(['POST'])
 def create_activity_schedule(request):
-    serializer = ActivityScheduleSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Handle the activity data
+    activity_data = {
+        'activity_title': request.data.get('activity_title'),
+        'target_date': request.data.get('target_date'),
+        'target_time': request.data.get('target_time'),
+        'proposal_id': request.data.get('proposal'),
+    }
+    
+    # Create ActivitySchedule instance
+    activity_schedule = ActivitySchedule.objects.create(**activity_data)
 
-# GET view for retrieving all ActivitySchedules
+    # Handle files: create FileUpload instances for each uploaded file
+    uploaded_files = request.FILES.getlist('files[]')  # Files should come with the key 'files[]'
+    file_uploads = []
+    for uploaded_file in uploaded_files:
+        file_upload = FileUpload.objects.create(file=uploaded_file)
+        file_uploads.append(file_upload)
+
+    # Add files to ActivitySchedule
+    activity_schedule.files.add(*file_uploads)
+
+    # Serialize and return the data
+    serializer = ActivityScheduleSerializer(activity_schedule)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 @api_view(['GET'])
 def get_all_activity_schedules(request):
     activity_schedules = ActivitySchedule.objects.all()
-    serializedData = ActivityScheduleSerializer(activity_schedules, many=True, context={'request': request})
+    serializedData = ActivityScheduleSerializer(activity_schedules, many=True)
     return Response(serializedData.data)
 
-# GET view for retrieving a specific ActivitySchedule by ID
 @api_view(['GET'])
 def get_activity_schedule_detail(request, pk):
     try:
@@ -722,9 +739,8 @@ def get_activity_schedule_detail(request, pk):
     except ActivitySchedule.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializedData = ActivityScheduleSerializer(activity_schedule, context={'request': request})
+    serializedData = ActivityScheduleSerializer(activity_schedule)
     return Response(serializedData.data)
-
 
 # GET: Retrieve all documents
 @api_view(['GET'])

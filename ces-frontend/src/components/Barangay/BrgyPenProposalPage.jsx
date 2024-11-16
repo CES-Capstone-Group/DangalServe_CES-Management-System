@@ -3,6 +3,7 @@ import { Container, Table } from "react-bootstrap";
 import {jwtDecode} from "jwt-decode"; // To decode JWT and get user info
 import "../table.css";
 import BtnViewApproveProposal from "../Buttons/BtnViewApproveProposal";
+import { API_ENDPOINTS } from "../../config";
 
 const BrgyPenProposalPage = () => {
     const [proposals, setProposals] = useState([]);
@@ -18,7 +19,7 @@ const BrgyPenProposalPage = () => {
         }
         
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${filter}`, {
+            const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?${filter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ const BrgyPenProposalPage = () => {
                     partner_community: department,
                 });
         
-                const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${queryParams.toString()}`, {
+                const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?${queryParams.toString()}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

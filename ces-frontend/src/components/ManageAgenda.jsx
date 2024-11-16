@@ -6,6 +6,7 @@ import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icon
 import "./table.css";
 import BtnAddResearchAgenda from "./Buttons/Admin/BtnAddResearchAgenda";
 import BtnEditDeleteResearchAgenda from "./Buttons/Admin/BtnEditDeleteResearchAgenda";
+import { API_ENDPOINTS } from "../config";
 
 const ManageAgenda = () => {
     const [showModal, setShowModal] = useState(false);
@@ -20,7 +21,7 @@ const ManageAgenda = () => {
     // Fetch Research Agendas from Backend
     const fetchAgendas = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/research-agendas/");
+            const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_LIST);
             if (!response.ok) throw new Error("Failed to fetch agendas.");
             const data = await response.json();
             setAgendas(data);

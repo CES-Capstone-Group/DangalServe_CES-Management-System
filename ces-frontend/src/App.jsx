@@ -72,6 +72,9 @@ import ImpactEvalForm from './components/Forms/ImpactEvalForm.jsx';
 import AdminEventDetailsPage from './components/Admin/AdminEventDetailsPage.jsx';
 // import EvalFormManagement from './components/EvalFormManagement.jsx';
 import EvalTypeManagement from './components/EvalTypeManagement.jsx';
+import InvTable from './components/Admin/InvTable.jsx';
+import ManageKpi from './components/ManageKpi.jsx';
+import ImpactPage from './components/Admin/ImpactPage.jsx';
 
 const App = () => {
   return (
@@ -84,8 +87,7 @@ const App = () => {
           <Route path='/unauthorized' element={<UnauthorizedPage />} />
 
           {/* Admin Routes - Only accessible to Admin */}
-
-          {/* <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
+          <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
             <Route path='/landing' element={<AdminLanding />} />
             <Route path='/manage' element={<AdminManagePage />} >
               <Route index element={<AdminManage />} />
@@ -102,14 +104,13 @@ const App = () => {
               <Route path='responses' element={<ManageResponses />} />
               <Route path='eval-management' element={<EvalPage />} />
               <Route path='eval-sum' element={<EvalSummary />} />
-              <Route path='eval-cards' element={<EvalCards />} /> */}
-              
+              <Route path='eval-cards' element={<EvalCards />} />
               {/* <Route path='manage-questions' element={<ManageQuestions />} /> */}
               {/* <Route path="evaluation-form-management" element={<EvalFormManagement />} /> */}
-
-              {/* <Route path='manage-eval-form' element={<ManageEvaluationForm />} />
+              <Route path='manage-eval-form' element={<ManageEvaluationForm />} />
               <Route path="eval-type-management" element={<EvalTypeManagement />} />
               <Route path='eval-create' element={<EvalCreate />} />
+              <Route path='kpi-manage' element={<ManageKpi />} />
             </Route>
             <Route path='/admin' element={<UserAdminPage />}>
               <Route path='proposal-form' element={<ProposalForm />} />
@@ -131,59 +132,11 @@ const App = () => {
               <Route path='kpi' element={<KpiPage />} />
               <Route path='eval-cards' element={<EvalCards />} />
               <Route path='profile' element={<MyProfilePage />} />
+              <Route path="inv-table/:chartType" element={<InvTable />} />
               <Route path='responses' element={<ManageResponses />} />
+              <Route path='impact' element={<ImpactPage />} />
             </Route>
-          </Route> */}
-
-          {/* Admin Routes - Only accessible to Admin */}
-<Route element={<PrivateRoute allowedRoles={['Admin']} />}>
-<Route path='/landing' element={<AdminLanding />} />
-  {/* Parent Route for all Admin Pages */}
-  <Route path='/admin-manage-page' element={<AdminManagePage />}>
-    {/* Nested Routes under /admin-manage-page */}
-    <Route index element={<AdminManage />} />
-    <Route path='accmngmnt' element={<UserManagementCon />} />
-    <Route path='agenda' element={<ManageAgenda />} />
-    <Route path='ach' element={<ManageAchievements />} />
-    <Route path='ann' element={<ManageAnnouncement />} />
-    <Route path='docs' element={<ManageDocuments />} />
-    <Route path='brgy-management' element={<BrgyManagement />} />
-    <Route path='dept-management' element={<DepartmentManagement />} />
-    <Route path='course-management' element={<ManageCourse />} />
-    <Route path='calendar' element={<ManageCalendar />} />
-    <Route path='evaluators' element={<ManageEvaluators />} />
-    <Route path='responses' element={<ManageResponses />} />
-    <Route path='eval-management' element={<EvalPage />} />
-    <Route path='eval-sum' element={<EvalSummary />} />
-    <Route path='eval-cards' element={<EvalCards />} />
-    <Route path='manage-eval-form' element={<ManageEvaluationForm />} />
-    <Route path='eval-type-management' element={<EvalTypeManagement />} />
-    <Route path='eval-create' element={<EvalCreate />} />
-  </Route>
-
-  {/* Separate Parent Route for General Admin Pages */}
-  <Route path='/admin' element={<UserAdminPage />}>
-    <Route index element={<AdminMainContent />} />
-    <Route path='proposal-form' element={<ProposalForm />} />
-    <Route path='accmngmnt' element={<UserManagementCon />} />
-    <Route path='dashboard' element={<AdminMainContent />} />
-    <Route path='pending-proposal' element={<AdminPenProposal />} />
-    <Route path='approved-proposal' element={<AdminApprovedPro />} />
-    <Route path='approved-proposal/:departmentId' element={<AdminDeptApprovedPro />} />
-    <Route path='event-page' element={<AdminEventPage />} />
-    <Route path='event-detail' element={<AdminEventDetailsPage />} />
-    <Route path='pending-achievements' element={<AdminPenAchievements />} />
-    <Route path='approved-achievements' element={<AdminApprovedAch />} />
-    <Route path='resched' element={<AdminEventRequest />} />
-    <Route path='docs' element={<DocumentPage />} />
-    <Route path='calendar' element={<AdminCalendar />} />
-    <Route path='involvement' element={<InvolvementPage />} />
-    <Route path='eval-page' element={<EvalPage />} />
-    <Route path='kpi' element={<KpiPage />} />
-    <Route path='eval-cards' element={<EvalCards />} />
-    <Route path='profile' element={<MyProfilePage />} />
-  </Route>
-</Route>
+          </Route>
 
           {/* Barangay Routes - Only accessible to Barangay Officials */}
           <Route element={<PrivateRoute allowedRoles={['Brgy. Official']} />}>
@@ -233,7 +186,7 @@ const App = () => {
           <Route path='/funding' element={<FundingProposalForm />} />
           <Route path='/cesEvalForm' element={<CesEvalForm />} />
           <Route path='aarForm' element={<AARForm />} />
-          {/* <Route path='impact-eval' element={<ImpactEvalForm />} /> */}
+          <Route path='impact-eval' element={<ImpactEvalForm />} />
           <Route path='eval-login' element={<EvalLogIn/>} />
 
         </Routes>

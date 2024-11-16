@@ -6,6 +6,7 @@ import { faEye, faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icon
 import BtnAddBrgy from "../Buttons/Manage/BtnAddBrgy";
 import "../table.css";
 import BtnEditDelete from "../Buttons/Manage/BtnEditDelete";  // <-- Import BtnEditDelete
+import { API_ENDPOINTS } from "../../config";
 
 const BrgyManagement = () => {
     const [barangays, setBarangays] = useState([]);
@@ -17,7 +18,7 @@ const BrgyManagement = () => {
     // Function to fetch barangay data from the backend
     const fetchBarangays = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+            const response = await fetch(API_ENDPOINTS.BARANGAY_LIST);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

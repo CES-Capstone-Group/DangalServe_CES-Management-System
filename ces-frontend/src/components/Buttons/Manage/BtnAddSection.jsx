@@ -1,17 +1,19 @@
+import React, { useState, useEffect } from "react"; // Make sure all hooks are imported
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
-const BtnAddSection = ({ onSectionAdded }) => {  
+const BtnAddSection = ({ onSectionAdded, evalTypeId }) => {
+    // Declare all hooks at the top of the component
     const [showModal, setShowModal] = useState(false);
     const [sectionLabel, setSectionLabel] = useState("");
-    const [sectionType, setSectionType] = useState("");  // Track section type
-    const [questionType, setQuestionType] = useState("");  // Track question type
-    const [ratingScale, setRatingScale] = useState(5);  // Default rating scale
-    const [informationContent, setInformationContent] = useState("");  // Content for information section
-    const [additionalInfo, setAdditionalInfo] = useState("");  // Additional info for question type "Information"
-    const [isFixed, setIsFixed] = useState(false); // Track if the section is fixed (required)
+    const [sectionType, setSectionType] = useState("");
+    const [questionType, setQuestionType] = useState("");
+    const [ratingScale, setRatingScale] = useState(5);
+    const [informationContent, setInformationContent] = useState("");
+    const [isFixed, setIsFixed] = useState(false);
+    const [ratingLabels, setRatingLabels] = useState(Array(5).fill(""));
 
     const handleShowModal = () => setShowModal(true);
 
@@ -22,34 +24,101 @@ const BtnAddSection = ({ onSectionAdded }) => {
         setQuestionType("");
         setRatingScale(5);
         setInformationContent("");
-        setAdditionalInfo("");
         setIsFixed(false);
+        setRatingLabels(Array(5).fill(""));
     };
 
     const handleSectionTypeChange = (e) => {
         const value = e.target.value;
         setSectionType(value);
-        
-        // Reset question type if section type is not "question"
         if (value !== "question") {
             setQuestionType("");
         }
     };
 
-    const handleAddSection = () => {
-        const newSection = {
-            id: Date.now(),  // Temporary unique ID
-            section: sectionLabel,
-            type: sectionType,
-            questionType: questionType,
-            ratingScale: questionType === "rating" ? ratingScale : null,
-            choices: questionType === "multiple choice" ? [] : null,
-            informationContent: sectionType === "information" ? informationContent : null,
-            additionalInfo: questionType === "information" ? additionalInfo : null,  // Include additional info for information question type
-            isFixed: isFixed // Track if section is fixed (required)
-        };
-        onSectionAdded(newSection);
-        handleCloseModal();
+    const handleRatingScaleChange = (newScale) => {
+        setRatingScale(newScale);
+        setRatingLabels((prevLabels) => {
+            const updatedLabels = [...prevLabels];
+            if (newScale > prevLabels.length) {
+                return [...updatedLabels, ...Array(newScale - prevLabels.length).fill("")];
+            } else {
+                return updatedLabels.slice(0, newScale);
+            }
+        });
+    };
+
+    const handleRatingLabelChange = (index, value) => {
+        setRatingLabels((prevLabels) => {
+            const newLabels = [...prevLabels];
+            newLabels[index] = value;
+            return newLabels;
+        });
+    };
+
+    const handleAddSection = async () => {
+        try {
+            // Prepare the data based on the section type
+            const sectionData = {
+                evaluation_type: evalTypeId,
+                title: sectionLabel,
+                section_type: sectionType,
+                question_type: sectionType === "question" ? questionType : null,  // Only include if section_type is "question"
+                content: sectionType === "info" ? informationContent : null,      // Only include content if section_type is "info"
+                is_fixed: isFixed,
+            };
+
+            // Log the section data to check before sending the request
+            console.log("Section Data:", sectionData);
+
+            const sectionResponse = await fetch(API_ENDPOINTS.SECTION_CREATE, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(sectionData),
+            });
+
+            if (!sectionResponse.ok) {
+                throw new Error("Failed to create section");
+            }
+
+            const newSection = await sectionResponse.json();
+
+            // If the question type is "rating," log and add rating options
+            if (questionType === "rating") {
+                const ratingOptionsPromises = ratingLabels.map((label, index) => {
+                    const ratingOptData = {
+                        section: newSection.section_id,
+                        value: index + 1,
+                        label: label,
+                        option_order: index + 1,
+                    };
+
+                    // Log each rating option data to check before sending the request
+                    console.log("Rating Option Data:", ratingOptData);
+
+                    return fetch(API_ENDPOINTS.RATING_OPTION_CREATE, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(ratingOptData),
+                    });
+                });
+
+                await Promise.all(ratingOptionsPromises);
+            }
+
+            // Notify the parent component of the new section and reset the form
+            onSectionAdded(newSection);
+            handleCloseModal();
+            alert("Section added successfully!");
+
+        } catch (error) {
+            alert("An error occurred. Please try again later.");
+            console.error(error);
+        }
     };
 
     return (
@@ -81,7 +150,6 @@ const BtnAddSection = ({ onSectionAdded }) => {
                             </Col>
                         </Form.Group>
 
-                        {/* Section Type Dropdown */}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={3}>Section Type:</Form.Label>
                             <Col>
@@ -92,13 +160,12 @@ const BtnAddSection = ({ onSectionAdded }) => {
                                 >
                                     <option value="">Select Type</option>
                                     <option value="question">Question</option>
-                                    <option value="information">Information</option>
+                                    <option value="info">Information</option>
                                 </Form.Control>
                             </Col>
                         </Form.Group>
 
-                        {/* If "Information" is selected as Section Type, show text field for content */}
-                        {sectionType === "information" && (
+                        {sectionType === "info" && (
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Information Content:</Form.Label>
                                 <Col>
@@ -113,7 +180,6 @@ const BtnAddSection = ({ onSectionAdded }) => {
                             </Form.Group>
                         )}
 
-                        {/* If "Question" is selected as Section Type, show Question Type */}
                         {sectionType === "question" && (
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Question Type:</Form.Label>
@@ -124,47 +190,44 @@ const BtnAddSection = ({ onSectionAdded }) => {
                                         onChange={(e) => setQuestionType(e.target.value)}
                                     >
                                         <option value="">Select Question Type</option>
-                                        <option value="multiple choice">Multiple Choice</option>
+                                        <option value="multiple_choice">Multiple Choice</option>
                                         <option value="rating">Rating</option>
-                                        <option value="information">Information</option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
                         )}
 
-                        {/* If "Information" is selected as Question Type, show additional info text field */}
-                        {questionType === "information" && (
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={3}>Additional Information:</Form.Label>
-                                <Col>
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        placeholder="Enter additional information for this question"
-                                        value={additionalInfo}
-                                        onChange={(e) => setAdditionalInfo(e.target.value)}
-                                    />
-                                </Col>
-                            </Form.Group>
-                        )}
-
-                        {/* If "Rating" is selected as Question Type, show rating scale */}
                         {questionType === "rating" && (
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={3}>Rating Scale:</Form.Label>
-                                <Col>
-                                    <Form.Control 
-                                        type="number"
-                                        min={1}
-                                        max={10}
-                                        value={ratingScale}
-                                        onChange={(e) => setRatingScale(Number(e.target.value))}
-                                    />
-                                </Col>
-                            </Form.Group>
+                            <>
+                                <Form.Group as={Row} className="mb-3">
+                                    <Form.Label column sm={3}>Rating Scale:</Form.Label>
+                                    <Col>
+                                        <Form.Control 
+                                            type="number"
+                                            min={1}
+                                            max={10}
+                                            value={ratingScale}
+                                            onChange={(e) => handleRatingScaleChange(Number(e.target.value))}
+                                        />
+                                    </Col>
+                                </Form.Group>
+
+                                {Array.from({ length: ratingScale }).map((_, index) => (
+                                    <Form.Group as={Row} className="mb-3" key={index}>
+                                        <Form.Label column sm={3}>Label for {index + 1}:</Form.Label>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder={`Label for rating ${index + 1}`}
+                                                value={ratingLabels[index]}
+                                                onChange={(e) => handleRatingLabelChange(index, e.target.value)}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                ))}
+                            </>
                         )}
 
-                        {/* Fixed Checkbox with User-Friendly Label */}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={3}>Required Section:</Form.Label>
                             <Col>

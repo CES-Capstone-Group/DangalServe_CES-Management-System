@@ -354,8 +354,14 @@ class ActivitySchedule(models.Model):
     activity_title = models.CharField(max_length=255, default="Activity Title")
     target_date = models.DateField(default=timezone.now)  # Current date as default
     target_time = models.TimeField(null=True, blank=True, default=None)
-    file = models.FileField(upload_to='activity_files/', max_length=25, null=True, blank=True)
+    files = models.ManyToManyField('FileUpload', blank=True)
     status = models.CharField(max_length=50, default="In Progress")
 
     def __str__(self):
         return self.activity_title
+    
+class FileUpload(models.Model):
+    file = models.FileField(upload_to='activities/', null=True, blank=True)
+
+    def __str__(self):
+        return str(self.file)

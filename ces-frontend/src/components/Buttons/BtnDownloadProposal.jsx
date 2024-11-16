@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../config";
 
 const BtnDownloadProposal = ({ proposal }) => {
     const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ const BtnDownloadProposal = ({ proposal }) => {
                 return;
             }
             const timestamp = new Date().getTime();
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/download/?_=${timestamp}`, {
+            const response = await fetch(`${API_ENDPOINTS.DOWNLOAD_PROPOSAL_DOC(proposal.proposal_id)}/?_=${timestamp}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`, // Add this if you are using token-based authentication

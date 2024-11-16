@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 
 import { useUser } from './UserContext';
+import { API_ENDPOINTS } from '../config';
 
 const MyProfilePage = () => {
     const [isEditingName, setIsEditingName] = useState(false);
@@ -39,7 +40,7 @@ const MyProfilePage = () => {
             const token = localStorage.getItem('access_token');
             const userId = jwtDecode(token).user_id;  // Assuming `user_id` is in the token payload
             
-            const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/update-profile/`, {
+            const response = await fetch(API_ENDPOINTS.UPDATE_USER_PROFILE(userId), {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const MyProfilePage = () => {
         const token = localStorage.getItem('access_token');
         const userId = jwtDecode(token).user_id;  // Assuming `user_id` is in the token payload
 
-        const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/change-password/`, {
+        const response = await fetch(API_ENDPOINTS.CHANGE_USER_PASSWORD(userId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

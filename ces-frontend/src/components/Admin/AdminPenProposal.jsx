@@ -3,6 +3,7 @@ import { Container, Table, Row, Col } from "react-bootstrap";
 import BtnViewApproveProposal from "../Buttons/BtnViewApproveProposal";
 import BtnPendingRejectFilter from "../Buttons/BtnPendingRejectFilter";
 import "../table.css";
+import { API_ENDPOINTS } from "../../config";
 
 const AdminPenProposal = () => {
     const [proposals, setProposals] = useState([]);  
@@ -27,7 +28,7 @@ const AdminPenProposal = () => {
                 filter = 'status=Pending';
             }
     
-            const response = await fetch(`http://127.0.0.1:8000/api/proposals/?${filter}`, {
+            const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?${filter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

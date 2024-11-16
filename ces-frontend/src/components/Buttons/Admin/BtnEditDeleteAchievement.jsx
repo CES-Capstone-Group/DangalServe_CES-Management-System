@@ -2,6 +2,7 @@ import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnEditDeleteAchievement = ({ achievement, onAchievementUpdated }) => {
     const [showEdit, setShowEdit] = useState(false);
@@ -50,7 +51,7 @@ const BtnEditDeleteAchievement = ({ achievement, onAchievementUpdated }) => {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievement.id}/`, {
+            const response = await fetch(API_ENDPOINTS.ACHIEVEMENT_DETAIL(achievement.id), {
                 method: "PUT",  // PUT for updating
                 body: achievementData,
             });
@@ -70,7 +71,7 @@ const BtnEditDeleteAchievement = ({ achievement, onAchievementUpdated }) => {
     // **Delete Achievement Functionality**
     const deleteAchievement = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/achievements/${achievement.id}/`, {
+            const response = await fetch(API_ENDPOINTS.ACHIEVEMENT_DETAIL(achievement.id), {
                 method: "DELETE",
             });
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddDocument = ({ onDocumentAdded }) => {
     const [showModal, setShowModal] = useState(false);
@@ -40,7 +41,7 @@ const BtnAddDocument = ({ onDocumentAdded }) => {
         formData.append("file", documentFile);  // Append selected file, renamed to `file`
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/documents/upload/", {  // Backend URL
+            const response = await fetch(API_ENDPOINTS.UPLOAD_DOCUMENT, {  // Backend URL
                 method: "POST",
                 body: formData,  // Send FormData (not JSON)
             });

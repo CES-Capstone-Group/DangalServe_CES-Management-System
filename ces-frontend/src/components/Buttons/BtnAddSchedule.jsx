@@ -2,6 +2,7 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Row, Col, Form, InputGroup, Container } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../config";
 
 const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selectedDate, addNewEvent }) => {
     const [fileInputs, setFileInputs] = useState([{ id: 1 }]);
@@ -45,7 +46,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
         // Append each file to FormData
         if (files.length > 0) {
             files.forEach((file, index) => {
-                formData.append(`file_${index}`, file); // Use unique keys for each file
+                formData.append("files[]", file); // Use 'files[]' to send as an array
             });
         } else {
             console.warn("No files to upload.");
@@ -57,7 +58,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
         }
     
         // Send the formData to the backend
-        fetch('http://127.0.0.1:8000/api/activity-schedules/create/', {
+        fetch(API_ENDPOINTS.ACTIVITY_SCHEDULE_CREATE, {
             method: 'POST',
             body: formData,
             headers: {
@@ -72,7 +73,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
             return response.json();
         })
         .then(data => {
-            console.log('New event added to backend:', data);
+            // console.log('New event added to backend:', data);
         })
         .catch(error => {
             console.error('Error adding event to backend:', error.message);
@@ -102,7 +103,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
     const handleFileChange = (e, id) => {
         const selectedFiles = Array.from(e.target.files); // Convert FileList to an array
         setFiles(prevFiles => [...prevFiles, ...selectedFiles]); // Add new files to state
-        console.log(`Files for input ${id}:`, selectedFiles);
+        // console.log(`Files for input ${id}:`, selectedFiles);
     };
 
     useEffect(() => {
@@ -116,7 +117,7 @@ const BtnAddSchedule = ({ showModal, handleCloseModal, handleShowModal, selected
             }
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved%20by%20Barangay", {
+                const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved%20by%20Barangay`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

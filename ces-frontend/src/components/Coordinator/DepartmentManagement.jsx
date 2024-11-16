@@ -6,6 +6,7 @@ import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddDepartment from "../Buttons/Manage/BtnAddDepartment";  // Import Add Button
 import "../table.css";
 import BtnEditDeleteDept from "../Buttons/Manage/BtnEditDeleteDept";  // Import Edit/Delete Button
+import { API_ENDPOINTS } from "../../config";
 
 const DepartmentManagement = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const DepartmentManagement = () => {
     // Function to Fetch Department Data from Backend
     const fetchDepartments = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/departments/');  // Fetch data from the backend
+            const response = await fetch(API_ENDPOINTS.DEPARTMENT_LIST);  // Fetch data from the backend
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

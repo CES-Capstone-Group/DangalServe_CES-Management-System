@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddAchievement = ({ onAchievementAdded }) => {
     const [showModal, setShowModal] = useState(false);
@@ -51,7 +52,7 @@ const BtnAddAchievement = ({ onAchievementAdded }) => {
         }
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/achievements/create/", {
+            const response = await fetch(API_ENDPOINTS.ACHIEVEMENT_CREATE, {
                 method: "POST",
                 body: achievementData,
             });

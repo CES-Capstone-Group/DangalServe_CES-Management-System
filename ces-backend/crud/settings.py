@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'impact',
     'evaluation',
     'rest_framework_simplejwt.token_blacklist',
-
+   
 
 ]
 
@@ -75,9 +75,9 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://pamantasances.pythonanywhere.com",
+    "http://localhost:5173",
+    "https://dangalserve.netlify.app",
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'crud.urls'
 
@@ -102,6 +102,18 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+# Local Database for Debugging locally
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ces_db',
+#         'USER': 'root',
+#         'PASSWORD': 'Cloud5024',
+#         'HOST': 'localhost',  # or the hostname where your MySQL server is running
+#         'PORT': '3306'      # or the port on which your MySQL server is listening
+#     }
+# }
 
 DATABASES = {
     'default': {
@@ -159,6 +171,8 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 from datetime import timedelta
 
 SIMPLE_JWT = {
@@ -170,7 +184,6 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'user_id',  # Specify 'user_id' instead of the default 'id'
     'USER_ID_CLAIM': 'user_id',  # This ensures JWTs include 'user_id' instead of 'id'
 }
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

@@ -165,9 +165,9 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
                 </SidebarMenu.Nav>
 
                 <SidebarMenu.Nav>
-                  <SidebarMenu.Nav.Link>
+                  <NavLink to={'/admin/impact'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                     <SidebarMenu.Nav.Title> Impact </SidebarMenu.Nav.Title>
-                  </SidebarMenu.Nav.Link>
+                  </NavLink>
                 </SidebarMenu.Nav>
               </SidebarMenu.Sub.Collapse>
             </SidebarMenu.Sub>

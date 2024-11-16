@@ -2,6 +2,7 @@ import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Button, Row, Col, Form, Modal } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpdated }) => {  // <-- Changed `initialDeptName` prop
     const [showEdit, setShowEdit] = useState(false);
@@ -35,7 +36,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
         const formData = { dept_name: deptName };  // Create form data for department
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
+            const response = await fetch(API_ENDPOINTS.DEPARTMENT_DETAIL(deptId), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +62,7 @@ const BtnEditDeleteDept = ({ deptId, deptName: initialDeptName, onDepartmentUpda
         try {
             // console.log(`Deleting department with ID: ${deptId}`);
 
-            const response = await fetch(`http://127.0.0.1:8000/api/departments/${deptId}/`, {
+            const response = await fetch(API_ENDPOINTS.DEPARTMENT_DETAIL(deptId), {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',

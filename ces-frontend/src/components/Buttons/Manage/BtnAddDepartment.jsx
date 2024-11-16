@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddDepartment = ({ onDepartmentAdded }) => {  // <-- Added `onDepartmentAdded` prop
     const [showModal, setShowModal] = useState(false);
@@ -33,7 +34,7 @@ const BtnAddDepartment = ({ onDepartmentAdded }) => {  // <-- Added `onDepartmen
         const formData = { dept_name: departmentName };  // Prepare data to send to backend
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/departments/create/", {  // Backend URL
+            const response = await fetch(API_ENDPOINTS.DEPARTMENT_CREATE, {  // Backend URL
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",  // Specify the content type

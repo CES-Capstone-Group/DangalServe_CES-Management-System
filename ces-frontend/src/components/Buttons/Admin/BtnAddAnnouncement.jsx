@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
     const [showModal, setShowModal] = useState(false);
@@ -43,7 +44,7 @@ const BtnAddAnnouncement = ({ onAnnouncementAdded }) => {
         }
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/announcements/create/", {
+            const response = await fetch(API_ENDPOINTS.ANNOUNCEMENT_CREATE, {
                 method: "POST",
                 body: announcementData,
             });

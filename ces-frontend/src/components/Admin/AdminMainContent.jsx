@@ -4,6 +4,7 @@ import pncHeader from '../../assets/pnc-header-2.png';
 import { Container, Row, Col, Card, Modal } from 'react-bootstrap';
 import BtnEditResearchAgenda from '../Buttons/Admin/BtnEditDeleteResearchAgenda'; // Edit Research Agenda Modal
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from '../../config';
 
 const AdminMainContent = () => {
   const [achievements, setAchievements] = useState([]);
@@ -41,7 +42,7 @@ const AdminMainContent = () => {
   // Fetch achievements data
   const fetchAchievements = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/achievements/");
+      const response = await fetch(API_ENDPOINTS.ACHIEVEMENT_LIST);
       if (!response.ok) {
         throw new Error('Failed to fetch achievements');
       }
@@ -95,7 +96,7 @@ const AdminMainContent = () => {
   // Fetch research agendas data
   const fetchResearchAgendas = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/research-agendas/");
+      const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_LIST);
       if (!response.ok) {
         throw new Error('Failed to fetch research agendas');
       }
@@ -115,7 +116,7 @@ const AdminMainContent = () => {
   // Fetch announcements data
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/announcements/");
+      const response = await fetch(API_ENDPOINTS.ANNOUNCEMENT_LIST);
       if (!response.ok) {
         throw new Error('Failed to fetch announcements');
       }
@@ -243,7 +244,7 @@ const AdminMainContent = () => {
                       <Col lg={8}> {/* Content column */}
                         <Card.Body className="d-flex flex-column justify-content-between">
                           <div>
-                            <Card.Title style={{ fontStyle: 'bold' }}>
+                            <Card.Title className='mb-4' style={{ fontStyle: 'bold', fontSize: '1.3em' }}>
                               {achievement.award_title}
                             </Card.Title>
                             <Card.Text className='mb-3'>
@@ -252,7 +253,7 @@ const AdminMainContent = () => {
                               <strong>Awarded by:</strong> {achievement.awarded_by}
                             </Card.Text>
                           </div>
-                          <div className="">
+                          <div className="mt-auto d-flex justify-content-end">
                             <h6
                               role="button"
                               className="text-success"
@@ -261,7 +262,9 @@ const AdminMainContent = () => {
                                 achievement
                               )}
                             >
-                              See more
+                              <strong>
+                                See more
+                              </strong>
                             </h6>
                           </div>
                         </Card.Body>
@@ -327,14 +330,14 @@ const AdminMainContent = () => {
                       <Col lg={8}> {/* Content column */}
                         <Card.Body className="d-flex flex-column justify-content-between">
                           <div>
-                            <Card.Title className='mb-3' style={{ fontStyle: 'bold' }}>
+                            <Card.Title className='mb-3' style={{ fontStyle: 'bold' , fontSize: '1.3em'}}>
                               {announcement.title}
                             </Card.Title>
                             <Card.Text className="truncate-text mb-5">
                               {announcement.details}
                             </Card.Text>
                           </div>
-                          <div className="mt-auto">
+                          <div className="mt-auto d-flex justify-content-end">
                             <h6
                               role="button"
                               className="text-success"
@@ -343,7 +346,9 @@ const AdminMainContent = () => {
                                 announcement
                               )}
                             >
-                              See more
+                              <strong>
+                                See more
+                              </strong>
                             </h6>
                           </div>
                         </Card.Body>

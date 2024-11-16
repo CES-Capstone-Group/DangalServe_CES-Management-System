@@ -3,7 +3,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import EvaluationType, Section, Question, RatingOpt, MultipleChoiceOpt
-from .serializer import EvaluationTypeSerializer, SectionSerializer, QuestionSerializer, RatingOptSerializer, MultipleChoiceOptSerializer
+from .serializer import BasicSectionSerializer, BasicQuestionSerializer, EvaluationTypeDetailSerializer, EvaluationTypeSerializer, SectionSerializer, QuestionSerializer, RatingOptSerializer, MultipleChoiceOptSerializer
+from django.db.models import Prefetch
+from django.shortcuts import get_object_or_404
+
+
+
 
 # List all evaluation types
 @api_view(['GET'])
@@ -23,7 +28,7 @@ def evaluation_type_create(request):
 
 # Retrieve, update, or delete an evaluation type by ID
 @api_view(['GET', 'PUT', 'DELETE'])
-def evaluation_type_detail(request, pk):
+def eval_types_detail(request, pk):
     try:
         evaluation_type = EvaluationType.objects.get(pk=pk)
     except EvaluationType.DoesNotExist:
@@ -54,14 +59,15 @@ def section_list(request):
     serializer = SectionSerializer(sections, many=True)
     return Response(serializer.data)
 
-# Create a new section
+# This view is only for creating sections without options
 @api_view(['POST'])
 def section_create(request):
-    serializer = SectionSerializer(data=request.data)
+    serializer = BasicSectionSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Retrieve, update, or delete a section by ID
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -96,7 +102,9 @@ def question_list(request):
 # Create a new question
 @api_view(['POST'])
 def question_create(request):
-    serializer = QuestionSerializer(data=request.data)
+     # Log the incoming data to verify the payload
+    print("Incoming data:", request.data)  # This will print in your console or log
+    serializer = BasicQuestionSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -131,6 +139,17 @@ def ratingopt_list(request):
     rating_options = RatingOpt.objects.all()
     serializer = RatingOptSerializer(rating_options, many=True)
     return Response(serializer.data)
+
+# Retrieve all rating options for a specific section by section_id
+@api_view(['GET'])
+def ratingopt_by_section(request, section_id):
+    try:
+        rating_options = RatingOpt.objects.filter(section_id=section_id)
+        serializer = RatingOptSerializer(rating_options, many=True)
+        return Response(serializer.data)
+    except RatingOpt.DoesNotExist:
+        return Response({"error": "No rating options found for the given section ID"}, status=status.HTTP_404_NOT_FOUND)
+
 
 # Create a new rating option
 @api_view(['POST'])
@@ -202,4 +221,18 @@ def multiplechoiceopt_detail(request, pk):
     elif request.method == 'DELETE':
         multiple_choice_option.delete()
         return Response({"message": "Multiple Choice Option deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def evaluation_type_detail(request, evaluation_type_id):
+    evaluation_type = get_object_or_404(
+        EvaluationType.objects.prefetch_related(
+            Prefetch('sections__questions'),
+            Prefetch('sections__section_options', queryset=RatingOpt.objects.all()),
+            Prefetch('sections__questions__question_options', queryset=MultipleChoiceOpt.objects.all())
+        ),
+        pk=evaluation_type_id
+    )
+    serializer = EvaluationTypeDetailSerializer(evaluation_type)
+    return Response(serializer.data)
 

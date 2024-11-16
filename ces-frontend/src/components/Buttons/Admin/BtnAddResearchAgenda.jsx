@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddResearchAgenda = ({ onResearchAgendaAdded }) => {
     const [showModal, setShowModal] = useState(false);
@@ -39,7 +40,7 @@ const BtnAddResearchAgenda = ({ onResearchAgendaAdded }) => {
         }
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/research-agendas/create/", {
+            const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_CREATE, {
                 method: "POST",
                 body: researchAgendaData,
             });

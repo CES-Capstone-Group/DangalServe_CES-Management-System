@@ -2,6 +2,7 @@ import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Row, Col, Form, Modal } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName, deptId, onCourseUpdated }) => {
     const [showEdit, setShowEdit] = useState(false);  // Controls edit modal visibility
@@ -25,7 +26,7 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
     // **Fetch Departments from Backend**
     const fetchDepartments = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/departments/');
+            const response = await fetch(API_ENDPOINTS.DEPARTMENT_LIST);
             if (!response.ok) throw new Error("Failed to fetch departments.");
             const data = await response.json();
             setDepartments(data);  // Store departments in state
@@ -58,7 +59,7 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
         };
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/courses/${courseId}/`, {
+            const response = await fetch(API_ENDPOINTS.COURSE_DETAIL(courseId), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +83,7 @@ const BtnEditDeleteCourse = ({ courseId, courseName: initialCourseName, deptName
     // Handle Delete Functionality
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/courses/${courseId}/`, {
+            const response = await fetch(API_ENDPOINTS.COURSE_DETAIL(courseId), {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             });

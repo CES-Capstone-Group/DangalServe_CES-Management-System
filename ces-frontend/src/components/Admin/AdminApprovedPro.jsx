@@ -5,6 +5,8 @@ import BtnCoorViewApprovedProposal from "../Buttons/Coordinator/BtnCoorViewAppro
 import "../table.css";
 import '/src/App.css';
 
+import { API_ENDPOINTS } from "../../config";
+
 const AdminApprovedPro = () => {
     const [proposals, setProposals] = useState([]);
     const [departments, setDepartments] = useState([]);
@@ -22,7 +24,7 @@ const AdminApprovedPro = () => {
             }
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay", {
+                const response = await fetch(API_ENDPOINTS.PROPOSAL_LIST_CREATE+`?status=Approved by Barangay`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -49,7 +51,7 @@ const AdminApprovedPro = () => {
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/departments/");
+                const response = await fetch(API_ENDPOINTS.DEPARTMENT_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setDepartments(data);

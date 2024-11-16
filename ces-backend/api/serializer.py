@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from .models import Account, Achievement, ActivitySchedule, Announcement, Barangay, Course, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
+from .models import Account, Achievement, ActivitySchedule, FileUpload, Announcement, Barangay, Course, Department, Document, ResearchAgenda, Proponent, Proposal, Signatory, ProposalVersion, BarangayApproval
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.core.exceptions import ValidationError
@@ -284,10 +284,15 @@ class BarangayApprovalSerializer(serializers.ModelSerializer):
         model = BarangayApproval
         fields = ['barangay_name', 'status', 'sign_date', 'remarks']
 
+class FileUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FileUpload
+        fields = ['file']
+
 class ActivityScheduleSerializer(serializers.ModelSerializer):
-    proposal_title = serializers.ReadOnlyField(source='proposal.title')  # This will retrieve the title from the Proposal model
+    proposal_title = serializers.ReadOnlyField(source='proposal.title')  # Retrieves title from the Proposal model
+    files = FileUploadSerializer(many=True, read_only=False)  # Serialize multiple file uploads
 
     class Meta:
         model = ActivitySchedule
-        fields = ['id','activity_title', 'target_date', 'target_time', 'file','proposal', 'proposal_title', 'status'
-        ]
+        fields = ['id', 'activity_title', 'target_date', 'target_time', 'files', 'proposal', 'proposal_title', 'status']        

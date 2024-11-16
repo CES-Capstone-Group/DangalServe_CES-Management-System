@@ -4,6 +4,7 @@ import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft, faEye, faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BtnAddDocument from "./Buttons/Manage/BtnAddDocument";
+import { API_ENDPOINTS } from "../config";
 
 const ManageDocuments = () => {
     const [showModal, setShowModal] = useState(false);
@@ -16,7 +17,7 @@ const ManageDocuments = () => {
     // Fetch documents from the backend
     const fetchDocuments = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/documents/");  // Adjust your backend URL
+            const response = await fetch(API_ENDPOINTS.DOCUMENT_LIST);  // Adjust your backend URL
             if (!response.ok) throw new Error("Failed to fetch documents.");
             const data = await response.json();
             setDocuments(data);  // Update state with fetched data
@@ -83,7 +84,7 @@ const ManageDocuments = () => {
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/documents/delete/${documentId}/`, {
+            const response = await fetch(API_ENDPOINTS.DELETE_DOCUMENT(documentId), {
                 method: 'DELETE',
             });
             if (response.ok) {

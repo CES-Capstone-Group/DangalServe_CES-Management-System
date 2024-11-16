@@ -2,6 +2,7 @@ import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
     const [showEdit, setShowEdit] = useState(false);
@@ -43,7 +44,7 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcement.id}/`, {
+            const response = await fetch(API_ENDPOINTS.ANNOUNCEMENT_DETAIL(announcement.id), {
                 method: "PUT",
                 body: announcementData,
             });
@@ -63,7 +64,7 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
     // **Delete Announcement Functionality**
     const deleteAnnouncement = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/announcements/${announcement.id}/`, {
+            const response = await fetch(API_ENDPOINTS.ANNOUNCEMENT_DETAIL(announcement.id), {
                 method: "DELETE",
             });
 
@@ -82,7 +83,7 @@ const BtnEditDeleteAnnouncement = ({ announcement, onAnnouncementUpdated }) => {
     return (
         <>
             {/* Edit and Delete Buttons */}
-            <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', marginRight: '10px', fontSize: '13px' }}>
+            <Button className="shadow" onClick={() => setShowEdit(true)} style={{ backgroundColor: "#71a872", border: '0px', color: 'white', margin: '10px', fontSize: '13px' }}>
                 <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
             <Button className="shadow" onClick={() => setShowDeleteConfirm(true)} style={{ backgroundColor: "#ff3232", border: '0px', color: 'white', fontSize: '13px' }}>

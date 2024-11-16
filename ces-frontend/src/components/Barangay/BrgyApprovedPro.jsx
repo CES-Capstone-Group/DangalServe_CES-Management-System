@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table } from "react-bootstrap";
 import "../table.css";
+import { API_ENDPOINTS } from "../../config";
 
 const BrgyApprovedPro = () => {
     const [proposals, setProposals] = useState([]); // State to hold approved proposals
@@ -10,7 +11,7 @@ const BrgyApprovedPro = () => {
         const fetchApprovedProposals = async () => {
             try {
                 const token = localStorage.getItem('access_token'); // Get the auth token if necessary
-                const response = await fetch("http://127.0.0.1:8000/api/barangay-approved-proposals/", {
+                const response = await fetch(API_ENDPOINTS.BARANGAY_APPROVED_PROPOSALS, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,

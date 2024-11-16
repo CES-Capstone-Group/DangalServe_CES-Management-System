@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { API_ENDPOINTS } from "../../../config";
 const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(account); // Initialize formData with account details
@@ -48,7 +49,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/departments/');
+                const response = await fetch(API_ENDPOINTS.DEPARTMENT_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setDepartments(data);
@@ -66,7 +67,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/courses/');
+                const response = await fetch(API_ENDPOINTS.COURSE_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setCourses(data);
@@ -84,7 +85,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
     useEffect(() => {
         const fetchBarangays = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+                const response = await fetch(API_ENDPOINTS.BARANGAY_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setBarangays(data);
@@ -149,7 +150,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
                 course: "" // Reset course when department changes
             }));
             if (value) {
-                fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
+                fetch(API_ENDPOINTS.COURSES_BY_DEPARTMENT(value))
                     .then((response) => response.json())
                     .then((data) => {
                         setFilteredCourses(data);  // Update the filtered courses state
@@ -168,7 +169,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
         e.preventDefault();
         // console.log("form data",  JSON.stringify(formData))
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${account.user_id}/`, {
+            const response = await fetch(API_ENDPOINTS.USER_INFO_ACTION(account.user_id), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -197,7 +198,7 @@ const BtnEditDeac = ({ account, onDeactivate, onSave }) => {
         };
         // console.log(JSON.stringify(updatedData))
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${account.user_id}/`, {
+            const response = await fetch(API_ENDPOINTS.USER_INFO_ACTION(account.user_id), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

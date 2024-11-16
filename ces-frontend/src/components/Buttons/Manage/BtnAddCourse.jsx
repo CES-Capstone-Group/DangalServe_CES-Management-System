@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddCourse = ({ onCourseAdded }) => {  
     const [showModal, setShowModal] = useState(false);
@@ -42,7 +43,7 @@ const BtnAddCourse = ({ onCourseAdded }) => {
         };
         
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/courses/create/", {
+            const response = await fetch(API_ENDPOINTS.COURSE_CREATE, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -67,7 +68,7 @@ const BtnAddCourse = ({ onCourseAdded }) => {
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/departments/');
+                const response = await fetch(API_ENDPOINTS.DEPARTMENT_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setDepartments(data);  // Store department data in state

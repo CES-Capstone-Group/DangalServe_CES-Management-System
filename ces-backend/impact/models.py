@@ -1,10 +1,11 @@
 from django.db import models
+from api.models import ActivitySchedule
 
 class ImpactEvaluation(models.Model):
-    # Fields for general information
+
+    activity_schedule = models.ForeignKey(ActivitySchedule, on_delete=models.CASCADE, null=True, blank=True)
+
     division_name = models.CharField(max_length=255, default="Unknown Division")
-    activity_title = models.CharField(max_length=255, default="Untitled Activity")
-    activity_date = models.DateField(null=True, blank=True)  # Allow null/blank for date if not provided
     venue = models.CharField(max_length=255, default="Unknown Venue")
     objectives = models.TextField(default="Objectives not provided.")
 

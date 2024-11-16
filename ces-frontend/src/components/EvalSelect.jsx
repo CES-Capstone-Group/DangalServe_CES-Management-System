@@ -5,6 +5,7 @@ import { Container, Button, Modal, Form, Row, Col } from "react-bootstrap";
 import pncbg from '../assets/pncbg.png'; // Ensure this path is correct
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios
+import { API_ENDPOINTS } from "../config";
 
 const EvalSelect = () => {
     const [showModal, setShowModal] = useState(false);
@@ -35,7 +36,7 @@ const EvalSelect = () => {
     useEffect(() => {
         const fetchBarangay = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/barangays/');
+                const response = await axios.get(API_ENDPOINTS.BARANGAY_LIST);
                 setBarangays(response.data);
             } catch (error) {
                 console.error("There was an error fetching the barangay data!", error);
@@ -44,7 +45,7 @@ const EvalSelect = () => {
 
         const fetchDepartments = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/departments/');
+                const response = await axios.get(API_ENDPOINTS.DEPARTMENT_LIST);
                 setDepartments(response.data); // Set the department data in state
             } catch (error) {
                 console.error("There was an error fetching the department data!", error);
@@ -53,7 +54,7 @@ const EvalSelect = () => {
 
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/courses/');
+                const response = await axios.get(API_ENDPOINTS.COURSE_LIST);
                 setCourses(response.data); // Set the courses data in state
             } catch (error) {
                 console.error("Error fetching courses:", error);
@@ -75,7 +76,7 @@ const EvalSelect = () => {
 
         if (selectedValue) {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/departments/${selectedValue}/courses/`);
+                const response = await axios.get(API_ENDPOINTS.COURSES_BY_DEPARTMENT(selectedValue));
                 setFilteredCourses(response.data);
             } catch (error) {
                 console.error("Error fetching courses for department:", error);
@@ -120,7 +121,7 @@ const EvalSelect = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/api/users/create_user/', {
+            const response = await fetch(API_ENDPOINTS.CREATE_USER, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

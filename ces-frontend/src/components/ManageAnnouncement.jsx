@@ -6,6 +6,7 @@ import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icon
 import "./table.css";
 import BtnEditDeleteAnnouncement from "./Buttons/Admin/BtnEditDeleteAnnouncement";
 import BtnAddAnnouncement from "./Buttons/Admin/BtnAddAnnouncement";
+import { API_ENDPOINTS } from "../config";
 
 const ManageAnnouncement = () => {
     const [showModal, setShowModal] = useState(false);
@@ -21,7 +22,7 @@ const ManageAnnouncement = () => {
     // Fetch announcements from the backend
     const fetchAnnouncements = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/announcements/");
+            const response = await fetch(API_ENDPOINTS.ANNOUNCEMENT_LIST);
             if (!response.ok) {
                 throw new Error("Failed to fetch announcements.");
             }

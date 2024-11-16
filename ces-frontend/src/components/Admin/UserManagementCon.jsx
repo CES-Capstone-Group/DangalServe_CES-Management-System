@@ -7,6 +7,7 @@ import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddAcc from "../Buttons/Admin/BtnAddAcc";
 import "../table.css"
 import "../../App.css"
+import { API_ENDPOINTS } from "../../config";
 
 const Rows = ({ user_id, username, name, type, department_name, course_name, barangay_name, position, actDate, deacDate, status, fetchUsers }) => {
     const account = {
@@ -41,7 +42,7 @@ const Rows = ({ user_id, username, name, type, department_name, course_name, bar
         };
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/user_info_action/${user_id}/`, {
+            const response = await fetch(API_ENDPOINTS.USER_INFO_ACTION(user_id), {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,7 +147,7 @@ const UserManagementCon = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/users/');
+            const response = await fetch(API_ENDPOINTS.GET_USERS);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

@@ -2,6 +2,7 @@ import { faPenToSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnEditDeleteResearchAgenda = ({ researchAgenda, onResearchAgendaUpdated }) => {
   const [showEdit, setShowEdit] = useState(false);
@@ -28,7 +29,7 @@ const BtnEditDeleteResearchAgenda = ({ researchAgenda, onResearchAgendaUpdated }
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/research-agendas/${researchAgenda.id}/`, {
+      const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_DETAIL(researchAgenda.id), {
         method: "PUT",  // Use PUT method for update
         body: formData,
       });
@@ -51,7 +52,7 @@ const BtnEditDeleteResearchAgenda = ({ researchAgenda, onResearchAgendaUpdated }
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/research-agendas/${researchAgenda.id}/`, {
+      const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_DETAIL(researchAgenda.id), {
         method: "DELETE",
       });
 

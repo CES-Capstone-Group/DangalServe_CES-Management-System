@@ -6,25 +6,25 @@ import InvChart from "./InvChart.jsx";
 
 
 const InvolvementPage = () => {
-    return(
+    return (
         <div>
-            <Container className="d-flex">
+            <Container className="d-flex flex-column justify-content-center me-0 ms-0">
                 <Row>
-                    <Col className="involvement"><h1>INVOLVEMENT REPORTS</h1></Col>
+                    <Col className="involvement "><h2>Involvement Reports</h2></Col>
                 </Row>
-                <Row style={{marginLeft: '45em'}}>
-                    <Col className="justify-content-end">
-                        <Button style={{backgroundColor:'#71A872', border: '0px'}}>
-                            <FontAwesomeIcon className='me-2' icon={faFilter} ></FontAwesomeIcon>
+                <Row>
+                    <Col className="d-flex justify-content-end mb-3">
+                        <Button style={{ backgroundColor: '#71A872', border: '0px' }}>
+                            <FontAwesomeIcon className='me-2 ' icon={faFilter}></FontAwesomeIcon>
                             Filter
                         </Button>
                     </Col>
                 </Row>
             </Container>
             <Container>
-                <InvChart/> 
+                <InvChart />
             </Container>
-        </div> 
+        </div>
     );
 }
 

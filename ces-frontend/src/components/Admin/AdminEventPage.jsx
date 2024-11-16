@@ -3,6 +3,7 @@ import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faChevronLeft, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import { API_ENDPOINTS } from "../../config";
 
 const AdminEventPage = () => {
     const location = useLocation();
@@ -12,7 +13,7 @@ const AdminEventPage = () => {
     const handleEventClick = async (event) => {
         try {
             // Fetch the event details using the event's ID
-            const response = await fetch(`http://127.0.0.1:8000/api/activity-schedules/${event.id}/`);
+            const response = await fetch(API_ENDPOINTS.ACTIVITY_SCHEDULE_DETAIL(event.id));
             
             if (response.ok) {
                 const eventData = await response.json();

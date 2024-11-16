@@ -6,6 +6,7 @@ import { faFilter, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import BtnAddCourse from "./Buttons/Manage/BtnAddCourse"; // Import Add Course Button
 import BtnEditDeleteCourse from "./Buttons/Manage/BtnEditDeleteCourse"; // Import Edit/Delete Course Button
 import "./table.css";
+import { API_ENDPOINTS } from "../config";
 
 const CourseManagement = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const CourseManagement = () => {
     // **Function to Fetch Courses from Backend**
     const fetchCourses = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/courses/'); // Fetch from API
+            const response = await fetch(API_ENDPOINTS.COURSE_LIST); // Fetch from API
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

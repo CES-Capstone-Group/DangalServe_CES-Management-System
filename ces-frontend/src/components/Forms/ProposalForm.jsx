@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { API_ENDPOINTS } from '../../config';
 
 const ProposalForm = () => {
   const [text, setText] = useState("");
@@ -28,7 +29,7 @@ const ProposalForm = () => {
   const [signatoryNames, setSignatoryNames] = useState([]);
   const [selectedSignatory, setSelectedSignatory] = useState('');
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/signatory-names/')
+    fetch(API_ENDPOINTS.SIGNATORY_NAMES)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -55,7 +56,7 @@ const ProposalForm = () => {
   useEffect(() => {
     const fetchBarangays = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+        const response = await fetch(API_ENDPOINTS.BARANGAY_LIST);
         if (response.ok) {
           const data = await response.json();
           setBarangays(data);
@@ -69,7 +70,7 @@ const ProposalForm = () => {
 
     const fetchResearchAgendas = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/research-agendas/');
+        const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_LIST);
         if (response.ok) {
           const data = await response.json();
           setResearchAgendas(data);
@@ -306,7 +307,7 @@ const ProposalForm = () => {
       setIsResubmission(true);
       const fetchProposalData = async () => {
         const token = localStorage.getItem('access_token');
-        const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposalId}/`, {
+        const response = await fetch(API_ENDPOINTS.PROPOSAL_DETAIL(proposalId), {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -434,11 +435,11 @@ const ProposalForm = () => {
         console.error('No token found. Please log in.');
         return;
       }
-      let url = 'http://127.0.0.1:8000/api/proposals/';
+      let url = API_ENDPOINTS.PROPOSAL_LIST_CREATE;
       let method = 'POST';
 
       if (isResubmission) {
-        url = `http://127.0.0.1:8000/api/proposals/${proposalId}/resubmit/`;
+        url = API_ENDPOINTS.PROPOSAL_RESUBMISSION(proposalId);
         method = 'PATCH'; // Use PATCH for resubmissions
       }
 

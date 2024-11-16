@@ -7,6 +7,7 @@ import { Button, Col, Container, Form, InputGroup, Row, Modal } from "react-boot
 import BtnResched from "../Buttons/BtnResched";
 import BtnAddSchedule from "../Buttons/BtnAddSchedule"; // Import BtnAddSchedule
 
+import { API_ENDPOINTS } from "../../config";
 function AdminCalendar() {
     const calendarRef = useRef(null);
     const [showAddScheduleModal, setShowAddScheduleModal] = useState(false);  
@@ -18,8 +19,9 @@ function AdminCalendar() {
     const [proposals, setProposals] = useState([]);
     const [proposalMap, setProposalMap] = useState({});
 
+    
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/activity-schedules/`)
+        fetch(API_ENDPOINTS.ACTIVITY_SCHEDULE_LIST)
             .then(response => {
                 if (!response.ok) {
                     // Throw an error if the response is not okay
@@ -84,7 +86,7 @@ function AdminCalendar() {
         }
     
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay", {
+            const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved by Barangay`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -92,7 +94,7 @@ function AdminCalendar() {
                 },
             });
     
-            if (responsse.ok) {
+            if (response.ok) {
                 const data = await response.json();
                 setProposals(data);
                 console.log("Proposals:", data); 
@@ -120,8 +122,6 @@ function AdminCalendar() {
         const calendarApi = calendarRef.current.getApi();
         calendarApi.addEvent(eventData); // Add the new event to the calendar
     };
-    
-    
     
     // Handle year change from the combo box
     const handleYearChange = (e) => {

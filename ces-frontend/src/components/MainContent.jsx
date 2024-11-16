@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../App.css';
 import pncHeader from '../assets/pnc-header-2.png';
 import { Container, Row, Col, Card, Modal } from 'react-bootstrap';
+import { API_ENDPOINTS } from '../config';
 
 const MainContent = () => {
   const [achievements, setAchievements] = useState([]);
@@ -28,7 +29,7 @@ const MainContent = () => {
 
   const fetchResearchAgendas = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/research-agendas/");
+      const response = await fetch(API_ENDPOINTS.RESEARCH_AGENDA_LIST);
       if (!response.ok) {
         throw new Error('Failed to fetch research agendas');
       }
@@ -81,7 +82,7 @@ const MainContent = () => {
   // Fetch achievements data from the server
   const fetchAchievements = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/achievements/");
+      const response = await fetch(API_ENDPOINTS.ACHIEVEMENT_LIST);
       const data = await response.json();
       setAchievements(data);
     } catch (err) {
@@ -94,7 +95,7 @@ const MainContent = () => {
   // Fetch announcements data from the server
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/announcements/");
+      const response = await fetch(API_ENDPOINTS.ANNOUNCEMENT_LIST);
       const data = await response.json();
       setAnnouncements(data);
     } catch (err) {

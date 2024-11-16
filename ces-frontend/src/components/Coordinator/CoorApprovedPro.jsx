@@ -3,6 +3,7 @@ import { Container, Table } from "react-bootstrap";
 import BtnCoorViewApprovedProposal from "../Buttons/Coordinator/BtnCoorViewApprovedProposal";
 import "../table.css";
 import ProposalPB from "../ProposalPB";
+import { API_ENDPOINTS } from "../../config";
 
 const CoorApprovedPro = () => {
     const [proposals, setProposals] = useState([]);
@@ -20,7 +21,7 @@ const CoorApprovedPro = () => {
 
             try {
                 // Fetch only approved proposals for the current user
-                const response = await fetch('http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay', {
+                const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved by Barangay`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

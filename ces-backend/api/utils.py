@@ -1,32 +1,25 @@
-import os
-import platform
 from docx import Document
 from django.conf import settings
+import os
+import pythoncom
 from docx2pdf import convert
 
-# Only import pythoncom if running on Windows
-if platform.system() == "Windows":
-    import pythoncom
-
 def convert_docx_to_pdf(docx_path):
-    # Check if the current system is Windows
-    if platform.system() == "Windows":
-        # Initialize COM objects using pythoncom for Windows
-        pythoncom.CoInitialize()
-        try:
-            # Define the output path for the PDF
-            pdf_output_path = docx_path.replace('.docx', '.pdf')
-
-            # Perform the conversion
-            convert(docx_path, pdf_output_path)
-
-            return pdf_output_path
-        finally:
-            # Uninitialize COM objects
-            pythoncom.CoUninitialize()
-    else:
-        # If not Windows, raise an error or handle the conversion differently
-        raise NotImplementedError("DOCX to PDF conversion is only supported on Windows.")
+    pythoncom.CoInitialize()
+    try:
+        # Define the output path for the PDF
+        pdf_output_path = docx_path.replace('.docx', '.pdf')
+        
+        # Perform the conversion
+        convert(docx_path, pdf_output_path)
+        
+        # for debugging
+        # print(f"DOCX Path: {docx_path}")
+        # print(f"PDF Path: {pdf_output_path}")
+        
+        return pdf_output_path
+    finally:
+        pythoncom.CoUninitialize()
 
 def replace_text_in_paragraph(paragraph, placeholders):
     """Replaces placeholders in a given paragraph with actual values."""

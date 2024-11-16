@@ -2,6 +2,7 @@ import { faPenToSquare, faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { Button, Row, Col, Form, Modal } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => {  // <-- Added `initialBrgyName` prop to prefill values
     const [showEdit, setShowEdit] = useState(false);
@@ -29,7 +30,7 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/barangays/${brgyId}/`, {
+            const response = await fetch(API_ENDPOINTS.BARANGAY_UPDATE_DELETE(brgyId), {
                 method: "PUT",
                 body: formData,
             });
@@ -52,7 +53,7 @@ const BtnEditDelete = ({ brgyId, brgyName: initialBrgyName, onBrgyUpdated }) => 
         try {
             // console.log(`Deleting barangay with ID: ${brgyId}`);
 
-            const response = await fetch(`http://127.0.0.1:8000/api/barangays/${brgyId}/`, {
+            const response = await fetch(API_ENDPOINTS.BARANGAY_UPDATE_DELETE(brgyId), {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
+import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddAcc = ({ onAccountAdded }) => {
     const [showModal, setShowModal] = useState(false);
@@ -36,7 +37,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/departments/');
+                const response = await fetch(API_ENDPOINTS.DEPARTMENT_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setDepartments(data);
@@ -54,7 +55,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/courses/');
+                const response = await fetch(API_ENDPOINTS.COURSE_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setCourses(data);
@@ -72,7 +73,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
     useEffect(() => {
         const fetchBarangays = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/barangays/');
+                const response = await fetch(API_ENDPOINTS.BARANGAY_LIST);
                 if (response.ok) {
                     const data = await response.json();
                     setBarangays(data);
@@ -130,7 +131,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
 
             // Fetch courses based on department selection
             if (value) {
-                fetch(`http://127.0.0.1:8000/api/departments/${value}/courses/`)
+                fetch(API_ENDPOINTS.COURSES_BY_DEPARTMENT(value))
                     .then((response) => response.json())
                     .then((data) => {
                         setFilteredCourses(data);  // Update the filtered courses state
@@ -183,7 +184,7 @@ const BtnAddAcc = ({ onAccountAdded }) => {
             deactivationDate: formData.deactivationDate || null,
         };
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/users/create_user/', {
+            const response = await fetch(API_ENDPOINTS.CREATE_USER, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

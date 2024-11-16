@@ -3,6 +3,7 @@ import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { API_ENDPOINTS } from "../../config";
 
 const AdminDeptApprovedPro = () => {
     const { departmentId } = useParams(); // Retrieve the department ID from the URL
@@ -26,7 +27,7 @@ const AdminDeptApprovedPro = () => {
                 }
 
                 try {
-                    const response = await fetch(`http://127.0.0.1:8000/api/proposals/?status=Approved by Barangay&department=${departmentId}`, {
+                    const response = await fetch(API_ENDPOINTS.PROPOSAL_LIST_CREATE+`?status=Approved by Barangay&department=${departmentId}`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -47,7 +48,7 @@ const AdminDeptApprovedPro = () => {
 
             const fetchDepartmentName = async () => {
                 try {
-                    const response = await fetch(`http://127.0.0.1:8000/api/departments/${departmentId}/`);
+                    const response = await fetch(API_ENDPOINTS.DEPARTMENT_DETAIL);
                     if (response.ok) {
                         const data = await response.json();
                         setDepartmentName(data.dept_name);
@@ -66,7 +67,7 @@ const AdminDeptApprovedPro = () => {
         // Fetch the events related to the clicked proposal from your backend
         const fetchProposalEvents = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/activity-schedules/?proposal=${proposal.proposal_id}`);
+                const response = await fetch(API_ENDPOINTS.ACTIVITY_SCHEDULE_LIST+`?proposal=${proposal.proposal_id}`);
                 if (response.ok) {
                     const eventData = await response.json();
                     navigate(`/admin/event-page`, { 

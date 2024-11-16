@@ -4,6 +4,7 @@ import { Container, Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./table.css";
+import { API_ENDPOINTS } from "../config";
 
 const ManageCalendar = () => {
     const [showModal, setShowModal] = useState(false);
@@ -16,7 +17,7 @@ const ManageCalendar = () => {
     // Fetch activities from the backend
     const fetchCalendar = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/activity-schedules/");
+            const response = await fetch(API_ENDPOINTS.ACTIVITY_SCHEDULE_LIST);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

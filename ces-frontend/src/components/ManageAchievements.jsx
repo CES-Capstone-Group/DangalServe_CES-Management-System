@@ -6,6 +6,7 @@ import { faFilter, faChevronLeft, faEye } from "@fortawesome/free-solid-svg-icon
 import "./table.css";
 import BtnEditDeleteAchievement from "./Buttons/Admin/BtnEditDeleteAchievement";
 import BtnAddAchievement from "./Buttons/Admin/BtnAddAchievement";
+import { API_ENDPOINTS } from "../config";
 
 const ManageAchievements = () => {
     const [showModal, setShowModal] = useState(false);
@@ -18,7 +19,7 @@ const ManageAchievements = () => {
     // Fetch Achievements from Backend
     const fetchAchievements = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/achievements/");  // Adjust your backend URL
+            const response = await fetch(API_ENDPOINTS.ACHIEVEMENT_LIST);  // Adjust your backend URL
             if (!response.ok) throw new Error("Failed to fetch achievements.");
             const data = await response.json();
             setAchievements(data);  // Update state with fetched data

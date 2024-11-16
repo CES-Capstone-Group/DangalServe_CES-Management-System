@@ -5,6 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Container, Form } from "react-bootstrap";
 import BtnResched from "../Buttons/BtnResched";
+import { API_ENDPOINTS } from "../../config";
 
 function BrgyCalendar() {
     const [events, setEvents] = useState([]); // State to store calendar events
@@ -13,7 +14,7 @@ function BrgyCalendar() {
 
     // Fetch events from the backend when the component mounts
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/activity-schedules/`) // Adjust the API endpoint as necessary
+        fetch(API_ENDPOINTS.ACTIVITY_SCHEDULE_LIST) // Adjust the API endpoint as necessary
             .then((response) => response.json())
             .then((data) => {
                 // Map the fetched data to match FullCalendar's format

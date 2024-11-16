@@ -5,6 +5,7 @@ import ProposalPB from "../ProposalPB";
 // import Proposal from "../ProposalPB";
 import { useNavigate } from "react-router-dom";  // Import useNavigate
 import ButtonDownloadProposal from "./BtnDownloadProposal";
+import { API_ENDPOINTS } from "../../config";
 
 const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   const [show, setShow] = useState(false);
@@ -55,7 +56,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
       if (userBarangay && proposal.proposal_id) {
         const token = localStorage.getItem("access_token");
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/approve/`, {
+          const response = await fetch(API_ENDPOINTS.BARANGAY_APPROVAL(proposal.proposal_id), {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -136,7 +137,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
   // The original approval function for Director/VPRE/President
   const approval = async (status) => {
     const token = localStorage.getItem("access_token");
-    const apiUrl = `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`;
+    const apiUrl = API_ENDPOINTS.PROPOSAL_DETAIL(proposal.proposal_id);
 
     try {
       console.log("Sending approval request with status:", status);
@@ -189,7 +190,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
 
     try {
       const token = localStorage.getItem("access_token");
-      const apiUrl = `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/approve/`;
+      const apiUrl = API_ENDPOINTS.BARANGAY_APPROVAL(proposal.proposal_id);
 
       const response = await fetch(apiUrl, {
         method: "PATCH",
@@ -218,7 +219,7 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(
-        `http://127.0.0.1:8000/api/proposals/${proposal.proposal_id}/`,
+        API_ENDPOINTS.PROPOSAL_DETAIL(proposal.proposal_id),
         {
           method: "PATCH",
           headers: {

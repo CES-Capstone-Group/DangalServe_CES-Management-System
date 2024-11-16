@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import MainContent from './components/MainContent';
 import UserManagementCon from './components/Admin/UserManagementCon.jsx';

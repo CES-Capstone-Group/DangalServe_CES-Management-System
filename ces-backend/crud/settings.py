@@ -74,9 +74,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://pamantasances.pythonanywhere.com",
-    "https://dangalserve.netlify.app",
-    "http://localhost:5173",
+    "https://pamantasances.pythonanywhere.com/",
+    "https://dangalserve.netlify.app/",
+    "http://localhost:5173/",
 ]
 
 CORS_ALLOW_HEADERS = [

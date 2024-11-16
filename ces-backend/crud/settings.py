@@ -170,7 +170,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'ces-frontend', 'dist', 'assets'),
+    os.path.join('home/root/DangalServe_CES-Management-System/ces-frontend', 'dist', 'assets'),
 ]
 
 # Default primary key field type

@@ -742,6 +742,18 @@ def get_activity_schedule_detail(request, pk):
     serializedData = ActivityScheduleSerializer(activity_schedule)
     return Response(serializedData.data)
 
+@api_view(['GET'])
+def get_activities_by_proposal(request, proposal_id):
+    try:
+        # Filter activities by the given proposal_id
+        activity_schedules = ActivitySchedule.objects.filter(proposal_id=proposal_id)
+        serializedData = ActivityScheduleSerializer(activity_schedules, many=True)
+
+        # Return the serialized activity data
+        return Response(serializedData.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 # GET: Retrieve all documents
 @api_view(['GET'])
 def get_all_documents(request):
@@ -911,6 +923,10 @@ class ProposalDetailView(generics.RetrieveUpdateDestroyAPIView):
         # Check if the user has permission to approve the proposal
         if request.user.accountType == 'Admin':
             new_status = request.data.get('status', proposal.status)
+            
+            if new_status == 'Rejected':
+                proposal.remarks = request.data.get('remarks', proposal.remarks)
+            
             # Automatically set the sign date based on the status
             if new_status == 'Approved by Director':
                 proposal.directorSignDate = timezone.now().date()

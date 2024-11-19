@@ -6,8 +6,10 @@ from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.core.exceptions import ValidationError
 import json
+from django.utils import timezone
+from datetime import timedelta
 
-# Custom Token Serializer to include extra fields in JWT
+# Custom Token Serializer to include extra fields in JWT    
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -48,54 +50,83 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
+        username = attrs.get("username")
+        password = attrs.get("password")
+
+        # Attempt to get the user from the database
+        user = Account.objects.filter(username=username).first()
+        if user is None:
+            raise AuthenticationFailed("Invalid credentials. Please try again.")
+
+        # Check if the account is locked
+        current_time = timezone.now()
+        if user.lockout_until and user.lockout_until > current_time:
+            minutes_left = int((user.lockout_until - current_time).total_seconds() // 60)
+            raise AuthenticationFailed(
+                f"Account is locked. Please try again after {minutes_left} minute(s)."
+            )
+
+        # Check if the provided password is correct
+        if not user.check_password(password):
+            # Increment failed login attempts
+            user.failed_login_attempts += 1
+            if user.failed_login_attempts >= 3:
+                user.lockout_until = current_time + timedelta(minutes=15)  # Lock for 15 minutes
+                user.failed_login_attempts = 0  # Reset failed attempts after locking
+            user.save()
+            raise AuthenticationFailed("Invalid credentials. Please try again.")
+
+        # Perform the standard validation
         data = super().validate(attrs)
-        user = self.user
 
         # Ensure the account is active
-        if user.status != 'Active':
-            raise AuthenticationFailed('Account is not active')
+        if user.status != "Active":
+            raise AuthenticationFailed("Account is not active")
+
+        # Reset failed attempts if login is successful
+        user.failed_login_attempts = 0
+        user.lockout_until = None
+        user.save()
 
         # Add extra response data
-        data['user_id'] = user.user_id
+        data["user_id"] = user.user_id
+        data["accountType"] = user.accountType
+        data["position"] = user.position
 
         # Set 'name' in the response using the appropriate associated model
-        if user.accountType == 'Admin' and hasattr(user, 'adminaccount'):
-            data['name'] = user.adminaccount.name
-        elif user.accountType == 'Brgy. Official' and hasattr(user, 'brgyofficialaccount'):
-            data['name'] = user.brgyofficialaccount.name
-        elif user.accountType == 'Proponent' and hasattr(user, 'proponentaccount'):
-            data['name'] = user.proponentaccount.name
-        elif user.accountType == 'Evaluator' and hasattr(user, 'evaluatoraccount'):
-            data['name'] = user.evaluatoraccount.name
+        if user.accountType == "Admin" and hasattr(user, "adminaccount"):
+            data["name"] = user.adminaccount.name
+        elif user.accountType == "Brgy. Official" and hasattr(user, "brgyofficialaccount"):
+            data["name"] = user.brgyofficialaccount.name
+        elif user.accountType == "Proponent" and hasattr(user, "proponentaccount"):
+            data["name"] = user.proponentaccount.name
+        elif user.accountType == "Evaluator" and hasattr(user, "evaluatoraccount"):
+            data["name"] = user.evaluatoraccount.name
         else:
-            data['name'] = user.username  # Fallback to the account's username if no name is found
-
-        data['accountType'] = user.accountType
-        data['position'] = user.position
+            data["name"] = user.username  # Fallback to the account's username if no name is found
 
         # Include additional details for Proponents
-        if user.accountType == 'Proponent':
-            proponent = getattr(user, 'proponentaccount', None)
+        if user.accountType == "Proponent":
+            proponent = getattr(user, "proponentaccount", None)
             if proponent and proponent.department:
-                data['department_name'] = proponent.department.dept_name
+                data["department_name"] = proponent.department.dept_name
             else:
-                data['department_name'] = None
+                data["department_name"] = None
 
             if proponent and proponent.course:
-                data['course_name'] = proponent.course.course_name
+                data["course_name"] = proponent.course.course_name
             else:
-                data['course_name'] = None
+                data["course_name"] = None
 
         # Include additional details for Barangay Officials
-        elif user.accountType == 'Brgy. Official':
-            brgy_official = getattr(user, 'brgyofficialaccount', None)
+        elif user.accountType == "Brgy. Official":
+            brgy_official = getattr(user, "brgyofficialaccount", None)
             if brgy_official and brgy_official.barangay:
-                data['brgy_name'] = brgy_official.barangay.brgy_name
+                data["brgy_name"] = brgy_official.barangay.brgy_name
             else:
-                data['brgy_name'] = None
+                data["brgy_name"] = None
 
         return data
-
 
 
 # Serializer for login and authentication
@@ -158,13 +189,23 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['course_id', 'course_name', 'dept', 'dept_name']  
+        
+        
+from kpi.serializer import KpiTableSerializer
 class DepartmentSerializer(serializers.ModelSerializer):
 # Serializer for the Department model
     courses = CourseSerializer(many=True, read_only=True) 
+    # tables = KpiTableSerializer(many=True, read_only=True)
 
     class Meta:
         model = Department
         fields = ['dept_id', 'dept_name', 'courses']
+        
+    def get_tables(self, obj):
+        # Only include tables if 'include_tables' is passed in the context
+        if self.context.get('include_tables'):
+            return KpiTableSerializer(obj.tables.all(), many=True).data
+        return None
 
 
 # Serializer for ResearchAgenda model
@@ -295,4 +336,6 @@ class ActivityScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ActivitySchedule
-        fields = ['id', 'activity_title', 'target_date', 'target_time', 'files', 'proposal', 'proposal_title', 'status']        
+        fields = ['id', 'activity_title', 'target_date', 'target_time', 'files', 'proposal', 'proposal_title', 'status', 'activity_objectives', 'activity_venue', 'brgy']  
+
+    

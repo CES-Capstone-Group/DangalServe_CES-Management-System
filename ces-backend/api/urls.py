@@ -78,6 +78,7 @@ urlpatterns = [
     path('activity-schedules/', views.get_all_activity_schedules, name='get-all-activity-schedules'),
     path('activity-schedules/<int:pk>/', views.get_activity_schedule_detail, name='get-activity-schedule-detail'),
     path('activity-schedules/create/', views.create_activity_schedule, name='create-activity-schedule'),
+    path('activity-schedules/<int:proposal_id>/proposals', views.get_activities_by_proposal, name='activities_by_proposal'),
 
     #Documents URLs
     path('documents/', views.get_all_documents, name='get_all_documents'),

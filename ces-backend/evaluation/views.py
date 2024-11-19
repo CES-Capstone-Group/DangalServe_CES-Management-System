@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import EvaluationType, Section, Question, RatingOpt, MultipleChoiceOpt
-from .serializer import BasicSectionSerializer, BasicQuestionSerializer, EvaluationTypeDetailSerializer, EvaluationTypeSerializer, SectionSerializer, QuestionSerializer, RatingOptSerializer, MultipleChoiceOptSerializer
-from django.db.models import Prefetch
+from .serializer import BasicSectionSerializer, BasicQuestionSerializer, EvaluationTypeDetailSerializer, EvaluationTypeSerializer, SectionSerializer, QuestionSerializer, RatingOptSerializer, MultipleChoiceOptSerializer,EvaluationFormSerializer, FormSectionSerializer, FormQuestionSerializer
+from django.db.models import Q,Prefetch
 from django.shortcuts import get_object_or_404
 
 
@@ -78,11 +78,11 @@ def section_detail(request, pk):
         return Response({"error": "Section not found"}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = SectionSerializer(section)
+        serializer = BasicSectionSerializer(section)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = SectionSerializer(section, data=request.data)
+        serializer = BasicSectionSerializer(section, data=request.data,  partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -123,7 +123,7 @@ def question_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = QuestionSerializer(question, data=request.data)
+        serializer = QuestionSerializer(question, data=request.data,  partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -173,7 +173,7 @@ def ratingopt_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = RatingOptSerializer(rating_option, data=request.data)
+        serializer = RatingOptSerializer(rating_option, data=request.data,  partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -236,3 +236,149 @@ def evaluation_type_detail(request, evaluation_type_id):
     serializer = EvaluationTypeDetailSerializer(evaluation_type)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def get_evaluation_type_fixed_detail(request, evaluation_type_id):
+    # Fetch the evaluation type with sections that meet the criteria
+    evaluation_type = get_object_or_404(
+        EvaluationType.objects.prefetch_related(
+            Prefetch(
+                'sections',
+                queryset=Section.objects.filter(
+                    Q(questions__is_fixed=True) | Q(section_type='info', is_fixed=True)  # Include sections with fixed questions or fixed info sections
+                ).distinct().prefetch_related(
+                    Prefetch(
+                        'questions',
+                        queryset=Question.objects.filter(is_fixed=True).prefetch_related(
+                            Prefetch('question_options', queryset=MultipleChoiceOpt.objects.all())
+                        )
+                    ),
+                    Prefetch('section_options', queryset=RatingOpt.objects.all())
+                )
+            )
+        ),
+        pk=evaluation_type_id
+    )
+
+    serializer = EvaluationTypeDetailSerializer(evaluation_type)
+    return Response(serializer.data)
+
+
+# EvaluationForm Views
+@api_view(['GET'])
+def evaluation_form_list(request):
+    forms = EvaluationForm.objects.all()
+    serializer = EvaluationFormSerializer(forms, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def evaluation_form_create(request):
+    serializer = EvaluationFormSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def evaluation_form_detail(request, pk):
+    try:
+        form = EvaluationForm.objects.get(pk=pk)
+    except EvaluationForm.DoesNotExist:
+        return Response({'error': 'Evaluation Form not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EvaluationFormSerializer(form)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = EvaluationFormSerializer(form, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        form.delete()
+        return Response({'message': 'Evaluation Form deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# FormSection Views
+@api_view(['GET'])
+def form_section_list(request):
+    sections = FormSection.objects.all()
+    serializer = FormSectionSerializer(sections, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def form_section_create(request):
+    serializer = FormSectionSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def form_section_detail(request, pk):
+    try:
+        section = FormSection.objects.get(pk=pk)
+    except FormSection.DoesNotExist:
+        return Response({'error': 'Form Section not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = FormSectionSerializer(section)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = FormSectionSerializer(section, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        section.delete()
+        return Response({'message': 'Form Section deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# FormQuestion Views
+@api_view(['GET'])
+def form_question_list(request):
+    questions = FormQuestion.objects.all()
+    serializer = FormQuestionSerializer(questions, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def form_question_create(request):
+    serializer = FormQuestionSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def form_question_detail(request, pk):
+    try:
+        question = FormQuestion.objects.get(pk=pk)
+    except FormQuestion.DoesNotExist:
+        return Response({'error': 'Form Question not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = FormQuestionSerializer(question)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = FormQuestionSerializer(question, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        question.delete()
+        return Response({'message': 'Form Question deleted successfully'}, status=status.HTTP_204_NO_CONTENT)

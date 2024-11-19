@@ -64,6 +64,9 @@ class Account(AbstractBaseUser):
     activationDate = models.DateField()
     deactivationDate = models.DateField(null=True, blank=True)
 
+    failed_login_attempts = models.IntegerField(default=0)
+    lockout_until = models.DateTimeField(null=True, blank=True)
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = "username"
@@ -246,6 +249,8 @@ class Proposal(models.Model):
     VPRESignDate = models.DateField(null=True, blank=True)
     PRESignDate = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Pending')
+    
+    remarks = models.TextField(null=True, blank=True)
 
     current_version = models.ForeignKey('ProposalVersion', null=True, blank=True, on_delete=models.SET_NULL, related_name='active_proposal')
 
@@ -350,8 +355,11 @@ class Signatory(models.Model):
         return f'{self.name} ({self.position}) - {self.section}'
 
 class ActivitySchedule(models.Model):
-    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    proposal = models.ForeignKey('Proposal', on_delete=models.CASCADE)
     activity_title = models.CharField(max_length=255, default="Activity Title")
+    activity_objectives = models.TextField(default="")  # Added objectives field
+    activity_venue = models.CharField(max_length=255, default="")  # Added venue field
+    brgy = models.ForeignKey('Barangay', on_delete=models.CASCADE, related_name='activities', null=True, blank=True)
     target_date = models.DateField(default=timezone.now)  # Current date as default
     target_time = models.TimeField(null=True, blank=True, default=None)
     files = models.ManyToManyField('FileUpload', blank=True)
@@ -359,7 +367,7 @@ class ActivitySchedule(models.Model):
 
     def __str__(self):
         return self.activity_title
-    
+        
 class FileUpload(models.Model):
     file = models.FileField(upload_to='activities/', null=True, blank=True)
 

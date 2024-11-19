@@ -23,25 +23,26 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 
-#urlpatterns for local 
-urlpatterns = [
-    # path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    path('impact/', include('impact.urls')),
-    path('evaluation/', include('evaluation.urls')),
-]
-
-# #url pattern for deployment
-# def home_view(request):
-#     return HttpResponse("Welcome to the Homepage!")
-
+# #urlpatterns for local 
 # urlpatterns = [
-#     path('admin/', admin.site.urls),
+#     # path('admin/', admin.site.urls),
 #     path('api/', include('api.urls')),
 #     path('impact/', include('impact.urls')),
 #     path('evaluation/', include('evaluation.urls')),
-#     path('', TemplateView.as_view(template_name='index.html'), name='home'),
+#     path('kpi/', include('kpi.urls')),
 # ]
+
+#url pattern for deployment
+def home_view(request):
+    return HttpResponse("Welcome to the Homepage!")
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+    path('impact/', include('impact.urls')),
+    path('evaluation/', include('evaluation.urls')),
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+]
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

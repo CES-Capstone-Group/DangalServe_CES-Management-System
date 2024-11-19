@@ -23,6 +23,7 @@ class Section(models.Model):
     QUESTION_TYPE_CHOICES = [
         ('rating', 'Rating'),
         ('multiple_choice', 'Multiple Choice'),
+        ('open_ended', 'Open Ended'),
     ]
 
     section_id = models.AutoField(primary_key=True)
@@ -71,25 +72,30 @@ class MultipleChoiceOpt(models.Model):
         return f"{self.label} (Value: {self.value})"
 
 class EvaluationForm(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Active'),  # Form is ready for answering
+        ('inactive', 'Inactive'),  # Form is not ready for answering
+    ]
+
     form_id = models.AutoField(primary_key=True)
-    evaluation_type = models.ForeignKey(EvaluationType, on_delete=models.CASCADE, related_name='forms')
+    evaluation_type = models.ForeignKey('EvaluationType', on_delete=models.CASCADE, related_name='forms')
     title = models.CharField(max_length=255)
+    activity_schedule_id = models.IntegerField(null=True, blank=True)  # Links to ActivitySchedule
+    proposal_id = models.IntegerField(null=True, blank=True)  # Links to Proposal
     created_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='created_forms')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='inactive')  # Added status field
     created_at = models.DateTimeField(default=timezone.now)
-    updated_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='updated_forms')
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} ({self.get_status_display()})"
+
 
 class FormSection(models.Model):
     form_section_id = models.AutoField(primary_key=True)
     form = models.ForeignKey(EvaluationForm, on_delete=models.CASCADE, related_name='form_sections')
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='form_sections')
-    section_order = models.IntegerField()
-    created_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='created_form_sections')
     created_at = models.DateTimeField(default=timezone.now)
-    updated_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='updated_form_sections')
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -99,10 +105,7 @@ class FormQuestion(models.Model):
     form_question_id = models.AutoField(primary_key=True)
     form_section = models.ForeignKey(FormSection, on_delete=models.CASCADE, related_name='form_questions')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='form_questions')
-    question_order = models.IntegerField()
-    created_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='created_form_questions')
     created_at = models.DateTimeField(default=timezone.now)
-    updated_by = models.ForeignKey('api.Account', on_delete=models.SET_NULL, null=True, related_name='updated_form_questions')
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'api',
     'impact',
     'evaluation',
+    'kpi',
     'rest_framework_simplejwt.token_blacklist',
    
 
@@ -75,13 +76,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://pamantasances.pythonanywhere.com",
-    "https://dangalserve.netlify.app",
     "http://localhost:5173",
-]
-
-CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
+    "https://dangalserve.netlify.app",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -110,7 +106,7 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# # Local Database for Debugging locally
+# Local Database for Debugging locally
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -170,7 +166,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [
-#     os.path.join('home/PamantasanCES/DangalServe_CES-Management-System/ces-frontend', 'dist', 'assets'),
+#     os.path.join(BASE_DIR, 'ces-frontend', 'dist', 'assets'),
 # ]
 
 # Default primary key field type

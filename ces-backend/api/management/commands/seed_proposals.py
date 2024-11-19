@@ -44,7 +44,7 @@ class Command(BaseCommand):
             # Create the proposal
             proposal = Proposal.objects.create(
                 user_id=proponent,
-                title=f"Proposal for {department.dept_name} - {status}",
+                title=f"Proposal for {department.dept_name}",
                 engagement_date=timezone.now().date() - timedelta(days=10),
                 disengagement_date=timezone.now().date() + timedelta(days=30),
                 department=department.dept_name,

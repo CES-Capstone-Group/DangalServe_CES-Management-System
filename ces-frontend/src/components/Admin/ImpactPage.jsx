@@ -105,7 +105,7 @@ const ImpactPage = () => {
     };
 
     return (
-        <Container>
+        <Container fluid>
             <h3 className="mb-4">Impact Evaluation Results</h3>
             {loading ? (
                 <p>Loading data...</p>

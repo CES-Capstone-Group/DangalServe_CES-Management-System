@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import MainContent from './components/MainContent';
 import UserManagementCon from './components/Admin/UserManagementCon.jsx';
@@ -188,9 +188,7 @@ const App = () => {
           <Route path='aarForm' element={<AARForm />} />
           <Route path='impact-eval' element={<ImpactEvalForm />} />
           <Route path='eval-login' element={<EvalLogIn/>} />
-
         </Routes>
-
       </UserProvider>
 
 

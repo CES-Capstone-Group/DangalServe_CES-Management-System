@@ -44,7 +44,7 @@ class SectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Section
-        fields = ['section_id', 'title', 'question_type', 'content', 'is_fixed', 'questions', 'evaluation_type']
+        fields = ['section_id', 'title', 'section_type', 'question_type', 'content', 'is_fixed', 'questions', 'evaluation_type']
 
 class EvaluationFormSerializer(serializers.ModelSerializer):
     class Meta:

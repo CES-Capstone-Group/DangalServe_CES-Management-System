@@ -107,28 +107,27 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Local Database for Debugging locally
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ces_db',
-        'USER': 'root',
-        'PASSWORD': '09392660241xolos',
-        'HOST': 'localhost',  # or the hostname where your MySQL server is running
-        'PORT': '3306'      # or the port on which your MySQL server is listening
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'PamantasanCES$ces_db',
-#         'USER': 'PamantasanCES',
-#         'PASSWORD': 'Cloud5024',
-#         'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
+#         'NAME': 'ces_db',
+#         'USER': 'root',
+#         'PASSWORD': 'karly@2700',
+#         'HOST': 'localhost',  # or the hostname where your MySQL server is running
 #         'PORT': '3306'      # or the port on which your MySQL server is listening
 #     }
 # }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'PamantasanCES$ces_db',
+        'USER': 'PamantasanCES',
+        'PASSWORD': 'Cloud5024',
+        'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
+        'PORT': '3306'      # or the port on which your MySQL server is listening
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

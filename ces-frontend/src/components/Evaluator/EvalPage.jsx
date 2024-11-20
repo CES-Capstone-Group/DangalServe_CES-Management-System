@@ -131,7 +131,7 @@ const EvalPage = () => {
                             <td>{new Date(form.created_at).toLocaleDateString()}</td>
                             <td>{form.status}</td>
                             <td>
-                                <BtnViewTally />
+                                {/* <BtnViewTally /> */}
                                 <BtnViewAllResponse />
                                 <Button
                                     variant="warning"

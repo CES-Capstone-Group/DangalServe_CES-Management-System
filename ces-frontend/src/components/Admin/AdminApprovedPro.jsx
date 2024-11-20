@@ -24,7 +24,7 @@ const AdminApprovedPro = () => {
             }
 
             try {
-                const response = await fetch(API_ENDPOINTS.PROPOSAL_LIST_CREATE+`?status=Approved by President`, {
+                const response = await fetch(API_ENDPOINTS.PROPOSAL_LIST_CREATE+`?status=Approved%20by%20President`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

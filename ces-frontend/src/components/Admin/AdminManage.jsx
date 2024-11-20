@@ -46,7 +46,6 @@ const AdminManage = () => {
         { title: "Document Management", path: "/manage/manage-docs", icon: faFolderOpen },
         { title: "Calendar Management", path: "/manage/calendar", icon: faCalendarAlt },
         { title: "Evaluator Management", path: "/manage/evaluators", icon: faPerson},
-        { title: "Evaluation Responses Management", path: "/manage/responses", icon: faFile },
         { title: "Evaluation Form Management", path: "/manage/eval-type-management", icon: faFileAlt },
         { title: "KPI Management", path: "/manage/kpi-manage", icon: faChartLine },
 

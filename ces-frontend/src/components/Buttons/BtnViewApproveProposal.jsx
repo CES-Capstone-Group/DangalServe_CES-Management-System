@@ -493,11 +493,11 @@ const BtnViewApproveProposal = ({ proposal, onApprove }) => {
               <Form.Label column sm={4}>Identified Needs</Form.Label>
               <Col sm={8}>
                 {proposal.identified_needs_file ? (
+                  <Form.Control readOnly type="text" value={proposal.identified_needs_text || "N/A"} />
+                ) : (
                   <a href={proposal.identified_needs_file} target="_blank" rel="noopener noreferrer">
                     View File
                   </a>
-                ) : (
-                  <Form.Control readOnly type="text" value={proposal.identified_needs_text || "N/A"} />
                 )}
               </Col>
           </Form.Group>

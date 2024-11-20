@@ -34,9 +34,9 @@ function AdminCalendar() {
                 const formattedEvents = data.map(event => ({
                     id: event.id,
                     title: event.activity_title,
-                    start: `${event.target_date}T${event.target_time}`,
+                    start: `${event.target_date}T${event.target_time || "00:00:00"}`, // Use default time if missing
                     extendedProps: {
-                        proposal: event.proposal_title, // Assume you have 'proposal_title' in your backend
+                        proposal: event.proposal_title,
                         file: event.file,
                     }
                 }));
@@ -53,15 +53,16 @@ function AdminCalendar() {
     // Handle event click to show modal with event details
     const handleEventClick = (clickInfo) => {
         const event = clickInfo.event;
-
+        const time = event.start ? event.start.toISOString().split("T")[1]?.substring(0, 5) : "--:--";
+    
         setSelectedEvent({
-            proposal: event.extendedProps.proposal || "No proposal title",  // Ensure the proposal is passed
+            proposal: event.extendedProps.proposal || "No proposal title",
             activity: event.title || "No activity title",
-            date: event.startStr.split('T')[0] || "No date",
-            time: event.startStr.split('T')[1] || "No time",
+            date: event.startStr.split("T")[0] || "No date",
+            time: time, // Extracted and formatted time
         });
-
-        setShowEventDetailsModal(true);  // Show the event details modal
+    
+        setShowEventDetailsModal(true); // Show the event details modal
     };
 
     // Function to open modal for creating new events
@@ -92,7 +93,7 @@ function AdminCalendar() {
         }
 
         try {
-            const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved by Barangay`, {
+            const response = await fetch(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved%20by%20President`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -196,7 +197,8 @@ function AdminCalendar() {
                                     <Form.Control
                                         className="input"
                                         type="time"
-                                        value={time}
+                                        value={time !== "--:--" ? time : ""}
+                                        placeholder={time === "--:--" ? "--:--" : ""}
                                         readOnly
                                     />
                                 </InputGroup>

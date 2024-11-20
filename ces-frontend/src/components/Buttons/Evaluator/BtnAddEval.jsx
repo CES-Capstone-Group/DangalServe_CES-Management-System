@@ -52,7 +52,7 @@ const BtnAddEval = () => {
                     console.error("No access token found");
                     return;
                 }
-                const response = await axios.get(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved%20by%20Barangay`, {
+                const response = await axios.get(`${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved%20by%20President`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setProposals(response.data || []);

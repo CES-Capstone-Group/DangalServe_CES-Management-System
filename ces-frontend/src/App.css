@@ -58,7 +58,7 @@ html {
   align-items: center;
 }
 
-.side.collapsed .sidebar-menu-body{
+.side.collapsed .sidebar-menu-body {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -66,17 +66,21 @@ html {
   align-content: stretch;
   flex-wrap: wrap;
 }
+
 .side.collapsed .nav-link {
-  margin-bottom: 20px; /* Increase spacing between sidebar items */
+  margin-bottom: 20px;
+  /* Increase spacing between sidebar items */
 }
 
-.side.collapsed .nav-link.active{
+.side.collapsed .nav-link.active {
   background-color: #ffffff00;
   padding: 0px;
 }
-.sidebar-menu.collapsed .nav-link.active .sidebar-menu-nav-icon svg path{
+
+.sidebar-menu.collapsed .nav-link.active .sidebar-menu-nav-icon svg path {
   color: #76a577;
 }
+
 .sidebar-menu.collapsed .sidebar-menu-nav-title {
   display: none;
   /* Hide text labels when sidebar is collapsed */
@@ -95,14 +99,14 @@ html {
 
 /* Media query for smaller screens */
 @media (max-width: 768px) {
-  .topNav .navbar{
+  .topNav .navbar {
     height: 40px;
     font-size: 10px !important;
     padding-top: 0px;
   }
 
-  .topnav .sideBtn{
-    padding:  5px !important;
+  .topnav .sideBtn {
+    padding: 5px !important;
   }
 
   .topNav .navbar-brand .navbar-text {
@@ -200,10 +204,11 @@ html {
   padding: 10px;
 }
 
-.nav-link.active  .sidebar-menu-nav-title{
+.nav-link.active .sidebar-menu-nav-title {
   color: white !important;
 }
-.nav-link.active  .sidebar-menu-nav-icon svg{
+
+.nav-link.active .sidebar-menu-nav-icon svg {
   color: white !important;
 }
 
@@ -516,8 +521,9 @@ button.fc-Service-button.fc-button.fc-button-primary {
   justify-content: flex-end;
   margin-bottom: 10px;
 }
-.event-card{
-  border-radius: 10%; 
+
+.event-card {
+  border-radius: 10%;
   border: 'none';
   overflow: "hidden";
 }
@@ -591,8 +597,4 @@ button.fc-Service-button.fc-button.fc-button-primary {
   border: none;
   font-weight: bold;
   padding: 10px 20px;
-}
-
-.back-button:hover {
-  background-color: #5c8962;
 }

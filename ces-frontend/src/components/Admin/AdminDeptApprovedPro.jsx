@@ -20,7 +20,7 @@ const AdminDeptApprovedPro = () => {
                 if (!token) throw new Error("No token found.");
 
                 const response = await fetch(
-                    `${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved by Barangay&department=${departmentId}`,
+                    `${API_ENDPOINTS.PROPOSAL_LIST_CREATE}?status=Approved%20by%20President&department=${departmentId}`,
                     {
                         method: "GET",
                         headers: {

@@ -65,4 +65,12 @@ urlpatterns = [
     #path join evaluation type and evaluation section
     path('evaluation-types/<int:evaluation_type_id>/details/', views.evaluation_type_detail, name='evaluation_type_detail'),
     path('evaluation-types/<int:evaluation_type_id>/fixed-detail/', views.get_evaluation_type_fixed_detail, name='get_evaluation_type_fixed_detail'),
+
+    # Form Details View
+    path('eval-summary/header/<int:form_id>/', views.get_header_details, name='get_header_details'),  # GET
+
+    # Responses and Answers View
+    path('responses/<int:form_id>/answers/', views.get_form_responses, name='get_form_responses'),  # GET
+
+    path('forms/available/', views.get_available_forms, name='get_available_forms'),
 ]

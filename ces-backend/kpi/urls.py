@@ -4,6 +4,7 @@ from .views import (
     KpiTableDetailView,
     KpiListCreateView,
     KpiDetailView,
+    PasswordVerificationAndKpiUpdateView
 )
 
 app_name = 'kpi'
@@ -13,4 +14,6 @@ urlpatterns = [
     path('<int:pk>/', KpiTableDetailView.as_view(), name='kpi-table-detail'),
     path('kpis/', KpiListCreateView.as_view(), name='kpi-list-create'),
     path('kpis/<int:pk>/', KpiDetailView.as_view(), name='kpi-detail'),
+    path('password-verify/', PasswordVerificationAndKpiUpdateView.as_view(), name='kpi-update-check-password'),
+    
 ]

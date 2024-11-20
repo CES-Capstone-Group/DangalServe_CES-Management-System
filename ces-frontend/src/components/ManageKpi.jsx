@@ -83,19 +83,55 @@ const ManageKpi = () => {
         setIsEditing(false);
     };
 
-    const handlePasswordConfirm = () => {
-        const correctPassword = "yourPassword"; // Replace with your actual password
-
-        if (password === correctPassword) {
-            setIsEditing(false);
-            setShowSaveMessage(true);
-            setShowPasswordModal(false);
-
-            setTimeout(() => {
-                setShowSaveMessage(false);
-            }, 3000);
-        } else {
-            setPasswordError("Incorrect password. Please try again.");
+    const handlePasswordConfirm = async () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            setPasswordError("You are not authenticated. Please log in again.");
+            return;
+        }
+    
+        // Prepare the KPI updates payload
+        const kpiUpdates = [];
+        departments.forEach((dept) => {
+            dept.tables.forEach((table) => {
+                table.kpis.forEach((kpi) => {
+                    kpiUpdates.push({
+                        id: kpi.id, // Ensure each KPI has a unique ID
+                        quarterly_data: kpi.quarterly_data,
+                    });
+                });
+            });
+        });
+    
+        try {
+            const response = await fetch(API_ENDPOINTS.PASSWORD_VERIFY, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    password,
+                    kpi_updates: kpiUpdates, // Include KPI updates
+                }),
+            });
+    
+            const result = await response.json();
+    
+            if (response.ok) {
+                setIsEditing(false);
+                setShowSaveMessage(true);
+                setShowPasswordModal(false);
+    
+                setTimeout(() => {
+                    setShowSaveMessage(false);
+                }, 3000);
+            } else {
+                setPasswordError(result.error || "Failed to verify password.");
+            }
+        } catch (error) {
+            console.error("Password verification failed:", error);
+            setPasswordError("An error occurred. Please try again.");
         }
     };
 

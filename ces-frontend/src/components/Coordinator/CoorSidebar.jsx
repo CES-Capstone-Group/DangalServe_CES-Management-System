@@ -75,7 +75,7 @@ const CoorSidebar = ({ sidebarOpen, toggleSidebar }) => {
         </SidebarMenu.Nav>
 
         {/* ACHIEVEMENTS */}
-        <SidebarMenu.Nav>
+        {/* <SidebarMenu.Nav>
           <SidebarMenu.Sub>
             <SidebarMenu.Sub.Toggle>
               <SidebarMenu.Nav.Icon>
@@ -101,7 +101,7 @@ const CoorSidebar = ({ sidebarOpen, toggleSidebar }) => {
               </SidebarMenu.Nav>
             </SidebarMenu.Sub.Collapse>
           </SidebarMenu.Sub>
-        </SidebarMenu.Nav>
+        </SidebarMenu.Nav> */}
 
         {/* CALENDAR */}
         <SidebarMenu.Nav>

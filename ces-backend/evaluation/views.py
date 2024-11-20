@@ -603,3 +603,100 @@ def answer_detail(request, pk):
     if request.method == 'DELETE':
         answer.delete()
         return Response({'message': 'Answer deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# View to get specific form details including sections and their questions
+@api_view(['GET'])
+def get_header_details(request, form_id):
+    try:
+        # Fetch the evaluation form
+        form = EvaluationForm.objects.get(pk=form_id)
+    except EvaluationForm.DoesNotExist:
+        return Response(
+            {"error": "Evaluation form not found."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    # Serialize the form details
+    form_data = EvaluationFormSerializer(form).data
+
+    # Fetch all sections and related questions
+    sections = form.form_sections.all()
+    detailed_sections = []
+    for section in sections:
+        section_data = {
+            "section_id": section.section.section_id,
+            "section_title": section.section.title,
+            "section_type": section.section.section_type,
+            "question_type": section.section.question_type,
+            "questions": [],  # Only questions per section
+        }
+
+        # Fetch questions for the section
+        questions = section.section.questions.all()
+
+        # Serialize questions without options
+        for question in questions:
+            question_data = {
+                "question_id": question.question_id,
+                "question_text": question.text,
+            }
+            section_data["questions"].append(question_data)
+
+        detailed_sections.append(section_data)
+
+    # Add the sections to the form data
+    form_data["sections"] = detailed_sections
+    return Response(form_data, status=status.HTTP_200_OK)
+
+
+
+# View to get all responses and answers for a specific form
+@api_view(['GET'])
+def get_form_responses(request, form_id):
+    try:
+        # Fetch the evaluation form
+        form = EvaluationForm.objects.get(pk=form_id)
+    except EvaluationForm.DoesNotExist:
+        return DRFResponse(
+            {"error": "Evaluation form not found."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    # Fetch all responses for the form
+    responses = form.responses.all()
+    response_data = []
+
+    for response in responses:
+        # Serialize the response details
+        response_info = ResponseSerializer(response).data
+        response_info["answers"] = []
+
+        # Fetch all answers for the response
+        answers = response.answers.all()
+        for answer in answers:
+            answer_data = AnswerSerializer(answer).data
+
+            # Add additional details about the question, section option, or question option
+            answer_data["question_text"] = answer.question.text
+            if answer.section_option:
+                answer_data["section_option"] = RatingOptSerializer(answer.section_option).data
+            if answer.question_option:
+                answer_data["question_option"] = MultipleChoiceOptSerializer(answer.question_option).data
+
+            response_info["answers"].append(answer_data)
+
+        response_data.append(response_info)
+
+    return Response(response_data, status=status.HTTP_200_OK)
+
+# Fetch all available form IDs
+@api_view(['GET'])
+def get_available_forms(request):
+    try:
+        # Fetch forms that have at least one response
+        forms_with_responses = EvaluationForm.objects.filter(responses__isnull=False).distinct()
+        form_ids = forms_with_responses.values_list('form_id', flat=True)
+        return Response({"form_ids": list(form_ids)}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

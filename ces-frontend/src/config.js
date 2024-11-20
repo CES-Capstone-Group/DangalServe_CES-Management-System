@@ -132,7 +132,16 @@ export const API_ENDPOINTS = {
     ANSWER_DETAIL: (id) => `${BASE_URL}/evaluation/answers/${id}/`, // GET, PUT, DELETE
 
     KPI_TABLE: `${BASE_URL}/kpi/`,
-    KPI_TABLE_KPIS: `${BASE_URL}/kpi/kpis/`
+    KPI_TABLE_KPIS: `${BASE_URL}/kpi/kpis/`,
+    PASSWORD_VERIFY: `${BASE_URL}/kpi/password-verify/`,
+
+    // Form Details Endpoint
+    EVAL_SUMMARY_DETAILS: (formId) => `${BASE_URL}/evaluation/eval-summary/header/${formId}/`, // GET - Fetch form details (sections and questions)
+
+    // Responses and Answers Endpoint
+    RESPONSES_AND_ANSWERS: (formId) => `${BASE_URL}/evaluation/responses/${formId}/answers/`, // GET - Fetch responses and answers
+
+    GET_AVAILABLE_FORMS: `${BASE_URL}/evaluation/forms/available/`, // Endpoint for available forms
 };
 
 

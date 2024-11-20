@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.models import Account, ProponentAccount, Barangay, BrgyOfficialAccount, Course, Department
+from api.models import Account, AdminAccount, ProponentAccount, Barangay, BrgyOfficialAccount, Course, Department
 from django.utils import timezone
 
 class Command(BaseCommand):

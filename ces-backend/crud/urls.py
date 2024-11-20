@@ -41,7 +41,9 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('impact/', include('impact.urls')),
     path('evaluation/', include('evaluation.urls')),
+    path('kpi/', include('kpi.urls')),
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    
 ]
 
 

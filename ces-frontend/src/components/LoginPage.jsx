@@ -86,8 +86,6 @@ function LoginPage() {
                 });
                 // Optionally, display the error details for debugging
                 console.error('Login error details:', errorData);
-                
-
             }
         } catch (error) {
             console.error('Error during login:', error);

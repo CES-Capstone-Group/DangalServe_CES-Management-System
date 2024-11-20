@@ -65,7 +65,7 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
           </SidebarMenu.Nav>
 
           {/* ACHIEVEMENTS */}
-          <SidebarMenu.Nav>
+          {/* <SidebarMenu.Nav>
             <SidebarMenu.Sub>
               <SidebarMenu.Sub.Toggle>
                 <SidebarMenu.Nav.Icon>
@@ -91,17 +91,17 @@ const AdminSidebar = ({ sidebarOpen, toggleSidebar }) => {
                 </SidebarMenu.Nav>
               </SidebarMenu.Sub.Collapse>
             </SidebarMenu.Sub>
-          </SidebarMenu.Nav>
+          </SidebarMenu.Nav> */}
 
           {/* DOCUMENTS */}
-          <SidebarMenu.Nav>
+          {/* <SidebarMenu.Nav>
             <NavLink to={'/admin/docs'} className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               <SidebarMenu.Nav.Icon>
                 <FontAwesomeIcon icon={faFile} style={{ color: 'grey', fontSize: sidebarOpen ? '20px' : '20px', marginBottom: sidebarOpen ? '0px' : '10px' }} />
               </SidebarMenu.Nav.Icon>
               {sidebarOpen && (<SidebarMenu.Nav.Title> Documents </SidebarMenu.Nav.Title>)}
             </NavLink>
-          </SidebarMenu.Nav>
+          </SidebarMenu.Nav> */}
 
           {/* CALENDAR */}
           <SidebarMenu.Nav>

@@ -59,7 +59,6 @@ import ManageCalendar from './components/ManageCalendar.jsx';
 import ManageCourse from './components/ManageCourse.jsx';
 import ManageEvaluators from './components/ManageEvaluators.jsx';
 import { UserProvider } from './components/UserContext.jsx';
-import ManageResponses from './components/ManageResponse.jsx';
 import EvalSummary from './components/EvalSummary.jsx';
 import EvalCards from './components/Evaluator/EvalCards.jsx';
 import AdminDeptApprovedPro from './components/Admin/AdminDeptApprovedPro.jsx';
@@ -102,7 +101,6 @@ const App = () => {
               <Route path='course-management' element={<ManageCourse />} />
               <Route path='calendar' element={<ManageCalendar />} />
               <Route path='evaluators' element={<ManageEvaluators />} />
-              <Route path='responses' element={<ManageResponses />} />
               <Route path='eval-management' element={<EvalPage />} />
               <Route path='eval-sum' element={<EvalSummary />} />
               <Route path='eval-cards' element={<EvalCards />} />
@@ -134,7 +132,6 @@ const App = () => {
               <Route path='eval-cards' element={<EvalCards />} />
               <Route path='profile' element={<MyProfilePage />} />
               <Route path="inv-table/:chartType" element={<InvTable />} />
-              <Route path='responses' element={<ManageResponses />} />
               <Route path='impact' element={<ImpactPage />} />
             </Route>
           </Route>

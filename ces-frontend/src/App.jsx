@@ -164,6 +164,7 @@ const App = () => {
               <Route path='docs' element={<DocumentPage />} />
               <Route path='calendar' element={<CoorCalendar />} />
               <Route path='kpi' element={<KpiPage />} />
+              <Route path='eval-page' element={<EvalPage />} />
               <Route path='proposal-form' element={<ProposalForm />} />
               <Route path='proposal-form/:proposalId/resubmit' element={<ProposalForm />} /> {/* Resubmission */}
               <Route path='profile' element={<MyProfilePage />} />

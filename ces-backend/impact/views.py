@@ -117,9 +117,36 @@ class ImpactEvaluationSummaryView(APIView):
     def get(self, request):
         activity_id = request.query_params.get('activity_id', None)
         question_number = request.query_params.get('question_number', None)
+        all_activities = request.query_params.get('all_activities', None)
 
+        # If fetching averages across all activities
+        if all_activities and all_activities.lower() == 'true':
+            if question_number is None:
+                return Response({"error": "Please provide a question number for all activities summary."}, status=400)
+
+            try:
+                question_number = int(question_number)
+            except ValueError:
+                return Response({"error": "Question number must be an integer."}, status=400)
+
+            if question_number < 1 or question_number > 11:
+                return Response({"error": "Question number must be between 1 and 11."}, status=400)
+
+            # Calculate the average for the specified question across all activities
+            average_field = f"Q{question_number}"
+            average = ImpactEvaluation.objects.aggregate(Avg(average_field))[f"{average_field}__avg"]
+
+            # Get the assessment paragraph for the specified question number
+            assessment_paragraph = get_assessment_paragraph(average, question_number)
+
+            return Response({
+                f"Q{question_number}_average_all_activities": average,
+                "assessment_paragraph": assessment_paragraph
+            })
+
+        # If fetching for a specific activity and question
         if activity_id is None:
-            return Response({"error": "Please provide an activity ID."}, status=400)
+            return Response({"error": "Please provide an activity ID or specify `all_activities=true`."}, status=400)
 
         if question_number is None:
             return Response({"error": "Please provide a question number."}, status=400)

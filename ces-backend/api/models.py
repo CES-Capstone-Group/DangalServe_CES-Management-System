@@ -277,8 +277,6 @@ class Proposal(models.Model):
             self.status = 'Approved by Barangay'
         elif approved_barangays > 0:
             self.status = 'Partly Approved by Barangay'
-        else:
-            self.status = 'Approved by President'
         self.save()
 
     def __str__(self):

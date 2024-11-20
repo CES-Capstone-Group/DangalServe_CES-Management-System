@@ -303,6 +303,20 @@ class ProposalSerializer(serializers.ModelSerializer):
         proponents_data = validated_data.pop('proponents', [])
         signatories_data = validated_data.pop('signatories', [])
 
+        # Validation for status changes
+        current_status = instance.status
+        new_status = validated_data.get('status', current_status)
+
+        # Enforce approval sequence rules
+        if new_status == "Approved by Director" and current_status != "Pending":
+            raise serializers.ValidationError("Proposal must be 'Pending' to be approved by the Director.")
+        if new_status == "Approved by Barangay" and current_status != "Approved by Director":
+            raise serializers.ValidationError("Proposal must be 'Approved by Director' before being approved by Barangay.")
+        if new_status == "Approved by VPRE" and current_status != "Approved by Barangay":
+            raise serializers.ValidationError("Proposal must be 'Approved by Barangay' before being approved by VPRE.")
+        if new_status == "Approved by President" and current_status != "Approved by VPRE":
+            raise serializers.ValidationError("Proposal must be 'Approved by VPRE' before being approved by the President.")
+
         # Update the proposal instance
         instance = super().update(instance, validated_data)
 

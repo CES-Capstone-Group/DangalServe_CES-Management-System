@@ -165,14 +165,14 @@ const BtnEditDelQuestion = ({ question, section, onQuestionUpdated, onDelete }) 
             <Button
                 className="shadow"
                 onClick={() => setShowEdit(true)}
-                style={{ backgroundColor: "#71a872", border: "0px", color: "white", marginRight: "10px" }}
+                style={{ backgroundColor: "#71a872", border: "0px", color: "white", marginRight: "10px", fontSize: '13px' }}
             >
                 <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
             <Button
                 className="shadow"
                 onClick={() => setShowDeleteConfirm(true)}
-                style={{ backgroundColor: "#ff3232", border: "0px", color: "white" }}
+                style={{ backgroundColor: "#ff3232", border: "0px", color: "white", fontSize: '13px' }}
             >
                 <FontAwesomeIcon icon={faTrashAlt} />
             </Button>
@@ -221,9 +221,11 @@ const BtnEditDelQuestion = ({ question, section, onQuestionUpdated, onDelete }) 
                                             </Col>
                                         </Row>
                                     ))}
-                                    <Button variant="success" onClick={handleAddChoice}>
-                                        <FontAwesomeIcon icon={faPlus} /> Add Choice
-                                    </Button>
+                                    <div className="mt-2 mb-2"> 
+                                        <Button variant="success" onClick={handleAddChoice}>
+                                            <FontAwesomeIcon icon={faPlus} /> Add Choice
+                                        </Button>
+                                    </div>
                                 </>
                             )}
 

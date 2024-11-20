@@ -163,7 +163,7 @@ const BtnAddQuestion = ({ show, onHide, questionType, sectionId, onSubmit }) => 
                 <Button variant="secondary" onClick={onHide}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={handleFormSubmit}>
+                <Button variant="success" onClick={handleFormSubmit}>
                     Add Question
                 </Button>
             </Modal.Footer>

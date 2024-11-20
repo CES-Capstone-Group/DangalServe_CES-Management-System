@@ -207,14 +207,6 @@ const BtnEditDelSection = ({ section, onSectionUpdated }) => {
                 <FontAwesomeIcon icon={faTrashAlt} />
             </Button>
 
-            {/* Display paragraph outside modal */}
-            {section.section_type === "info" && !showEdit && (
-                <div className="mb-3">
-                    <Form.Label>Content</Form.Label>
-                    <p>{infoContent || "No content available"}</p>
-                </div>
-            )}
-
 
             <Modal show={showEdit} onHide={() => setShowEdit(false)} backdrop="static" centered size="lg">
                 <Modal.Header closeButton>
@@ -269,19 +261,19 @@ const BtnEditDelSection = ({ section, onSectionUpdated }) => {
                                                     placeholder="Label"
                                                 />
                                             </Col>
-                                            <Col xs={2} className="d-flex justify-content-center">
+                                            <Col xs={2} className="d-flex justify-content-center mt-4">
                                                 <Button
                                                     variant="danger"
                                                     size="sm"
                                                     onClick={() => deleteRatingOption(option.option_id, index)}
                                                 >
-                                                    <FontAwesomeIcon icon={faMinus} />
+                                                    <FontAwesomeIcon style={{fontStyle: '13px'}} icon={faMinus} />
                                                 </Button>
                                             </Col>
                                         </Row>
                                     ))}
                                     {ratingOptions.length < 10 && (
-                                        <Button variant="success" onClick={handleAddRatingOption}>
+                                        <Button className="mt-2 mb-2" variant="success" onClick={handleAddRatingOption}>
                                             <FontAwesomeIcon icon={faPlus} /> Add Rating Option
                                         </Button>
                                     )}

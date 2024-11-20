@@ -75,6 +75,7 @@ import EvalTypeManagement from './components/EvalTypeManagement.jsx';
 import InvTable from './components/Admin/InvTable.jsx';
 import ManageKpi from './components/ManageKpi.jsx';
 import ImpactPage from './components/Admin/ImpactPage.jsx';
+import EvalAnswerPage from './components/Evaluator/EvalAnswerPage.jsx';
 
 const App = () => {
   return (
@@ -178,6 +179,7 @@ const App = () => {
             <Route path='dashboard' element={<MainContent />} />
             <Route path='eval-page' element={<EvalPage />} />
             <Route path='eval-cards' element={<EvalCards />} />
+            <Route path='eval-answer' element={<EvalAnswerPage/>} />
           </Route>
           {/* </Route> */}
 
@@ -189,6 +191,7 @@ const App = () => {
           <Route path='aarForm' element={<AARForm />} />
           <Route path='impact-eval' element={<ImpactEvalForm />} />
           <Route path='eval-login' element={<EvalLogIn/>} />
+          
         </Routes>
       </UserProvider>
 

@@ -817,8 +817,8 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             if status:
                 if status == 'Pending':
                     # Exclude fully approved proposals for 'Pending' status
-                    queryset = queryset.exclude(status='Approved by Barangay').filter(
-                        status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by President', 'Partly Approved by Barangay']
+                    queryset = queryset.exclude(status='Approved by President').filter(
+                        status__in=['Pending', 'Approved by Director', 'Approved by VPRE', 'Approved by Barangay', 'Partly Approved by Barangay']
                     )
                 
                 else:
@@ -1011,7 +1011,7 @@ class ProposalResubmissionView(generics.UpdateAPIView):
 
         # Find the latest version number
         latest_version = proposal.versions.order_by('-version_number').first()
-        new_version_number = latest_version.current_version_id + 1 if latest_version else 1
+        new_version_number = latest_version.version_number + 1 if latest_version else 1
 
         # Create the new version in the ProposalVersion table
         ProposalVersion.objects.create(

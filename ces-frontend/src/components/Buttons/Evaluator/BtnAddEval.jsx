@@ -7,6 +7,7 @@ import { API_ENDPOINTS } from "../../../config";
 
 const BtnAddEval = () => {
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
     const [activities, setActivities] = useState([]);
     const [filteredActivities, setFilteredActivities] = useState([]);
     const [evaluationTypes, setEvaluationTypes] = useState([]);
@@ -29,7 +30,20 @@ const BtnAddEval = () => {
         setShowModal(false);
     };
 
-    // Fetch data for proposals and evaluation types
+    const handleShowConfirmation = () => {
+        setShowModal(false); // Close the Add Evaluation Form modal
+        setShowConfirmation(true); // Show the confirmation modal
+    };
+
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+        setFormData({
+            proposal: '',
+            activity: '',
+            eval_type: ''
+        });
+    };
+
     useEffect(() => {
         const fetchProposals = async () => {
             try {
@@ -101,18 +115,23 @@ const BtnAddEval = () => {
             }
             const decodedToken = jwtDecode(token);
             const userId = decodedToken?.user_id; // Use optional chaining
-    
+
             if (!userId) {
                 throw new Error("User ID not found in token");
             }
-    
+
             const payload = {
                 proposal_id: formData.proposal,
                 activity_id: formData.activity,
                 evaluation_type_id: formData.eval_type,
                 user_id: userId // Pass the logged-in user ID
             };
-            console.log(payload);
+            setFormData({
+                proposal: '',
+                activity: '',
+                eval_type: ''
+            });
+            handleCloseConfirmation(); // Close the confirmation modal
             navigate("/manage/eval-create/", { state: payload });
         } catch (error) {
             console.error("Error handling submission:", error);
@@ -194,11 +213,27 @@ const BtnAddEval = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        onClick={handleSubmit}
+                        onClick={handleShowConfirmation}
                         style={{ backgroundColor: "#71A872", border: "0px", color: "white" }}
                         variant="success"
                     >
                         Submit
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Confirmation Modal */}
+            <Modal show={showConfirmation} onHide={handleCloseConfirmation}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Submission</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to add this evaluation form?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseConfirmation}>
+                        Cancel
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

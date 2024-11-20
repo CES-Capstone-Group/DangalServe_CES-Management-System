@@ -11,14 +11,14 @@ class Command(BaseCommand):
             Barangay.objects.get_or_create(brgy_name=name)
 
         # Seed Department data
-        departments = ['College of Computer Studies', 'College of Health and Allied Sciences', 
-                    'College of Engineering', 'College of Education']
+        departments = ['College of Arts and Sciences', 'College of Business Administration and Accountancy', 
+                       'College of Computing Studies', 'College of Education', 'College of Engineering', 'College of Health and Allied Sciences']
         for dept_name in departments:
             Department.objects.get_or_create(dept_name=dept_name)
 
-        # Seed Course data for College of Computer Studies
-        ccs_courses = ['Bachelor of Science in Information Technology', 'Bachelor of Science in Computing Studies']
-        ccs_department = Department.objects.get(dept_name='College of Computer Studies')
+        # Seed Course data for College of Computing Studies
+        ccs_courses = ['Bachelor of Science in Information Technology', 'Bachelor of Science in Computer Science']
+        ccs_department = Department.objects.get(dept_name='College of Computing Studies')
         for course_name in ccs_courses:
             Course.objects.get_or_create(course_name=course_name, dept=ccs_department)
 
@@ -27,6 +27,19 @@ class Command(BaseCommand):
         chas_department = Department.objects.get(dept_name='College of Health and Allied Sciences')
         for course_name in chas_courses:
             Course.objects.get_or_create(course_name=course_name, dept=chas_department)
+
+        # Seed Course data for College of Arts and Sciences
+        cas_courses = ['Bachelor of Science in Psychology']
+        cas_department = Department.objects.get(dept_name='College of Arts and Sciences')
+        for course_name in cas_courses:
+            Course.objects.get_or_create(course_name=course_name, dept=cas_department)
+
+        # Seed Course data for College of Business Administration and Accountancy
+        cbaa_courses = ['Bachelor of Science in Accountancy', 'Bachelor of Science in Business Administration Major in Financial Management',
+                        'Bachelor of Science in Business Administration Major in Marketing Management']
+        cbaa_department = Department.objects.get(dept_name='College of Business Administration and Accountancy')
+        for course_name in cbaa_courses:
+            Course.objects.get_or_create(course_name=course_name, dept=cbaa_department)
 
         # Seed Course data for College of Engineering
         coe_courses = ['Bachelor of Science in Computer Engineering', 'Bachelor of Science in Electronics Engineering', 

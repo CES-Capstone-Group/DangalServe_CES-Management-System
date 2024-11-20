@@ -107,9 +107,9 @@ const ManageEvaluationForm = () => {
         return (
             <>
                 {questions.map((question, index) => (
-                    <div key={question.question_id || index} className="mb-3">
+                    <div key={question.question_id || index} className="">
                         <h5 className="d-inline me-2">{`${index + 1}. ${question.text}`}</h5>
-                        {question.is_fixed && <Badge bg="info">Fixed</Badge>}
+                        {question.is_fixed && <Badge className='mb-2' bg="info">Fixed</Badge>}
                         <Form.Control as="textarea" value={question.response} disabled className="mb-2" />
                         <BtnEditDelQuestion
                             question={question}
@@ -119,7 +119,7 @@ const ManageEvaluationForm = () => {
                         />
                     </div>
                 ))}
-               
+
             </>
         );
     };
@@ -155,10 +155,10 @@ const ManageEvaluationForm = () => {
                                                 ).join(", ") // Properly formatted with commas and spacing
                                                 : "No rating options"}
                                         </td>
-                                    )}                     
+                                    )}
                                     {section.question_type === "multiple_choice" && (
                                         <td>
-                                             {question.multiple_choice_options?.length
+                                            {question.multiple_choice_options?.length
                                                 ? question.multiple_choice_options.map(
                                                     (opt) => `${opt.value} - ${opt.label}  `
                                                 ).join(", ") // Properly formatted with commas and spacing
@@ -186,13 +186,15 @@ const ManageEvaluationForm = () => {
                     </tbody>
                 </Table>
             )}
-            <Button
-                variant="primary"
-                className="mt-3"
-                onClick={() => openAddQuestionModal(section.section_id, section.question_type)}
-            >
-                Add Question
-            </Button>
+            <div className='text-end'>
+                <Button
+                    variant="success"
+                    className="mt-3"
+                    onClick={() => openAddQuestionModal(section.section_id, section.question_type)}
+                >
+                    Add Question
+                </Button>
+            </div>
         </div>
     );
 

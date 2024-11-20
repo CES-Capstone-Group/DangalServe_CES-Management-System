@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'ces_db',
 #         'USER': 'root',
-#         'PASSWORD': 'karly@2700',
+#         'PASSWORD': 'Cloud5024',
 #         'HOST': 'localhost',  # or the hostname where your MySQL server is running
 #         'PORT': '3306'      # or the port on which your MySQL server is listening
 #     }
@@ -128,6 +128,7 @@ DATABASES = {
         'PORT': '3306'      # or the port on which your MySQL server is listening
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

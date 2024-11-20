@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Create Proponent accounts with actual names
         self.create_proponent_account("domingo_coe", "proponent123", "College of Engineering", "Engr. Bernie B. Domingo - COE Coordinator")
-        self.create_proponent_account("magaling_ccs", "proponent123", "College of Computer Studies", "Dr. Evangelina A. Magaling - CCS Coordinator")
+        self.create_proponent_account("magaling_ccs", "proponent123", "College of Computing Studies", "Dr. Evangelina A. Magaling - CCS Coordinator")
         self.create_proponent_account("cleofe_coed", "proponent123", "College of Education", "Ms. Sharleen I. Cleofe - COED Coordinator")
         self.create_proponent_account("em_cbaa", "proponent123", "College of Business Administration and Accountancy", "Ms. Flordeliza S. Em - CBAA Coordinator")
         self.create_proponent_account("lazaro_cas", "proponent123", "College of Arts and Sciences", "Mr. Roy Kenneth Y. Lazaro - CAS Coordinator")

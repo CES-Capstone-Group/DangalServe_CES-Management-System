@@ -52,7 +52,7 @@ const EvalCreate = () => {
     const handleCreateForm = async () => {
         try {
             const formResponse = await axios.post(API_ENDPOINTS.EVALUATION_FORM_CREATE, {
-                title: "New Evaluation Form",
+                title: payload.activity_title,
                 evaluation_type: payload.evaluation_type_id,
                 created_by: payload.user_id,
                 activity_schedule_id: payload.activity_id,
@@ -96,7 +96,7 @@ const EvalCreate = () => {
     );
 
     const renderRatingQuestions = (questions) => (
-        <Table bordered className="mb-4">
+        <Table bordered responsive className="mb-4 tableStyle">
             <thead>
                 <tr>
                     <th>Question</th>
@@ -110,7 +110,7 @@ const EvalCreate = () => {
                     <tr key={question.question_id}>
                         <td>{question.text}</td>
                         {(question.rating_options || []).map((option) => (
-                            <td key={option.option_id}>
+                            <td style={{ width: '10%' }} key={option.option_id}>
                                 <input
                                     type="radio"
                                     name={`question-${question.question_id}`}
@@ -125,7 +125,7 @@ const EvalCreate = () => {
     );
 
     const renderMultipleChoiceQuestions = (questions) => (
-        <div>
+        <div style={{ marginLeft: '10px' }}>
             {questions.map((question, index) => (
                 <div key={question.question_id} className="mb-4">
                     <h5>{`${index + 1}. ${question.text}`}</h5>
@@ -194,26 +194,33 @@ const EvalCreate = () => {
             </Row>
             <Row>
                 <Col>
-                    <h1>Evaluation Form Creation</h1>
+                    <h1 id="propHeader" className="text-center mt-4 mb-4">
+                        Evaluation Form Creation
+                    </h1>
                 </Col>
             </Row>
-            {activityDetails && (
-                <div className="mb-5">
-                    <h3>Activity Details</h3>
-                    <p><strong>Title of the Activity:</strong> {activityDetails.activity_title || "N/A"}</p>
-                    <p><strong>Date:</strong> {activityDetails.target_date || "N/A"}</p>
-                    <p><strong>Venue:</strong> {activityDetails.activity_venue || "N/A"}</p>
-                    <p><strong>Activity Objectives:</strong> {activityDetails.activity_objectives || "N/A"}</p>
-                </div>
-            )}
-            {sections.map((section) => renderSection(section))}
-            <Row className="mt-4">
-                <Col className="d-flex justify-content-end">
-                    <Button variant="success" onClick={handleCreateForm}>
-                        Create Form
-                    </Button>
-                </Col>
-            </Row>
+            <div id="conCard" style={{
+                padding: '35px',
+                borderRadius: '8px'
+            }}>
+                {activityDetails && (
+                    <div className="mb-5" style={{ lineHeight: '1.6' }}>
+                        <h1 className="mb-4" style={{ fontWeight: '600', color: '#333' }}>Activity Details</h1>
+                        <p style={{fontSize: '20px'}}><strong>Title of the Activity:</strong> {activityDetails.activity_title || "N/A"}</p>
+                        <p style={{fontSize: '20px'}}><strong>Date:</strong> {activityDetails.target_date || "N/A"}</p>
+                        <p style={{fontSize: '20px'}}><strong>Venue:</strong> {activityDetails.activity_venue || "N/A"}</p>
+                        <p style={{fontSize: '20px'}}><strong>Activity Objectives:</strong> {activityDetails.activity_objectives || "N/A"}</p>
+                    </div>
+                )}
+                {sections.map((section) => renderSection(section))}
+                <Row className="mt-4">
+                    <Col className="d-flex justify-content-end">
+                        <Button variant="success" onClick={handleCreateForm}>
+                            Create Form
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
         </Container>
     );
 };

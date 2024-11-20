@@ -35,6 +35,8 @@ urlpatterns = [
     path('evaluation-forms/', views.evaluation_form_list, name='evaluation-form-list'),  # GET
     path('evaluation-forms/create/', views.evaluation_form_create, name='evaluation-form-create'),  # POST
     path('evaluation-forms/<int:pk>/', views.evaluation_form_detail, name='evaluation-form-detail'),  # GET, PUT, DELETE
+    path('view-all/evaluation-forms/', views.get_created_evaluation_forms, name='get_created_evaluation_forms'),
+
 
     # FormSection URLs
     path('form-sections/', views.form_section_list, name='form-section-list'),  # GET

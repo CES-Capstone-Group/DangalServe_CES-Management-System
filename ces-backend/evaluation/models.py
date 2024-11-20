@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from api.models import ActivitySchedule, Barangay
 
 class EvaluationType(models.Model):
     evaluation_type_id = models.AutoField(primary_key=True)
@@ -110,4 +111,3 @@ class FormQuestion(models.Model):
 
     def __str__(self):
         return f"Form Section: {self.form_section} - Question: {self.question.text} (Order: {self.question_order})"
-

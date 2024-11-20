@@ -1,5 +1,5 @@
-const BASE_URL = "https://pamantasances.pythonanywhere.com";
-// const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://pamantasances.pythonanywhere.com";
+const BASE_URL = "http://127.0.0.1:8000";
 
 export const API_ENDPOINTS = {
     // Authentication Endpoints
@@ -106,6 +106,7 @@ export const API_ENDPOINTS = {
     MULTIPLE_CHOICE_OPTION_DETAIL: (id) => `${BASE_URL}/evaluation/multiple-choice-options/${id}/`,
 
     EVALUATION_FORM_LIST: `${BASE_URL}/evaluation/evaluation-forms/`,  // GET
+    EVALUATION_FORM_LIST_ALL: `${BASE_URL}/evaluation/view-all/evaluation-forms/`, // GET - List all evaluation forms
     EVALUATION_FORM_CREATE: `${BASE_URL}/evaluation/evaluation-forms/create/`,  // POST
     EVALUATION_FORM_DETAIL: (id) => `${BASE_URL}/evaluation/evaluation-forms/${id}/`,  // GET, PUT, DELETE
 
@@ -120,5 +121,3 @@ export const API_ENDPOINTS = {
     KPI_TABLE: `${BASE_URL}/kpi/`,
     KPI_TABLE_KPIS: `${BASE_URL}/kpi/kpis/`
 };
-
-

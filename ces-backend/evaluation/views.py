@@ -2,12 +2,11 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import EvaluationType, Section, Question, RatingOpt, MultipleChoiceOpt
+from .models import EvaluationType, Section, Question, RatingOpt, MultipleChoiceOpt, EvaluationForm, FormSection, FormQuestion
 from .serializer import BasicSectionSerializer, BasicQuestionSerializer, EvaluationTypeDetailSerializer, EvaluationTypeSerializer, SectionSerializer, QuestionSerializer, RatingOptSerializer, MultipleChoiceOptSerializer,EvaluationFormSerializer, FormSectionSerializer, FormQuestionSerializer
-from django.db.models import Q,Prefetch
+from django.db.models import Q,Prefetch,OuterRef, Subquery, F
 from django.shortcuts import get_object_or_404
-
-
+from api.models import ActivitySchedule, Barangay
 
 
 # List all evaluation types
@@ -293,7 +292,7 @@ def evaluation_form_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = EvaluationFormSerializer(form, data=request.data)
+        serializer = EvaluationFormSerializer(form, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -304,6 +303,32 @@ def evaluation_form_detail(request, pk):
         return Response({'message': 'Evaluation Form deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
+
+@api_view(['GET'])
+def get_created_evaluation_forms(request):
+   # Subquery to fetch activity details (activity_venue and brgy_name)
+    activity_schedule_subquery = ActivitySchedule.objects.filter(
+        id=OuterRef('activity_schedule_id')
+    ).annotate(
+        brgy_name=F('brgy__brgy_name')  # Access the brgy_name from the related Barangay model
+    ).values('activity_venue', 'brgy_name')
+
+    # Subquery to fetch evaluation type name from EvaluationType
+    evaluation_type_subquery = EvaluationType.objects.filter(
+        evaluation_type_id=OuterRef('evaluation_type')
+    ).values('name')
+
+    # Main query to fetch EvaluationForm details and annotate activity and barangay information
+    evaluation_forms = EvaluationForm.objects.annotate(
+        activity_venue=Subquery(activity_schedule_subquery.values('activity_venue')[:1]),
+        brgy_name=Subquery(activity_schedule_subquery.values('brgy_name')[:1]),  # Annotate barangay name
+        evaluation_type_name=Subquery(evaluation_type_subquery[:1])  # Annotate evaluation type name
+    ).values(
+        'form_id', 'title', 'status', 'created_at', 'activity_venue', 'brgy_name', 'evaluation_type_name'
+    )
+
+    # Return the response
+    return Response({'evaluation_forms': list(evaluation_forms)})
 # FormSection Views
 @api_view(['GET'])
 def form_section_list(request):

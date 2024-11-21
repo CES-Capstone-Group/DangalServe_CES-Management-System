@@ -355,7 +355,7 @@ class Signatory(models.Model):
 class ActivitySchedule(models.Model):
     proposal = models.ForeignKey('Proposal', on_delete=models.CASCADE)
     activity_title = models.CharField(max_length=255, default="Activity Title")
-    activity_objectives = models.TextField(default="")  # Added objectives field
+    activity_objectives = models.TextField(default="",)  # Added objectives field
     activity_venue = models.CharField(max_length=255, default="")  # Added venue field
     brgy = models.ForeignKey('Barangay', on_delete=models.CASCADE, related_name='activities', null=True, blank=True)
     target_date = models.DateField(default=timezone.now)  # Current date as default

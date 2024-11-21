@@ -12,7 +12,7 @@ class Command(BaseCommand):
         self.ensure_departments_exist()
 
         # Seed the proposals for each department
-        self.create_coed_proposal()
+        # self.create_coed_proposal()
         self.create_coe_proposal()
         self.create_cbaa_proposal()
         self.create_ccs_proposal()
@@ -83,19 +83,19 @@ class Command(BaseCommand):
 -Monitoring the progress of participants in accessing further education or employment after completing the program
 -Regular monitoring of paticipants who stat their own business to ensure sustainability and success. """,
             timetable="",
-            risk_assessment='''-Lack of interest and motivation from the target beneficiaries
--Insufficient resources and funding:
--Limited access to technology
--High turnover rate of trainers
+            risk_assessment='''-Lack of interest and motivation from the target beneficiaries 
+-Insufficient resources and funding: 
+-Limited access to technology 
+-High turnover rate of trainers 
 -Change of leadership due to forthcoming election''',
-            action_plans='''-Lack of interest and motivation from the target beneficiaries: The program can design strategies to increase the engagement and motivation of the learners, such as incorporating fun and interactive leaning activities. providing incentives, and showcasing success stories of program graduates.
--Insufficient resources and funding: The program can explore partnerships with local government units, NGOs, and private organizations to secure additional funding and resources. The program can also conduct fundraising campaigns and seek donations from individuals or businesses
--Limited access to technology: The program can explore alternative modes of content delivery, such as offline materials, mobile devices, or community libraries.
--High turnover rate of trainers: The program can provide incentives and professional development opportunities for its trainers to increase their motivation and job satisfaction. The program can also establish a mentorship program to support new trainers and ensure consistency in the delivery of the program's objectives.
+            action_plans='''-Lack of interest and motivation from the target beneficiaries: The program can design strategies to increase the engagement and motivation of the learners, such as incorporating fun and interactive leaning activities. providing incentives, and showcasing success stories of program graduates. 
+-Insufficient resources and funding: The program can explore partnerships with local government units, NGOs, and private organizations to secure additional funding and resources. The program can also conduct fundraising campaigns and seek donations from individuals or businesses 
+-Limited access to technology: The program can explore alternative modes of content delivery, such as offline materials, mobile devices, or community libraries. 
+-High turnover rate of trainers: The program can provide incentives and professional development opportunities for its trainers to increase their motivation and job satisfaction. The program can also establish a mentorship program to support new trainers and ensure consistency in the delivery of the program's objectives. 
 -Change of leadership due to forthcoming election. Conduct stakeholder engagement and buy-in: Engage the new leadership in the planning and implementation of the project. This can help to build trust and understanding between the project team and the new leadership. ''',
-            sustainability_approaches='''-Collaboration with Local Partners: Building partnerships with local schools, organizations, and government agencies can ensure the program's long-term success. These partners can provide support in terms of funding, facilities, and volunteers. as well as help to identify and recruit program participants.
--Empowering Local Leaders: Empowering local leaders and educators to take ownership of the program and its goals is an effective way to ensure its sustainability. By providing training and resources to localleaders, they can continue lead and expand the program even after external Support is with drawn.
--Community Engagement: Involving the community in the program's design, implementation, and evaluation can the increase buy-in and ensure the program meets the needs of the community. Regular community feedback and evaluation can help to adjust the program as needed and make it more sustainable in the long term.
+            sustainability_approaches='''-Collaboration with Local Partners: Building partnerships with local schools, organizations, and government agencies can ensure the program's long-term success. These partners can provide support in terms of funding, facilities, and volunteers. as well as help to identify and recruit program participants. 
+-Empowering Local Leaders: Empowering local leaders and educators to take ownership of the program and its goals is an effective way to ensure its sustainability. By providing training and resources to localleaders, they can continue lead and expand the program even after external Support is with drawn. 
+-Community Engagement: Involving the community in the program's design, implementation, and evaluation can the increase buy-in and ensure the program meets the needs of the community. Regular community feedback and evaluation can help to adjust the program as needed and make it more sustainable in the long term. 
 -Building Local Capacity: Investing in the development of local capacity, such as training local teachers and providing resources to local schools, can ensure the program's sustainability. This approach can create a ripple effect, as trained educators and students can continue to improve the quality of education in their communities.''',
             budget_requirement_text='''Expenses 		    - Amount
 Administration and overhead - Php 5, 000.00
@@ -131,7 +131,7 @@ Total 			    - Php 20, 000.00''',
         if not proponent:
             self.stdout.write(self.style.WARNING(f"No proponent found for department: {department.dept_name}. Skipping proposal creation."))
             return
-
+        
         date_range = "May 2023 - May 2026"
         start_date_str, end_date_str = date_range.split(" - ")
         start_date = datetime.strptime(f"{start_date_str} 01", "%B %Y %d").date()
@@ -166,19 +166,19 @@ The College of Engineering Student organizations will act as a conduit for coord
             monitoring_mechanics='''Monitoring the mechanics of the "Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" project is crucial to ensuring its success and sustainability. Here are some key monitoring mechanics that should be implemented:
 
             1.Data Collection: A comprehensive data collection system should be established to track the progress of the project. This includes data on energy and waste reduction, community engagement, and other key performance indicators (KPIs) that will be established at the outset of the project.
-            2.Regular Reporting: Regular reporting should be conducted to keep stakeholders informed about the progress of the project. Reports should be prepared on a monthly or quarterly basis.
-            3. Performance Evaluation: Performance evaluation should be conducted periodically to assess the effectiveness of the project. This can be done through surveys, focus groups, or other methods that will provide feedback on the project's impact and effectiveness.
-            4. Sustainability Planning: Sustainability planning should be integrated into the project from the outset to ensure its long-term viability. This includes planning for ongoing maintenance and upgrades to energy and waste management systems, as well as continued community engagement and education.
+            2.Regular Reporting: Regular reporting should be conducted to keep stakeholders informed about the progress of the project. Reports should be prepared on a monthly or quarterly basis. 
+            3. Performance Evaluation: Performance evaluation should be conducted periodically to assess the effectiveness of the project. This can be done through surveys, focus groups, or other methods that will provide feedback on the project's impact and effectiveness. 
+            4. Sustainability Planning: Sustainability planning should be integrated into the project from the outset to ensure its long-term viability. This includes planning for ongoing maintenance and upgrades to energy and waste management systems, as well as continued community engagement and education. 
             By implementing these monitoring mechanics, the "Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" project can be effectively tracked, evaluated, and adjusted as needed to ensure its success and long-term sustainability.''',
             evaluation_mechanics="""
-Evaluation is an essential component of any community-based program, and the "Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" project is no exception. Here are some key evaluation mechanics that should be implemented:
-1. Establishing Evaluation Criteria: Establishing clear evaluation criteria is crucial to measuring the success of the project. This includes identifying the goals and objectives of the project and developing metrics to measure progress towards achieving those goals.
-2. Data Collection: Data collection should be conducted throughout the project to gather information on key performance indicators, such as energy and waste reduction, community engagement, and participant satisfaction.
-3. Analysis and Interpretation: The data collected should be analyzed and interpreted to evaluate the success of the project. This includes comparing actual outcomes against expected outcomes and assessing the effectiveness of specific project components.
-4. Reporting: Reporting should be conducted periodically to communicate project outcomes to stakeholders.
-5. Continuous Improvement: Based on the findings of the evaluation, continuous improvement should be implemented to address any identified issues and enhance project outcomes. This includes adjusting program components, modifying strategies, and reallocating resources as needed.
+Evaluation is an essential component of any community-based program, and the "Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" project is no exception. Here are some key evaluation mechanics that should be implemented: 
+1. Establishing Evaluation Criteria: Establishing clear evaluation criteria is crucial to measuring the success of the project. This includes identifying the goals and objectives of the project and developing metrics to measure progress towards achieving those goals. 
+2. Data Collection: Data collection should be conducted throughout the project to gather information on key performance indicators, such as energy and waste reduction, community engagement, and participant satisfaction. 
+3. Analysis and Interpretation: The data collected should be analyzed and interpreted to evaluate the success of the project. This includes comparing actual outcomes against expected outcomes and assessing the effectiveness of specific project components. 
+4. Reporting: Reporting should be conducted periodically to communicate project outcomes to stakeholders. 
+5. Continuous Improvement: Based on the findings of the evaluation, continuous improvement should be implemented to address any identified issues and enhance project outcomes. This includes adjusting program components, modifying strategies, and reallocating resources as needed. 
 By implementing these evaluation mechanics, the "Green Community Initiative: Empowering Sustainable Living through Energy and Waste Management" project can be effectively evaluated to determine its success and identify opportunities for continuous improvement. This ensures the project remains relevant, effective, and sustainable over the long term.""",
-            timetable='''Planning: May - June 2023:
+            timetable='''Planning: May - June 2023: 
 This phase involves the development of a comprehensive plan for the project. It includes identifying project objectives, defining the scope of the project, selecting the project team, and creating a project timeline and budget.
 Awareness and Mobilization: August 2023 - August 2025: This phase involves raising awareness about the project and mobilizing 500 target community members to participate. It includes organizing workshops/trainings and awareness campaigns.
 Collection and Processing: Sept. 2024 - August 2025: This phase involves collecting plastic waste from the community and processing it into Ecobricks. Target is at least 50% of the plastic bottle wastes will be recycled. This includes sorting the plastic waste by type, cleaning it, and compacting it into tightly packed Ecobricks.
@@ -229,7 +229,7 @@ Total                        - Php 60,000.00           Php 35,000.00
         Signatory.objects.create(proposal=proposal, name="Hon. Richard Algire", position="Brgy. Captain", section="concurred")
         Signatory.objects.create(proposal=proposal, name="Hon. Mauro Galang", position="Brgy. Captain", section="concurred")
         Signatory.objects.create(proposal=proposal, name="Hon. Mario Servo", position="Brgy. Captain", section="concurred")
-
+            
     #----------CCS------------#
     def create_ccs_proposal(self):
         department = Department.objects.get(dept_name="College of Computing Studies")
@@ -252,8 +252,8 @@ Total                        - Php 60,000.00           Php 35,000.00
             department="College of Computing Studies",
             lead_proponent="Ogalesco, Patrick Arcelito; Natividad, Reymark; Lacorte, Alice; Benegas, Daniel Matthew; Bernabe, Pamela; Rabino, Nuela Jane",
             contact_details="09053172709",
-            project_description="""The extension program entitled Cabuyeño's Computer Literacy Program (CCLIP) is a social community project that aims to help the citizens of the 3 identified barangays in the City of Cabuyao to better understand the use of computer technology, internet, social media, and the role of media in our society. Even before the pandemic started, technology and the internet were used a lot. When the pandemic began, people became more focused on using them. A lot of information comes out and spreads quickly.
-
+            project_description="""The extension program entitled Cabuyeño's Computer Literacy Program (CCLIP) is a social community project that aims to help the citizens of the 3 identified barangays in the City of Cabuyao to better understand the use of computer technology, internet, social media, and the role of media in our society. Even before the pandemic started, technology and the internet were used a lot. When the pandemic began, people became more focused on using them. A lot of information comes out and spreads quickly. 
+            
             CCLIP is a three-year extension program covering the needs assessment of the 3 identified barangays. The training will be done once a month with a duration of 3 hours a day. Its aim is to help students and adults in Brgy. San Isidro, Cabuyao Laguna to become computer literate in ways that will help them perform their tasks well.
 
             For the first year, Barangay San Isidro will be the target beneficiary. Two other barangays will be identified in the next two succeeding years.
@@ -353,7 +353,11 @@ Resource requirements for community extension programs can vary depending on the
 - **December 2023**:
   Target Participants: Brgy. Officials, SK Officers, Women’s Sector, Interested Parents, and Senior Citizens
   Task: Hands-on training in document management using cloud-based solutions
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
   CCLIP will conduct the following events in year 2024:
 
 - **January 2024**:
@@ -379,7 +383,11 @@ Resource requirements for community extension programs can vary depending on the
 - **November - December 2024**:
   Target Participants: Brgy. Officials, SK Officers, Women’s Sector, Students, and Interested Parents
   Task: Hands-on training about UX/UI designing
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
   CCLIP will conduct the following events in year 2025:
 
 - **May 2025**:
@@ -481,7 +489,7 @@ December    Php 4,000.00
 TOTAL: Php 48,000.00 ESTIMATED BUDGET FOR YEAR 2025
 
 CCLIP BUDGET BREAKDOWN EACH TRAINING SESSION:
-A budget of Php 4,000.00 will be allotted each training day to secure the foods and transportation of the volunteer officers that will cover the expenses for the preparation and implementation of the program.
+A budget of Php 4,000.00 will be allotted each training day to secure the foods and transportation of the volunteer officers that will cover the expenses for the preparation and implementation of the program. 
 
 Main Source of Funds: Income generated through selling "kakalok" that’ll be proposed as the fund-raising activity to support the program.
 
@@ -523,7 +531,7 @@ Additional Note: The budget may differ in each training day in case of any circu
       if not proponent:
           self.stdout.write(self.style.WARNING(f"No proponent found for department: {department.dept_name}. Skipping proposal creation."))
           return
-
+      
       date_range = "May 2023 - December 2026"
       start_date_str, end_date_str = date_range.split(" - ")
       start_date = datetime.strptime(f"{start_date_str} 01", "%B %Y %d").date()
@@ -682,7 +690,7 @@ Grand Total for Cycle 1: Php 35,000.00""",
       if not proponent:
           self.stdout.write(self.style.WARNING(f"No proponent found for department: {department.dept_name}. Skipping proposal creation."))
           return
-
+      
       date_range = "May 2023 - December 2025"
       start_date_str, end_date_str = date_range.split(" - ")
       start_date = datetime.strptime(f"{start_date_str} 01", "%B %Y %d").date()
@@ -878,7 +886,7 @@ Self Defense Training Program (50 target population):
       if not proponent:
           self.stdout.write(self.style.WARNING(f"No proponent found for department: {department.dept_name}. Skipping proposal creation."))
           return
-
+      
       date_range = "May 2023 - December 2025"
       start_date_str, end_date_str = date_range.split(" - ")
       start_date = datetime.strptime(f"{start_date_str} 01", "%B %Y %d").date()

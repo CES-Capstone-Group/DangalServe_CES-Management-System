@@ -41,7 +41,7 @@ class Command(BaseCommand):
         if not proponent:
             self.stdout.write(self.style.WARNING(f"No proponent found for department: {department.dept_name}. Skipping proposal creation."))
             return
-
+        
         date_range = "May 2023 - June 2026"
         start_date_str, end_date_str = date_range.split(" - ")
         start_date = datetime.strptime(f"{start_date_str} 01", "%B %Y %d").date()
@@ -66,21 +66,21 @@ class Command(BaseCommand):
             identified_needs_text="Reading, Numeracy, Writing, Remedial and Enrichment Classes",
             general_objectives="To promote lifelong leaming and enhance the capacity of leaners to participate fuly in economic, social, and civic life. ",
             specific_objectives="To improve the reading, writing. and numeracy skills of out-of-school youth, adult leamers, and marginalized Communities. ",
-            success_indicators='''To improve the reading. witing. and numeracy skils of out-of school youth, adult leamers, and marginalized communities.
-	-There will be 20-30 participants who complete the program with improved literacy skills.
+            success_indicators='''To improve the reading. witing. and numeracy skils of out-of school youth, adult leamers, and marginalized communities. 
+	-There will be 20-30 participants who complete the program with improved literacy skills. 
 	-There will be 90% increase in literacy skills of participants before and after the program. ''',
-            cooperating_agencies='''DepEd-Cabuyao City and Brgy. Sala, Brgy. Diezmo, Brgy. San Isidro, Brgy. Baclaran, Brgy. Bigaa
-
+            cooperating_agencies='''DepEd-Cabuyao City and Brgy. Sala, Brgy. Diezmo, Brgy. San Isidro, Brgy. Baclaran, Brgy. Bigaa 
+	
 	The College of Education will engage into partnership with DepEd Cabuyao City, Brgy. Sala, Brgy. Diezmo. Brgy. Son Isidro, Brgy. Baclaran, Brgy. Bigag through MOA. The MOA will serve as basis for the 3 year conduct of this program. Though collaboration and constant monitoring of the program implementation, it is expected that the needs of the community shall be addressed. ''',
-            monitoring_mechanics='''-Tracking of participants' completion rates and progress in the program.
--Regular assessments of participants' literacy skills before and after the program
--Regular feedback and evaluation from participants. trainers, and stakeholders to improve the program
--Monitoring the progress of participants in accessing further education or employment after completing the program
+            monitoring_mechanics='''-Tracking of participants' completion rates and progress in the program. 
+-Regular assessments of participants' literacy skills before and after the program 
+-Regular feedback and evaluation from participants. trainers, and stakeholders to improve the program 
+-Monitoring the progress of participants in accessing further education or employment after completing the program 
 -Regular monitoring of participants who start their own business to ensure sustainability and success.''',
-            evaluation_mechanics="""-Tracking of participants' completion rates and progress in the program.
--Regular assessments of participants'literacy skills before and after the program
--Regular feedback and evaluation from participants. trainers, and stakeholders to improve the program
--Monitoring the progress of participants in accessing further education or employment after completing the program
+            evaluation_mechanics="""-Tracking of participants' completion rates and progress in the program. 
+-Regular assessments of participants'literacy skills before and after the program 
+-Regular feedback and evaluation from participants. trainers, and stakeholders to improve the program 
+-Monitoring the progress of participants in accessing further education or employment after completing the program 
 -Regular monitoring of paticipants who stat their own business to ensure sustainability and success. """,
             timetable="",
             risk_assessment='''-Lack of interest and motivation from the target beneficiaries 
@@ -353,11 +353,7 @@ Resource requirements for community extension programs can vary depending on the
 - **December 2023**:
   Target Participants: Brgy. Officials, SK Officers, Women’s Sector, Interested Parents, and Senior Citizens
   Task: Hands-on training in document management using cloud-based solutions
-<<<<<<< Updated upstream
-
-=======
   
->>>>>>> Stashed changes
   CCLIP will conduct the following events in year 2024:
 
 - **January 2024**:
@@ -383,11 +379,7 @@ Resource requirements for community extension programs can vary depending on the
 - **November - December 2024**:
   Target Participants: Brgy. Officials, SK Officers, Women’s Sector, Students, and Interested Parents
   Task: Hands-on training about UX/UI designing
-<<<<<<< Updated upstream
-
-=======
   
->>>>>>> Stashed changes
   CCLIP will conduct the following events in year 2025:
 
 - **May 2025**:
@@ -1076,3 +1068,4 @@ Self Defense Training Program (50 target population):
       Signatory.objects.create(proposal=proposal, name="Hon. Mario Servo", position="Brgy. Captain", section="concurred")
 
 
+        

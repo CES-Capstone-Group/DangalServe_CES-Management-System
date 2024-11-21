@@ -1,25 +1,25 @@
 from docx import Document
 from django.conf import settings
 import os
-import subprocess
-
+import pythoncom
+from docx2pdf import convert
 
 def convert_docx_to_pdf(docx_path):
-    """
-    Converts a DOCX file to PDF using LibreOffice (cross-platform support).
-    """
-    pdf_output_path = docx_path.replace('.docx', '.pdf')
+    pythoncom.CoInitialize()
     try:
-        # Use LibreOffice to convert .docx to .pdf
-        subprocess.run(
-            ['libreoffice', '--headless', '--convert-to', 'pdf', '--outdir', os.path.dirname(docx_path), docx_path],
-            check=True
-        )
+        # Define the output path for the PDF
+        pdf_output_path = docx_path.replace('.docx', '.pdf')
+        
+        # Perform the conversion
+        convert(docx_path, pdf_output_path)
+        
+        # for debugging
+        # print(f"DOCX Path: {docx_path}")
+        # print(f"PDF Path: {pdf_output_path}")
+        
         return pdf_output_path
-    except subprocess.CalledProcessError as e:
-        print(f"Error converting DOCX to PDF: {e}")
-        return None
-
+    finally:
+        pythoncom.CoUninitialize()
 
 def replace_text_in_paragraph(paragraph, placeholders):
     """Replaces placeholders in a given paragraph with actual values."""
@@ -37,10 +37,10 @@ def replace_text_in_table(table, placeholders):
 def generate_proposal_doc(proposal):
     # Path to your Word document template
     template_path = os.path.join(settings.BASE_DIR, 'Document Formats', 'PNC-PRE-FO-34-Community-and-Extension-Service-Activity-Proposal.docx')
-
+    
     # Load the document template
     doc = Document(template_path)
-
+    
     # Convert partner_community to a displayable format as a list
     partner_communities_display = ', '.join([community.strip() for community in proposal.partner_community.split(',')]) if proposal.partner_community else 'N/A'
 
@@ -107,7 +107,7 @@ def generate_proposal_doc(proposal):
     partner_signatures = ''
     for barangay_approval in proposal.barangay_approvals.filter(status='Approved'):
         partner_signatures += f"{barangay_approval.barangay_name} - Signed by on {barangay_approval.sign_date}\n\n\n"
-
+    
     placeholders['{{partner_signatures}}'] = partner_signatures or '_____________'
 
     # Replace placeholders in all paragraphs
@@ -124,5 +124,5 @@ def generate_proposal_doc(proposal):
 
     output_path = os.path.join(output_dir, f'proposal_{proposal.proposal_id}.docx')
     doc.save(output_path)
-
+    
     return output_path

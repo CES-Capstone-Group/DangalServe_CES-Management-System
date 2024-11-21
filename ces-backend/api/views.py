@@ -707,6 +707,8 @@ def create_activity_schedule(request):
         'target_date': request.data.get('target_date'),
         'target_time': request.data.get('target_time'),
         'proposal_id': request.data.get('proposal'),
+        'activity_objectives': request.data.get('activity_objectives', ''),  # Default to an empty string if not provided
+        'activity_venue': request.data.get('activity_venue', ''),  # Default to an empty string if not provided
     }
     
     # Create ActivitySchedule instance

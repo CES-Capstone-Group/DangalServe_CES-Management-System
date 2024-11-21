@@ -350,6 +350,14 @@ class ActivityScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ActivitySchedule
-        fields = ['id', 'activity_title', 'target_date', 'target_time', 'files', 'proposal', 'proposal_title', 'status', 'activity_objectives', 'activity_venue', 'brgy']  
+        fields = [     
+            'id',
+            'activity_title',
+            'target_date',
+            'target_time',
+            'proposal',
+            'activity_objectives',
+            'activity_venue',
+            'status',]  
 
     

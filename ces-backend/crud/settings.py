@@ -120,12 +120,15 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'PamantasanCES$ces_db',
-        'USER': 'PamantasanCES',
-        'PASSWORD': 'Cloud5024',
-        'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
-        'PORT': '3306'      # or the port on which your MySQL server is listening
+        "OPTIONS": {
+            "read_default_file": "/path/to/my.cnf",
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'PamantasanCES$ces_db',
+            'USER': 'PamantasanCES',
+            'PASSWORD': 'Cloud5024',
+            'HOST': 'PamantasanCES.mysql.pythonanywhere-services.com',  # or the hostname where your MySQL server is running
+            'PORT': '3306'      # or the port on which your MySQL server is listening
+        }
     }
 }
 
